@@ -7,6 +7,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include "Shader.h"
+#include "Model.h"
 
 GLFWwindow* window;
 
@@ -50,6 +52,13 @@ void setupWindow() {
         // exit(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(window);
+
+	glewExperimental = true; // Needed in core profile
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		return;
+	}
+
     // glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_key_callback);
@@ -57,12 +66,21 @@ void setupWindow() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     // glfwSetWindowPos(window, 0, 0);
     /* Loop until the user closes the window */
+
+	//basic init
+
+	Shader *s = new Shader("Basic");
+
+	Model *m = new Model(s->shaderProgram);
+
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClearColor(1, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //update
+		m->update(0.016);
+		m->render();
         //Render
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -78,5 +96,7 @@ int main()
 {
 	std::cout << "Init window!" << std::endl;
 	setupWindow();
+
+
     return 0;
 }
