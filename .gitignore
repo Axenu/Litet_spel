@@ -1,3 +1,7 @@
 Debug
 LS/Debug
-*.opendb
+*.VC.db
+*.VC.opendb
+*.filters
+*.suo
+*.vcxproj.user
