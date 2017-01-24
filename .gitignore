@@ -4,3 +4,4 @@ LS/Debug
 *.VC.opendb
 *.suo
 *.vcxproj.user
+*.vcxproj.filters
