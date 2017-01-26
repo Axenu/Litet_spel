@@ -15,7 +15,7 @@ struct gridValues {
 	Enum enumet;
 };
 
-#define ROOFHEIGHT 10.f;
+#define ROOFHEIGHT 10.f
 class Grid{
 private:
 float heightLength;
