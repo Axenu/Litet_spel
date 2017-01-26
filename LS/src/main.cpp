@@ -9,9 +9,9 @@
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include "Model.h"
-
+#include "GridDataStructure.h"
 GLFWwindow* window;
-
+Grid gridtest;
 void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
     //  if (key == GLFW_KEY_Q) {
     //      if (action == GLFW_PRESS) {
@@ -91,10 +91,15 @@ void setupWindow() {
 
     glfwTerminate();
 }
+void Deanstestingruta()
+{
+	gridtest.print2darraydata();
+}
 
 int main()
 {
 	std::cout << "Init window!" << std::endl;
+	Deanstestingruta();
 	setupWindow();
 
 

@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\GridDataStructure.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\gl\FBOData.cpp" />
     <ClCompile Include="src\gl\GLFunctions.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\GridDataStructure.h" />
     <ClInclude Include="header\camera.h" />
     <ClInclude Include="header\gl\FBOData.h" />
     <ClInclude Include="header\gl\GLFunctions.h" />
