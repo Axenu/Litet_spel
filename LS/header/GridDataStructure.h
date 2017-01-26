@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <vector>
 using namespace std;
 enum Enum
 {
@@ -14,6 +15,7 @@ struct gridValues {
 	Enum enumet;
 };
 
+#define ROOFHEIGHT 10.f;
 class Grid{
 private:
 float heightLength;
@@ -24,6 +26,7 @@ Grid();
 void buildgridarray();
 ~Grid();
 void print2darraydata();
+vector<glm::vec3> generateMesh();
 };
 
 
