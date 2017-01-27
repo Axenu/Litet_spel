@@ -116,45 +116,28 @@ std::vector<glm::vec3> Grid::generateMesh()
 	{
 		for (int j = 0; j < _widthLength - 1; j++)
 		{
-			if (_twodArray[i][j].enumet == wall && _twodArray[i + 1][j].enumet == wall)
+			if (_twodArray[i][j].enumet == wall)
 			{
-				if (_twodArray[i][j + 1].enumet == wall && _twodArray[i + 1][j + 1].enumet == wall)
-				{																													
-					//Front quad																								
-					vertices.push_back(glm::vec3(_twodArray[i    ][j + 1].xz.x, ROOFHEIGHT, _twodArray[i    ][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, _twodArray[i + 1][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i    ][j + 1].xz.x, 0.f       , _twodArray[i    ][j + 1].xz.y));
-																																  
-					vertices.push_back(glm::vec3(_twodArray[i    ][j + 1].xz.x, 0.f       , _twodArray[i    ][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, _twodArray[i + 1][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, 0.f       , _twodArray[i + 1][j + 1].xz.y));
-																																	
+				if (_twodArray[i + 1][j].enumet == wall)
+				{
+					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, 0.f       , _twodArray[i    ][j].xz.y));
+																																		  
+					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, 0.f       , _twodArray[i    ][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
+				}
+				if (_twodArray[i][j + 1].enumet == wall)
+				{
 					//Left quad																										
 					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, ROOFHEIGHT, _twodArray[i][j    ].xz.y));
 					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
 					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
-																															
+																																	
 					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
 					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
 					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, 0.f       , _twodArray[i][j + 1].xz.y));
-																																
-					//Back quad																						
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
-																															
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
-																																	
-					//Right quad																									
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, _twodArray[i + 1][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j    ].xz.x, ROOFHEIGHT, _twodArray[i + 1][j    ].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, 0.f       , _twodArray[i + 1][j + 1].xz.y));
-																																
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, 0.f       , _twodArray[i + 1][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j    ].xz.x, ROOFHEIGHT, _twodArray[i + 1][j    ].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j    ].xz.x, 0.f       , _twodArray[i + 1][j    ].xz.y));
 				}
 			}
 		}
