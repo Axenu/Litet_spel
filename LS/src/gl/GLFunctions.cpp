@@ -270,12 +270,33 @@ namespace gl {
 		fragmentShader	<<		Directory to the fragmentShader
 		shaderProgramID	>>		Reference for the shader program id
 		return			>>		If the shader program loaded successfully, errors will be logged */
-	bool loadShaderProgram(std::string vertexShader, std::string fragmentShader, GLuint &shaderProgramID) {
+	bool loadShaderProgram(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID) {
 
 		GLuint vs, fs;
 		if (!loadShader(vertexShader, GL_VERTEX_SHADER, vs))
 			return false;
 		if (!loadShader(fragmentShader, GL_FRAGMENT_SHADER, fs))
+			return false;
+
+		shaderProgramID = glCreateProgram();
+		glAttachShader(shaderProgramID, fs);
+		glAttachShader(shaderProgramID, vs);
+		glLinkProgram(shaderProgramID);
+
+		return true;
+		//return debugShaderProgram(shaderProgramID);
+	}
+	/*Load a shader program from a specified vertex and fragment shader code strings
+	vertexShader	<<		Vertex shader code
+	fragmentShader	<<		Fragment shader code
+	shaderProgramID	>>		Reference for the shader program id created
+	return			>>		If the shader program loaded successfully, errors will be logged */
+	bool loadShaderProgramString(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID) {
+
+		GLuint vs, fs;
+		if (!loadShaderString(vertexShader, GL_VERTEX_SHADER, vs))
+			return false;
+		if (!loadShaderString(fragmentShader, GL_FRAGMENT_SHADER, fs))
 			return false;
 
 		shaderProgramID = glCreateProgram();

@@ -12,41 +12,20 @@ Shader::Shader(std::string vert, std::string frag) {
 	/* Load shader, prints gl errors. If false is returned an error occured.
 	*/
 	if (!gl::loadShaderProgram("shaders/" + vert + ".vert", "shaders/" + frag + ".frag", shaderProgram)) {
-		std::cout << "Shader failed to load" << std::endl;
+		std::cout << "Shader failed to load: " + vert + ", " + frag << std::endl;
+		throw new std::exception("Shader load fail");
 	}
 	name = vert;
 	
 }
 
 Shader::Shader(std::string *vertexShader, std::string *fragmentShader) {
-	GLuint vertShader, fragShader;
-	gl::loadShaderString(*vertexShader, GL_VERTEX_SHADER, vertShader);
-	gl::loadShaderString(*fragmentShader, GL_FRAGMENT_SHADER, fragShader);
-	name = "Material shader";
-	
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertShader);
-	glAttachShader(shaderProgram, fragShader);
-	
-	glBindFragDataLocation(shaderProgram, 0, "Frag_Data");
-	
-	glLinkProgram(shaderProgram);
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
-	
-	GLint linkStatus;
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &linkStatus);
-	if (linkStatus != GL_TRUE) {
-		std::cout << "Shader program failed to link!" << std::endl;
-		
-		GLint infoLogLength;
-		glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-		GLchar *infoLog = new GLchar[infoLogLength + 1];
-		glGetProgramInfoLog(shaderProgram, infoLogLength, NULL, infoLog);
-		std::cout << infoLog << std::endl;
-		delete[] infoLog;
+	if (gl::loadShaderProgramString(*vertexShader, *fragmentShader, shaderProgram)) {
+		std::cout << "Shader failed to load from strings\n\nVertex:\n" + *vertexShader + "\n\nFragment:\n" + *fragmentShader << std::endl;
+		throw new std::exception("Shader load fail");
 	}
+	name = "Material shader";
+
 }
 
 void Shader::printListOfUniforms() {

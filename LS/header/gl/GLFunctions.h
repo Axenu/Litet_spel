@@ -112,7 +112,13 @@ namespace gl {
 	fragmentShader	<<		Directory to the fragmentShader
 	shaderProgramID	>>		Reference for the shader program id
 	return			>>		If the shader program loaded successfully, errors will be logged */
-	bool loadShaderProgram(std::string vertexShader, std::string fragmentShader, GLuint &shaderProgramID);
+	bool loadShaderProgram(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID);
+	/*Load a shader program from a specified vertex and fragment shader code strings
+	vertexShader	<<		Vertex shader code
+	fragmentShader	<<		Fragment shader code
+	shaderProgramID	>>		Reference for the shader program id created
+	return			>>		If the shader program loaded successfully, errors will be logged */
+	bool loadShaderProgramString(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID);
 
 #pragma endregion
 
