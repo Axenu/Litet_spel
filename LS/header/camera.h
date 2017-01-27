@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "node.h"
 
-class camera : public Node {
+class Camera : public Node {
 
 private:
 	float fieldOfView;
@@ -23,10 +23,10 @@ private:
 public:
 
 	glm::mat4 VPMatrix;
-	
-	camera();
-	camera(float fov, float aspect, float near, float far);
-	camera(float fov, int _width, int _height, float near, float far);
+
+	Camera();
+	Camera(float fov, float aspect, float near, float far);
+	Camera(float fov, int _width, int _height, float near, float far);
 
 	void initProjection();
 	void useView();
@@ -35,11 +35,11 @@ public:
 	float getFieldOfView();
 	float getAspectRatio();
 	glm::vec3 &getPosition();
-	
-	~camera();
+
+	~Camera();
 
 	float degreesToRadians(float degrees);
-	
+
 };
 
 #endif

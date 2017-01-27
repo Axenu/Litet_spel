@@ -5,7 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <GLFW/glfw3.h>
+// #include <GLFW/glfw3.h>
+#include "gl/glInclude.h"
 #include <vector>
 
 #ifndef M_PI
@@ -49,7 +50,7 @@ public:
     void rotateY(float f);
     void rotateZ(float f);
     void rotate(glm::vec3 r);
-    
+
 	float getX();
 	float getY();
 	float getZ();
@@ -62,8 +63,8 @@ public:
 
 
 	virtual ~Node();
-	
-	
+
+
 	glm::vec3 position;
 
 protected:

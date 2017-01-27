@@ -11,33 +11,39 @@
 #include "Model.h"
 #include "GridDataStructure.h"
 #include"gl\GraphicsResource.h"
+#include "InputManager.h"
+
 GLFWwindow* window;
 Grid gridtest;
-void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
-    //  if (key == GLFW_KEY_Q) {
-    //      if (action == GLFW_PRESS) {
-    //          glfwSetWindowShouldClose(win, 1);
-    //          return;
-    //      }
-    //  }
+InputManager manager;
 
-    //  engine->forwardKeyInput(key, action);
-    std::cout << "key_callback" << std::endl;
+// GLFW key callbacks.
+void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_ESCAPE)
+    {
+         glfwSetWindowShouldClose(win, 1);
+    }
+    else
+    {
+        InputManager * manager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+        manager->fireKey(key, action);
+    }
 }
 
 void mouse_key_callback(GLFWwindow* win, int button, int action, int mods) {
-    std::cout << "mouse_key_callback" << std::endl;
+    InputManager * manager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+    manager->fireMouseClick(button, action);
 }
 
 void cursorPosition_callback(GLFWwindow* win, double x, double y) {
-    std::cout << "cursorPosition_callback" << std::endl;
+    InputManager * manager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+    manager->fireMouseMove(x, y);
 }
 
 void setupWindow() {
     // init glfw
 	if (!glfwInit()) {
 		std::cout << "GLFW init failed!" << std::endl;
-    	// exit(EXIT_FAILURE);
 	}
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
@@ -51,15 +57,16 @@ void setupWindow() {
     {
         glfwTerminate();
         std::cout << "GLFW creation of window failed!" << std::endl;
-        // exit(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(window);
 
+#ifndef __APPLE__
 	glewExperimental = true; // Needed in core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return;
 	}
+#endif
 
     // glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, key_callback);
@@ -79,6 +86,9 @@ void setupWindow() {
 		throw new std::exception("Initiation failed: GL Error");
 
 	Model *m = new Model(s->shaderProgram);
+
+    glfwSetWindowUserPointer(window, &manager);
+    manager.subscribeToKey(GLFW_KEY_Q, qcallback);
 
     while (!glfwWindowShouldClose(window))
     {
