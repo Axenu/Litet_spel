@@ -13,8 +13,9 @@ namespace gl {
 	{
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR && print) {
-			std::cout << "OpenGL Error: " + err << std::endl;
-			std::cout << (const char*)glewGetErrorString(err) << std::endl;
+			std::cout << "OpenGL Error: " + std::to_string(err) << std::endl;
+			std::string s((const char*)glewGetErrorString(err));
+			std::cout << s << std::endl;
 			return true;
 		}
 		return false;
@@ -26,8 +27,9 @@ namespace gl {
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR) {
 			std::cout << logText << std::endl;
-			std::cout << "OpenGL Error: " + err << std::endl;
-			std::cout << (const char*)glewGetErrorString(err) << std::endl;
+			std::cout << "OpenGL Error: " + std::to_string(err) << std::endl;
+			std::string s((const char*)glewGetErrorString(err));
+			std::cout << s << std::endl;
 			return true;
 		}
 		return false;

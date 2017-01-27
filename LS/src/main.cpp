@@ -10,7 +10,9 @@
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
-#include "gl\GraphicsResource.h"
+#include "Render\GraphicsResource.h"
+#include "Render\FrameData.h"
+#include "Render\RenderDeferred.h"
 #include "InputManager.h"
 
 GLFWwindow* window;
@@ -77,10 +79,10 @@ void setupWindow() {
     /* Loop until the user closes the window */
 
 	//basic init
-	gl::GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
+	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
 	Shader *def_mesh = new Shader("Deferred_Mesh");
-	Shader *def_comp = new Shader("Quad", "Deferred_Comp");
+	RenderDeferred deferred(resource.getQuad());
 
 	if (gl::CheckGLErrors("Initiation failed: GL Error"))
 		throw new std::exception("Initiation failed: GL Error");
@@ -93,6 +95,7 @@ void setupWindow() {
 
     while (!glfwWindowShouldClose(window))
     {
+		FrameData fD(resource);
         /* Render here */
         glClearColor(1, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

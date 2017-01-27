@@ -5,10 +5,10 @@ Shader::Shader() {
 	shaderProgram = -1;
 }
 
-Shader::Shader(std::string file) : Shader(file, file) {
+Shader::Shader(const std::string &file) : Shader(file, file) {
 }
 
-Shader::Shader(std::string vert, std::string frag) {
+Shader::Shader(const std::string &vert, const std::string &frag) {
 	/* Load shader, prints gl errors. If false is returned an error occured.
 	*/
 	if (!gl::loadShaderProgram("shaders/" + vert + ".vert", "shaders/" + frag + ".frag", shaderProgram)) {
@@ -25,7 +25,45 @@ Shader::Shader(std::string *vertexShader, std::string *fragmentShader) {
 		throw new std::exception("Shader load fail");
 	}
 	name = "Material shader";
+}
 
+/* Move the Shader data
+*/
+Shader::Shader(Shader &&move)
+ : shaderProgram(move.shaderProgram), name(move.name){
+	move.shaderProgram = 0;
+}
+/* Move the Shader data
+*/
+Shader& Shader::operator=(Shader &&move) {
+	if (this != &move)
+		return *this;
+	this->name = move.name;
+	this->shaderProgram = move.shaderProgram;
+	move.shaderProgram = 0;
+	return *this;
+}
+
+void Shader::bind() {
+	glUseProgram(this->shaderProgram);
+}
+/* Get a uniform from the shader. The shader needs to be bound to device.
+*/
+GLint Shader::getUniform(const std::string &varName) {
+	return glGetUniformLocation(shaderProgram, &varName[0]);
+}
+/*	Queries the shader for a sampler uniform and binds it to the slot. Shaderprogram needs to be bound on device.
+varName		<<	Variable name defined in the shader program
+sampleSlot	<<	Sampler slot
+return		>>	If the variable was found in the shader program
+*/
+bool Shader::bindSampler(const std::string &varName, int sampleSlot) {
+	GLint loc = glGetUniformLocation(shaderProgram, &varName[0]);
+	if (loc != -1) {
+		glUniform1i(loc, sampleSlot); //Assigns sampling slot
+		return true;
+	}
+	return false;
 }
 
 void Shader::printListOfUniforms() {
@@ -107,6 +145,8 @@ GLint Shader::createShaderFromString(std::string *shader, GLenum shaderType) con
 }
 
 Shader::~Shader() {
-    glUseProgram(0);
-    glDeleteProgram(shaderProgram);
+	if (shaderProgram != 0) {
+		glUseProgram(0);
+		glDeleteProgram(shaderProgram);
+	}
 }
