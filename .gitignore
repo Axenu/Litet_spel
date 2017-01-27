@@ -7,3 +7,4 @@ LS/Debug
 *.DS_Store
 *.app
 LS/build
+LS/Release
