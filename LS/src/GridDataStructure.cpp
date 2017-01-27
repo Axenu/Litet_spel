@@ -45,8 +45,7 @@ void Grid::print2darraydata()
 
 void Grid::loadingBmpPicture(char* filename)
 {
-	std::ofstream myfile;
-	myfile.open("y.txt");
+
 	FILE* f = fopen(filename, "rb");
 	unsigned char header[54];
 	fread(header, sizeof(unsigned char), 54, f);
