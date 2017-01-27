@@ -37,7 +37,7 @@ void camera::useView() {
 }
 
 void camera::initProjection() {
-	projectionMatrix = glm::perspectiveFov(degreesToRadians(fieldOfView), width, height, nearPlane, farPlane);
+	projectionMatrix = glm::perspective(degreesToRadians(fieldOfView), aspectRatio, nearPlane, farPlane);
 }
 
 glm::mat4 &camera::getViewMatrix() {
