@@ -39,14 +39,7 @@ void Grid::print2darraydata()
 		}
 		std::cout << "" << std::endl;
 	}
-	for (int i = 0; i < _heightLength; i++)
-	{
-		for (int j = 0; j < _widthLength; j++)
-		{
-			std::cout << _twodArray[i][j].color.y << " ";
-		}
-		std::cout << "" << std::endl;
-	}
+
 }
 
 void Grid::loadingBmpPicture(char* filename)
@@ -99,9 +92,9 @@ void Grid::loadingBmpPicture(char* filename)
 		{
 			_twodArray[i][j].xz.x = (float)i;
 			_twodArray[i][j].xz.y = (float)j;
-			_twodArray[i][j].color.x = datan[k    ];
-			_twodArray[i][j].color.y = datan[k + 1];
-			_twodArray[i][j].color.z = datan[k + 2];
+			_twodArray[height - 1 - j][i].color.x = datan[k];
+			_twodArray[height - 1 - j][i].color.y = datan[k + 1];
+			_twodArray[height - 1 - j][i].color.z = datan[k + 2];
 			k += 3;
 		}
 	}
