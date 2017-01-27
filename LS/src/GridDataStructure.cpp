@@ -1,27 +1,27 @@
 #include "GridDataStructure.h"
 #pragma warning(disable:4996)
+
 Grid::Grid()
 {
-	 loadingBmpPicture("roomtest.bmp");
-	
+	 loadingBmpPicture("roomtest.bmp");	
 }
 
 Grid::~Grid()
 {
-	for (int i = 0; i < heightLength; i++)
+	for (int i = 0; i < _heightLength; i++)
 	{
-		delete[] twodArray[i];
+		delete[] _twodArray[i];
 	}
 
-	delete[] twodArray;
+	delete[] _twodArray;
 }
 void Grid::buildgridarray()
 {
 	//building the 2D array
-	twodArray = new gridValues*[heightLength];
-	for (int i = 0; i < heightLength;i++)
+	_twodArray = new gridValues*[_heightLength];
+	for (int i = 0; i < _heightLength; i++)
 	{
-		twodArray[i] = new gridValues[widthLength];
+		_twodArray[i] = new gridValues[_widthLength];
 	}
 	
 
@@ -31,29 +31,22 @@ void Grid::buildgridarray()
 
 void Grid::print2darraydata()
 {
-	for (int i = 0;i < heightLength;i++)
+	for (int i = 0; i < _heightLength; i++)
 	{
-		for (int j = 0;j < widthLength;j++)
-		{
-			
-			
-			cout<< twodArray[i][j].color.x <<  " ";
-			
+		for (int j = 0; j < _widthLength; j++)
+		{	
+			std::cout << _twodArray[i][j].color.x << " ";
 		}
-		cout << "" << endl;
+		std::cout << "" << std::endl;
 	}
-	for (int i = 0;i < heightLength;i++)
+	for (int i = 0; i < _heightLength; i++)
 	{
-		for (int j = 0;j < widthLength;j++)
+		for (int j = 0; j < _widthLength; j++)
 		{
-
-
-			cout << twodArray[i][j].color.y << " ";
-
+			std::cout << _twodArray[i][j].color.y << " ";
 		}
-		cout << "" << endl;
+		std::cout << "" << std::endl;
 	}
-
 }
 
 void Grid::loadingBmpPicture(char* filename)
@@ -66,7 +59,7 @@ void Grid::loadingBmpPicture(char* filename)
 
 	int width =  *(int*)&header[18];
 	int height = *(int*)&header[22];
-	int size = 3 * width*height;
+	int size = 3 * width * height;
 
 	unsigned char* datan = new unsigned char[size]; //Allocating 3bytes for each pixel. R G B
 	fread(datan, 1, size, f);
@@ -93,8 +86,8 @@ void Grid::loadingBmpPicture(char* filename)
 //		j++;
 //	}
 //	delete[] tmparraydata;
-	heightLength = height;
-	widthLength = width;
+	_heightLength = height;
+	_widthLength = width;
 
 	buildgridarray();
 	//filling the twodarray with number1;
@@ -104,11 +97,11 @@ void Grid::loadingBmpPicture(char* filename)
 	{
 		for (int i = 0; i < width; i++)
 		{
-			twodArray[i][j].xz.x = i;
-			twodArray[i][j].xz.y = j;
-			twodArray[i][j].color.x = datan[k];
-			twodArray[i][j].color.y = datan[k+1];
-			twodArray[i][j].color.z = datan[k+2];
+			_twodArray[i][j].xz.x = (float)i;
+			_twodArray[i][j].xz.y = (float)j;
+			_twodArray[i][j].color.x = datan[k    ];
+			_twodArray[i][j].color.y = datan[k + 1];
+			_twodArray[i][j].color.z = datan[k + 2];
 			k += 3;
 		}
 	}
@@ -116,52 +109,52 @@ void Grid::loadingBmpPicture(char* filename)
 	datan = 0;
 }
 
-vector<glm::vec3> Grid::generateMesh()
+std::vector<glm::vec3> Grid::generateMesh()
 {
-	vector<glm::vec3> vertices;
-	for (int i = 0; i < heightLength - 1; i++)
+	std::vector<glm::vec3> vertices;
+	for (int i = 0; i < _heightLength - 1; i++)
 	{
-		for (int j = 0; j < widthLength - 1; j++)
+		for (int j = 0; j < _widthLength - 1; j++)
 		{
-			if (twodArray[i][j].enumet == wall && twodArray[i + 1][j].enumet == wall)												
+			if (_twodArray[i][j].enumet == wall && _twodArray[i + 1][j].enumet == wall)
 			{
-				if (twodArray[i][j + 1].enumet == wall && twodArray[i + 1][j + 1].enumet == wall)
+				if (_twodArray[i][j + 1].enumet == wall && _twodArray[i + 1][j + 1].enumet == wall)
 				{																													
 					//Front quad																								
-					vertices.push_back(glm::vec3(twodArray[i    ][j + 1].xz.x, ROOFHEIGHT, twodArray[i    ][j + 1].xz.y));	
-					vertices.push_back(glm::vec3(twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, twodArray[i + 1][j + 1].xz.y));        
-					vertices.push_back(glm::vec3(twodArray[i    ][j + 1].xz.x, 0.f       , twodArray[i    ][j + 1].xz.y));       
+					vertices.push_back(glm::vec3(_twodArray[i    ][j + 1].xz.x, ROOFHEIGHT, _twodArray[i    ][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, _twodArray[i + 1][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i    ][j + 1].xz.x, 0.f       , _twodArray[i    ][j + 1].xz.y));
 																																  
-					vertices.push_back(glm::vec3(twodArray[i    ][j + 1].xz.x, 0.f       , twodArray[i    ][j + 1].xz.y));	
-					vertices.push_back(glm::vec3(twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, twodArray[i + 1][j + 1].xz.y));		
-					vertices.push_back(glm::vec3(twodArray[i + 1][j + 1].xz.x, 0.f       , twodArray[i + 1][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i    ][j + 1].xz.x, 0.f       , _twodArray[i    ][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, _twodArray[i + 1][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, 0.f       , _twodArray[i + 1][j + 1].xz.y));
 																																	
 					//Left quad																										
-					vertices.push_back(glm::vec3(twodArray[i][j    ].xz.x, ROOFHEIGHT, twodArray[i][j    ].xz.y));			
-					vertices.push_back(glm::vec3(twodArray[i][j + 1].xz.x, ROOFHEIGHT, twodArray[i][j + 1].xz.y));                
-					vertices.push_back(glm::vec3(twodArray[i][j    ].xz.x, 0.f       , twodArray[i][j    ].xz.y));                
+					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, ROOFHEIGHT, _twodArray[i][j    ].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
 																															
-					vertices.push_back(glm::vec3(twodArray[i][j    ].xz.x, 0.f       , twodArray[i][j    ].xz.y));                
-					vertices.push_back(glm::vec3(twodArray[i][j + 1].xz.x, ROOFHEIGHT, twodArray[i][j + 1].xz.y));                
-					vertices.push_back(glm::vec3(twodArray[i][j + 1].xz.x, 0.f       , twodArray[i][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, 0.f       , _twodArray[i][j + 1].xz.y));
 																																
 					//Back quad																						
-					vertices.push_back(glm::vec3(twodArray[i + 1][j].xz.x, ROOFHEIGHT, twodArray[i + 1][j].xz.y));			
-					vertices.push_back(glm::vec3(twodArray[i    ][j].xz.x, ROOFHEIGHT, twodArray[i    ][j].xz.y));             
-					vertices.push_back(glm::vec3(twodArray[i + 1][j].xz.x, 0.f       , twodArray[i + 1][j].xz.y));                
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
 																															
-					vertices.push_back(glm::vec3(twodArray[i + 1][j].xz.x, 0.f       , twodArray[i + 1][j].xz.y));                
-					vertices.push_back(glm::vec3(twodArray[i    ][j].xz.x, ROOFHEIGHT, twodArray[i    ][j].xz.y));                
-					vertices.push_back(glm::vec3(twodArray[i + 1][j].xz.x, 0.f       , twodArray[i + 1][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
 																																	
 					//Right quad																									
-					vertices.push_back(glm::vec3(twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, twodArray[i + 1][j + 1].xz.y));	
-					vertices.push_back(glm::vec3(twodArray[i + 1][j    ].xz.x, ROOFHEIGHT, twodArray[i + 1][j    ].xz.y));		
-					vertices.push_back(glm::vec3(twodArray[i + 1][j + 1].xz.x, 0.f       , twodArray[i + 1][j + 1].xz.y));        
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, ROOFHEIGHT, _twodArray[i + 1][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j    ].xz.x, ROOFHEIGHT, _twodArray[i + 1][j    ].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, 0.f       , _twodArray[i + 1][j + 1].xz.y));
 																																
-					vertices.push_back(glm::vec3(twodArray[i + 1][j + 1].xz.x, 0.f       , twodArray[i + 1][j + 1].xz.y));        
-					vertices.push_back(glm::vec3(twodArray[i + 1][j    ].xz.x, ROOFHEIGHT, twodArray[i + 1][j    ].xz.y));		
-					vertices.push_back(glm::vec3(twodArray[i + 1][j    ].xz.x, 0.f       , twodArray[i + 1][j    ].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j + 1].xz.x, 0.f       , _twodArray[i + 1][j + 1].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j    ].xz.x, ROOFHEIGHT, _twodArray[i + 1][j    ].xz.y));
+					vertices.push_back(glm::vec3(_twodArray[i + 1][j    ].xz.x, 0.f       , _twodArray[i + 1][j    ].xz.y));
 				}
 			}
 		}
