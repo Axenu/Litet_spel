@@ -4,3 +4,9 @@ LS/Debug
 *.VC.opendb
 *.vcxproj.user
 *.vcxproj.filters
+*.tlog
+*.lastbuildstate
+*.pdb
+*.ipdb
+*.obj
+*.log

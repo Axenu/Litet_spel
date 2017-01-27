@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
+#include"gl\GraphicsResource.h"
 GLFWwindow* window;
 Grid gridtest;
 void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
@@ -44,7 +45,8 @@ void setupWindow() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_DECORATED, true);
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	unsigned int wWidth = 640, wHeight = 480;
+    window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -68,7 +70,7 @@ void setupWindow() {
     /* Loop until the user closes the window */
 
 	//basic init
-
+	gl::GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
 
 	Model *m = new Model(s->shaderProgram);

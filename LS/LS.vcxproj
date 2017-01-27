@@ -135,6 +135,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\gl\FrameBuffer.cpp" />
+    <ClCompile Include="src\gl\DeferredBuffer.cpp" />
+    <ClCompile Include="src\gl\GraphicsResource.cpp" />
     <ClCompile Include="src\GridDataStructure.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\gl\FBOData.cpp" />
@@ -147,6 +150,9 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\gl\DeferredBuffer.h" />
+    <ClInclude Include="header\gl\DefferedSettings.h" />
+    <ClInclude Include="header\gl\GraphicsResource.h" />
     <ClInclude Include="header\GridDataStructure.h" />
     <ClInclude Include="header\camera.h" />
     <ClInclude Include="header\gl\FBOData.h" />
@@ -156,6 +162,7 @@
     <ClInclude Include="header\Model.h" />
     <ClInclude Include="header\node.h" />
     <ClInclude Include="header\Shader.h" />
+    <ClInclude Include="header\gl\FrameBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
