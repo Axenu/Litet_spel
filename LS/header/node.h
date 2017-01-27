@@ -12,8 +12,14 @@
 #ifndef M_PI
 #define M_PI 3.1415926536
 #endif
+#ifndef M_PIf
+#define M_PIf 3.1415926536f
+#endif
 #ifndef M_2PI
 #define M_2PI 6.2831853072
+#endif
+#ifndef M_2PIf
+#define M_2PIf 6.2831853072f
 #endif
 
 class Node {

@@ -17,8 +17,8 @@ Camera::Camera(float fov, float aspect, float near, float far) {
 
 Camera::Camera(float fov, int _width, int _height, float near, float far) {
     this->perspective = true;
-    this->width = _width;
-    this->height = _height;
+    this->width = (float)_width;
+    this->height = (float)_height;
     this->nearPlane = near;
     this->farPlane = far;
     this->fieldOfView = fov;
@@ -61,5 +61,5 @@ Camera::~Camera() {
 }
 
 float Camera::degreesToRadians(float degrees) {
-    return degrees * (M_PI / 180.0);
+	return (float)(degrees * (M_PI / 180.0));
 }
