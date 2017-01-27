@@ -1,30 +1,32 @@
 #include "Mesh.h"
+#include "gl/GLFunctions.h"
 
 
 
 
-void Mesh::setMesh(const std::vector<MVertex> vertices, const std::vector<GLuint> indices, int nrOfAttributes)
+void Mesh::setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices, int nrOfAttributes)
 {
-	_vertices = vertices;
+	_position = position;
+	_normal = normal;
 	_indices = indices;
 
-	glGenBuffers(1, &_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(_vertices), &_vertices[0], GL_STATIC_DRAW);
-	
-	glGenBuffers(1, &_EBO);	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(_indices), &_indices[0], GL_STATIC_DRAW);
+	std::vector<gl::VertexAttribute> attri;
+	attri.push_back(gl::VertexAttribute(0, GL_FLOAT, 3, sizeof(float))); //Pos attribute
+	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Nor
 
-	glGenVertexArrays(1, &_VAO);
-	glBindVertexArray(_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+	std::vector<const void*> vertexData;
+	vertexData.push_back(&_position[0]);
+	vertexData.push_back(&_normal[0]);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, nrOfAttributes * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, nrOfAttributes * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-
-	glBindVertexArray(0);
+	_VAO = gl::generateVAO_SoA(vertexData, attri, _position.size(), &_indices[0], sizeof(_indices[0]), _indices.size());
+	gl::CheckGLErrors();
 }
+
+void Mesh::render()
+{
+	glBindVertexArray(_VAO);
+	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, gl::bufferOffset(0));
+}
+
+
+

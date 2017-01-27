@@ -6,22 +6,18 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-struct MVertex
-{
-	glm::vec3 pos;
-	glm::vec3 normal;
-};
 
 class Mesh
 {
 private:
-	std::vector<MVertex> _vertices;
+	std::vector<glm::vec3> _position;
+	std::vector<glm::vec3> _normal;
 	std::vector<GLuint> _indices;
-	GLuint _VAO, _VBO, _EBO;
+	GLuint _VAO;
 	
 public:
-	void setMesh(const std::vector<MVertex> vertices, const std::vector<GLuint> indices, int nrOfAttributes);
-
+	void setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices, int nrOfAttributes);
+	void render();
 };
 
 #endif
