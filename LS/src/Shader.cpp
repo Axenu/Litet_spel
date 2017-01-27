@@ -13,7 +13,7 @@ Shader::Shader(const std::string &vert, const std::string &frag) {
 	*/
 	if (!gl::loadShaderProgram("shaders/" + vert + ".vert", "shaders/" + frag + ".frag", shaderProgram)) {
 		std::cout << "Shader failed to load: " + vert + ", " + frag << std::endl;
-		throw new std::exception("Shader load fail");
+		//throw new std::exception("Shader load fail");
 	}
 	name = vert;
 	
@@ -22,7 +22,7 @@ Shader::Shader(const std::string &vert, const std::string &frag) {
 Shader::Shader(std::string *vertexShader, std::string *fragmentShader) {
 	if (gl::loadShaderProgramString(*vertexShader, *fragmentShader, shaderProgram)) {
 		std::cout << "Shader failed to load from strings\n\nVertex:\n" + *vertexShader + "\n\nFragment:\n" + *fragmentShader << std::endl;
-		throw new std::exception("Shader load fail");
+		//throw new std::exception("Shader load fail");
 	}
 	name = "Material shader";
 }

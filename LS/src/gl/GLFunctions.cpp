@@ -2,7 +2,6 @@
 
 #include<iostream>
 #include<fstream>
-#include<GL/GLU.h>
 #include<algorithm>
 
 namespace gl {
