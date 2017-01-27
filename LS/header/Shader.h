@@ -1,9 +1,10 @@
 #ifndef __First__Shader__
 #define __First__Shader__
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+// #define GLEW_STATIC
+// #include <GL/glew.h>
+// #include <GLFW/glfw3.h>
+#include "gl/glInclude.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -18,7 +19,7 @@ private:
 public:
 
 	GLint shaderProgram;
-	
+
 	Shader();
 	Shader(std::string file);
 	Shader(std::string vert, std::string frag);
