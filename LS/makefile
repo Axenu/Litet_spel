@@ -6,12 +6,13 @@ IDIR=include/OSX/
 HDIR=header/
 
 SOURCESGAME=$(wildcard $(SRCDIR)*.cpp)
-SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%)
+SOURCEGL=$(wildcard $(SRCDIR)gl/*.cpp)
+SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%)
 
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
-CXXFLAGS = -Wall -Wunknown-pragmas -std=c++11 -Wno-c++11-long-long
+CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long
 # The c++ compiler to use for compilation
 CC = clang++
 
@@ -34,6 +35,9 @@ all: $(GAMEOBJECTS)
 	# ar rvs build/FireArrow.a $^
 
 $(ODIR)%.o: $(SRCDIR)%.cpp
+	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
+
+$(ODIR)%.o: $(SRCDIR)gl/%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
 # $(ODIR)/%.o: $(ENGINESDIR)/%.cpp

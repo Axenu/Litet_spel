@@ -14,10 +14,14 @@
 #include "Render\FrameData.h"
 #include "Render\RenderDeferred.h"
 #include "InputManager.h"
+#include "camera.h"
+#include "Character.h"
 
 GLFWwindow* window;
 Grid gridtest;
-InputManager manager;
+// InputManager manager;
+Camera camera;
+Character player;
 
 // GLFW key callbacks.
 void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
@@ -27,19 +31,19 @@ void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) 
     }
     else
     {
-        InputManager * manager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-        manager->fireKey(key, action);
+        InputManager *myEventManager = InputManager::Instance();
+        myEventManager->execute("key", key, action);
     }
 }
 
 void mouse_key_callback(GLFWwindow* win, int button, int action, int mods) {
-    InputManager * manager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-    manager->fireMouseClick(button, action);
+    InputManager *myEventManager = InputManager::Instance();
+    myEventManager->execute("button", button, action);
 }
 
 void cursorPosition_callback(GLFWwindow* win, double x, double y) {
-    InputManager * manager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-    manager->fireMouseMove(x, y);
+    InputManager *myEventManager = InputManager::Instance();
+    myEventManager->execute("mouse", x, y);
 }
 
 void setupWindow() {
@@ -70,7 +74,7 @@ void setupWindow() {
 	}
 #endif
 
-    // glfwSetWindowUserPointer(window, this);
+    // glfwSetWindowUserPointer(window, &manager);
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_key_callback);
     glfwSetCursorPosCallback(window, cursorPosition_callback);
@@ -84,14 +88,16 @@ void setupWindow() {
 	Shader *def_mesh = new Shader("Deferred_Mesh");
 	RenderDeferred deferred(resource.getQuad());
 
-	if (gl::CheckGLErrors("Initiation failed: GL Error"))
-		throw new std::exception("Initiation failed: GL Error");
+	// if (gl::CheckGLErrors("Initiation failed: GL Error"))
+		// throw new std::exception("Initiation failed: GL Error");
 
 	Model *m = new Model(s->shaderProgram);
 
-    glfwSetWindowUserPointer(window, &manager);
-	keyCallback qcallback;
-    manager.subscribeToKey(GLFW_KEY_Q, qcallback);
+    camera = Camera(70.0f, 640, 480, 0.1f, 100.0f);
+    player = Character();
+    player.setCamera(&camera);
+
+    // manager.subscribeToKey(GLFW_KEY_Q, qcallback);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -100,7 +106,8 @@ void setupWindow() {
         glClearColor(1, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //update
-		m->update(0.016f);
+        player.update(0.016);
+		m->update(0.016);
 		m->render();
         //Render
         /* Swap front and back buffers */
