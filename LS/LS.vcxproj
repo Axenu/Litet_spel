@@ -134,9 +134,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />
-    <ClCompile Include="src\gl\GraphicsResource.cpp" />
+    <ClCompile Include="src\Render\FrameData.cpp" />
+    <ClCompile Include="src\Render\GraphicsResource.cpp" />
     <ClCompile Include="src\GridDataStructure.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\gl\FBOData.cpp" />
@@ -144,6 +146,8 @@
     <ClCompile Include="src\gl\SamplerObject.cpp" />
     <ClCompile Include="src\gl\TexData.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\Render\RenderDeferred.cpp" />
+    <ClCompile Include="src\gl\RenderQuad.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
@@ -152,7 +156,9 @@
   <ItemGroup>
     <ClInclude Include="header\gl\DeferredBuffer.h" />
     <ClInclude Include="header\gl\DefferedSettings.h" />
-    <ClInclude Include="header\gl\GraphicsResource.h" />
+    <ClInclude Include="header\gl\glInclude.h" />
+    <ClInclude Include="header\Render\FrameData.h" />
+    <ClInclude Include="header\Render\GraphicsResource.h" />
     <ClInclude Include="header\GridDataStructure.h" />
     <ClInclude Include="header\camera.h" />
     <ClInclude Include="header\gl\FBOData.h" />
@@ -164,6 +170,9 @@
     <ClInclude Include="header\node.h" />
     <ClInclude Include="header\Shader.h" />
     <ClInclude Include="header\gl\FrameBuffer.h" />
+    <ClInclude Include="header\Render\RenderDeferred.h" />
+    <ClInclude Include="header\gl\RenderQuad.h" />
+    <ClInclude Include="header\Render\QuadShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -32,8 +32,10 @@ public:
 	void useView();
 
 	glm::mat4 &getViewMatrix();
-	float getFieldOfView();
-	float getAspectRatio();
+	float getFieldOfView() const;
+	float getAspectRatio() const;
+	float getNearPlane() const;
+	float getFarPlane() const;
 	glm::vec3 &getPosition();
 
 	~Camera();

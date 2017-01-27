@@ -44,12 +44,18 @@ glm::mat4 &Camera::getViewMatrix() {
     return this->viewMatrix;
 }
 
-float Camera::getFieldOfView() {
+float Camera::getFieldOfView() const {
     return this->fieldOfView;
 }
 
-float Camera::getAspectRatio() {
+float Camera::getAspectRatio() const {
     return this->aspectRatio;
+}
+float Camera::getNearPlane() const {
+	return this->nearPlane;
+}
+float Camera::getFarPlane() const {
+	return this->farPlane;
 }
 
 glm::vec3 &Camera::getPosition() {

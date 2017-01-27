@@ -46,13 +46,12 @@ void main () {
 	vec3 specular = texture(specBuffer, frameCoord).xyz;
 	float depth  = texture(depthBuffer, frameCoord).x;
 
-	//normal = decodeNormal(normal);
-	//vec3 position = positionFromDepth(depth, frameCoord);
+	normal = decodeNormal(normal);
+	vec3 position = positionFromDepth(depth, frameCoord);
 
 	//Calc light
-	ColorOut = vec4(1.0f);
-	  // pointLightCalc(position, normal, color, specular) +
-	   //color * 0.2f, 1.0f); //Add ambient
+	ColorOut = vec4(pointLightCalc(position, normal, color, specular) +
+	   							color * 0.2f, 1.0f); //Add ambient
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
