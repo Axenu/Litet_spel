@@ -37,7 +37,7 @@ void Node::removeFromParent() {
 
 void Node::removeChild(Node *node) {
     Node *n = nullptr;
-    for (int i = 0; i < children.size(); i++) {
+    for (unsigned int i = 0; i < children.size(); i++) {
         n = children[i];
         if (n == node) {
             delete n;
@@ -140,13 +140,13 @@ void Node::rotate(glm::vec3 r) {
     rotation.y += r.y;
     rotation.z += r.z;
 
-    while (rotation.x > M_2PI) rotation.x -= M_2PI;
-    while (rotation.y > M_2PI) rotation.y -= M_2PI;
-    while (rotation.z > M_2PI) rotation.z -= M_2PI;
+    while (rotation.x > M_2PI) rotation.x -= M_2PIf;
+    while (rotation.y > M_2PI) rotation.y -= M_2PIf;
+    while (rotation.z > M_2PI) rotation.z -= M_2PIf;
 
-    while (rotation.x < 0) rotation.x += M_2PI;
-    while (rotation.y < 0) rotation.y += M_2PI;
-    while (rotation.z < 0) rotation.z += M_2PI;
+    while (rotation.x < 0) rotation.x += M_2PIf;
+    while (rotation.y < 0) rotation.y += M_2PIf;
+    while (rotation.z < 0) rotation.z += M_2PIf;
 }
 
 float Node::getX()  {

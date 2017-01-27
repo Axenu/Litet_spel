@@ -10,7 +10,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
-#include"gl\GraphicsResource.h"
+#include "gl\GraphicsResource.h"
 #include "InputManager.h"
 
 GLFWwindow* window;
@@ -88,6 +88,7 @@ void setupWindow() {
 	Model *m = new Model(s->shaderProgram);
 
     glfwSetWindowUserPointer(window, &manager);
+	keyCallback qcallback;
     manager.subscribeToKey(GLFW_KEY_Q, qcallback);
 
     while (!glfwWindowShouldClose(window))

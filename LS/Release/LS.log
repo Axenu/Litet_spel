@@ -1,9 +1,11 @@
-﻿  GLFunctions.cpp
-  Generating code
-  8 of 449 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    22 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Projects\Code\LitetSpelProj\Litet_spel\Release\vc120.pdb'; linking object as if no debug info
-  LS.vcxproj -> C:\Projects\Code\LitetSpelProj\Litet_spel\Release\LS.exe
-  LS.vcxproj -> C:\Projects\Code\LitetSpelProj\Litet_spel\Release\LS.pdb (Full PDB)
+﻿  Model.cpp
+  camera.cpp
+  main.cpp
+  node.cpp
+main.obj : error LNK2001: unresolved external symbol "public: __thiscall InputManager::~InputManager(void)" (??1InputManager@@QAE@XZ)
+main.obj : error LNK2001: unresolved external symbol "public: __thiscall InputManager::InputManager(void)" (??0InputManager@@QAE@XZ)
+main.obj : error LNK2001: unresolved external symbol "public: void __thiscall InputManager::fireMouseClick(int,int)" (?fireMouseClick@InputManager@@QAEXHH@Z)
+main.obj : error LNK2001: unresolved external symbol "public: void __thiscall InputManager::fireMouseMove(double,double)" (?fireMouseMove@InputManager@@QAEXNN@Z)
+main.obj : error LNK2001: unresolved external symbol "public: void __thiscall InputManager::fireKey(int,int)" (?fireKey@InputManager@@QAEXHH@Z)
+main.obj : error LNK2001: unresolved external symbol "public: void __thiscall InputManager::subscribeToKey(int,class std::function<void __cdecl(int,int)>)" (?subscribeToKey@InputManager@@QAEXHV?$function@$$A6AXHH@Z@std@@@Z)
+C:\Projects\Code\LitetSpelProj\Litet_spel\Release\LS.exe : fatal error LNK1120: 6 unresolved externals
