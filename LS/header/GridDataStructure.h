@@ -2,7 +2,7 @@
 #define GRIDDATASTRUCTURE
 
 #define ROOFHEIGHT 10.0f
-#include "gl\glInclude.h"
+#include "gl/glInclude.h"
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
