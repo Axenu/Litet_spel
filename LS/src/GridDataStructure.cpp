@@ -72,6 +72,16 @@ void Grid::loadingBmpPicture(char* filename)
 	buildgridarray();
 	//filling the twodarray with number1;
 
+glm::vec3** colorarray ;
+//building the 2D array
+colorarray = new glm::vec3*[_heightLength];
+for (int i = 0; i < _heightLength; i++)
+{
+	colorarray[i] = new glm::vec3[_widthLength];
+}
+
+
+
 	int k = 0;
 	for (int j = 0; j < height; j++)
 	{
@@ -79,9 +89,9 @@ void Grid::loadingBmpPicture(char* filename)
 		{
 			_twodArray[i][j].xz.x = (float)i;
 			_twodArray[i][j].xz.y = (float)j;
-			_twodArray[height - 1 - j][i].color.x = datan[k];
-			_twodArray[height - 1 - j][i].color.y = datan[k + 1];
-			_twodArray[height - 1 - j][i].color.z = datan[k + 2];
+			colorarray[height - 1 - j][i].x = datan[k];
+			colorarray[height - 1 - j][i].y = datan[k + 1];
+			colorarray[height - 1 - j][i].z = datan[k + 2];
 			k += 3;
 		}
 	}
@@ -90,17 +100,27 @@ void Grid::loadingBmpPicture(char* filename)
 	{
 		for (int i = 0; i < width; i++)
 		{
-			if (_twodArray[i][j].color == glm::vec3(255, 255, 255))
+			if (colorarray[i][j] == glm::vec3(255, 255, 255))
 			{
 				_twodArray[i][j].enumet = wall;
 			}
-			if (_twodArray[i][j].color == glm::vec3(0, 0, 0))
+			if (colorarray[i][j] == glm::vec3(0, 0, 0))
 			{
 				_twodArray[i][j].enumet = nothing;
+			}
+			if (colorarray[i][j] == glm::vec3(255, 0, 0))
+			{
+				_twodArray[i][j].enumet = exiting;
 			}
 
 		}
 	}
+	for (int i = 0; i < _heightLength; i++)
+	{
+		delete[] colorarray[i];
+	}
+
+	delete[] colorarray;
 		delete[] datan;
 		datan = 0;
 	
