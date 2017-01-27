@@ -3,17 +3,13 @@
 #define MESH_H
 
 #include <gl/glInclude.h>
+#include <glm/glm.hpp>
 #include <vector>
 
 struct MVertex
 {
-	MVector pos;
-	MVector normal;
-};
-
-struct MVector
-{
-	GLfloat x, y, z;
+	glm::vec3 pos;
+	glm::vec3 normal;
 };
 
 class Mesh
@@ -24,7 +20,7 @@ private:
 	GLuint _VAO, _VBO, _EBO;
 	
 public:
-	void setMesh(const std::vector<MVertex> vertices, const std::vector<GLuint> indices);
+	void setMesh(const std::vector<MVertex> vertices, const std::vector<GLuint> indices, int nrOfAttributes);
 
 };
 
