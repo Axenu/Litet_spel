@@ -4,3 +4,6 @@ LS/Debug
 *.VC.opendb
 *.vcxproj.user
 *.vcxproj.filters
+*.DS_Store
+*.app
+LS/build
