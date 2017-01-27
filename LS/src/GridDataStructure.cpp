@@ -128,32 +128,59 @@ for (int i = 0; i < _heightLength; i++)
 std::vector<glm::vec3> Grid::generateMesh()
 {
 	std::vector<glm::vec3> vertices;
+	// For each position in the 2D grid. Check if the point bellow is a wall, if so, make a wall between these points.
+	// Then check if the point next to the current point is a wall, if so, create a wall between these points.
+
+	//There is some special cases when we reach different edges on the 2D grid, based on which edge we're at we need to avoid checking outside of the array.
 	for (int i = 0; i < _heightLength - 1; i++)
 	{
 		for (int j = 0; j < _widthLength - 1; j++)
 		{
 			if (_twodArray[i][j].enumet == wall)
 			{
-				if (_twodArray[i + 1][j].enumet == wall)
+				if (i != _heightLength || j != _widthLength)
 				{
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, 0.f       , _twodArray[i    ][j].xz.y));
-																																		  
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, 0.f       , _twodArray[i    ][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
+					if (_twodArray[i + 1][j].enumet == wall)
+					{
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+						vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, 0.f, i * GRIDSPACE));
+					}
+					if (_twodArray[i][j + 1].enumet == wall)
+					{
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, (i + 1) * GRIDSPACE));
+					}
 				}
-				if (_twodArray[i][j + 1].enumet == wall)
+				//Special cases
+				if (i == _heightLength - 1 && j != _widthLength - 1) 
 				{
-					//Left quad																										
-					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, ROOFHEIGHT, _twodArray[i][j    ].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
-																																	
-					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, 0.f       , _twodArray[i][j + 1].xz.y));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, (i + 1) * GRIDSPACE));
+				}
+				if (j == _widthLength - 1 && i != _heightLength - 1)
+				{
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+					vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, 0.f, i * GRIDSPACE));
 				}
 			}
 		}
