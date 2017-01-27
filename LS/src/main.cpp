@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
+#include"gl\GraphicsResource.h"
 #include "InputManager.h"
 
 GLFWwindow* window;
@@ -50,7 +51,8 @@ void setupWindow() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_DECORATED, true);
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	unsigned int wWidth = 640, wHeight = 480;
+    window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -75,8 +77,13 @@ void setupWindow() {
     /* Loop until the user closes the window */
 
 	//basic init
-
+	gl::GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
+	Shader *def_mesh = new Shader("Deferred_Mesh");
+	Shader *def_comp = new Shader("Quad", "Deferred_Comp");
+
+	if (gl::CheckGLErrors("Initiation failed: GL Error"))
+		throw new std::exception("Initiation failed: GL Error");
 
 	Model *m = new Model(s->shaderProgram);
 
@@ -89,7 +96,7 @@ void setupWindow() {
         glClearColor(1, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //update
-		m->update(0.016);
+		m->update(0.016f);
 		m->render();
         //Render
         /* Swap front and back buffers */

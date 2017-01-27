@@ -4,8 +4,9 @@ LS/Debug
 *.VC.opendb
 *.vcxproj.user
 *.vcxproj.filters
-*.DS_Store
-*.app
-LS/build
-LS/Release
-main
+*.tlog
+*.lastbuildstate
+*.pdb
+*.ipdb
+*.obj
+*.log

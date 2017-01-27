@@ -15,10 +15,10 @@ namespace gl {
 	/* Checks for gl problem
 	print <<	True if error message should be printed to log (Default: true)
 	*/
-	void CheckGLErrors(int print = true);
+	bool CheckGLErrors(int print = true);
 	/*	Checks gl errors. Prints the log text before printing opengl error string.
 	*/
-	void CheckGLErrors(const std::string& logText);
+	bool CheckGLErrors(const std::string& logText);
 	/*Generates a buffer offset pointer*/
 	void* bufferOffset(int i);
 
@@ -112,7 +112,13 @@ namespace gl {
 	fragmentShader	<<		Directory to the fragmentShader
 	shaderProgramID	>>		Reference for the shader program id
 	return			>>		If the shader program loaded successfully, errors will be logged */
-	bool loadShaderProgram(std::string vertexShader, std::string fragmentShader, GLuint &shaderProgramID);
+	bool loadShaderProgram(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID);
+	/*Load a shader program from a specified vertex and fragment shader code strings
+	vertexShader	<<		Vertex shader code
+	fragmentShader	<<		Fragment shader code
+	shaderProgramID	>>		Reference for the shader program id created
+	return			>>		If the shader program loaded successfully, errors will be logged */
+	bool loadShaderProgramString(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID);
 
 #pragma endregion
 

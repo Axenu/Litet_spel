@@ -9,25 +9,28 @@ namespace gl {
 
 	/*	Checks gl errors
 	*/
-	void CheckGLErrors(int print)
+	bool CheckGLErrors(int print)
 	{
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR && print) {
-			//std::string str = (char*)gluErrorString(err);
-			//gluErrorString(err);
-			//std::cout << "OpenGL Error: " + std::to_string(err) + ", " + str;
+			std::cout << "OpenGL Error: " + err << std::endl;
+			std::cout << (const char*)glewGetErrorString(err) << std::endl;
+			return true;
 		}
+		return false;
 	}
 	/*	Checks gl errors. Prints the log text before printing opengl error string.
 	*/
-	void CheckGLErrors(const std::string& logText)
+	bool CheckGLErrors(const std::string& logText)
 	{
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR) {
-			//std::string str = (char*)gluErrorString(err);
 			std::cout << logText << std::endl;
-			//std::cout << "OpenGL Error: " + std::to_string(err) + ", " + str << std::endl;
+			std::cout << "OpenGL Error: " + err << std::endl;
+			std::cout << (const char*)glewGetErrorString(err) << std::endl;
+			return true;
 		}
+		return false;
 	}
 	/*Generates a buffer offset pointer*/
 	void* bufferOffset(int i) {
@@ -267,12 +270,33 @@ namespace gl {
 		fragmentShader	<<		Directory to the fragmentShader
 		shaderProgramID	>>		Reference for the shader program id
 		return			>>		If the shader program loaded successfully, errors will be logged */
-	bool loadShaderProgram(std::string vertexShader, std::string fragmentShader, GLuint &shaderProgramID) {
+	bool loadShaderProgram(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID) {
 
 		GLuint vs, fs;
 		if (!loadShader(vertexShader, GL_VERTEX_SHADER, vs))
 			return false;
 		if (!loadShader(fragmentShader, GL_FRAGMENT_SHADER, fs))
+			return false;
+
+		shaderProgramID = glCreateProgram();
+		glAttachShader(shaderProgramID, fs);
+		glAttachShader(shaderProgramID, vs);
+		glLinkProgram(shaderProgramID);
+
+		return true;
+		//return debugShaderProgram(shaderProgramID);
+	}
+	/*Load a shader program from a specified vertex and fragment shader code strings
+	vertexShader	<<		Vertex shader code
+	fragmentShader	<<		Fragment shader code
+	shaderProgramID	>>		Reference for the shader program id created
+	return			>>		If the shader program loaded successfully, errors will be logged */
+	bool loadShaderProgramString(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID) {
+
+		GLuint vs, fs;
+		if (!loadShaderString(vertexShader, GL_VERTEX_SHADER, vs))
+			return false;
+		if (!loadShaderString(fragmentShader, GL_FRAGMENT_SHADER, fs))
 			return false;
 
 		shaderProgramID = glCreateProgram();
