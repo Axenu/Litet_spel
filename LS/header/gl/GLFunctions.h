@@ -15,10 +15,10 @@ namespace gl {
 	/* Checks for gl problem
 	print <<	True if error message should be printed to log (Default: true)
 	*/
-	void CheckGLErrors(int print = true);
+	bool CheckGLErrors(int print = true);
 	/*	Checks gl errors. Prints the log text before printing opengl error string.
 	*/
-	void CheckGLErrors(const std::string& logText);
+	bool CheckGLErrors(const std::string& logText);
 	/*Generates a buffer offset pointer*/
 	void* bufferOffset(int i);
 

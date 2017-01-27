@@ -17,7 +17,7 @@ private:
 	GLint createShaderFromString(std::string *shader, GLenum shaderType) const;
 public:
 
-	GLint shaderProgram;
+	GLuint shaderProgram;
 	
 	Shader();
 	Shader(std::string file);

@@ -1,1 +1,9 @@
-﻿
+﻿  GLFunctions.cpp
+  Generating code
+  8 of 449 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    22 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Projects\Code\LitetSpelProj\Litet_spel\Release\vc120.pdb'; linking object as if no debug info
+  LS.vcxproj -> C:\Projects\Code\LitetSpelProj\Litet_spel\Release\LS.exe
+  LS.vcxproj -> C:\Projects\Code\LitetSpelProj\Litet_spel\Release\LS.pdb (Full PDB)

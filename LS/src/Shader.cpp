@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include"gl\GLFunctions.h"
 
 Shader::Shader() {
 	shaderProgram = -1;
@@ -8,38 +9,19 @@ Shader::Shader(std::string file) : Shader(file, file) {
 }
 
 Shader::Shader(std::string vert, std::string frag) {
-	GLint vertShader = createShader("shaders/" + vert + ".vert", GL_VERTEX_SHADER);
-	GLint fragShader = createShader("shaders/" + frag + ".frag", GL_FRAGMENT_SHADER);
+	/* Load shader, prints gl errors. If false is returned an error occured.
+	*/
+	if (!gl::loadShaderProgram("shaders/" + vert + ".vert", "shaders/" + frag + ".frag", shaderProgram)) {
+		std::cout << "Shader failed to load" << std::endl;
+	}
 	name = vert;
 	
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertShader);
-	glAttachShader(shaderProgram, fragShader);
-	
-	glBindFragDataLocation(shaderProgram, 0, "Frag_Data");
-	
-	glLinkProgram(shaderProgram);
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
-	
-	GLint linkStatus;
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &linkStatus);
-	if (linkStatus == GL_FALSE) {
-		std::cout << "Shader program failed to link!" << std::endl;
-		
-		GLint infoLogLength;
-		glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-		GLchar *infoLog = new GLchar[infoLogLength + 1];
-		glGetProgramInfoLog(shaderProgram, infoLogLength, NULL, infoLog);
-		std::cout << infoLog << std::endl;
-		delete[] infoLog;
-	}
 }
 
 Shader::Shader(std::string *vertexShader, std::string *fragmentShader) {
-	GLint vertShader = createShaderFromString(vertexShader, GL_VERTEX_SHADER);
-	GLint fragShader = createShaderFromString(fragmentShader, GL_FRAGMENT_SHADER);
+	GLuint vertShader, fragShader;
+	gl::loadShaderString(*vertexShader, GL_VERTEX_SHADER, vertShader);
+	gl::loadShaderString(*fragmentShader, GL_FRAGMENT_SHADER, fragShader);
 	name = "Material shader";
 	
 	shaderProgram = glCreateProgram();

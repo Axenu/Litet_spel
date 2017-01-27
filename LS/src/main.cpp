@@ -72,6 +72,11 @@ void setupWindow() {
 	//basic init
 	gl::GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
+	Shader *def_mesh = new Shader("Deferred_Mesh");
+	Shader *def_comp = new Shader("Quad", "Deferred_Comp");
+
+	if (gl::CheckGLErrors("Initiation failed: GL Error"))
+		throw new std::exception("Initiation failed: GL Error");
 
 	Model *m = new Model(s->shaderProgram);
 
