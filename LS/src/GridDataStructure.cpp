@@ -9,12 +9,15 @@ Grid::Grid()
 Grid::~Grid()
 {
 	for (int i = 0; i < heightLength; i++)
-	delete[] twodArray[i];
+	{
+		delete[] twodArray[i];
+	}
+
 	delete[] twodArray;
 }
 void Grid::buildgridarray()
 {
-	//building the twodarray
+	//building the 2D array
 	twodArray = new gridValues*[heightLength];
 	for (int i = 0; i < heightLength;i++)
 	{
@@ -60,8 +63,6 @@ void Grid::loadingBmpPicture(char* filename)
 	FILE* f = fopen(filename, "rb");
 	unsigned char header[54];
 	fread(header, sizeof(unsigned char), 54, f);
-	int index;
-	unsigned char heeight;
 
 	int width =  *(int*)&header[18];
 	int height = *(int*)&header[22];
