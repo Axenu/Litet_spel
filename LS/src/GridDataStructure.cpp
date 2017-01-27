@@ -35,7 +35,8 @@ void Grid::print2darraydata()
 	{
 		for (int j = 0; j < _widthLength; j++)
 		{	
-			std::cout << _twodArray[i][j].color.x << " ";
+	//		std::cout << _twodArray[i][j].color.x << " ";
+			std::cout << _twodArray[i][j].enumet << " ";
 		}
 		std::cout << "" << std::endl;
 	}
@@ -50,7 +51,7 @@ void Grid::loadingBmpPicture(char* filename)
 	unsigned char header[54];
 	fread(header, sizeof(unsigned char), 54, f);
 
-	int width =  *(int*)&header[18];
+	int width = *(int*)&header[18];
 	int height = *(int*)&header[22];
 	int size = 3 * width * height;
 
@@ -64,21 +65,7 @@ void Grid::loadingBmpPicture(char* filename)
 		datan[i] = datan[i + 2];
 		datan[i + 2] = tmp;
 	}
-//	unsigned char* tmparraydata = datan;
-//	int j = 1;
-//	int l = 0;
-//	for (int i = 0;i < size;i++)
-//	{		
 
-//		if (j > width)
-//		{
-//			j = 1;
-//			l++;
-//		}
-//		datan[width*j-l]=tmparraydata[size - i];
-//		j++;
-//	}
-//	delete[] tmparraydata;
 	_heightLength = height;
 	_widthLength = width;
 
@@ -98,8 +85,25 @@ void Grid::loadingBmpPicture(char* filename)
 			k += 3;
 		}
 	}
-	delete[] datan;
-	datan = 0;
+	//setting the enum for each vertex.
+	for (int j = 0; j < height; j++)
+	{
+		for (int i = 0; i < width; i++)
+		{
+			if (_twodArray[i][j].color == glm::vec3(255, 255, 255))
+			{
+				_twodArray[i][j].enumet = wall;
+			}
+			if (_twodArray[i][j].color == glm::vec3(0, 0, 0))
+			{
+				_twodArray[i][j].enumet = nothing;
+			}
+
+		}
+	}
+		delete[] datan;
+		datan = 0;
+	
 }
 
 std::vector<glm::vec3> Grid::generateMesh()
