@@ -53,11 +53,13 @@ void setupWindow() {
     }
     glfwMakeContextCurrent(window);
 
+#ifndef __APPLE__
 	glewExperimental = true; // Needed in core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return;
 	}
+#endif
 
     // glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, key_callback);
