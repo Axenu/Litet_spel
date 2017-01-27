@@ -45,8 +45,7 @@ void Grid::print2darraydata()
 
 void Grid::loadingBmpPicture(char* filename)
 {
-	std::ofstream myfile;
-	myfile.open("y.txt");
+
 	FILE* f = fopen(filename, "rb");
 	unsigned char header[54];
 	fread(header, sizeof(unsigned char), 54, f);
@@ -72,6 +71,16 @@ void Grid::loadingBmpPicture(char* filename)
 	buildgridarray();
 	//filling the twodarray with number1;
 
+glm::vec3** colorarray ;
+//building the 2D array
+colorarray = new glm::vec3*[_heightLength];
+for (int i = 0; i < _heightLength; i++)
+{
+	colorarray[i] = new glm::vec3[_widthLength];
+}
+
+
+
 	int k = 0;
 	for (int j = 0; j < height; j++)
 	{
@@ -79,9 +88,9 @@ void Grid::loadingBmpPicture(char* filename)
 		{
 			_twodArray[i][j].xz.x = (float)i;
 			_twodArray[i][j].xz.y = (float)j;
-			_twodArray[height - 1 - j][i].color.x = datan[k];
-			_twodArray[height - 1 - j][i].color.y = datan[k + 1];
-			_twodArray[height - 1 - j][i].color.z = datan[k + 2];
+			colorarray[height - 1 - j][i].x = datan[k];
+			colorarray[height - 1 - j][i].y = datan[k + 1];
+			colorarray[height - 1 - j][i].z = datan[k + 2];
 			k += 3;
 		}
 	}
@@ -90,17 +99,27 @@ void Grid::loadingBmpPicture(char* filename)
 	{
 		for (int i = 0; i < width; i++)
 		{
-			if (_twodArray[i][j].color == glm::vec3(255, 255, 255))
+			if (colorarray[i][j] == glm::vec3(255, 255, 255))
 			{
 				_twodArray[i][j].enumet = wall;
 			}
-			if (_twodArray[i][j].color == glm::vec3(0, 0, 0))
+			if (colorarray[i][j] == glm::vec3(0, 0, 0))
 			{
 				_twodArray[i][j].enumet = nothing;
+			}
+			if (colorarray[i][j] == glm::vec3(255, 0, 0))
+			{
+				_twodArray[i][j].enumet = exiting;
 			}
 
 		}
 	}
+	for (int i = 0; i < _heightLength; i++)
+	{
+		delete[] colorarray[i];
+	}
+
+	delete[] colorarray;
 		delete[] datan;
 		datan = 0;
 	
@@ -109,32 +128,59 @@ void Grid::loadingBmpPicture(char* filename)
 std::vector<glm::vec3> Grid::generateMesh()
 {
 	std::vector<glm::vec3> vertices;
+	// For each position in the 2D grid. Check if the point bellow is a wall, if so, make a wall between these points.
+	// Then check if the point next to the current point is a wall, if so, create a wall between these points.
+
+	//There is some special cases when we reach different edges on the 2D grid, based on which edge we're at we need to avoid checking outside of the array.
 	for (int i = 0; i < _heightLength - 1; i++)
 	{
 		for (int j = 0; j < _widthLength - 1; j++)
 		{
 			if (_twodArray[i][j].enumet == wall)
 			{
-				if (_twodArray[i + 1][j].enumet == wall)
+				if (i != _heightLength || j != _widthLength)
 				{
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, ROOFHEIGHT, _twodArray[i    ][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, 0.f       , _twodArray[i    ][j].xz.y));
-																																		  
-					vertices.push_back(glm::vec3(_twodArray[i    ][j].xz.x, 0.f       , _twodArray[i    ][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, ROOFHEIGHT, _twodArray[i + 1][j].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i + 1][j].xz.x, 0.f       , _twodArray[i + 1][j].xz.y));
+					if (_twodArray[i + 1][j].enumet == wall)
+					{
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+						vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, 0.f, i * GRIDSPACE));
+					}
+					if (_twodArray[i][j + 1].enumet == wall)
+					{
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+						vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, (i + 1) * GRIDSPACE));
+					}
 				}
-				if (_twodArray[i][j + 1].enumet == wall)
+				//Special cases
+				if (i == _heightLength - 1 && j != _widthLength - 1) 
 				{
-					//Left quad																										
-					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, ROOFHEIGHT, _twodArray[i][j    ].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
-																																	
-					vertices.push_back(glm::vec3(_twodArray[i][j    ].xz.x, 0.f       , _twodArray[i][j    ].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, ROOFHEIGHT, _twodArray[i][j + 1].xz.y));
-					vertices.push_back(glm::vec3(_twodArray[i][j + 1].xz.x, 0.f       , _twodArray[i][j + 1].xz.y));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, (i + 1) * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, (i + 1) * GRIDSPACE));
+				}
+				if (j == _widthLength - 1 && i != _heightLength - 1)
+				{
+					vertices.push_back(glm::vec3(j * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+
+					vertices.push_back(glm::vec3(j * GRIDSPACE, 0.f, i * GRIDSPACE));
+					vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, ROOFHEIGHT, i * GRIDSPACE));
+					vertices.push_back(glm::vec3((j + 1) * GRIDSPACE, 0.f, i * GRIDSPACE));
 				}
 			}
 		}
