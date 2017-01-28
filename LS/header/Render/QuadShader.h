@@ -1,7 +1,7 @@
 #pragma once
 
 #include"Shader.h"
-#include"gl\RenderQuad.h"
+#include"gl/RenderQuad.h"
 #include"FrameData.h"
 class QuadShader
 {
@@ -12,10 +12,10 @@ protected:
 	virtual void assignUniforms(FrameData &fD) = 0;
 
 public:
+	QuadShader(const gl::RenderQuad& quad);
 	QuadShader(const gl::RenderQuad& quad, Shader &shader);
 	~QuadShader();
 
 
 	void render(FrameData &fD);
 };
-

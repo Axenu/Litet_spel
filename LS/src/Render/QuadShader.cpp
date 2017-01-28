@@ -1,6 +1,9 @@
 #include "Render/QuadShader.h"
 
-
+QuadShader::QuadShader(const gl::RenderQuad& quad)
+	: _quad(quad)
+{
+}
 
 QuadShader::QuadShader(const gl::RenderQuad& quad, Shader &shader)
 	: _quad(quad), _shader(std::move(shader))

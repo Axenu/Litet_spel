@@ -1,9 +1,9 @@
 #pragma once
 
 #include"GraphicsResource.h"
-#include<glm\mat4x4.hpp>
+#include<glm/mat4x4.hpp>
 
-/* Frame temporary render information. 
+/* Frame temporary render information.
  * Used to gather render data before sending it to the render functions.
  */
 class FrameData {

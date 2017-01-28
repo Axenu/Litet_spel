@@ -48,7 +48,7 @@ public:
 	sampleSlot	<<	Sampler slot
 	return		>>	If the variable was found in the shader program
 	*/
-	bool Shader::bindSampler(const std::string &varName, int sampleSlot);
+	bool bindSampler(const std::string &varName, int sampleSlot);
 
 
 	void printListOfUniforms();

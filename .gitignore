@@ -10,3 +10,6 @@ LS/Debug
 *.ipdb
 *.obj
 *.log
+*.DS_Store
+LS/build
+main

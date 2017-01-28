@@ -1,10 +1,10 @@
-#include"gl\RenderQuad.h"
+#include"gl/RenderQuad.h"
 
-#include"glm\vec3.hpp"
+#include"glm/vec3.hpp"
 
 namespace gl{
 
-	const static glm::vec3 QUAD_VERTS[4] = { 
+	const static glm::vec3 QUAD_VERTS[4] = {
 		{ -1, -1, 0 }, { 1, -1, 0 }, { 1, 1, 0 }, { -1, 1, 0 }
 	};
 	const static int QUAD_INDICES[6] = {

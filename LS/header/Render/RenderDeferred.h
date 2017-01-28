@@ -1,12 +1,12 @@
 #pragma once
 #include"QuadShader.h"
-#include"gl\GLFunctions.h"
+#include"gl/GLFunctions.h"
 #include"camera.h"
 
 
-	/* The shader implementation rendering the pre-generated 
+	/* The shader implementation rendering the pre-generated
 	deferred buffers and other shading data (shadowmaps) for the final composition.
-	
+
 	*/
 class RenderDeferred :
 	public QuadShader
@@ -29,4 +29,3 @@ public:
 	*/
 	void setWindowSize(float wWidth, float wHeight, const Camera &camera);
 };
-
