@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MESH_H
 #define MESH_H
 
@@ -14,9 +13,11 @@ private:
 	std::vector<glm::vec3> _normal;
 	std::vector<GLuint> _indices;
 	GLuint _VAO;
-	
+	void setUpMesh();
 public:
-	void setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices, int nrOfAttributes);
+	Mesh();
+	Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);
+	void setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);
 	void render();
 };
 

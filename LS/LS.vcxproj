@@ -141,6 +141,7 @@
     <ClCompile Include="src\gl\GLFunctions.cpp" />
     <ClCompile Include="src\gl\SamplerObject.cpp" />
     <ClCompile Include="src\gl\TexData.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="header\gl\GLFunctions.h" />
     <ClInclude Include="header\gl\SamplerObject.h" />
     <ClInclude Include="header\gl\TexData.h" />
+    <ClInclude Include="header\Mesh.h" />
     <ClInclude Include="header\Model.h" />
     <ClInclude Include="header\node.h" />
     <ClInclude Include="header\Shader.h" />
