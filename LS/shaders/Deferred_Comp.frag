@@ -51,7 +51,7 @@ void main () {
 
 	//Calc light
 	ColorOut = vec4(pointLightCalc(position, normal, color, specular) +
-	   							normal * 0.2f, 1.0f); //Add ambient
+	   							color * 0.2f, 1.0f); //Add ambient
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)

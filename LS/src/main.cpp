@@ -28,7 +28,7 @@ Character* player;
 
 void setupWindow()
 {
-    // init glfw
+    // Init glfw
 	if (!glfwInit())
 	{
 		std::cout << "GLFW init failed!" << std::endl;
@@ -56,6 +56,12 @@ void setupWindow()
 		return;
 	}
 #endif
+	//Set GL vars
+	glEnable(GL_DEPTH_TEST);//Enable depth testinz
+	glDepthFunc(GL_LESS);
+	glEnable(GL_CULL_FACE);//Enable face culling
+	glCullFace(GL_BACK);
+	gl::CheckGLErrors("Init stage failed: State");
 
 	EventManager *eventManager = new EventManager();
 	InputManager *iManager = new InputManager(window, eventManager);
@@ -66,9 +72,7 @@ void setupWindow()
 	Shader *s = new Shader("Basic");
 	DeferredMeshShader def_mesh;
 	RenderDeferred deferred(resource.getQuad());
-
-	// if (gl::CheckGLErrors("Initiation failed: GL Error"))
-		// throw new std::exception("Initiation failed: GL Error");
+	gl::CheckGLErrors("Init stage failed: Resource");
 
 	Model *m = new Model(def_mesh);
 	Mesh mesh;

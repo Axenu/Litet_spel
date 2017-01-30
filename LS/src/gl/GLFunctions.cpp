@@ -83,7 +83,7 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 		//Unbind VOA
 		glBindVertexArray(0);
-		CheckGLErrors();
+		CheckGLErrors("Error during VAO construction");
 		return gVAO;
 	}
 
