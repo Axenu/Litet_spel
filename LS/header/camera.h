@@ -6,19 +6,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "node.h"
 
-class Camera : public Node {
+class Camera : public Node
+{
 
 private:
-	float fieldOfView;
-	float aspectRatio;
-	float nearPlane;
-	float farPlane;
-	float width;
-	float height;
-	bool perspective;
+	float _fieldOfView;
+	float _aspectRatio;
+	float _nearPlane;
+	float _farPlane;
+	float _width;
+	float _height;
+	bool _perspective;
 
 	glm::mat4 _viewMatrix;
-	glm::mat4 projectionMatrix;
+	glm::mat4 _projectionMatrix;
 
 public:
 

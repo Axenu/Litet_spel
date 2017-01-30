@@ -18,51 +18,19 @@
 #include "Render/DeferredMeshShader.h"
 #include "InputManager.h"
 #include "EventManager.h"
-#include "camera.h"
+#include "Camera.h"
 #include "Character.h"
 
 GLFWwindow* window;
 Grid gridtest;
-// InputManager* manager;
 Camera camera;
 Character* player;
 
-class Enemy
+void setupWindow()
 {
-public:
-	Enemy() : _name("Bad Enemy"), _damage(15) {};
-
-	std::string getName()	const {return _name;}
-	int			getDamage()	const {return _damage;}
-	void onExplosion(const Explosion* explosion)
-	{
-			std::cout << "Out of explosion range :)" << std::endl;
-	}
-
-private:
-	std::string _name;
-	int _damage;
-};
-class OEnemy
-{
-public:
-	OEnemy() : _name("Bad Enemy"), _damage(15) {};
-
-	std::string getName()	const {return _name;}
-	int			getDamage()	const {return _damage;}
-	void onExplosion(const Explosion* explosion)
-	{
-			std::cout << "Out of explosion range other enemy :)" << std::endl;
-	}
-
-private:
-	std::string _name;
-	int _damage;
-};
-
-void setupWindow() {
     // init glfw
-	if (!glfwInit()) {
+	if (!glfwInit())
+	{
 		std::cout << "GLFW init failed!" << std::endl;
 	}
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -82,7 +50,8 @@ void setupWindow() {
 
 #ifndef __APPLE__
 	glewExperimental = true; // Needed in core profile
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
+	{
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return;
 	}
@@ -113,7 +82,6 @@ void setupWindow() {
     {
 		// camera.rotateZ(0.001f);
         //update
-		// std::cout << camera.getPosition().x << std::endl;
         player->update(0.016f);
 		m->update(0.016f);
 		camera.update(0.016f);
