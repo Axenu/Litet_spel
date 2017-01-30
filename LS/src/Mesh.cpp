@@ -135,6 +135,33 @@ Mesh::Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> 
 {
 	this->setMesh(position, normal, indices);
 }
+Mesh::~Mesh() {
+	destroy();
+}
+void Mesh::destroy() {
+	if (_VAO != 0) {
+		glBindVertexArray(0);
+		glDeleteVertexArrays(1, &_VAO);
+	}
+}
+/* Move the data
+*/
+Mesh::Mesh(Mesh &&move) 
+: _position(std::move(move._position)), _normal(std::move(move._normal)), _indices(std::move(move._indices)), _VAO(move._VAO){
+	move._VAO = 0;
+}
+/* Move the data
+*/
+Mesh& Mesh::operator=(Mesh &&move) {
+	if (this == &move)
+		return *this;
+	destroy();
+	_position = std::move(move._position);
+	_normal = std::move(move._normal);
+	_indices = std::move(move._indices);
+	_VAO = move._VAO;
+	move._VAO = 0;
+}
 
 
 void Mesh::setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices)

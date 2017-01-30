@@ -13,6 +13,7 @@ public:
 
 	const GraphicsResource& _resource;
 	glm::mat4 _V, _VP;
+	glm::vec3 _eye;
 
 	FrameData(const GraphicsResource& resource, const Camera &cam);
 	~FrameData();

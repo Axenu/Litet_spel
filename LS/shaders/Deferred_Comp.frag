@@ -20,7 +20,7 @@ uniform float near, far;
 uniform float right, top;
 
 //Light components
-uniform vec3 pLightspecCol;
+uniform vec3 pLightSpecCol;
 uniform vec3 pLightDiffCol;
 uniform vec3 pLightPos;
 uniform float pLight_Fade;
@@ -51,7 +51,7 @@ void main () {
 
 	//Calc light
 	ColorOut = vec4(pointLightCalc(position, normal, color, specular) +
-	   							color * 0.2f, 1.0f); //Add ambient
+	   							normal * 0.2f, 1.0f); //Add ambient
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
@@ -76,7 +76,7 @@ vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specul
 	float fade_factor = max(1 - (distance(pos, pLightPos) / pLight_Fade), 0);
 
 	return (diffuseCol * pLightDiffCol * lambertian +		//Diffuse calculation
-	 diffuseCol * pLightspecCol * specularCol * specular)	//Specular calculation
+	 diffuseCol * pLightSpecCol * specularCol * specular)	//Specular calculation
 	 * fade_factor;											//Light fade off
 }
 /*	BlinnPhong specular calculation:

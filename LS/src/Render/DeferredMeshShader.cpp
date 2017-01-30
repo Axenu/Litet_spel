@@ -31,6 +31,6 @@ void DeferredMeshShader::assignUniforms(FrameData &fD) {
 	glm::mat4 mv = fD._V * glm::mat4();
 	glUniformMatrix4fv(_mvp, 1, GL_FALSE, (const GLfloat*)&(mvp));
 	glUniformMatrix4fv(_mv, 1, GL_FALSE, (const GLfloat*)&(mv));
-	glUniform3f(_difCol, 1.0f, 1.0f, 1.0f);
+	glUniform3f(_difCol, 0.8f, 0.8f, 0.8f);
 	glUniform3f(_specCol, 1.0f, 1.0f, 1.0f);
 }

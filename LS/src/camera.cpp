@@ -65,7 +65,7 @@ float Camera::getFarPlane() const
 	return _farPlane;
 }
 
-glm::vec3 &Camera::getPosition()
+const glm::vec3 &Camera::getPosition() const
 {
     return position;
 }

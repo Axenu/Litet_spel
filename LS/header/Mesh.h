@@ -15,9 +15,24 @@ private:
 	std::vector<GLuint> _indices;
 	GLuint _VAO;
 	void setUpMesh();
+	void destroy();
 public:
 	Mesh();
 	Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);
+	~Mesh();
+	/* Move the data
+	*/
+	Mesh(Mesh &&move);
+	/* Move the data
+	*/
+	Mesh& operator=(Mesh &&move);
+
+	/* Cant copy this data
+	*/
+	Mesh(const Mesh &copy) = delete;
+	/* Cant copy this data
+	*/
+	Mesh& operator=(const Mesh &copy) = delete;
 	void setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);
 	void render();
 };
