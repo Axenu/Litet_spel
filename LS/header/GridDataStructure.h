@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Mesh.h"
 
 enum Enum
 {
@@ -33,7 +34,7 @@ public:
 	~Grid();
 	void print2darraydata();
 	void loadingBmpPicture(char* filename);
-	std::vector<glm::vec3> generateMesh();
+	void generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3> *normal);
 };
 
 
