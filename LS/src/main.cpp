@@ -105,6 +105,9 @@ void setupWindow() {
 
     while (!glfwWindowShouldClose(window))
     {
+		camera.rotateZ(0.001f);
+		camera.update(0.016f);
+
 		FrameData fD(resource, camera);
 
 		resource.getDeffered().bindDraw();

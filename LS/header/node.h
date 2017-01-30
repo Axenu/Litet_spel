@@ -34,7 +34,7 @@ public:
     void removeFromParent();
     void removeChild(Node *Node);
 
-    void update(float dt);
+    virtual void update(float dt);
     virtual void render(){}
 
 	void setX(float x);

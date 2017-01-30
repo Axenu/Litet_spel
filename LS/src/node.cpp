@@ -1,5 +1,7 @@
 #include "Node.h"
 #include <iostream>
+#include<glm/gtx/euler_angles.hpp>
+
 
 Node::Node() {
 	scale = glm::vec3(1,1,1);
@@ -49,11 +51,12 @@ void Node::removeChild(Node *node) {
 
 void Node::update(float dt) {
     if (!isActive) return;
-    this->modelMatrix = glm::translate(glm::mat4(), this->position);
-    this->modelMatrix = glm::rotate(this->modelMatrix, this->rotation.x, glm::vec3(1,0,0));
-    this->modelMatrix = glm::rotate(this->modelMatrix, this->rotation.y, glm::vec3(0,1,0));
-    this->modelMatrix = glm::rotate(this->modelMatrix, this->rotation.z, glm::vec3(0,0,1));
-    this->modelMatrix = glm::scale(this->modelMatrix, this->scale);
+    this->modelMatrix = glm::scale(glm::mat4(), this->scale);
+	this->modelMatrix = glm::yawPitchRoll(rotation.x, rotation.y, rotation.z) * this->modelMatrix;
+	/* Translate using matrix:
+	 * this->modelMatrix = glm::translate(glm::mat4(), position) * this->modelMatrix;
+	*/
+	this->modelMatrix[3] = glm::vec4(position, 1.0f); //Translate / Move
     if (this->parent != nullptr) {
         this->modelMatrix = this->parent->modelMatrix * this->modelMatrix;
     }
