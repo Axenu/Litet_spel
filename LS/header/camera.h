@@ -17,7 +17,7 @@ private:
 	float height;
 	bool perspective;
 
-	glm::mat4 viewMatrix;
+	glm::mat4 _viewMatrix;
 	glm::mat4 projectionMatrix;
 
 public:
@@ -31,7 +31,7 @@ public:
 	void initProjection();
 	void useView();
 
-	glm::mat4 &getViewMatrix();
+	const glm::mat4 &getViewMatrix() const;
 	float getFieldOfView() const;
 	float getAspectRatio() const;
 	float getNearPlane() const;
@@ -41,7 +41,6 @@ public:
 	~Camera();
 
 	float degreesToRadians(float degrees);
-
 };
 
 #endif

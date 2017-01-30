@@ -5,10 +5,9 @@ Model::Model() {
 	
 }
 
-Model::Model(GLuint shaderID)
+Model::Model(MeshShader &shader)
+	: _shader(&shader)
 {
-
-	this->shaderID = shaderID;
 
 	GLfloat vertices[] = {
 		0.0, 0.5, 0.0,
@@ -22,19 +21,19 @@ Model::Model(GLuint shaderID)
 	this->numberOfVertices = 9;
 
 
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenBuffers(1, &_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glGenBuffers(1, &_EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenVertexArrays(1, &_VAO);
+	glBindVertexArray(_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 
 	int attributes = 3;
 
@@ -45,13 +44,11 @@ Model::Model(GLuint shaderID)
 	glBindVertexArray(0);
 }
 
-void Model::render() const
+void Model::render(FrameData &fD) const
 {
-	glUseProgram(this->shaderID);
+	_shader->assignUniforms(fD);
 
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
+	glBindVertexArray(_VAO);
 	glDrawElements(GL_TRIANGLES, this->numberOfVertices, GL_UNSIGNED_INT, NULL);
 }
 

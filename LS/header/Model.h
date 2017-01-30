@@ -9,23 +9,25 @@
 #include <iostream>
 #include "camera.h"
 #include "node.h"
+#include "Render/MeshShader.h"
+#include "Render/FrameData.h"
 
 class Model : public Node {
 
 private:
 	GLint numberOfVertices;
 
-	GLuint VBO;
-	GLuint EBO;
-	GLuint VAO;
+	GLuint _VBO;
+	GLuint _EBO;
+	GLuint _VAO;
 
-	GLuint shaderID;
+	MeshShader *_shader;
 public:
 	Model();
-	Model(GLuint shaderID);
+	Model(MeshShader &shader);
 
 
-	void render() const;
+	void render(FrameData &fD) const;
 	void update(float dt);
 
 	~Model();

@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include"gl/GLFunctions.h"
+#include"Render/FrameData.h"
 
 Shader::Shader() {
 	shaderProgram = -1;
@@ -65,6 +66,8 @@ bool Shader::bindSampler(const std::string &varName, int sampleSlot) {
 	}
 	return false;
 }
+
+
 
 void Shader::printListOfUniforms() {
     std::cout << "Printing program uniforms: " << std::endl;

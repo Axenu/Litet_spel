@@ -29,19 +29,19 @@ Camera::Camera(float fov, int _width, int _height, float near, float far) {
 }
 
 void Camera::useView() {
-    viewMatrix = glm::rotate(glm::mat4(), rotation.x, glm::vec3(1, 0, 0));
-    viewMatrix = glm::rotate(viewMatrix, rotation.y, glm::vec3(0, 1, 0));
-    viewMatrix = glm::rotate(viewMatrix, rotation.z, glm::vec3(0, 0, 1));
-    viewMatrix = glm::translate(viewMatrix, -position);
-    VPMatrix = projectionMatrix * viewMatrix;
+	_viewMatrix = glm::rotate(glm::mat4(), rotation.x, glm::vec3(1, 0, 0));
+	_viewMatrix = glm::rotate(_viewMatrix, rotation.y, glm::vec3(0, 1, 0));
+	_viewMatrix = glm::rotate(_viewMatrix, rotation.z, glm::vec3(0, 0, 1));
+	_viewMatrix = glm::translate(_viewMatrix, -position);
+    VPMatrix = projectionMatrix * _viewMatrix;
 }
 
 void Camera::initProjection() {
 	projectionMatrix = glm::perspective(degreesToRadians(fieldOfView), aspectRatio, nearPlane, farPlane);
 }
 
-glm::mat4 &Camera::getViewMatrix() {
-    return this->viewMatrix;
+const glm::mat4 &Camera::getViewMatrix() const {
+    return this->_viewMatrix;
 }
 
 float Camera::getFieldOfView() const {
