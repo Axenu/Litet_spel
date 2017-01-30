@@ -6,13 +6,13 @@ void Mesh::setUpMesh()
 {
 	std::vector<gl::VertexAttribute> attri;
 	attri.push_back(gl::VertexAttribute(0, GL_FLOAT, 3, sizeof(float))); //Pos attribute
-	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Nor
+	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Norm attribute
 
 	std::vector<const void*> vertexData;
-	vertexData.push_back(&_position[0]);
-	vertexData.push_back(&_normal[0]);
+	vertexData.push_back(&_position[0]);   //Get position array start pointer
+	vertexData.push_back(&_normal[0]);		//Get normal array start pointer
 
-	_VAO = gl::generateVAO_SoA(vertexData, attri, _position.size(), &_indices[0], sizeof(_indices[0]), _indices.size());
+	_VAO = gl::generateVAO_SoA(vertexData, attri, _position.size(), &_indices[0], sizeof(_indices[0]), _indices.size()); // Create VAO
 	gl::CheckGLErrors();
 }
 
