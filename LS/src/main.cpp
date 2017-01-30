@@ -16,17 +16,48 @@
 #include "Render/MeshShader.h"
 #include "Render/DeferredMeshShader.h"
 #include "InputManager.h"
+#include "EventManager.h"
 #include "camera.h"
 #include "Character.h"
 
-#include <boost/lambda/lambda.hpp>
-
 GLFWwindow* window;
 Grid gridtest;
-InputManager* manager;
+// InputManager* manager;
 Camera camera;
 Character player;
 
+class Enemy
+{
+public:
+	Enemy() : _name("Bad Enemy"), _damage(15) {};
+
+	std::string getName()	const {return _name;}
+	int			getDamage()	const {return _damage;}
+	void onExplosion(const Explosion* explosion)
+	{
+			std::cout << "Out of explosion range :)" << std::endl;
+	}
+
+private:
+	std::string _name;
+	int _damage;
+};
+class OEnemy
+{
+public:
+	OEnemy() : _name("Bad Enemy"), _damage(15) {};
+
+	std::string getName()	const {return _name;}
+	int			getDamage()	const {return _damage;}
+	void onExplosion(const Explosion* explosion)
+	{
+			std::cout << "Out of explosion range other enemy :)" << std::endl;
+	}
+
+private:
+	std::string _name;
+	int _damage;
+};
 
 void setupWindow() {
     // init glfw
@@ -56,8 +87,13 @@ void setupWindow() {
 	}
 #endif
 
-    manager = new InputManager(window);
-
+	EventManager *eventManager = new EventManager();
+	InputManager *iManager = new InputManager(window, eventManager);
+	Enemy *enemy = new Enemy();
+	OEnemy *oenemy = new OEnemy();
+	eventManager->registerEventFunc(enemy, &Enemy::onExplosion);
+	eventManager->registerEventFunc(oenemy, &OEnemy::onExplosion);
+	eventManager->handleEvent(new KeyboardEvent(40, 10));
 
 
 	//basic init

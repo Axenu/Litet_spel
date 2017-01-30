@@ -19,65 +19,79 @@ void Character::onRender()
 {
 
 }
-void Character::moveCharacter(int buttonID, int action)
+void Character::moveCharacter(const KeyboardEvent* event)
 {
-    if (buttonID == GLFW_KEY_W)
+    if (event->getKey() == GLFW_KEY_W)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
             _velocity.y += 1.f;
-        } else if (action == GLFW_RELEASE) {
+        } else if (event->getAction() == GLFW_RELEASE) {
             _velocity.y -= 1.f;
         }
     }
-    else if (buttonID == GLFW_KEY_A)
+    else if (event->getKey() == GLFW_KEY_A)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
             _velocity.x -= 1.f;
-        } else if (action == GLFW_RELEASE) {
+        } else if (event->getAction() == GLFW_RELEASE) {
             _velocity.x += 1.f;
         }
     }
-    else if (buttonID == GLFW_KEY_S)
+    else if (event->getKey() == GLFW_KEY_S)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
             _velocity.y -= 1.f;
-        } else if (action == GLFW_RELEASE) {
+        } else if (event->getAction() == GLFW_RELEASE) {
             _velocity.y += 1.f;
         }
     }
-    else if (buttonID == GLFW_KEY_D)
+    else if (event->getKey() == GLFW_KEY_D)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
             _velocity.x += 1.f;
-        } else if (action == GLFW_RELEASE) {
+        } else if (event->getAction() == GLFW_RELEASE) {
             _velocity.x -= 1.f;
         }
     }
-    std::cout << "x: " << _velocity.x << " y: " << _velocity.y << " z: " << _velocity.z << std::endl;
+    //debug
+    // std::cout << "x: " << _velocity.x << " y: " << _velocity.y << " z: " << _velocity.z << std::endl;
 }
-void Character::moveMouse(double x, double y)
+void Character::moveMouse(const MouseMoveEvent* event)
 {
-    glm::vec2 currentCurserPos = glm::vec2(x, y);
+    glm::vec2 currentCurserPos = event->getPos();
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     rotateY(deltaPos.x * RotationSpeed);
     rotateX(deltaPos.y * RotationSpeed);
-    std::cout << x << std::endl;
-    std::cout << y << std::endl;
-    std::cout << rotation.x << std::endl;
-    std::cout << rotation.y << std::endl;
+    //Debug
+    // std::cout << event->getX() << std::endl;
+    // std::cout << event->getY() << std::endl;
+    // std::cout << rotation.x << std::endl;
+    // std::cout << rotation.y << std::endl;
+}
+void Character::collectLoot(const CollectLootEvent* event)
+{
+    std::cout << "recieved loot of value: " << event->getValue() << std::endl;
+    _lootValue += event->getValue();
+}
+Character::Character(EventManager *manager) : _eventManager(manager)
+{
+    _eventManager->registerEventFunc(this, &Character::moveCharacter);
+    _eventManager->registerEventFunc(this, &Character::moveMouse);
+    _eventManager->registerEventFunc(this, &Character::collectLoot);
+    _eventManager->handleEvent(new CollectLootEvent(11.5f));
 }
 Character::Character()
 {
     // _manager = manager;
 
-    EventManager *myEventManager = EventManager::Instance();
-    myEventManager->subscribe<Character, int, int>("key", this, &Character::moveCharacter);
-    myEventManager->subscribe<Character, double, double>("mouse", this, &Character::moveMouse);
+    // EventManager *myEventManager = EventManager::Instance();
+    // myEventManager->subscribe<Character, int, int>("key", this, &Character::moveCharacter);
+    // myEventManager->subscribe<Character, double, double>("mouse", this, &Character::moveMouse);
 
     // _manager->subscribeToKey(GLFW_KEY_W, [=](int keyID, int action){
     //     std::cout << keyID << std::endl;

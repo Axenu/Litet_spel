@@ -1,6 +1,5 @@
 #include "InputManager.h"
 
-EventManager* EventManager::_Instance;
 
 // GLFW key callbacks.
 void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
@@ -10,23 +9,24 @@ void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) 
     }
     else
     {
-        EventManager *myEventManager = EventManager::Instance();
-        myEventManager->execute("key", key, action);
+        InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+        iManager->getManager()->handleEvent(new KeyboardEvent(key, action));
     }
 }
 
-void mouse_key_callback(GLFWwindow* win, int button, int action, int mods) {
-    EventManager *myEventManager = EventManager::Instance();
-    myEventManager->execute("button", button, action);
+void mouse_key_callback(GLFWwindow* win, int key, int action, int mods) {
+    InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+    iManager->getManager()->handleEvent(new MouseClickEvent(key, action));
 }
 
 void cursorPosition_callback(GLFWwindow* win, double x, double y) {
-    EventManager *myEventManager = EventManager::Instance();
-    myEventManager->execute("mouse", x, y);
+    InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+    iManager->getManager()->handleEvent(new MouseMoveEvent(x, y));
 }
 
-InputManager::InputManager(GLFWwindow *window)
+InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _manager(manager)
 {
+    glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_key_callback);
     glfwSetCursorPosCallback(window, cursorPosition_callback);
@@ -35,4 +35,9 @@ InputManager::InputManager(GLFWwindow *window)
 InputManager::~InputManager()
 {
 
+}
+
+EventManager* InputManager::getManager()
+{
+    return _manager;
 }

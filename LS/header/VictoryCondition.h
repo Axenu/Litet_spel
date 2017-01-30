@@ -1,7 +1,7 @@
 #pragma once
 #ifndef VICTORYCONDITION_H
 #define VICTORYCONDITION_H
-#include "gl\glInclude.h"
+#include "gl/glInclude.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include "GridDataStructure.h"
