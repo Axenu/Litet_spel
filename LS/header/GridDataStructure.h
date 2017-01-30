@@ -1,22 +1,24 @@
 #ifndef GRIDDATASTRUCTURE
 #define GRIDDATASTRUCTURE
 
-#define ROOFHEIGHT 10.0f
-#include "gl/glInclude.h"
+#define GRIDSPACE 1.f
+#define ROOFHEIGHT 10.f
+#include "gl\glInclude.h"
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Mesh.h"
 
 enum Enum
 {
-	nothing = 0,wall = 1, tresure = 2, loot = 3, door = 4, guard = 5
+	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting 
+	nothing = 0, wall = 1, tresure = 2, loot = 3, door = 4, exiting = 5, guard = 6
 };
 
 struct gridValues {
 	glm::vec2 xz;
 	Enum enumet;
-	glm::vec3 color;
 };
 
 class Grid {
@@ -32,7 +34,7 @@ public:
 	~Grid();
 	void print2darraydata();
 	void loadingBmpPicture(char* filename);
-	std::vector<glm::vec3> generateMesh();
+	void generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3> *normal);
 };
 
 
