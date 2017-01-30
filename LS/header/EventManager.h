@@ -54,10 +54,10 @@ class EventManager
 public:
     EventManager();
 	~EventManager();
-	void handleEvent(const Event*);
+	void execute(const Event*);
 
 	template <class T, class EventT>
-	void registerEventFunc(T*, void (T::*memFn)(EventT*));
+	void listen(T*, void (T::*memFn)(EventT*));
 
 private:
 	typedef std::map<TypeInfo, std::vector<HandlerFunctionBase*>> Handlers;
@@ -66,7 +66,7 @@ private:
 
 
 template <class T, class EventT>
-void EventManager::registerEventFunc(T* obj, void (T::*memFn)(EventT*))
+void EventManager::listen(T* obj, void (T::*memFn)(EventT*))
 {
 	_handlers[TypeInfo(typeid(EventT))].push_back(new MemberFunctionHandler<T, EventT>(obj, memFn));
 }

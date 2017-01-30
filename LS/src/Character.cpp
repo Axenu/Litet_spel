@@ -80,9 +80,9 @@ void Character::collectLoot(const CollectLootEvent* event)
 }
 Character::Character(EventManager *manager) : _eventManager(manager)
 {
-    _eventManager->registerEventFunc(this, &Character::moveCharacter);
-    _eventManager->registerEventFunc(this, &Character::moveMouse);
-    _eventManager->registerEventFunc(this, &Character::collectLoot);
+    _eventManager->listen(this, &Character::moveCharacter);
+    _eventManager->listen(this, &Character::moveMouse);
+    _eventManager->listen(this, &Character::collectLoot);
     // _eventManager->handleEvent(new CollectLootEvent(11.5f));
 }
 Character::Character()
