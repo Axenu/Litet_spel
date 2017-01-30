@@ -17,6 +17,8 @@
 #include "camera.h"
 #include "Character.h"
 
+#include <boost/lambda/lambda.hpp>
+
 GLFWwindow* window;
 Grid gridtest;
 InputManager* manager;

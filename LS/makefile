@@ -2,7 +2,7 @@
 SRCDIR=src/
 ODIR=build/
 lIBDIR=lib/OSX/
-IDIR=include/OSX/
+IDIR=include/
 HDIR=header/
 
 SOURCESGAME=$(wildcard $(SRCDIR)*.cpp)
