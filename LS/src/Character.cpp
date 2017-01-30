@@ -25,11 +25,11 @@ void Character::moveCharacter(const KeyboardEvent* event)
     {
         if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.y += 1.0f;
-        }
-        else if (event->getAction() == GLFW_RELEASE)
-        {
             _velocity.y -= 1.0f;
+        }
+        else if (event->getAction() == GLFW_RELEASE) 
+        {
+            _velocity.y += 1.0f;
         }
     }
     else if (event->getKey() == GLFW_KEY_A)
@@ -47,11 +47,11 @@ void Character::moveCharacter(const KeyboardEvent* event)
     {
         if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.y -= 1.0f;
+            _velocity.y += 1.0f;
         }
         else if (event->getAction() == GLFW_RELEASE)
         {
-            _velocity.y += 1.0f;
+            _velocity.y -= 1.0f;
         }
     }
     else if (event->getKey() == GLFW_KEY_D)
@@ -72,7 +72,7 @@ void Character::moveMouse(const MouseMoveEvent* event)
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     rotateY(deltaPos.y * RotationSpeed);
-    rotateX(deltaPos.x * -RotationSpeed);
+    rotateX(deltaPos.x * RotationSpeed);
 }
 void Character::collectLoot(const CollectLootEvent* event)
 {
