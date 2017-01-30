@@ -3,6 +3,7 @@
 #include"Shader.h"
 #include"gl/RenderQuad.h"
 #include"FrameData.h"
+
 class QuadShader
 {
 protected:
@@ -12,8 +13,8 @@ protected:
 	virtual void assignUniforms(FrameData &fD) = 0;
 
 public:
-	QuadShader(const gl::RenderQuad& quad);
 	QuadShader(const gl::RenderQuad& quad, Shader &shader);
+	QuadShader(const gl::RenderQuad& quad, const std::string &vertShader, const std::string &fragShader);
 	~QuadShader();
 
 

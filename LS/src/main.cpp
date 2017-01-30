@@ -13,6 +13,8 @@
 #include "Render/GraphicsResource.h"
 #include "Render/FrameData.h"
 #include "Render/RenderDeferred.h"
+#include "Render/MeshShader.h"
+#include "Render/DeferredMeshShader.h"
 #include "InputManager.h"
 #include "camera.h"
 #include "Character.h"
@@ -61,30 +63,46 @@ void setupWindow() {
 	//basic init
 	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
-	Shader *def_mesh = new Shader("Deferred_Mesh");
+	DeferredMeshShader def_mesh;
 	RenderDeferred deferred(resource.getQuad());
 
 	// if (gl::CheckGLErrors("Initiation failed: GL Error"))
 		// throw new std::exception("Initiation failed: GL Error");
 
-	Model *m = new Model(s->shaderProgram);
+	Model *m = new Model(def_mesh);
+	Mesh mesh;
 
-    camera = Camera(70.0f, 640, 480, 0.1f, 100.0f);
+    camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
+	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
     player = Character();
     player.setCamera(&camera);
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-		FrameData fD(resource);
-        /* Render here */
-        glClearColor(1, 0, 0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		camera.rotateZ(0.001f);
+		camera.update(0.016f);
+
+		FrameData fD(resource, camera);
+
+		resource.getDeffered().bindDraw();
+
         //update
         player.update(0.016f);
 		m->update(0.016f);
-		m->render();
+
+		def_mesh.assignUniforms(fD);
+		mesh.render();
+		gl::CheckGLErrors("Render stage failed: Mesh");
+
+		/*	Render to backbuffer:
+		*/
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClearColor(1, 0, 0, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //Render
+		deferred.render(fD);
+		gl::CheckGLErrors("Render stage failed: Composition");
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
