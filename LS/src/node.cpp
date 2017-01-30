@@ -51,7 +51,8 @@ void Node::removeChild(Node *node) {
 
 void Node::update(float dt) {
     if (!isActive) return;
-    this->modelMatrix = glm::scale(glm::mat4(), this->scale);
+	onUpdate(dt);
+	this->modelMatrix = glm::scale(glm::mat4(), this->scale);
 	this->modelMatrix = glm::yawPitchRoll(rotation.x, rotation.y, rotation.z) * this->modelMatrix;
 	/* Translate using matrix:
 	 * this->modelMatrix = glm::translate(glm::mat4(), position) * this->modelMatrix;
@@ -60,7 +61,6 @@ void Node::update(float dt) {
     if (this->parent != nullptr) {
         this->modelMatrix = this->parent->modelMatrix * this->modelMatrix;
     }
-    onUpdate(dt);
     for (Node *Node : children)
         Node->update(dt);
 }
