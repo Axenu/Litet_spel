@@ -2,6 +2,7 @@
 
 #include "gl/glinclude.h"
 #include "EventManager.h"
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <vector>
 #include <functional>
@@ -54,7 +55,10 @@ public:
     InputManager(GLFWwindow *window, EventManager* manager);
     ~InputManager();
 
+    void switchCursorMode(GLFWwindow *window);
+
     EventManager* getManager();
 private:
     EventManager* _manager;
+    int _cursorMode;
 };

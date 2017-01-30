@@ -3,16 +3,18 @@
 void Character::setCamera(Camera* camera)
 {
     _camera = camera;
+    _velocity = glm::vec3(0,0,0);
 }
 void Character::onUpdate(float dt)
 {
-    // std::cout << dt << std::endl;
     _camera->setRX(rotation.x);
-    _camera->setRY(rotation.x);
-    _camera->moveX(_velocity.y * dt * sin(rotation.y));
-    _camera->moveZ(_velocity.y * dt * cos(rotation.y));
-    _camera->moveX(_velocity.x * dt * cos(rotation.y));
-    _camera->moveZ(_velocity.x * dt * sin(rotation.y));
+    _camera->setRY(rotation.y);
+    _camera->moveX(_velocity.y * dt * sin(rotation.x));
+    _camera->moveZ(_velocity.y * dt * cos(rotation.x));
+    _camera->moveX(_velocity.x * dt * cos(rotation.x));
+    _camera->moveZ(_velocity.x * dt * -sin(rotation.x));
+    // std::cout << rotation.x << '\n';
+    // std::cout << sin(rotation.x) << std::endl;
 
 }
 void Character::onRender()
@@ -25,36 +27,36 @@ void Character::moveCharacter(const KeyboardEvent* event)
     {
         if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.y += 1.f;
+            _velocity.y -= 1.0f;
         } else if (event->getAction() == GLFW_RELEASE) {
-            _velocity.y -= 1.f;
+            _velocity.y += 1.0f;
         }
     }
     else if (event->getKey() == GLFW_KEY_A)
     {
         if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.x -= 1.f;
+            _velocity.x -= 1.0f;
         } else if (event->getAction() == GLFW_RELEASE) {
-            _velocity.x += 1.f;
+            _velocity.x += 1.0f;
         }
     }
     else if (event->getKey() == GLFW_KEY_S)
     {
         if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.y -= 1.f;
+            _velocity.y += 1.0f;
         } else if (event->getAction() == GLFW_RELEASE) {
-            _velocity.y += 1.f;
+            _velocity.y -= 1.0f;
         }
     }
     else if (event->getKey() == GLFW_KEY_D)
     {
         if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.x += 1.f;
+            _velocity.x += 1.0f;
         } else if (event->getAction() == GLFW_RELEASE) {
-            _velocity.x -= 1.f;
+            _velocity.x -= 1.0f;
         }
     }
     //debug
@@ -65,11 +67,9 @@ void Character::moveMouse(const MouseMoveEvent* event)
     glm::vec2 currentCurserPos = event->getPos();
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
-    rotateY(deltaPos.x * RotationSpeed);
-    rotateX(deltaPos.y * RotationSpeed);
+    rotateY(deltaPos.y * RotationSpeed);
+    rotateX(deltaPos.x * RotationSpeed);
     //Debug
-    // std::cout << event->getX() << std::endl;
-    // std::cout << event->getY() << std::endl;
     // std::cout << rotation.x << std::endl;
     // std::cout << rotation.y << std::endl;
 }
@@ -83,7 +83,7 @@ Character::Character(EventManager *manager) : _eventManager(manager)
     _eventManager->registerEventFunc(this, &Character::moveCharacter);
     _eventManager->registerEventFunc(this, &Character::moveMouse);
     _eventManager->registerEventFunc(this, &Character::collectLoot);
-    _eventManager->handleEvent(new CollectLootEvent(11.5f));
+    // _eventManager->handleEvent(new CollectLootEvent(11.5f));
 }
 Character::Character()
 {

@@ -5,9 +5,10 @@
 #include "camera.h"
 #include "InputManager.h"
 #include "EventManager.h"
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
-#define RotationSpeed 0.001f
+#define RotationSpeed 0.005f
 
 class CollectLootEvent : public Event
 {

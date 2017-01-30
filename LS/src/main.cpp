@@ -6,6 +6,7 @@
 #endif
 #include <iostream>
 #include <GLFW/glfw3.h>
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include "Model.h"
@@ -24,7 +25,7 @@ GLFWwindow* window;
 Grid gridtest;
 // InputManager* manager;
 Camera camera;
-Character player;
+Character* player;
 
 class Enemy
 {
@@ -89,11 +90,6 @@ void setupWindow() {
 
 	EventManager *eventManager = new EventManager();
 	InputManager *iManager = new InputManager(window, eventManager);
-	Enemy *enemy = new Enemy();
-	OEnemy *oenemy = new OEnemy();
-	eventManager->registerEventFunc(enemy, &Enemy::onExplosion);
-	eventManager->registerEventFunc(oenemy, &OEnemy::onExplosion);
-	eventManager->handleEvent(new KeyboardEvent(40, 10));
 
 
 	//basic init
@@ -109,23 +105,23 @@ void setupWindow() {
 	Mesh mesh;
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
+    player = new Character(eventManager);
+    player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
-    player = Character();
-    player.setCamera(&camera);
-
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-		camera.rotateZ(0.001f);
+		// camera.rotateZ(0.001f);
+        //update
+		// std::cout << camera.getPosition().x << std::endl;
+        player->update(0.016f);
+		m->update(0.016f);
 		camera.update(0.016f);
 
 		FrameData fD(resource, camera);
 
 		resource.getDeffered().bindDraw();
 
-        //update
-        player.update(0.016f);
-		m->update(0.016f);
 
 		def_mesh.assignUniforms(fD);
 		mesh.render();

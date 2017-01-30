@@ -1,5 +1,6 @@
 #include "Node.h"
 #include <iostream>
+#define GLM_FORCE_RADIANS
 #include<glm/gtx/euler_angles.hpp>
 
 
@@ -189,5 +190,5 @@ glm::vec3 Node::getRotation()  {
 }
 
 Node::~Node() {
-	
+
 }

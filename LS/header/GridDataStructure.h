@@ -4,6 +4,7 @@
 #define GRIDSPACE 1.f
 #define ROOFHEIGHT 10.f
 #include "gl/glInclude.h"
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>

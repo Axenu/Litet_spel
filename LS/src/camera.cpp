@@ -32,7 +32,7 @@ Camera::Camera(float fov, int _width, int _height, float near, float far) {
 void Camera::update(float dT) {
 	Node::update(dT);
 	_viewMatrix = glm::inverse(this->modelMatrix);
-	
+
 	//_viewMatrix = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0, 0, 1));
     VPMatrix = projectionMatrix * _viewMatrix;
 }
