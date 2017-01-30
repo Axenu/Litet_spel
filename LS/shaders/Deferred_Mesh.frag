@@ -4,9 +4,9 @@ in vec3 Position0;
 in vec3 Normal0;
 //layout(location = 2) in vec2 TexCoord0;
 
-out vec3 ColorOut;
-out vec3 NormalOut;
-out vec3 SpecularOut;
+layout(location = 0) out vec3 ColorOut;
+layout(location = 1) out vec3 NormalOut;
+layout(location = 2) out vec3 SpecularOut;
 
 /* Uniforms
 */

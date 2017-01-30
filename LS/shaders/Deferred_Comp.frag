@@ -2,7 +2,7 @@
 
 in vec3 Position0;
 
-out vec4 ColorOut;
+layout(location = 0) out vec4 ColorOut;
 
 /* Uniforms
 */
