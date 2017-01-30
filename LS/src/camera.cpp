@@ -23,16 +23,17 @@ Camera::Camera(float fov, int _width, int _height, float near, float far) {
     this->farPlane = far;
     this->fieldOfView = fov;
     this->aspectRatio = width/height;
-    this->position = glm::vec3(0,0,-3);
+    this->position = glm::vec3(3.0f, 0.0f , 5.0f);
+	this->rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     // this->rotation.x = 1.0;
     initProjection();
 }
 
-void Camera::useView() {
-	_viewMatrix = glm::rotate(glm::mat4(), rotation.x, glm::vec3(1, 0, 0));
-	_viewMatrix = glm::rotate(_viewMatrix, rotation.y, glm::vec3(0, 1, 0));
-	_viewMatrix = glm::rotate(_viewMatrix, rotation.z, glm::vec3(0, 0, 1));
-	_viewMatrix = glm::translate(_viewMatrix, -position);
+void Camera::update(float dT) {
+	Node::update(dT);
+	_viewMatrix = glm::inverse(this->modelMatrix);
+	
+	//_viewMatrix = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0, 0, 1));
     VPMatrix = projectionMatrix * _viewMatrix;
 }
 

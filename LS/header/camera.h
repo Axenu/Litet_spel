@@ -29,7 +29,7 @@ public:
 	Camera(float fov, int _width, int _height, float near, float far);
 
 	void initProjection();
-	void useView();
+	virtual void update(float dT);
 
 	const glm::mat4 &getViewMatrix() const;
 	float getFieldOfView() const;
