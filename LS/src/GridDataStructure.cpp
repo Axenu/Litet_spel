@@ -36,7 +36,7 @@ void Grid::print2darraydata()
 		for (int j = 0; j < _widthLength; j++)
 		{	
 	//		std::cout << _twodArray[i][j].color.x << " ";
-			std::cout << _twodArray[i][j].enumet << " ";
+			std::cout << _twodArray[i][j].type << " ";
 		}
 		std::cout << "" << std::endl;
 	}
@@ -101,15 +101,15 @@ for (int i = 0; i < _heightLength; i++)
 		{
 			if (colorarray[i][j] == glm::vec3(255, 255, 255))
 			{
-				_twodArray[i][j].enumet = wall;
+				_twodArray[i][j].type = wall;
 			}
 			if (colorarray[i][j] == glm::vec3(0, 0, 0))
 			{
-				_twodArray[i][j].enumet = nothing;
+				_twodArray[i][j].type = nothing;
 			}
 			if (colorarray[i][j] == glm::vec3(255, 0, 0))
 			{
-				_twodArray[i][j].enumet = exiting;
+				_twodArray[i][j].type = exiting;
 			}
 
 		}
@@ -131,11 +131,11 @@ void Grid::generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3>
 	{
 		for (int i = 0; i < _widthLength; i++)
 		{
-			if (_twodArray[i][j].enumet != wall)
+			if (_twodArray[i][j].type != wall)
 			{
 				if (j != 0)
 				{
-					if (_twodArray[i][j - 1].enumet == wall)
+					if (_twodArray[i][j - 1].type == wall)
 					{
 						// Positions
 						position->push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
@@ -155,7 +155,7 @@ void Grid::generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3>
 				}
 				if (j != _heightLength - 1)
 				{
-					if (_twodArray[i][j + 1].enumet == wall)
+					if (_twodArray[i][j + 1].type == wall)
 					{
 						// Positions
 						position->push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
@@ -175,7 +175,7 @@ void Grid::generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3>
 				}
 				if (i != 0)
 				{
-					if (_twodArray[i - 1][j].enumet == wall)
+					if (_twodArray[i - 1][j].type == wall)
 					{
 						// Positions
 						position->push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
@@ -195,7 +195,7 @@ void Grid::generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3>
 				}
 				if (i != _widthLength - 1)
 				{
-					if (_twodArray[i + 1][j].enumet == wall)
+					if (_twodArray[i + 1][j].type == wall)
 					{
 						// Positions
 						position->push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
@@ -288,4 +288,26 @@ void Grid::generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3>
 		}
 	}
 	return;
+}
+
+//The position used needs to be in the grids modelspace
+bool Grid::wallCollission(glm::vec3 position)
+{
+	int x = (int)glm::floor(position.x / GRIDSPACE);
+	int z = (int)glm::floor(position.z / GRIDSPACE);
+	if (x >= 0 && z >= 0 && x < _widthLength && z < _heightLength) // check if position is inside the grid
+	{
+		if (_twodArray[x][z].type == wall) // check if grid position is a wall
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
 }

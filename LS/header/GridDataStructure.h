@@ -10,7 +10,7 @@
 #include <fstream>
 #include "Mesh.h"
 
-enum Enum
+enum gridType
 {
 	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting
 	nothing = 0, wall = 1, tresure = 2, loot = 3, door = 4, exiting = 5, guard = 6
@@ -18,7 +18,7 @@ enum Enum
 
 struct gridValues {
 	glm::vec2 xz;
-	Enum enumet;
+	gridType type;
 };
 
 class Grid {
@@ -35,6 +35,7 @@ public:
 	void print2darraydata();
 	void loadingBmpPicture(char* filename);
 	void generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3> *normal);
+	bool wallCollission(glm::vec3 position);
 };
 
 
