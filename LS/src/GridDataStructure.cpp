@@ -27,7 +27,23 @@ void Grid::buildgridarray()
 
 }
 
-
+gridValues Grid::getData(gridType Data)
+{
+	for (int i = 0; i < _heightLength; i++)
+	{
+		for (int j = 0; j < _widthLength; j++)
+		{
+			if (Data == exiting)
+			{	
+				if (_twodArray[i][j].type == exiting)
+				{
+					return _twodArray[i][j];
+				}
+			}
+		}
+	
+	}
+}
 
 void Grid::print2darraydata()
 {

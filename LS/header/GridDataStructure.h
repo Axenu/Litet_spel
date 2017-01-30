@@ -31,6 +31,7 @@ private:
 public:
 	Grid();
 	void buildgridarray();
+	gridValues getData(gridType Data);
 	~Grid();
 	void print2darraydata();
 	void loadingBmpPicture(char* filename);

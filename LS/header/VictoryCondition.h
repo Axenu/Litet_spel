@@ -10,14 +10,13 @@
 class Victory {
 private:
 	bool _gotTheTreasure;
-	bool _atTheExit;
 	glm::vec2 exit;
 
 
 public:
 	Victory();
 	~Victory();
-	void checkifPlayerWon(glm::vec3 playerpos );
+	void checkifPlayerWon(glm::vec2 playerpos );
 
 
 
