@@ -19,32 +19,10 @@
 
 GLFWwindow* window;
 Grid gridtest;
-// InputManager manager;
+InputManager* manager;
 Camera camera;
 Character player;
 
-// GLFW key callbacks.
-void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE)
-    {
-         glfwSetWindowShouldClose(win, 1);
-    }
-    else
-    {
-        InputManager *myEventManager = InputManager::Instance();
-        myEventManager->execute("key", key, action);
-    }
-}
-
-void mouse_key_callback(GLFWwindow* win, int button, int action, int mods) {
-    InputManager *myEventManager = InputManager::Instance();
-    myEventManager->execute("button", button, action);
-}
-
-void cursorPosition_callback(GLFWwindow* win, double x, double y) {
-    InputManager *myEventManager = InputManager::Instance();
-    myEventManager->execute("mouse", x, y);
-}
 
 void setupWindow() {
     // init glfw
@@ -74,13 +52,9 @@ void setupWindow() {
 	}
 #endif
 
-    // glfwSetWindowUserPointer(window, &manager);
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetMouseButtonCallback(window, mouse_key_callback);
-    glfwSetCursorPosCallback(window, cursorPosition_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    // glfwSetWindowPos(window, 0, 0);
-    /* Loop until the user closes the window */
+    manager = new InputManager(window);
+
+
 
 	//basic init
 	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
@@ -97,8 +71,7 @@ void setupWindow() {
     player = Character();
     player.setCamera(&camera);
 
-    // manager.subscribeToKey(GLFW_KEY_Q, qcallback);
-
+/* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
 		FrameData fD(resource);

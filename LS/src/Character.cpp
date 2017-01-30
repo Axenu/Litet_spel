@@ -7,6 +7,12 @@ void Character::setCamera(Camera* camera)
 void Character::onUpdate(float dt)
 {
     // std::cout << dt << std::endl;
+    _camera->setRX(rotation.x);
+    _camera->setRY(rotation.x);
+    _camera->moveX(_velocity.y * dt * sin(rotation.y));
+    _camera->moveZ(_velocity.y * dt * cos(rotation.y));
+    _camera->moveX(_velocity.x * dt * cos(rotation.y));
+    _camera->moveZ(_velocity.x * dt * sin(rotation.y));
 
 }
 void Character::onRender()
@@ -55,14 +61,21 @@ void Character::moveCharacter(int buttonID, int action)
 }
 void Character::moveMouse(double x, double y)
 {
+    glm::vec2 currentCurserPos = glm::vec2(x, y);
+    glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
+    _lastCursorPos = currentCurserPos;
+    rotateY(deltaPos.x * RotationSpeed);
+    rotateX(deltaPos.y * RotationSpeed);
     std::cout << x << std::endl;
     std::cout << y << std::endl;
+    std::cout << rotation.x << std::endl;
+    std::cout << rotation.y << std::endl;
 }
 Character::Character()
 {
     // _manager = manager;
 
-    InputManager *myEventManager = InputManager::Instance();
+    EventManager *myEventManager = EventManager::Instance();
     myEventManager->subscribe<Character, int, int>("key", this, &Character::moveCharacter);
     myEventManager->subscribe<Character, double, double>("mouse", this, &Character::moveMouse);
 

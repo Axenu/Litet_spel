@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gl/glinclude.h"
 #include <vector>
 #include <functional>
 #include <iostream>
@@ -71,7 +72,7 @@ public:
 
 };
 
-class InputManager
+class EventManager
 {
     struct EventType {
         Event *event;
@@ -80,13 +81,13 @@ class InputManager
 
     std::vector<EventType> _events;
 
-    static InputManager *_Instance;
+    static EventManager *_Instance;
 
-    InputManager(){};
+    EventManager(){};
 public:
-    static InputManager* Instance() {
+    static EventManager* Instance() {
         if (!_Instance) {
-            _Instance = new InputManager();
+            _Instance = new EventManager();
         }
         return _Instance;
     }
@@ -146,4 +147,11 @@ public:
     //         }
     //     }
     // }
+};
+
+class InputManager
+{
+public:
+    InputManager(GLFWwindow *window);
+    ~InputManager();
 };

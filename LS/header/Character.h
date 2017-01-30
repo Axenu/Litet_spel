@@ -6,6 +6,8 @@
 #include "InputManager.h"
 #include <glm/glm.hpp>
 
+#define RotationSpeed 0.001f
+
 class Character : public Node
 {
 public:
@@ -22,6 +24,6 @@ public:
     ~Character();
 private:
     Camera* _camera;
-    // InputManager* _manager;
+    glm::vec2 _lastCursorPos;
     glm::vec3 _velocity;
 };

@@ -48,6 +48,6 @@ $(ODIR)%.o: $(SRCDIR)Render/%.cpp
 # 	$(CC) -I $(IDIR) -I$(HDIR) -std=c++11 -Wno-c++11-long-long -Wall -c -o $@ $<
 
 clean:
-	rm -f $(ODIR)/*.o
-	rm -f $(ODIR)/*.a
+	rm -f $(ODIR)*.o
+	rm -f $(ODIR)*.a
 	rm $(EXEC)
