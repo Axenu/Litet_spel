@@ -53,6 +53,9 @@ void Node::update(float dt) {
     if (!isActive) return;
     this->modelMatrix = glm::scale(glm::mat4(), this->scale);
 	this->modelMatrix = glm::yawPitchRoll(rotation.x, rotation.y, rotation.z) * this->modelMatrix;
+	/* Translate using matrix:
+	 * this->modelMatrix = glm::translate(glm::mat4(), position) * this->modelMatrix;
+	*/
 	this->modelMatrix[3] = glm::vec4(position, 1.0f); //Translate / Move
     if (this->parent != nullptr) {
         this->modelMatrix = this->parent->modelMatrix * this->modelMatrix;
