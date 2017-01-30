@@ -2,7 +2,6 @@
 
 #include<iostream>
 #include<fstream>
-#include<GL/GLU.h>
 #include<algorithm>
 
 namespace gl {
@@ -14,8 +13,10 @@ namespace gl {
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR && print) {
 			std::cout << "OpenGL Error: " + std::to_string(err) << std::endl;
+			#ifndef __APPLE__
 			std::string s((const char*)glewGetErrorString(err));
 			std::cout << s << std::endl;
+			#endif
 			return true;
 		}
 		return false;
@@ -28,8 +29,10 @@ namespace gl {
 		if (err != GL_NO_ERROR) {
 			std::cout << logText << std::endl;
 			std::cout << "OpenGL Error: " + std::to_string(err) << std::endl;
+			#ifndef __APPLE__
 			std::string s((const char*)glewGetErrorString(err));
 			std::cout << s << std::endl;
+			#endif
 			return true;
 		}
 		return false;
@@ -54,7 +57,7 @@ namespace gl {
 		int vertexSize = 12;
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO) 
+		// Vertex Array Object (VAO)
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
@@ -104,7 +107,7 @@ namespace gl {
 
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO) 
+		// Vertex Array Object (VAO)
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
@@ -148,7 +151,7 @@ namespace gl {
 
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO) 
+		// Vertex Array Object (VAO)
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
@@ -168,7 +171,7 @@ namespace gl {
 
 			//Enables the attribute "slot" in the VAO for each attribute
 			glEnableVertexAttribArray(vertexAttri[i].attributeIndex);
-			// Specify the data array attribute. Describing what the data represents and layout identifier for opengl code 
+			// Specify the data array attribute. Describing what the data represents and layout identifier for opengl code
 			glVertexAttribPointer(vertexAttri[i].attributeIndex, vertexAttri[i].elementCount, vertexAttri[i].elementType, vertexAttri[i].noormalize, 0, 0);
 		}
 
@@ -326,7 +329,7 @@ namespace gl {
 	*/
 	TexData bind2DTexture(unsigned int width, unsigned int height, void* data, GLint samplingParam, GLenum edgeParam, GLint format, GLenum dataType) {
 
-		//Generate a single texture id 
+		//Generate a single texture id
 		GLuint textureID;
 		glGenTextures(1, &textureID); //Can generate an array of texture ids!
 

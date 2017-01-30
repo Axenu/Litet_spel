@@ -7,14 +7,15 @@ HDIR=header/
 
 SOURCESGAME=$(wildcard $(SRCDIR)*.cpp)
 SOURCEGL=$(wildcard $(SRCDIR)gl/*.cpp)
-SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%)
+SOURCERender=$(wildcard $(SRCDIR)Render/*.cpp)
+SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOURCERender:$(SRCDIR)Render/%=%)
 
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
 CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long
 # The c++ compiler to use for compilation
-CC = clang++
+CC = g++
 
 
 GAMEOBJECTS = $(addprefix $(ODIR), $(SOURCEFILESGAME:.cpp=.o))
@@ -38,6 +39,9 @@ $(ODIR)%.o: $(SRCDIR)%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
 $(ODIR)%.o: $(SRCDIR)gl/%.cpp
+	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
+
+$(ODIR)%.o: $(SRCDIR)Render/%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
 # $(ODIR)/%.o: $(ENGINESDIR)/%.cpp

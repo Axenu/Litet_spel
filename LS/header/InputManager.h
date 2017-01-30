@@ -43,7 +43,7 @@ public:
         (_object->*_function)(p1, p2);
     }
     void execute(double p1, double p2) {
-        (_object->*_function)(p1, p2);
+        (_object->*_function)((int)p1, (int)p2);
     }
 };
 

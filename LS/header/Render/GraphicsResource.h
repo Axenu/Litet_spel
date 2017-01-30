@@ -1,7 +1,7 @@
 #pragma once
-#include"gl\DeferredBuffer.h"
-#include"gl\DefferedSettings.h"
-#include"gl\RenderQuad.h"
+#include"gl/DeferredBuffer.h"
+#include"gl/DefferedSettings.h"
+#include"gl/RenderQuad.h"
 
 
 	/* Class holding the graphical resources used for rendering.

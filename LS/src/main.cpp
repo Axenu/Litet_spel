@@ -10,9 +10,9 @@
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
-#include "Render\GraphicsResource.h"
-#include "Render\FrameData.h"
-#include "Render\RenderDeferred.h"
+#include "Render/GraphicsResource.h"
+#include "Render/FrameData.h"
+#include "Render/RenderDeferred.h"
 #include "InputManager.h"
 #include "camera.h"
 #include "Character.h"
@@ -106,8 +106,8 @@ void setupWindow() {
         glClearColor(1, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //update
-        player.update(0.016);
-		m->update(0.016);
+        player.update(0.016f);
+		m->update(0.016f);
 		m->render();
         //Render
         /* Swap front and back buffers */
