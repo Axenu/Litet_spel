@@ -94,6 +94,7 @@ void setupWindow() {
 		// throw new std::exception("Initiation failed: GL Error");
 
 	Model *m = new Model(def_mesh);
+	Mesh mesh;
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
@@ -112,7 +113,8 @@ void setupWindow() {
         player.update(0.016f);
 		m->update(0.016f);
 
-		m->render(fD);
+		def_mesh.assignUniforms(fD);
+		mesh.render();
 		gl::CheckGLErrors("Render stage failed: Mesh");
 
 		/*	Render to backbuffer:
