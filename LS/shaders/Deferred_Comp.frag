@@ -1,8 +1,8 @@
 #version 400
 
-layout(location = 0) in vec3 Position0;
+in vec3 Position0;
 
-layout(location = 0) out vec4 ColorOut;
+out vec4 ColorOut;
 
 /* Uniforms
 */
