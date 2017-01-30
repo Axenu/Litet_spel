@@ -27,7 +27,7 @@ void Character::moveCharacter(const KeyboardEvent* event)
         {
             _velocity.y -= 1.0f;
         }
-        else if (event->getAction() == GLFW_RELEASE) 
+        else if (event->getAction() == GLFW_RELEASE)
         {
             _velocity.y += 1.0f;
         }
@@ -68,6 +68,12 @@ void Character::moveCharacter(const KeyboardEvent* event)
 }
 void Character::moveMouse(const MouseMoveEvent* event)
 {
+    if (_hasMoved == false)
+    {
+        _hasMoved = true;
+        _lastCursorPos = event->getPos();
+        return;
+    }
     glm::vec2 currentCurserPos = event->getPos();
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;

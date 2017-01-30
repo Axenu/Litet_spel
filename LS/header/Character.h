@@ -42,4 +42,5 @@ private:
     glm::vec2 _lastCursorPos;
     glm::vec3 _velocity;
     float _lootValue;
+    bool _hasMoved = false;
 };
