@@ -14,7 +14,7 @@ public:
 	void onRender();
 	glm::mat4 getModelMatrix();
 private:
-	Mesh* mesh;
+	Mesh mesh;
 };
 
 

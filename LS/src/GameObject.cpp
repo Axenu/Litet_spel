@@ -7,6 +7,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
+
 }
 
 void GameObject::onUpdate(float dt)
@@ -16,8 +17,9 @@ void GameObject::onUpdate(float dt)
 
 void GameObject::onRender()
 {
-	mesh->render();
+	mesh.render();
 }
+
 
 glm::mat4 GameObject::getModelMatrix()
 {
