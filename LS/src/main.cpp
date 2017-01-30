@@ -92,6 +92,7 @@ void setupWindow()
 
 
 		def_mesh.assignUniforms(fD);
+		mesh = gridtest.generateMesh();
 		mesh.render();
 		gl::CheckGLErrors("Render stage failed: Mesh");
 

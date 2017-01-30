@@ -2,7 +2,7 @@
 #define GRIDDATASTRUCTURE
 
 #define GRIDSPACE 1.f
-#define ROOFHEIGHT 10.f
+#define ROOFHEIGHT 1.f
 #include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -25,6 +25,8 @@ struct gridValues {
 class Grid {
 
 private:
+	float _gridSpace;
+	float _roofHeight;
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray;
@@ -36,7 +38,7 @@ public:
 	~Grid();
 	void print2darraydata();
 	void loadingBmpPicture(char* filename);
-	void generateMesh(std::vector<glm::vec3> *position, std::vector<glm::vec3> *normal);
+	Mesh generateMesh();
 	bool wallCollission(glm::vec3 position);
 };
 
