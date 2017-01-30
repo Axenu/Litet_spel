@@ -1,9 +1,8 @@
 #include "Render/RenderDeferred.h"
 
 	RenderDeferred::RenderDeferred(const gl::RenderQuad& quad)
-		: QuadShader(quad)
+		: QuadShader(quad, "Quad", "Deferred_Comp")
 	{
-		_shader = std::move(Shader("Quad", "Deferred_Comp"));
 		acquireUniforms();
 	}
 
@@ -52,8 +51,6 @@
 		glUniform1f(_pLight_fade, 5.0f);
 		glUniform3f(_pLightDiffCol, 0.8f, 0.8f, 0.8f);
 		glUniform3f(_pLightSpecCol, 0.0f, 1.0f, 0.0f);
-
-
 	}
 
 	/* Call on window size change

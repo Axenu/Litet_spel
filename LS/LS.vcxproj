@@ -134,6 +134,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\MeshShader.cpp" />
+    <ClCompile Include="src\Render\DeferredMeshShader.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
@@ -155,6 +157,7 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Render\DeferredMeshShader.h" />
     <ClInclude Include="header\Character.h" />
     <ClInclude Include="header\gl\DeferredBuffer.h" />
     <ClInclude Include="header\gl\DefferedSettings.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="header\Render\RenderDeferred.h" />
     <ClInclude Include="header\gl\RenderQuad.h" />
     <ClInclude Include="header\Render\QuadShader.h" />
+    <ClInclude Include="header\Render\MeshShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

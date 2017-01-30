@@ -1,14 +1,12 @@
 #ifndef __First__Shader__
 #define __First__Shader__
 
-// #define GLEW_STATIC
-// #include <GL/glew.h>
-// #include <GLFW/glfw3.h>
 #include "gl/glInclude.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include"Render/FrameData.h"
 
 class Shader {
 
@@ -49,7 +47,6 @@ public:
 	return		>>	If the variable was found in the shader program
 	*/
 	bool bindSampler(const std::string &varName, int sampleSlot);
-
 
 	void printListOfUniforms();
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include"GraphicsResource.h"
+#include"camera.h"
 #include<glm/mat4x4.hpp>
 
 /* Frame temporary render information.
@@ -13,6 +14,6 @@ public:
 	const GraphicsResource& _resource;
 	glm::mat4 _V, _VP;
 
-	FrameData(const GraphicsResource& resource);
+	FrameData(const GraphicsResource& resource, const Camera &cam);
 	~FrameData();
 };
