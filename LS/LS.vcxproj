@@ -134,6 +134,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\EventManager.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Render\MeshShader.cpp" />
     <ClCompile Include="src\Render\DeferredMeshShader.cpp" />
     <ClCompile Include="src\Character.cpp" />
@@ -156,8 +158,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\VictoryCondition.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\EventManager.h" />
+    <ClInclude Include="header\GameObject.h" />
     <ClInclude Include="header\Render\DeferredMeshShader.h" />
     <ClInclude Include="header\Character.h" />
     <ClInclude Include="header\gl\DeferredBuffer.h" />
@@ -181,6 +186,8 @@
     <ClInclude Include="header\gl\RenderQuad.h" />
     <ClInclude Include="header\Render\QuadShader.h" />
     <ClInclude Include="header\Render\MeshShader.h" />
+    <ClInclude Include="header\type_info.h" />
+    <ClInclude Include="header\VictoryCondition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
