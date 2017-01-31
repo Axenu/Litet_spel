@@ -20,6 +20,7 @@
 #include "EventManager.h"
 #include "Camera.h"
 #include "Character.h"
+#include "GameObject.h"
 
 GLFWwindow* window;
 Grid gridtest;
@@ -76,6 +77,8 @@ void setupWindow()
 
 	Model *m = new Model(def_mesh);
 	Mesh mesh;
+	GameObject gO;
+	gO.setMesh(&mesh);
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
