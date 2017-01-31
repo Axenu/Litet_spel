@@ -2,7 +2,7 @@
 
 GameObject::GameObject()
 {
-
+	_mesh = nullptr;
 }
 
 GameObject::~GameObject()
@@ -15,9 +15,17 @@ void GameObject::onUpdate(float dt)
 
 }
 
-void GameObject::onRender()
+void GameObject::render()
 {
-	mesh.render();
+	if (_mesh != nullptr)
+	{
+		_mesh->render();
+	}
+}
+
+void GameObject::setMesh(Mesh * mesh)
+{
+	_mesh = mesh;
 }
 
 

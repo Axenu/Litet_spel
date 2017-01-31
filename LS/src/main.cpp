@@ -19,6 +19,7 @@
 #include "EventManager.h"
 #include "camera.h"
 #include "Character.h"
+#include "GameObject.h"
 
 GLFWwindow* window;
 Grid gridtest;
@@ -107,6 +108,8 @@ void setupWindow() {
 
 	Model *m = new Model(def_mesh);
 	Mesh mesh;
+	GameObject gO;
+	gO.setMesh(&mesh);
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
@@ -128,7 +131,7 @@ void setupWindow() {
 		m->update(0.016f);
 
 		def_mesh.assignUniforms(fD);
-		mesh.render();
+		gO.render();
 		gl::CheckGLErrors("Render stage failed: Mesh");
 
 		/*	Render to backbuffer:

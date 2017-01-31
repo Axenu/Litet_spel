@@ -11,10 +11,11 @@ public:
 	GameObject();
 	~GameObject();
 	void onUpdate(float dt);
-	void onRender();
+	void render();
+	void setMesh(Mesh *mesh);
 	glm::mat4 getModelMatrix();
 private:
-	Mesh mesh;
+	Mesh *_mesh;
 };
 
 
