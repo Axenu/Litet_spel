@@ -7,12 +7,15 @@ class Guard : public GameObject
 {
 private:
 	glm::vec3 Guardsposition;
-	glm::vec3 point1;
-	glm::vec3 point2;
+	glm::vec3 point1x;
+	glm::vec3 point2x;
+	glm::vec3 point1z;
+	glm::vec3 point2z;
+
 public:
 	~Guard();
 	Guard();
-	Guard(glm::vec3 Guarden);
+	Guard(glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenTwoPoints();
 	void Update(int dt);
 };

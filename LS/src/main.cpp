@@ -26,7 +26,7 @@ GLFWwindow* window;
 Grid gridtest;
 Camera camera;
 Character* player;
-Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y));
+Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y),gridtest.getxandypoint12(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y)));
 void setupWindow()
 {
     // Init glfw

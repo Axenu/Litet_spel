@@ -99,15 +99,13 @@ void Grid::loadingBmpPicture(char* filename)
 	buildgridarray();
 	//filling the twodarray with number1;
 
-glm::vec3** colorarray ;
-//building the 2D array
-colorarray = new glm::vec3*[_heightLength];
-for (int i = 0; i < _heightLength; i++)
-{
-	colorarray[i] = new glm::vec3[_widthLength];
-}
-
-
+	glm::vec3** colorarray ;
+	//building the 2D array
+	colorarray = new glm::vec3*[_heightLength];
+	for (int i = 0; i < _heightLength; i++)
+	{
+		colorarray[i] = new glm::vec3[_widthLength];
+	}	
 
 	int k = 0;
 	for (int j = 0; j < height; j++)
@@ -323,4 +321,52 @@ void Grid::checkifPlayerWon(glm::vec3 playerpos)
 		std::cout << "you won Congratulations" << std::endl;
 	}
 
+}
+
+glm::vec3 * Grid::getxandypoint12(glm::vec3 guardposition)
+{
+	//0 = x1,1=x2,2=y1,3=y2
+	glm::vec3 pointxy[4];
+	int i = guardposition.x;
+	int j = guardposition.z;
+	for (i; i < _widthLength; i++)
+	{
+		if (_twodArray[i][j].type == wall)
+		{
+			pointxy[0] = glm::vec3(_twodArray[i][j].xz.y,0,_twodArray[i][j].xz.x);
+			break;
+		}
+	}
+	i = guardposition.x;
+	 j = guardposition.z;
+	for (i; i > -1; i--)
+	{
+		if (_twodArray[i][j].type == wall)
+		{
+			pointxy[1] = glm::vec3(_twodArray[i][j].xz.y +1, 0, _twodArray[i][j].xz.x);
+			break;
+		}
+	}
+	 i = guardposition.x;
+	 j = guardposition.z;
+	for (j; j < _heightLength; j++)
+	{
+		if (_twodArray[i][j].type == wall)
+		{
+			pointxy[2] = glm::vec3(_twodArray[i][j].xz.y, 0, _twodArray[i][j].xz.x);
+			break;
+		}
+	}
+	i = guardposition.x;
+	j = guardposition.z;
+	for (j; j > -1; j--)
+	{
+		if (_twodArray[i][j].type == wall)
+		{
+			pointxy[3] = glm::vec3(_twodArray[i][j].xz.y, 0, _twodArray[i][j].xz.x + 1);
+			break;
+		}
+	}
+
+	return pointxy;
 }
