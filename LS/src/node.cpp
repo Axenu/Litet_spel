@@ -13,13 +13,13 @@ Node::Node() {
 }
 
 void Node::addChild(Node *child) {
-	children.push_back(child);
+	_children.push_back(child);
     child->setParent(this);
 }
 
 std::vector<Node *> Node::getAllChildren() {
 	std::vector<Node *> v;
-	for (Node *child : children) {
+	for (Node *child : _children) {
 		for (Node *n : child->getAllChildren()) {
 			v.push_back(n);
 		}
@@ -29,22 +29,25 @@ std::vector<Node *> Node::getAllChildren() {
 }
 
 void Node::setParent(Node *parent) {
-    this->parent = parent;
+    this->_parent = parent;
+}
+Node* Node::getParent() {
+	return this->_parent;
 }
 
 void Node::removeFromParent() {
-    if (this->parent != nullptr) {
-        this->parent->removeChild(this);
+    if (this->_parent != nullptr) {
+        this->_parent->removeChild(this);
     }
 }
 
 void Node::removeChild(Node *node) {
     Node *n = nullptr;
-    for (unsigned int i = 0; i < children.size(); i++) {
-        n = children[i];
+    for (unsigned int i = 0; i < _children.size(); i++) {
+        n = _children[i];
         if (n == node) {
             delete n;
-            children.erase(children.begin()+i);
+            _children.erase(_children.begin()+i);
             return;
         }
     }
@@ -59,10 +62,10 @@ void Node::update(float dt) {
 	 * this->modelMatrix = glm::translate(glm::mat4(), position) * this->modelMatrix;
 	*/
 	this->modelMatrix[3] = glm::vec4(position, 1.0f); //Translate / Move
-    if (this->parent != nullptr) {
-        this->modelMatrix = this->parent->modelMatrix * this->modelMatrix;
+    if (this->_parent != nullptr) {
+        this->modelMatrix = this->_parent->modelMatrix * this->modelMatrix;
     }
-    for (Node *Node : children)
+    for (Node *Node : _children)
         Node->update(dt);
 }
 
