@@ -37,7 +37,6 @@ public:
 	float getAspectRatio() const;
 	float getNearPlane() const;
 	float getFarPlane() const;
-	const glm::vec3 &getPosition() const;
 
 	~Camera();
 
