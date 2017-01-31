@@ -152,6 +152,55 @@ Mesh Grid::generateMesh()
 	std::vector<glm::vec3> normal;
 	std::vector<GLuint> indices;
 	GLint k = 0;
+	// Floor
+
+	// Position
+	position.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f                      ));
+	position.push_back(glm::vec3(0.f                     , 0.f, 0.f                      ));
+	position.push_back(glm::vec3(0.f                     , 0.f, _heightLength * GRIDSPACE));
+	position.push_back(glm::vec3(0.f                     , 0.f, _heightLength * GRIDSPACE));
+	position.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, _heightLength * GRIDSPACE));
+	position.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f                      ));
+	// Normals
+	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	// Index
+	indices.push_back(k);
+	indices.push_back(k + 1);
+	indices.push_back(k + 2);
+	indices.push_back(k + 3);
+	indices.push_back(k + 4);
+	indices.push_back(k + 5);
+	k += 6;
+
+	// Roof
+
+	// Position
+	position.push_back(glm::vec3(0.f                     , ROOFHEIGHT, 0.f                      ));
+	position.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, 0.f                      ));
+	position.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
+	position.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
+	position.push_back(glm::vec3(0.f                     , ROOFHEIGHT, _heightLength * GRIDSPACE));
+	position.push_back(glm::vec3(0.f                     , ROOFHEIGHT, 0.f                      ));
+	// Normals
+	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	// Index
+	indices.push_back(k);
+	indices.push_back(k + 1);
+	indices.push_back(k + 2);
+	indices.push_back(k + 3);
+	indices.push_back(k + 4);
+	indices.push_back(k + 5);
+	k += 6;
 	for (int j = 0; j < _heightLength; j++)
 	{
 		for (int i = 0; i < _widthLength; i++)

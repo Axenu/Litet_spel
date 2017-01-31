@@ -2,7 +2,7 @@
 #define GRIDDATASTRUCTURE
 
 #define GRIDSPACE 1.f
-#define ROOFHEIGHT 1.f
+#define ROOFHEIGHT 2.f
 #include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
