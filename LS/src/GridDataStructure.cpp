@@ -170,12 +170,12 @@ Mesh Grid::generateMesh()
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , j * GRIDSPACE));
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
 						// Normals
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
 						// Index
 						indices.push_back(k);
 						indices.push_back(k + 1);
@@ -198,12 +198,12 @@ Mesh Grid::generateMesh()
 						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
 						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
 						// Normals
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
+						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
 						// Index
 						indices.push_back(k);
 						indices.push_back(k + 1);
@@ -254,12 +254,12 @@ Mesh Grid::generateMesh()
 						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
 						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
 						// Normals
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
+						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
+						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
+						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
+						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
+						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
+						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
 						// Index
 						indices.push_back(k);
 						indices.push_back(k + 1);
