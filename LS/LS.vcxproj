@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
@@ -160,11 +161,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
-    <ClCompile Include="src\VictoryCondition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\EventManager.h" />
     <ClInclude Include="header\gl\VAData.h" />
+    <ClInclude Include="header\Guard.h" />
     <ClInclude Include="header\Material.h" />
     <ClInclude Include="header\GameObject.h" />
     <ClInclude Include="header\Render\DeferredMeshShader.h" />
@@ -191,7 +192,7 @@
     <ClInclude Include="header\Render\QuadShader.h" />
     <ClInclude Include="header\Render\MeshShader.h" />
     <ClInclude Include="header\type_info.h" />
-    <ClInclude Include="header\VictoryCondition.h" />
+    <ClInclude Include="header\Scene\Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

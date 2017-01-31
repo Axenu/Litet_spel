@@ -3,7 +3,7 @@
 void Character::setCamera(Camera* camera)
 {
     _camera = camera;
-    _camera->setY(0.8);
+    _camera->setY(0.8f);
     _velocity = glm::vec3(0,0,0);
 }
 void Character::onUpdate(float dt)
@@ -99,7 +99,6 @@ void Character::moveMouse(const MouseMoveEvent* event)
         rotateY(deltaPos.y * -RotationSpeed);
         rotateX(deltaPos.x * -RotationSpeed);
     }
-    std::cout << getRY() << std::endl;
     if (getRY() > glm::pi<float>()*0.5f)
     {
         setRY(glm::pi<float>()*0.5f);

@@ -3,7 +3,12 @@
 
 Grid::Grid()
 {
+	_gotTheTreasure = false;
+
+	exit = getData(exiting).xz;
+
 	 loadingBmpPicture("roomtest.bmp");	
+
 }
 
 Grid::~Grid()
@@ -293,4 +298,18 @@ bool Grid::wallCollission(glm::vec3 position)
 	{
 		return false;
 	}
+}
+
+void Grid::checkifPlayerWon(glm::vec3 playerpos)
+{
+	glm::vec2 fixedPlayerPos;
+	exit.x = (int)glm::floor(exit.x / GRIDSPACE);
+	exit.y = (int)glm::floor(exit.y / GRIDSPACE);
+	fixedPlayerPos.x = (int)glm::floor(playerpos.x / GRIDSPACE);
+	fixedPlayerPos.y = (int)glm::floor(playerpos.y / GRIDSPACE);
+	if (fixedPlayerPos == exit && _gotTheTreasure == true)
+	{
+		std::cout << "you won Congratulations" << std::endl;
+	}
+
 }

@@ -4,6 +4,9 @@
 //Private
 void Mesh::setUpMesh()
 {
+
+	_aabb = new AABB(&_position);
+
 	std::vector<gl::VertexAttribute> attri;
 	attri.push_back(gl::VertexAttribute(0, GL_FLOAT, 3, sizeof(float))); //Pos attribute
 	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Norm attribute
@@ -135,12 +138,15 @@ Mesh::Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> 
 {
 	this->setMesh(position, normal, indices);
 }
-Mesh::~Mesh() {
+Mesh::~Mesh()
+{
+	delete _aabb;
 }
 /* Move the data
 */
 Mesh::Mesh(Mesh &&move)
-	: _position(std::move(move._position)), _normal(std::move(move._normal)), _indices(std::move(move._indices)), _VA(std::move( move._VA)) {
+	: _position(std::move(move._position)), _normal(std::move(move._normal)), _indices(std::move(move._indices)), _VA(std::move( move._VA))
+{
 	move._VA = 0;
 }
 /* Move the data
@@ -170,8 +176,3 @@ void Mesh::render()
 	_VA.bindVAO();
 	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, gl::bufferOffset(0));
 }
-
-
-
-
-

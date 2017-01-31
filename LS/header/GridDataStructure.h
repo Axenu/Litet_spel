@@ -30,6 +30,8 @@ private:
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray;
+	bool _gotTheTreasure;
+	glm::vec2 exit;
 
 public:
 	Grid();
@@ -40,6 +42,7 @@ public:
 	void loadingBmpPicture(char* filename);
 	Mesh generateMesh();
 	bool wallCollission(glm::vec3 position);
+	void checkifPlayerWon(glm::vec3 playerpos);
 };
 
 
