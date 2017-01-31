@@ -8,12 +8,12 @@ void Character::setCamera(Camera* camera)
 }
 void Character::onUpdate(float dt)
 {
-    _camera->setRX(rotation.x);
-    _camera->setRY(rotation.y);
-    _camera->moveX(_velocity.y * dt * sin(rotation.x));
-    _camera->moveZ(_velocity.y * dt * cos(rotation.x));
-    _camera->moveX(_velocity.x * dt * cos(rotation.x));
-    _camera->moveZ(_velocity.x * dt * -sin(rotation.x));
+    _camera->setRX(_rotation.x);
+    _camera->setRY(_rotation.y);
+    _camera->moveX(_velocity.y * dt * sin(_rotation.x));
+    _camera->moveZ(_velocity.y * dt * cos(_rotation.x));
+    _camera->moveX(_velocity.x * dt * cos(_rotation.x));
+    _camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
 
 }
 void Character::onRender()

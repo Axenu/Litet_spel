@@ -11,6 +11,8 @@ class Scene
 private:
 	std::vector<GameObject> _objects;
 protected:
+	/* The scene tree root.
+	*/
 	Node _root;
 public:
 	Scene();
