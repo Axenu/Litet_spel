@@ -27,8 +27,8 @@ class MouseMoveEvent : public Event
 public:
     MouseMoveEvent(double x, double y) : _x(x), _y(y) {};
 
-    int getX() const {return _x;}
-    int getY() const {return _y;}
+    int getX() const {return (int)_x;}
+    int getY() const {return (int)_y;}
     glm::vec2 getPos() const {return glm::vec2(_x, _y);}
 
 private:

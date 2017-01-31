@@ -75,7 +75,7 @@ void setupWindow()
 	gl::CheckGLErrors("Init stage failed: Resource");
 
 	Model *m = new Model(def_mesh);
-	Mesh mesh;
+	Mesh mesh = gridtest.generateMesh();
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
@@ -96,7 +96,6 @@ void setupWindow()
 
 
 		def_mesh.assignUniforms(fD);
-		mesh = gridtest.generateMesh();
 		mesh.render();
 		gl::CheckGLErrors("Render stage failed: Mesh");
 

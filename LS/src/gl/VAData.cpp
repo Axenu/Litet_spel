@@ -24,10 +24,13 @@ namespace gl {
 		if (_VAO != 0) {
 			clearBinding();
 			glDeleteVertexArrays(1, &_VAO);
+			_VAO = 0;
 		}
 		//Delete vertex buffers
-		if (_glBuffer.size() > 0)
+		if (_glBuffer.size() > 0) {
 			glDeleteBuffers(_glBuffer.size(), &_glBuffer[0]);
+			_glBuffer.clear();
+		}
 	}
 	/* Move the data
 	*/

@@ -3,7 +3,7 @@
 void Character::setCamera(Camera* camera)
 {
     _camera = camera;
-    _camera->setY(0.8);
+    _camera->setY(0.8f);
     _velocity = glm::vec3(0,0,0);
 }
 void Character::onUpdate(float dt)

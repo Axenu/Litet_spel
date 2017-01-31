@@ -41,8 +41,8 @@ gridValues Grid::getData(gridType Data)
 				}
 			}
 		}
-	
 	}
+	throw new std::out_of_range("Grid value was out of bounds");
 }
 
 void Grid::print2darraydata()
