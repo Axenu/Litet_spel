@@ -9,6 +9,8 @@
 class Scene
 {
 private:
+	/* Data ownership of objects in the scene.
+	*/
 	std::vector<GameObject> _objects;
 protected:
 	/* The scene tree root.

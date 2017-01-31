@@ -12,6 +12,7 @@ class ModelPart;
  * Used to gather render data before sending it to the render functions.
  */
 class FrameData {
+private:
 
 public:
 
