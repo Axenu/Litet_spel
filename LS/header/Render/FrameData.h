@@ -4,6 +4,10 @@
 #include"camera.h"
 #include<glm/mat4x4.hpp>
 
+/* Forward declare
+*/
+class ModelPart;
+
 /* Frame temporary render information.
  * Used to gather render data before sending it to the render functions.
  */
