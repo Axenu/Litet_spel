@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="header\Render\QuadShader.h" />
     <ClInclude Include="header\Render\MeshShader.h" />
     <ClInclude Include="header\type_info.h" />
+    <ClInclude Include="header\Scene\Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
