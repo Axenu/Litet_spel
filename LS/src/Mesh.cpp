@@ -12,7 +12,7 @@ void Mesh::setUpMesh()
 	vertexData.push_back(&_position[0]);   //Get position array start pointer
 	vertexData.push_back(&_normal[0]);		//Get normal array start pointer
 
-	_VAO = gl::generateVAO_SoA(vertexData, attri, _position.size(), &_indices[0], sizeof(_indices[0]), _indices.size()); // Create VAO
+	_VA = gl::generateVAO_SoA(vertexData, attri, _position.size(), &_indices[0], sizeof(_indices[0]), _indices.size()); // Create VAO
 	gl::CheckGLErrors();
 }
 
@@ -136,31 +136,23 @@ Mesh::Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> 
 	this->setMesh(position, normal, indices);
 }
 Mesh::~Mesh() {
-	destroy();
-}
-void Mesh::destroy() {
-	if (_VAO != 0) {
-		glBindVertexArray(0);
-		glDeleteVertexArrays(1, &_VAO);
-	}
 }
 /* Move the data
 */
-Mesh::Mesh(Mesh &&move) 
-: _position(std::move(move._position)), _normal(std::move(move._normal)), _indices(std::move(move._indices)), _VAO(move._VAO){
-	move._VAO = 0;
+Mesh::Mesh(Mesh &&move)
+	: _position(std::move(move._position)), _normal(std::move(move._normal)), _indices(std::move(move._indices)), _VA(std::move( move._VA)) {
+	move._VA = 0;
 }
 /* Move the data
 */
 Mesh& Mesh::operator=(Mesh &&move) {
 	if (this == &move)
 		return *this;
-	destroy();
 	_position = std::move(move._position);
 	_normal = std::move(move._normal);
 	_indices = std::move(move._indices);
-	_VAO = move._VAO;
-	move._VAO = 0;
+	_VA = std::move(move._VA);
+	return *this;
 }
 
 
@@ -175,7 +167,7 @@ void Mesh::setMesh(const std::vector<glm::vec3> &position, const std::vector<glm
 
 void Mesh::render()
 {
-	glBindVertexArray(_VAO);
+	_VA.bindVAO();
 	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, gl::bufferOffset(0));
 }
 

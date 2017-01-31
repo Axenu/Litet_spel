@@ -2,6 +2,7 @@
 #define MESH_H
 
 #include <gl/glInclude.h>
+#include "gl/VAData.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <vector>
@@ -13,9 +14,8 @@ private:
 	std::vector<glm::vec3> _position;
 	std::vector<glm::vec3> _normal;
 	std::vector<GLuint> _indices;
-	GLuint _VAO;
+	gl::VAData _VA;
 	void setUpMesh();
-	void destroy();
 public:
 	Mesh();
 	Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);

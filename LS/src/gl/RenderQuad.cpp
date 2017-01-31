@@ -24,7 +24,7 @@ namespace gl{
 
 	void RenderQuad::render() const {
 		//Bind and render quad
-		glBindVertexArray(_quadVAO);
+		_quadVAO.bindVAO();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 	}
 

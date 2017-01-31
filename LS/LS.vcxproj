@@ -135,6 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\EventManager.cpp" />
+    <ClCompile Include="src\gl\VAData.cpp" />
     <ClCompile Include="src\Render\MeshShader.cpp" />
     <ClCompile Include="src\Render\DeferredMeshShader.cpp" />
     <ClCompile Include="src\Character.cpp" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\EventManager.h" />
+    <ClInclude Include="header\gl\VAData.h" />
     <ClInclude Include="header\Render\DeferredMeshShader.h" />
     <ClInclude Include="header\Character.h" />
     <ClInclude Include="header\gl\DeferredBuffer.h" />

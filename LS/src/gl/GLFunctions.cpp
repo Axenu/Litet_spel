@@ -45,26 +45,25 @@ namespace gl {
 #pragma region Generate VAO and load vertex & index buffers
 
 	/* Generates a simple VAO object containing vertices constructed by a single vec3 element.
-		vertexPositions	<<	Pointer to the vertex vec3 elements.
-		vertexCount		<<	The vertex count.
-		indices			<<	Pointer to the index data that will be sent to the gpu
-		indexByteSize	<<	The byte size of each index, 2 byte for int16 and 4 byte for int32 (16 & 32 bit integers)
-		indexCount		<<	The index count
+	vertexPositions	<<	Pointer to the vertex vec3 elements.
+	vertexCount		<<	The vertex count.
+	indices			<<	Pointer to the index data that will be sent to the gpu
+	indexByteSize	<<	The byte size of each index, 2 byte for int16 and 4 byte for int32 (16 & 32 bit integers)
+	indexCount		<<	The index count
 	*/
-	GLuint generateVAO_Simple(const void* vertexPositions, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
+	VAData generateVAO_Simple(const void* vertexPositions, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
 
 		//Vertices is the size of one vec3
 		int vertexSize = 12;
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO)
+		// Vertex Array Object (VAO) 
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
 
-
-		GLuint gBuffer[2];
 		// Generate two buffer ids to be used as VBO and IBO
+		std::vector<GLuint> gBuffer(2);
 		glGenBuffers(2, &gBuffer[0]);
 
 
@@ -83,21 +82,21 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 		//Unbind VOA
 		glBindVertexArray(0);
-		CheckGLErrors("Error during VAO construction");
-		return gVAO;
+		CheckGLErrors("Error generating and buffering VAO");
+		return VAData(gVAO, gBuffer);
 	}
 
 	/*	Generate a vertex array object (VAO) and assigning a vertex and index buffer with the specified data.
-		The Vertices will be assigned in AoS (Array of Structures) meaning each vertex struct are placed after eachother in the stream.
+	The Vertices will be assigned in AoS (Array of Structures) meaning each vertex struct are placed after eachother in the stream.
 
-		vertexData		<<	Pointer to the vertex data that will be sent to the gpu
-		attributes		<<	Array of vertex attribute definitions
-		vertexCount		<<	The vertex count
-		indices			<<	Pointer to the index data that will be sent to the gpu
-		indexByteSize	<<	The byte size of each index, 2 byte for int16 and 4 byte for int32 (16 & 32 bit integers)
-		indexCount		<<	The index count
+	vertexData		<<	Pointer to the vertex data that will be sent to the gpu
+	attributes		<<	Array of vertex attribute definitions
+	vertexCount		<<	The vertex count
+	indices			<<	Pointer to the index data that will be sent to the gpu
+	indexByteSize	<<	The byte size of each index, 2 byte for int16 and 4 byte for int32 (16 & 32 bit integers)
+	indexCount		<<	The index count
 	*/
-	GLuint generateVAO_AoS(const void* vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
+	VAData generateVAO_AoS(const void* vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
 
 		//Calculate the byte size/stride of each vertex from the vertex attributes
 		int vertexSize = 0;
@@ -107,14 +106,14 @@ namespace gl {
 
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO)
+		// Vertex Array Object (VAO) 
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
 
 
-		GLuint gBuffer[2];
 		// Generate two buffer ids to be used as VBO and IBO
+		std::vector<GLuint> gBuffer(2);
 		glGenBuffers(2, &gBuffer[0]);
 
 
@@ -141,24 +140,24 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 		//Unbind VOA
 		glBindVertexArray(0);
-		CheckGLErrors();
-		return gVAO;
+		CheckGLErrors("Error generating and buffering VAO");
+		return VAData(gVAO, gBuffer);
 	}
 
 
-	GLuint generateVAO_SoA(const std::vector<const void*> &vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
+	VAData generateVAO_SoA(const std::vector<const void*> &vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
 		//http://ogldev.atspace.co.uk/www/tutorial32/tutorial32.html
 
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO)
+		// Vertex Array Object (VAO) 
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
 
 
 		// Generate buffer ids to be used as VBO and IBO.
-		std::vector<GLuint> gBuffers = std::vector<GLuint>(vertexData.size() + 1); //+1 for index buffer
+		std::vector<GLuint> gBuffers(vertexData.size() + 1); //+1 for index buffer
 		glGenBuffers(gBuffers.size(), &gBuffers[0]);
 
 		for (unsigned int i = 0; i < vertexData.size(); i++) {
@@ -171,7 +170,7 @@ namespace gl {
 
 			//Enables the attribute "slot" in the VAO for each attribute
 			glEnableVertexAttribArray(vertexAttri[i].attributeIndex);
-			// Specify the data array attribute. Describing what the data represents and layout identifier for opengl code
+			// Specify the data array attribute. Describing what the data represents and layout identifier for opengl code 
 			glVertexAttribPointer(vertexAttri[i].attributeIndex, vertexAttri[i].elementCount, vertexAttri[i].elementType, vertexAttri[i].noormalize, 0, 0);
 		}
 
@@ -181,9 +180,8 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 
 		glBindVertexArray(0);
-		CheckGLErrors();
-
-		return gVAO;
+		CheckGLErrors("Error generating and buffering VAO");
+		return VAData(gVAO, gBuffers);
 	}
 
 #pragma endregion
