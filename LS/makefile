@@ -13,7 +13,7 @@ SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOUR
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
-CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long
+CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual -Wno-reorder
 # The c++ compiler to use for compilation
 CC = g++
 
