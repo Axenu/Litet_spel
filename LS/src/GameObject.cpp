@@ -31,5 +31,5 @@ void GameObject::setMesh(Mesh * mesh)
 
 glm::mat4 GameObject::getModelMatrix()
 {
-	return modelMatrix;
+	return _modelMatrix;
 }

@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\BasicColorMaterial.cpp" />
+    <ClCompile Include="src\Guard.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\EventManager.cpp" />

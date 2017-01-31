@@ -23,7 +23,7 @@
 #endif
 
 class Node {
-    bool isActive;
+    bool _isActive;
 
 public:
 	Node();
@@ -31,6 +31,7 @@ public:
 	void addChild(Node *child);
 	std::vector<Node *> getAllChildren();
     void setParent(Node *parent);
+	Node* getParent();
     void removeFromParent();
     void removeChild(Node *Node);
 
@@ -63,22 +64,22 @@ public:
     float getRX();
     float getRY();
     float getRZ();
-	glm::vec3 getScale();
-    glm::vec3 getPosition();
-    glm::vec3 getRotation();
+	glm::vec3 getScale() const;
+    glm::vec3 getPosition() const;
+    glm::vec3 getRotation() const;
 
 
 	virtual ~Node();
 
 
-	glm::vec3 position;
 
 protected:
-	glm::vec3 rotation;
-	glm::vec3 scale;
-    glm::mat4 modelMatrix;
-    std::vector<Node *> children;
-    Node *parent = nullptr;
+	glm::vec3 _position;
+	glm::vec3 _rotation;
+	glm::vec3 _scale;
+    glm::mat4 _modelMatrix;
+    std::vector<Node *> _children;
+    Node *_parent = nullptr;
 
     virtual void onUpdate(float dt){}
     virtual void onRender(){}

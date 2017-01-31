@@ -21,12 +21,12 @@
 #include "Camera.h"
 #include "Character.h"
 #include "GameObject.h"
-
+#include "Guard.h"
 GLFWwindow* window;
 Grid gridtest;
 Camera camera;
 Character* player;
-
+Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y),gridtest.getxandypoint12(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y)));
 void setupWindow()
 {
     // Init glfw
@@ -77,6 +77,7 @@ void setupWindow()
 	Mesh mesh = gridtest.generateMesh(); 
 	Mesh wallMesh = gridtest.generateMesh();
 
+
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
     player->setCamera(&camera);
@@ -118,6 +119,7 @@ void setupWindow()
 void Deanstestingruta()
 {
 	gridtest.print2darraydata();
+	
 }
 
 int main()
