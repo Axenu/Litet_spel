@@ -8,7 +8,7 @@ public:
 	Material();
 	Material(GLuint shaderProgram);
 	~Material();
-	virtual void SetUp() = 0;
+	virtual void SetUp() {};
 protected:
 	GLuint _shaderProgram;
 };

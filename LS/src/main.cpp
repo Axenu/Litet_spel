@@ -22,6 +22,8 @@
 #include "Character.h"
 #include "GameObject.h"
 #include "Guard.h"
+#include"Scene/Scene.h"
+#include"Scene/DrawFrame.h"
 GLFWwindow* window;
 Grid gridtest;
 Camera camera;
@@ -71,33 +73,41 @@ void setupWindow()
 	//basic init
 	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
-	DeferredMeshShader def_mesh;
+	DeferredMeshShader meshShader;
 	RenderDeferred deferred(resource.getQuad());
+	Material material;
+	Scene scene;
 	gl::CheckGLErrors("Init stage failed: Resource");
-	Mesh mesh = gridtest.generateMesh(); 
-	Mesh wallMesh = gridtest.generateMesh();
 
+
+	Mesh wallMesh = gridtest.generateMesh();
+	
+	scene.add(GameObject(Model(&wallMesh, &meshShader, &material)));
+	
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
 		// camera.rotateZ(0.001f);
         //update
-        player->update(0.016f);
-		camera.update(0.016f);
+		float dT = 0.016f;
+		scene.update(dT);
+        player->update(dT);
+		camera.update(dT);
 
 		FrameData fD(resource, camera);
+		DrawFrame dF;
+		scene.fetchDrawables(dF);
 
 		resource.getDeffered().bindDraw();
 
-
-		def_mesh.assignUniforms(fD);
-		wallMesh.render();
+		dF.render(fD);
 		gl::CheckGLErrors("Render stage failed: Mesh");
 
 		/*	Render to backbuffer:

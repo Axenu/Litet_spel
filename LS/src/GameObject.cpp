@@ -1,8 +1,11 @@
 #include "GameObject.h" 
 
 GameObject::GameObject()
+	: _model()
 {
-	_mesh = nullptr;
+}
+GameObject::GameObject(Model &m)
+ : _model(m) {
 }
 
 GameObject::~GameObject()
@@ -15,21 +18,16 @@ void GameObject::onUpdate(float dt)
 
 }
 
-void GameObject::render()
-{
-	if (_mesh != nullptr)
-	{
-		_mesh->render();
-	}
-}
 
-void GameObject::setMesh(Mesh * mesh)
-{
-	_mesh = mesh;
+void GameObject::setModel(Model &m) {
+	_model = m;
+}
+const Model& GameObject::getModel() {
+	return _model;
 }
 
 
-glm::mat4 GameObject::getModelMatrix()
+const glm::mat4& GameObject::getModelMatrix()
 {
 	return _modelMatrix;
 }

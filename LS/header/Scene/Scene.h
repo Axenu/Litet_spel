@@ -1,7 +1,7 @@
 #pragma once
 #include<vector>
 #include"../GameObject.h"
-#include"Render/FrameData.h"
+#include"DrawFrame.h"
 #include"node.h"
 
 /* Scene holding the objects 
@@ -26,8 +26,8 @@ public:
 	/* Adds a game object to the scene.
 	*/
 	void add(GameObject &object);
-	/* Fetches and culls the drawables for the scene
+	/* Populates the DrawFrame by fetching and culling the scene drawables
 	*/
-	void fetchObjects(FrameData &fD);
+	void fetchDrawables(DrawFrame &dF);
 };
 

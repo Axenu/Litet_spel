@@ -30,6 +30,7 @@ public:
 	Model(Mesh* pMesh, MeshShader* pShader, Material* pMaterial);
 
 	void render(FrameData &fD, glm::mat4 &modelMatrix) const;
+	const std::vector<MeshPart>& getParts() const;
 
 	~Model();
 private:

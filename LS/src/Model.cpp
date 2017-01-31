@@ -31,9 +31,12 @@ void Model::render(FrameData &fD, glm::mat4 &modelMatrix) const
 {
 	for (int i = 0; i < _meshParts.size(); i++)
 	{
-		_meshParts[i]._shader->assignUniforms(fD);
+		_meshParts[i]._shader->assignUniforms(fD, modelMatrix);
 		_meshParts[i]._mesh->render();
 	}
+}
+const std::vector<MeshPart>& Model::getParts() const {
+	return _meshParts;
 }
 
 
