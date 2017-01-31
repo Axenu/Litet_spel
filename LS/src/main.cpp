@@ -26,7 +26,7 @@ GLFWwindow* window;
 Grid gridtest;
 Camera camera;
 Character* player;
-Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y));
+Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y),gridtest.getxandypoint12(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y)));
 void setupWindow()
 {
     // Init glfw
@@ -74,16 +74,13 @@ void setupWindow()
 	DeferredMeshShader def_mesh;
 	RenderDeferred deferred(resource.getQuad());
 	gl::CheckGLErrors("Init stage failed: Resource");
-
-	Model *m = new Model(def_mesh);
 	Mesh mesh = gridtest.generateMesh(); 
-	GameObject gO;
-	gO.setMesh(&mesh);
 	Mesh wallMesh = gridtest.generateMesh();
 
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
+	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 /* Loop until the user closes the window */
@@ -92,7 +89,6 @@ void setupWindow()
 		// camera.rotateZ(0.001f);
         //update
         player->update(0.016f);
-		m->update(0.016f);
 		camera.update(0.016f);
 
 		FrameData fD(resource, camera);

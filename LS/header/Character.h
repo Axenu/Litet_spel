@@ -7,6 +7,7 @@
 #include "EventManager.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
+#include "GridDataStructure.h"
 
 #define RotationSpeed 0.005f
 
@@ -33,10 +34,13 @@ public:
     void moveMouse(const MouseMoveEvent* event);
     void collectLoot(const CollectLootEvent* event);
 
+	void setLevel(Grid *level);
+
     Character(EventManager *manager);
     Character();
     ~Character();
 private:
+	Grid *_currentLevel;
     EventManager *_eventManager;
     Camera* _camera;
     glm::vec2 _lastCursorPos;

@@ -2,7 +2,7 @@
 #define GRIDDATASTRUCTURE
 
 #define GRIDSPACE 1.f
-#define ROOFHEIGHT 1.f
+#define ROOFHEIGHT 2.f
 #include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -43,6 +43,7 @@ public:
 	Mesh generateMesh();
 	bool wallCollission(glm::vec3 position);
 	void checkifPlayerWon(glm::vec3 playerpos);
+	glm::vec3* getxandypoint12(glm::vec3 guardposition);
 };
 
 
