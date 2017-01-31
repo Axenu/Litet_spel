@@ -1,6 +1,6 @@
 #pragma once
 #pragma once
-#include<GL/glew.h>
+#include "gl/glInclude.h"
 #include<vector>
 
 namespace gl {

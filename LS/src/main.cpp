@@ -20,6 +20,7 @@
 #include "EventManager.h"
 #include "Camera.h"
 #include "Character.h"
+#include "GameObject.h"
 
 GLFWwindow* window;
 Grid gridtest;
@@ -75,6 +76,9 @@ void setupWindow()
 	gl::CheckGLErrors("Init stage failed: Resource");
 
 	Model *m = new Model(def_mesh);
+	Mesh mesh;
+	GameObject gO;
+	gO.setMesh(&mesh);
 	Mesh mesh = gridtest.generateMesh();
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
