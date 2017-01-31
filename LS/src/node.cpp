@@ -180,15 +180,15 @@ float Node::getRZ()  {
     return _rotation.z;
 }
 
-glm::vec3 Node::getScale()  {
+glm::vec3 Node::getScale() const {
     return _scale;
 }
 
-glm::vec3 Node::getPosition()  {
+glm::vec3 Node::getPosition() const {
     return _position;
 }
 
-glm::vec3 Node::getRotation()  {
+glm::vec3 Node::getRotation() const {
     return _rotation;
 }
 

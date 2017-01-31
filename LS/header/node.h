@@ -64,9 +64,9 @@ public:
     float getRX();
     float getRY();
     float getRZ();
-	glm::vec3 getScale();
-    glm::vec3 getPosition();
-    glm::vec3 getRotation();
+	glm::vec3 getScale() const;
+    glm::vec3 getPosition() const;
+    glm::vec3 getRotation() const;
 
 
 	virtual ~Node();
