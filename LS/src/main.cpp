@@ -81,6 +81,7 @@ void setupWindow()
 	gO.setMesh(&mesh);
 	Mesh wallMesh = gridtest.generateMesh();
 
+
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
     player->setCamera(&camera);
