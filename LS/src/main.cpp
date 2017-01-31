@@ -21,12 +21,12 @@
 #include "Camera.h"
 #include "Character.h"
 #include "GameObject.h"
-
+#include "Guard.h"
 GLFWwindow* window;
 Grid gridtest;
 Camera camera;
 Character* player;
-
+Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y));
 void setupWindow()
 {
     // Init glfw
@@ -123,6 +123,7 @@ void setupWindow()
 void Deanstestingruta()
 {
 	gridtest.print2darraydata();
+	
 }
 
 int main()

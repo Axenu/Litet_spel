@@ -45,6 +45,13 @@ gridValues Grid::getData(gridType Data)
 					return _twodArray[i][j];
 				}
 			}
+			if (Data == guard)
+			{
+				if (_twodArray[i][j].type == guard)
+				{
+					return _twodArray[i][j];
+				}
+			}
 		}
 	
 	}
@@ -107,8 +114,8 @@ for (int i = 0; i < _heightLength; i++)
 	{
 		for (int i = 0; i < width; i++)
 		{
-			_twodArray[i][j].xz.x = (float)i;
-			_twodArray[i][j].xz.y = (float)j;
+			_twodArray[i][j].xz.y = (float)i;
+			_twodArray[i][j].xz.x = (float)j;
 			colorarray[height - 1 - j][i].x = datan[k];
 			colorarray[height - 1 - j][i].y = datan[k + 1];
 			colorarray[height - 1 - j][i].z = datan[k + 2];
@@ -131,6 +138,10 @@ for (int i = 0; i < _heightLength; i++)
 			if (colorarray[i][j] == glm::vec3(255, 0, 0))
 			{
 				_twodArray[i][j].type = exiting;
+			}
+			if (colorarray[i][j] == glm::vec3(0, 255, 0))
+			{
+				_twodArray[i][j].type = guard;
 			}
 
 		}
