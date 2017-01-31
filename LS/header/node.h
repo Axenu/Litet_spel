@@ -23,7 +23,7 @@
 #endif
 
 class Node {
-    bool isActive;
+    bool _isActive;
 
 public:
 	Node();
@@ -74,10 +74,10 @@ public:
 
 
 protected:
-	glm::vec3 position;
-	glm::vec3 rotation;
-	glm::vec3 scale;
-    glm::mat4 modelMatrix;
+	glm::vec3 _position;
+	glm::vec3 _rotation;
+	glm::vec3 _scale;
+    glm::mat4 _modelMatrix;
     std::vector<Node *> _children;
     Node *_parent = nullptr;
 

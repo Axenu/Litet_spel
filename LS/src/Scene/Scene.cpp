@@ -20,7 +20,9 @@ void Scene::update(float dT) {
 /* Adds a game object to the scene.
 */
 void Scene::add(GameObject &object) {
-	object.setParent(&_root);
+	//If object has no parent set the scene as the root.?
+	if(!object.getParent())
+		object.setParent(&_root);
 	_objects.push_back(std::move(object));
 }
 /* Fetches and culls the drawables for the scene
