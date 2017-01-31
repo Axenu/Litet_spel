@@ -1,17 +1,14 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 
-#include <gl/GLFunctions.h>
+#include <gl/glInclude.h>
 
 class Material
 {
 public:
 	Material();
-	Material(const Material&);
+	Material(GLuint shaderProgram);
 	~Material();
-
-	Material(GLuint);
-	void SetMaterialColor(GLuint, float, float, float, float);
+	virtual void SetUp() = 0;
+protected:
+	GLuint _shaderProgram;
 };
-
-#endif

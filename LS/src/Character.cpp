@@ -99,7 +99,6 @@ void Character::moveMouse(const MouseMoveEvent* event)
         rotateY(deltaPos.y * -RotationSpeed);
         rotateX(deltaPos.x * -RotationSpeed);
     }
-    std::cout << getRY() << std::endl;
     if (getRY() > glm::pi<float>()*0.5f)
     {
         setRY(glm::pi<float>()*0.5f);

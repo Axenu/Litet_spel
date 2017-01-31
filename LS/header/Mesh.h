@@ -6,6 +6,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <vector>
+#include "AABB.h"
 
 
 class Mesh
@@ -15,6 +16,7 @@ private:
 	std::vector<glm::vec3> _normal;
 	std::vector<GLuint> _indices;
 	gl::VAData _VA;
+	AABB *_aabb;
 	void setUpMesh();
 public:
 	Mesh();
