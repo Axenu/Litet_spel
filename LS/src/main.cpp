@@ -76,6 +76,7 @@ void setupWindow()
 	gl::CheckGLErrors("Init stage failed: Resource");
 
 	Model *m = new Model(def_mesh);
+	Mesh mesh = gridtest.generateMesh(); 
 	GameObject gO;
 	gO.setMesh(&mesh);
 	Mesh wallMesh = gridtest.generateMesh();

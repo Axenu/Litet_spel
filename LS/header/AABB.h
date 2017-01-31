@@ -16,4 +16,6 @@ private:
 
 public:
     AABB(std::vector<glm::vec3> *position);
+
+    ~AABB();
 };
