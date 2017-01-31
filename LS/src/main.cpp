@@ -74,11 +74,7 @@ void setupWindow()
 	DeferredMeshShader def_mesh;
 	RenderDeferred deferred(resource.getQuad());
 	gl::CheckGLErrors("Init stage failed: Resource");
-
-	Model *m = new Model(def_mesh);
 	Mesh mesh = gridtest.generateMesh(); 
-	GameObject gO;
-	gO.setMesh(&mesh);
 	Mesh wallMesh = gridtest.generateMesh();
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
@@ -91,7 +87,6 @@ void setupWindow()
 		// camera.rotateZ(0.001f);
         //update
         player->update(0.016f);
-		m->update(0.016f);
 		camera.update(0.016f);
 
 		FrameData fD(resource, camera);
