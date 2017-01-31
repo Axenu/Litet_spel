@@ -43,4 +43,5 @@ private:
     glm::vec3 _velocity;
     float _lootValue;
     bool _hasMoved = false;
+    int _cursorMode = GLFW_CURSOR_NORMAL;
 };

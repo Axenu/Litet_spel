@@ -49,16 +49,29 @@ private:
     int _action;
 };
 
+class cursorModeChangeEvent : public Event
+{
+public:
+    cursorModeChangeEvent(int state) : _state(state) {};
+
+    int getState() const {return _state;}
+
+private:
+    int _state;
+};
+
 class InputManager
 {
 public:
     InputManager(GLFWwindow *window, EventManager* manager);
     ~InputManager();
 
-    void switchCursorMode(GLFWwindow *window);
+    void switchCursorMode(const cursorModeChangeEvent* event);
+    // int getCursorMode();
 
     EventManager* getManager();
 private:
     EventManager* _manager;
+    GLFWwindow* _window;
     int _cursorMode;
 };

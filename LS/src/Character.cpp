@@ -3,6 +3,7 @@
 void Character::setCamera(Camera* camera)
 {
     _camera = camera;
+    _camera->setY(0.8);
     _velocity = glm::vec3(0,0,0);
 }
 void Character::onUpdate(float dt)
@@ -65,6 +66,22 @@ void Character::moveCharacter(const KeyboardEvent* event)
             _velocity.x -= 1.0f;
         }
     }
+    else if (event->getKey() == GLFW_KEY_T)
+    {
+        if (event->getAction() == GLFW_PRESS)
+        {
+            if (_cursorMode == GLFW_CURSOR_NORMAL)
+            {
+                _cursorMode = GLFW_CURSOR_DISABLED;
+            }
+            else
+            {
+                _cursorMode = GLFW_CURSOR_NORMAL;
+            }
+            _hasMoved = false;
+            _eventManager->execute(new cursorModeChangeEvent(_cursorMode));
+        }
+    }
 }
 void Character::moveMouse(const MouseMoveEvent* event)
 {
@@ -77,8 +94,11 @@ void Character::moveMouse(const MouseMoveEvent* event)
     glm::vec2 currentCurserPos = event->getPos();
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
-    rotateY(deltaPos.y * RotationSpeed);
-    rotateX(deltaPos.x * RotationSpeed);
+    if (_cursorMode == GLFW_CURSOR_DISABLED)
+    {
+        rotateY(deltaPos.y * -RotationSpeed);
+        rotateX(deltaPos.x * -RotationSpeed);
+    }
 }
 void Character::collectLoot(const CollectLootEvent* event)
 {

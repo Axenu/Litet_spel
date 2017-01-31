@@ -9,18 +9,6 @@ protected:
 	virtual ~Event() {};
 };
 
-class Explosion : public Event
-{
-public:
-	Explosion(int pos) : _pos(pos), _damage(60) {};
-
-	int getPosition()	const	{return _pos;}
-	int getDamage()		const	{return _damage;}
-
-private:
-	int _pos, _damage;
-};
-
 class HandlerFunctionBase
 {
 public:

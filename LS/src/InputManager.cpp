@@ -6,13 +6,6 @@ void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) 
     if (key == GLFW_KEY_ESCAPE)
     {
          glfwSetWindowShouldClose(win, 1);
-    } else if (key == GLFW_KEY_T)
-    {
-        if (action == GLFW_PRESS)
-        {
-            InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-            iManager->switchCursorMode(win);
-        }
     }
     else
     {
@@ -31,27 +24,24 @@ void cursorPosition_callback(GLFWwindow* win, double x, double y) {
     iManager->getManager()->execute(new MouseMoveEvent(x, y));
 }
 
-void InputManager::switchCursorMode(GLFWwindow *window)
+void InputManager::switchCursorMode(const cursorModeChangeEvent* event)
 {
-    if (_cursorMode == GLFW_CURSOR_NORMAL)
-    {
-        _cursorMode = GLFW_CURSOR_DISABLED;
-    }
-    else
-    {
-        _cursorMode = GLFW_CURSOR_NORMAL;
-    }
-    glfwSetInputMode(window, GLFW_CURSOR, _cursorMode);
+    glfwSetInputMode(_window, GLFW_CURSOR, event->getState());
 }
+// int InputManager::getCursorMode()
+// {
+//     return _cursorMode;
+// }
 
-InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _manager(manager)
+InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(window), _manager(manager)
 {
-    _cursorMode = GLFW_CURSOR_NORMAL;
-    glfwSetWindowUserPointer(window, this);
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetMouseButtonCallback(window, mouse_key_callback);
-    glfwSetCursorPosCallback(window, cursorPosition_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, _cursorMode);
+    // _cursorMode = GLFW_CURSOR_NORMAL;
+    glfwSetWindowUserPointer(_window, this);
+    glfwSetKeyCallback(_window, key_callback);
+    glfwSetMouseButtonCallback(_window, mouse_key_callback);
+    glfwSetCursorPosCallback(_window, cursorPosition_callback);
+    glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    _manager->listen(this, &InputManager::switchCursorMode);
 }
 InputManager::~InputManager()
 {
