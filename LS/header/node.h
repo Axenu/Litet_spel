@@ -31,6 +31,7 @@ public:
 	void addChild(Node *child);
 	std::vector<Node *> getAllChildren();
     void setParent(Node *parent);
+	Node* getParent();
     void removeFromParent();
     void removeChild(Node *Node);
 
@@ -71,14 +72,14 @@ public:
 	virtual ~Node();
 
 
-	glm::vec3 position;
 
 protected:
+	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
     glm::mat4 modelMatrix;
-    std::vector<Node *> children;
-    Node *parent = nullptr;
+    std::vector<Node *> _children;
+    Node *_parent = nullptr;
 
     virtual void onUpdate(float dt){}
     virtual void onRender(){}
