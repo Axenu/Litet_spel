@@ -43,6 +43,7 @@ public:
 	Mesh generateMesh();
 	bool wallCollission(glm::vec3 position);
 	void checkifPlayerWon(glm::vec3 playerpos);
+	glm::vec3* getxandypoint12(glm::vec3 guardposition);
 };
 
 
