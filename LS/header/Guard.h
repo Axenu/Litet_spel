@@ -1,8 +1,9 @@
 #ifndef GUARD_H
 #define GUARD_H
 #include "gl/glInclude.h"
+#include "GameObject.h"
 
-class Guard : public
+class Guard : public GameObject
 {
 private:
 
