@@ -79,7 +79,7 @@ void setupWindow()
 	Mesh mesh;
 	GameObject gO;
 	gO.setMesh(&mesh);
-	Mesh mesh = gridtest.generateMesh();
+	Mesh wallMesh = gridtest.generateMesh();
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
@@ -100,7 +100,7 @@ void setupWindow()
 
 
 		def_mesh.assignUniforms(fD);
-		mesh.render();
+		wallMesh.render();
 		gl::CheckGLErrors("Render stage failed: Mesh");
 
 		/*	Render to backbuffer:
