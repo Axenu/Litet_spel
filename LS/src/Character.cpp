@@ -10,11 +10,37 @@ void Character::onUpdate(float dt)
 {
     _camera->setRX(_rotation.x);
     _camera->setRY(_rotation.y);
-    _camera->moveX(_velocity.y * dt * sin(_rotation.x));
-    _camera->moveZ(_velocity.y * dt * cos(_rotation.x));
-    _camera->moveX(_velocity.x * dt * cos(_rotation.x));
-    _camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
-
+	glm::vec3 collissionTest = _camera->getPosition();
+	collissionTest.x += _velocity.y * dt * sin(_rotation.x);
+	collissionTest.z += _velocity.y * dt * cos(_rotation.x);
+	collissionTest.x += _velocity.x * dt * cos(_rotation.x);
+	collissionTest.z += _velocity.x * dt * -sin(_rotation.x);
+	if (_currentLevel->wallCollission(collissionTest) == false) // no collission, move
+	{
+		_camera->moveX(_velocity.y * dt * sin(_rotation.x));
+		_camera->moveZ(_velocity.y * dt * cos(_rotation.x));
+		_camera->moveX(_velocity.x * dt * cos(_rotation.x));
+		_camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
+	}
+	else                                                        // if colission, slide along the wall
+	{
+		collissionTest = _camera->getPosition();
+		collissionTest.x += _velocity.y * dt * sin(_rotation.x);
+		collissionTest.x += _velocity.x * dt * cos(_rotation.x);
+		if (_currentLevel->wallCollission(collissionTest) == false)
+		{
+			_camera->moveX(_velocity.y * dt * sin(_rotation.x));
+			_camera->moveX(_velocity.x * dt * cos(_rotation.x));
+		}
+		collissionTest = _camera->getPosition();
+		collissionTest.z += _velocity.y * dt * cos(_rotation.x);
+		collissionTest.z += _velocity.x * dt * -sin(_rotation.x);
+		if (_currentLevel->wallCollission(collissionTest) == false)
+		{
+			_camera->moveZ(_velocity.y * dt * cos(_rotation.x));
+			_camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
+		}
+	}
 }
 void Character::onRender()
 {
@@ -112,6 +138,10 @@ void Character::collectLoot(const CollectLootEvent* event)
 {
     std::cout << "recieved loot of value: " << event->getValue() << std::endl;
     _lootValue += event->getValue();
+}
+void Character::setLevel(Grid *level)
+{
+	this->_currentLevel = level;
 }
 Character::Character(EventManager *manager) : _eventManager(manager)
 {

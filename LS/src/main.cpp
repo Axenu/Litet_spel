@@ -84,6 +84,7 @@ void setupWindow()
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
+	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 /* Loop until the user closes the window */
