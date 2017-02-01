@@ -44,7 +44,7 @@ namespace gui
     	glyph* g = _font->getGlyph((int)text[0]);
 
     	//custom anchorpoint?
-    	for (int i = 0; i < text.length(); i++)
+    	for (int i = 0; i < (int)text.length(); i++)
         {
     		//v0 |_
     		vertices.push_back(x + g->x1); //x1
