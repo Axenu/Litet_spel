@@ -9,7 +9,7 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	for (unsigned int i = 0; i < _objects.size(); i++)
+	for (unsigned int i = 0; i < _objects.size()-1; i++)
 		delete _objects[i];
 }
 

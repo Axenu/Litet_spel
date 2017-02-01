@@ -372,12 +372,18 @@ void Grid::checkifPlayerWon(glm::vec3 playerpos)
 
 }
 
-glm::vec3* Grid::getxandypoint12(glm::vec3 guardposition)
+glm::vec3 Grid::getxandypoint12(int i)
+{
+	return pointxy[i];
+}
+
+void Grid::Createxandypoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
-	glm::vec3 pointxy[4];
+	
 	int j = guardposition.x;
 	int i = guardposition.z;
+
 	for (i; i < _heightLength; i++)
 	{
 		if (_twodArray[i][j].type == wall)
@@ -386,6 +392,7 @@ glm::vec3* Grid::getxandypoint12(glm::vec3 guardposition)
 			break;
 		}
 	}
+
 	j = guardposition.x;
 	i = guardposition.z;
 	for (i ; i > -1; i--)
@@ -458,5 +465,5 @@ glm::vec3* Grid::getxandypoint12(glm::vec3 guardposition)
 		}
 	}*/
 
-	return pointxy;
+	
 }
