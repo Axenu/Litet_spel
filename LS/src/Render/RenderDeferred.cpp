@@ -1,4 +1,5 @@
 #include "Render/RenderDeferred.h"
+#include "Render/PointLight.h"
 
 	RenderDeferred::RenderDeferred(const gl::RenderQuad& quad)
 		: QuadShader(quad, "Quad", "Deferred_Comp")
@@ -24,11 +25,11 @@
 
 
 		//Point light
-		_pLight_fade = _shader.getUniform("pLight_Fade");
+		_pNumLights = _shader.getUniform("pNumLight");
 		_pLightPos = _shader.getUniform("pLightPos");
-		_pLightSpecCol = _shader.getUniform("pLightSpecCol");
-		_pLightDiffCol = _shader.getUniform("pLightDiffCol");
-
+		_pLightDiffCol = _shader.getUniform("pLightDif");
+		_pLightSpecCol = _shader.getUniform("pLightSpec");
+		_pLightFade = _shader.getUniform("pLightFade");
 
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
@@ -41,16 +42,31 @@
 	/* Assign frame uniforms
 	*/
 	void RenderDeferred::assignUniforms(FrameData &fD){
-		//Bind resources
-		fD._resource.getDeffered().bindTextures();
-
-		/*	Set point light
+		std::vector<PointLight> lights;
+		lights.push_back(PointLight(fD._eye, glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f));
+		lights.push_back(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f));
+		//Clamp light count
+		unsigned int numLights = lights.size() < MAXLIGHTCOUNT ? lights.size() : MAXLIGHTCOUNT;
+		/* Prepare uniform data by arranging light data into arrays.
 		*/
-		glm::vec3 lightPos = fD._V * glm::vec4(fD._eye, 1.0f);
-		glUniform3f(_pLightPos, lightPos.x, lightPos.y, lightPos.z);
-		glUniform1f(_pLight_fade, 5.0f);
-		glUniform3f(_pLightDiffCol, 0.8f, 0.8f, 0.8f);
-		glUniform3f(_pLightSpecCol, 0.0f, 1.0f, 0.0f);
+		glm::vec3 POS[MAXLIGHTCOUNT], DIF[MAXLIGHTCOUNT], SPEC[MAXLIGHTCOUNT];
+		float FADE[MAXLIGHTCOUNT];
+		for (unsigned int i = 0; i < numLights; i++) {
+			//Transform positions in to viewspace
+			POS[i] = fD._V * glm::vec4(lights[i]._pos, 1.0f);
+			DIF[i] = lights[i]._diffuse;
+			SPEC[i] = lights[i]._specular;
+			FADE[i] = lights[i]._fadeDist;
+		}
+		/*	Bind resources
+		*/
+		fD._resource.getDeffered().bindTextures();
+		//	Light uniforms
+		glUniform1ui(_pNumLights, numLights);
+		glUniform3fv(_pLightPos, numLights, (const GLfloat*)&POS[0]);
+		glUniform3fv(_pLightDiffCol, numLights, (const GLfloat*)&DIF[0]);
+		glUniform3fv(_pLightSpecCol, numLights, (const GLfloat*)&SPEC[0]);
+		glUniform1fv(_pLightFade, numLights, (const GLfloat*)&FADE[0]);
 	}
 
 	/* Call on window size change
