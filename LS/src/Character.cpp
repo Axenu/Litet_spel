@@ -10,37 +10,19 @@ void Character::onUpdate(float dt)
 {
     _camera->setRX(_rotation.x);
     _camera->setRY(_rotation.y);
-	glm::vec3 collissionTest = _camera->getPosition();
-	collissionTest.x += _velocity.y * dt * sin(_rotation.x);
-	collissionTest.z += _velocity.y * dt * cos(_rotation.x);
-	collissionTest.x += _velocity.x * dt * cos(_rotation.x);
-	collissionTest.z += _velocity.x * dt * -sin(_rotation.x);
-	if (_currentLevel->wallCollission(collissionTest) == false) // no collission, move
-	{
-		_camera->moveX(_velocity.y * dt * sin(_rotation.x));
-		_camera->moveZ(_velocity.y * dt * cos(_rotation.x));
-		_camera->moveX(_velocity.x * dt * cos(_rotation.x));
-		_camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
-	}
-	else                                                        // if colission, slide along the wall
-	{
-		collissionTest = _camera->getPosition();
-		collissionTest.x += _velocity.y * dt * sin(_rotation.x);
-		collissionTest.x += _velocity.x * dt * cos(_rotation.x);
-		if (_currentLevel->wallCollission(collissionTest) == false)
-		{
-			_camera->moveX(_velocity.y * dt * sin(_rotation.x));
-			_camera->moveX(_velocity.x * dt * cos(_rotation.x));
-		}
-		collissionTest = _camera->getPosition();
-		collissionTest.z += _velocity.y * dt * cos(_rotation.x);
-		collissionTest.z += _velocity.x * dt * -sin(_rotation.x);
-		if (_currentLevel->wallCollission(collissionTest) == false)
-		{
-			_camera->moveZ(_velocity.y * dt * cos(_rotation.x));
-			_camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
-		}
-	}
+
+	glm::vec3 camPos = _camera->getPosition();
+	glm::vec3 actualVelocity;
+
+	//Calculate the velocity
+	actualVelocity.x = _velocity.y * dt * sin(_rotation.x);
+	actualVelocity.x += _velocity.x * dt * cos(_rotation.x);
+	actualVelocity.y = _velocity.y * dt * cos(_rotation.x);
+	actualVelocity.y += _velocity.x * dt * -sin(_rotation.x);
+
+	//Calculate new camera position and update the camera
+	_currentLevel->wallCollission(&camPos, actualVelocity);
+	_camera->setPosition(camPos.x, _camera->getPosition().y, camPos.z);
 }
 void Character::onRender()
 {
