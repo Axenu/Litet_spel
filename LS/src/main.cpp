@@ -94,7 +94,6 @@ void setupWindow()
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-		// camera.rotateZ(0.001f);
         //update
 		float dT = 0.016f;
 		scene.update(dT);
