@@ -28,7 +28,6 @@ GLFWwindow* window;
 Grid gridtest;
 Camera camera;
 Character* player;
-Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y),gridtest.getxandypoint12(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y)));
 void setupWindow()
 {
     // Init glfw
@@ -81,8 +80,13 @@ void setupWindow()
 
 
 	Mesh wallMesh = gridtest.generateMesh();
-	
+	Mesh cube;
+	Guard guardenn(Model(&cube, &meshShader, &material), &gridtest);
+	guardenn.update(0.16f);
+
 	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
+	scene.add(&guardenn);
+	
 	
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
