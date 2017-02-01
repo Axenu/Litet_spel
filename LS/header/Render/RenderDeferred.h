@@ -14,7 +14,7 @@ class RenderDeferred :
 	//Calculation uniforms:
 	GLint _screenInv, _near, _far, _right, _top;
 	//Light uniforms
-	GLint _pLightPos, _pLight_fade, _pLightSpecCol, _pLightDiffCol;
+	GLint _pNumLights, _pLight;
 
 protected:
 

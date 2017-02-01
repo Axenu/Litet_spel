@@ -1,4 +1,5 @@
 #include "Render/RenderDeferred.h"
+#include "Render/PointLight.h"
 
 	RenderDeferred::RenderDeferred(const gl::RenderQuad& quad)
 		: QuadShader(quad, "Quad", "Deferred_Comp")
@@ -24,11 +25,8 @@
 
 
 		//Point light
-		_pLight_fade = _shader.getUniform("pLight_Fade");
-		_pLightPos = _shader.getUniform("pLightPos");
-		_pLightSpecCol = _shader.getUniform("pLightSpecCol");
-		_pLightDiffCol = _shader.getUniform("pLightDiffCol");
-
+		_pNumLights = _shader.getUniform("pNumLight");
+		_pLight = _shader.getUniform("pLight[0].pos");
 
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
@@ -43,14 +41,18 @@
 	void RenderDeferred::assignUniforms(FrameData &fD){
 		//Bind resources
 		fD._resource.getDeffered().bindTextures();
-
+		unsigned int lightCount = 2;
+		PointLight lights[8];
+		lights[0] = PointLight(fD._eye, glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
+		lights[1] = PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f);
+		//Transform positions in to viewspace
+		for(unsigned int i = 0;i < lightCount; i++)
+			lights[i]._pos = fD._V * glm::vec4(fD._eye, 1.0f);
 		/*	Set point light
 		*/
-		glm::vec3 lightPos = fD._V * glm::vec4(fD._eye, 1.0f);
-		glUniform3f(_pLightPos, lightPos.x, lightPos.y, lightPos.z);
-		glUniform1f(_pLight_fade, 5.0f);
-		glUniform3f(_pLightDiffCol, 0.8f, 0.8f, 0.8f);
-		glUniform3f(_pLightSpecCol, 0.0f, 1.0f, 0.0f);
+		unsigned int vec4Elems = lightCount * sizeof(PointLight) / (4 * 4);
+		glUniform1ui(_pNumLights, lightCount);
+		glUniform4fv(_pLight, vec4Elems, (const GLfloat*)&lights[0]);
 	}
 
 	/* Call on window size change
