@@ -11,10 +11,14 @@
 class RenderDeferred :
 	public QuadShader
 {
+	/* Maximum number of lights available to render.
+	*/
+	const static unsigned int MAXLIGHTCOUNT = 8;
+
 	//Calculation uniforms:
 	GLint _screenInv, _near, _far, _right, _top;
 	//Light uniforms
-	GLint _pNumLights, _pLight;
+	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
 
 protected:
 

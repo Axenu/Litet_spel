@@ -26,7 +26,10 @@
 
 		//Point light
 		_pNumLights = _shader.getUniform("pNumLight");
-		_pLight = _shader.getUniform("pLight[0].pos");
+		_pLightPos = _shader.getUniform("pLightPos");
+		_pLightDiffCol = _shader.getUniform("pLightDif");
+		_pLightSpecCol = _shader.getUniform("pLightSpec");
+		_pLightFade = _shader.getUniform("pLightFade");
 
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
@@ -39,20 +42,31 @@
 	/* Assign frame uniforms
 	*/
 	void RenderDeferred::assignUniforms(FrameData &fD){
-		//Bind resources
-		fD._resource.getDeffered().bindTextures();
-		unsigned int lightCount = 2;
-		PointLight lights[8];
-		lights[0] = PointLight(fD._eye, glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
-		lights[1] = PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f);
-		//Transform positions in to viewspace
-		for(unsigned int i = 0;i < lightCount; i++)
-			lights[i]._pos = fD._V * glm::vec4(fD._eye, 1.0f);
-		/*	Set point light
+		std::vector<PointLight> lights;
+		lights.push_back(PointLight(fD._eye, glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f));
+		lights.push_back(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f));
+		//Clamp light count
+		unsigned int numLights = lights.size() < MAXLIGHTCOUNT ? lights.size() : MAXLIGHTCOUNT;
+		/* Prepare uniform data by arranging light data into arrays.
 		*/
-		unsigned int vec4Elems = lightCount * sizeof(PointLight) / (4 * 4);
-		glUniform1ui(_pNumLights, lightCount);
-		glUniform4fv(_pLight, vec4Elems, (const GLfloat*)&lights[0]);
+		glm::vec3 POS[MAXLIGHTCOUNT], DIF[MAXLIGHTCOUNT], SPEC[MAXLIGHTCOUNT];
+		float FADE[MAXLIGHTCOUNT];
+		for (unsigned int i = 0; i < numLights; i++) {
+			//Transform positions in to viewspace
+			POS[i] = fD._V * glm::vec4(lights[i]._pos, 1.0f);
+			DIF[i] = lights[i]._diffuse;
+			SPEC[i] = lights[i]._specular;
+			FADE[i] = lights[i]._fadeDist;
+		}
+		/*	Bind resources
+		*/
+		fD._resource.getDeffered().bindTextures();
+		//	Light uniforms
+		glUniform1ui(_pNumLights, numLights);
+		glUniform3fv(_pLightPos, numLights, (const GLfloat*)&POS[0]);
+		glUniform3fv(_pLightDiffCol, numLights, (const GLfloat*)&DIF[0]);
+		glUniform3fv(_pLightSpecCol, numLights, (const GLfloat*)&SPEC[0]);
+		glUniform1fv(_pLightFade, numLights, (const GLfloat*)&FADE[0]);
 	}
 
 	/* Call on window size change
