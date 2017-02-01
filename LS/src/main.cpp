@@ -82,7 +82,7 @@ void setupWindow()
 
 	Mesh wallMesh = gridtest.generateMesh();
 	
-	scene.add(GameObject(Model(&wallMesh, &meshShader, &material)));
+	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
 	
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
