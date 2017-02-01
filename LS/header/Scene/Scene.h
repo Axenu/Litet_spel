@@ -11,7 +11,7 @@ class Scene
 private:
 	/* Data ownership of objects in the scene.
 	*/
-	std::vector<GameObject> _objects;
+	std::vector<GameObject*> _objects;
 protected:
 	/* The scene tree root.
 	*/
@@ -25,7 +25,7 @@ public:
 	void update(float dT);
 	/* Adds a game object to the scene.
 	*/
-	void add(GameObject &object);
+	void add(GameObject *object);
 	/* Populates the DrawFrame by fetching and culling the scene drawables
 	*/
 	void fetchDrawables(DrawFrame &dF);
