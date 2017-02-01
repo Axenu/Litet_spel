@@ -98,9 +98,10 @@ void setupWindow()
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 
 
-    Character* player = new Character(eventManager);
+    Character* player = new Character(glm::vec3(3.0f, 0.0f, 5.0f),eventManager);
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
+	camera.setParent(player);
 
 	//Add some more game objects
 	scene.add(player);
@@ -120,7 +121,6 @@ void setupWindow()
     {
         //update
 		float dT = 0.016f;
-		camera.update(dT);
 		scene.update(dT);
 
 		DrawFrame dF;

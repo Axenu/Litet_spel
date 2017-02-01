@@ -23,7 +23,7 @@ Camera::Camera(float fov, int width, int height, float near, float far) {
     _farPlane = far;
     _fieldOfView = fov;
     _aspectRatio = _width/_height;
-	_position = glm::vec3(3.0f, 0.0f , 5.0f);
+	_position = glm::vec3(0.0f, 0.0f, 0.0f);
 	_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     // _rotation.x = 1.0;
     initProjection();

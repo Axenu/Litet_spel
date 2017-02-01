@@ -43,8 +43,6 @@
 	*/
 	void RenderDeferred::assignUniforms(RenderInfo &fD){
 		std::vector<PointLight>& lights = fD._pLightInfo;
-		lights.push_back(PointLight(fD._eye, glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f));
-		lights.push_back(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f));
 		//Clamp light count
 		unsigned int numLights = lights.size() < MAXLIGHTCOUNT ? lights.size() : MAXLIGHTCOUNT;
 		/* Prepare uniform data by arranging light data into arrays.

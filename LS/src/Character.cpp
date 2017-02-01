@@ -6,12 +6,8 @@ void Character::setCamera(Camera* camera)
     _camera->setY(0.8f);
     _velocity = glm::vec3(0,0,0);
 }
-void Character::onUpdate(float dt)
+void Character::update(float dt)
 {
-    _camera->setRX(_rotation.x);
-    _camera->setRY(_rotation.y);
-
-	glm::vec3 camPos = _camera->getPosition();
 	glm::vec3 actualVelocity;
 
 	//Calculate the velocity
@@ -21,8 +17,8 @@ void Character::onUpdate(float dt)
 	actualVelocity.y += _velocity.x * dt * -sin(_rotation.x);
 
 	//Calculate new camera position and update the camera
-	_currentLevel->wallCollission(&camPos, actualVelocity);
-	_camera->setPosition(camPos.x, _camera->getPosition().y, camPos.z);
+	_currentLevel->wallCollission(&_position, actualVelocity);
+	Node::update(dt);
 }
 void Character::onRender()
 {
@@ -125,8 +121,10 @@ void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
 }
-Character::Character(EventManager *manager) : _eventManager(manager)
+Character::Character(glm::vec3 pos, EventManager *manager) : 
+	GameObject(), _eventManager(manager)
 {
+	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);

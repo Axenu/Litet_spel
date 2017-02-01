@@ -27,7 +27,7 @@ class Character : public GameObject
 public:
     void setCamera(Camera *camera);
 
-    void onUpdate(float dt);
+    virtual void update(float dt);
     void onRender();
 
     void moveCharacter(const KeyboardEvent* event);
@@ -36,7 +36,7 @@ public:
 
 	void setLevel(Grid *level);
 
-    Character(EventManager *manager);
+    Character(glm::vec3 pos, EventManager *manager);
     Character();
     ~Character();
 private:

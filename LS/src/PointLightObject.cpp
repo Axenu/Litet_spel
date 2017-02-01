@@ -20,7 +20,7 @@ PointLightObject::~PointLightObject() {
 
 void PointLightObject::update(float dT) {
 	Node::update(dT);
-	_lightInfo._pos = _position;
+	_lightInfo._pos = _modelMatrix[3];
 }
 
 
