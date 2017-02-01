@@ -25,6 +25,9 @@
 #include "Guard.h"
 #include"Scene/Scene.h"
 #include"Scene/DrawFrame.h"
+#include "gui/Label.h"
+#include "gui/Rectangle.h"
+
 GLFWwindow* window;
 Grid gridtest;
 Camera camera;
@@ -68,6 +71,8 @@ void setupWindow()
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);//Enable face culling
 	glCullFace(GL_BACK);
+	glEnable(GL_BLEND); //Enable alpha on gui elements. Could be done every frame on render?
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	gl::CheckGLErrors("Init stage failed: State");
 
 	EventManager *eventManager = new EventManager();
@@ -104,6 +109,10 @@ void setupWindow()
     player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 
+	Font *f = new Font("Resources/fonts/arial");
+	gui::Label *label = new gui::Label(f, "Hello World!");
+
+
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -130,6 +139,9 @@ void setupWindow()
         //Render
 		deferred.render(fD);
 		gl::CheckGLErrors("Render stage failed: Composition");
+
+
+		label->render();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

@@ -21,5 +21,5 @@ uniform sampler2D _texture;
 
 void main() {
     // Frag_Data = vec4(pass_UV,1,1);
-    Frag_Data = vec4(texture(_texture, pass_UV).xyz, 1);
+    Frag_Data = texture(_texture, pass_UV);
 }

@@ -4,9 +4,9 @@ in vec3 Position0;
 in vec3 Normal0;
 //layout(location = 2) in vec2 TexCoord0;
 
-layout(location = 0) out vec3 ColorOut;
-layout(location = 1) out vec3 NormalOut;
-layout(location = 2) out vec3 SpecularOut;
+layout(location = 0) out vec4 ColorOut;
+layout(location = 1) out vec4 NormalOut;
+layout(location = 2) out vec4 SpecularOut;
 
 /* Uniforms
 */
@@ -19,10 +19,10 @@ vec3 encodeNormal(in vec3 normal);
 
 void main () {
 
-	ColorOut = diffuseCol;
+	ColorOut = vec4(diffuseCol, 1);
 	//Compress normal:
-	NormalOut = encodeNormal(Normal0);
-	SpecularOut = specularCol;
+	NormalOut = vec4(encodeNormal(Normal0), 1);
+	SpecularOut = vec4(specularCol, 1);
 }
 
 vec3 encodeNormal(in vec3 normal){
