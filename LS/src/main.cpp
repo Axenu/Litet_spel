@@ -7,6 +7,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #define GLM_FORCE_RADIANS
+#include <IL/il.h>
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include "Model.h"
@@ -22,6 +23,7 @@
 #include "Character.h"
 #include "GameObject.h"
 #include "Guard.h"
+
 GLFWwindow* window;
 Grid gridtest;
 Camera camera;
@@ -57,6 +59,10 @@ void setupWindow()
 		return;
 	}
 #endif
+
+	//init DevIL
+	ilInit();
+
 	//Set GL vars
 	glEnable(GL_DEPTH_TEST);//Enable depth testinz
 	glDepthFunc(GL_LESS);
@@ -74,7 +80,7 @@ void setupWindow()
 	DeferredMeshShader def_mesh;
 	RenderDeferred deferred(resource.getQuad());
 	gl::CheckGLErrors("Init stage failed: Resource");
-	Mesh mesh = gridtest.generateMesh(); 
+	Mesh mesh = gridtest.generateMesh();
 	Mesh wallMesh = gridtest.generateMesh();
 
 
@@ -83,6 +89,7 @@ void setupWindow()
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -108,6 +115,7 @@ void setupWindow()
         //Render
 		deferred.render(fD);
 		gl::CheckGLErrors("Render stage failed: Composition");
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -120,7 +128,7 @@ void setupWindow()
 void Deanstestingruta()
 {
 	gridtest.print2darraydata();
-	
+
 }
 
 int main()
