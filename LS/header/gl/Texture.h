@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include "gl/glInclude.h"
 #include <IL/il.h>
 
