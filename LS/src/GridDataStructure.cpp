@@ -336,25 +336,54 @@ Mesh Grid::generateMesh()
 	return mesh;
 }
 
-//The position used needs to be in the grids modelspace
-bool Grid::wallCollission(glm::vec3 position)
+void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 {
-	int x = (int)glm::floor(position.x / GRIDSPACE);
-	int z = (int)glm::floor(position.z / GRIDSPACE);
-	if (x >= 0 && z >= 0 && x < _widthLength && z < _heightLength) // check if position is inside the grid
+	float padX = 0.f;
+	if (signbit(velocity.x) == false)
 	{
-		if (_twodArray[x][z].type == wall) // check if grid position is a wall
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		padX = 0.3f;
 	}
 	else
 	{
-		return false;
+		padX = -0.3f;
+	}
+	float padZ = 0.f;
+	if (signbit(velocity.y) == false)
+	{
+		padZ = 0.3f;
+	}
+	else
+	{
+		padZ = -0.3f;
+	}
+	std::cout << "(" << velocity.x << ", " << velocity.y << ", " << velocity.z << ")" << std::endl;
+	glm::vec3 test;
+	test.x = position->x + padX;
+	test.z = position->z + padZ;
+
+	int currentX = (int)glm::floor(test.x / GRIDSPACE);
+	int currentZ = (int)glm::floor(test.z / GRIDSPACE);
+
+	int newX = (int)glm::floor(test.x + velocity.x / GRIDSPACE);
+	int newZ = (int)glm::floor(test.z + velocity.y / GRIDSPACE);
+
+	//horizontal check
+	if (_twodArray[newX][currentZ].type == wall)
+	{
+		//position->x = currentX * GRIDSPACE + pad;
+	}
+	else
+	{
+		position->x += velocity.x;
+	}
+	//vertical check
+	if (_twodArray[currentX][newZ].type == wall)
+	{
+		//position->z = currentZ * GRIDSPACE + pad;
+	}
+	else
+	{
+		position->z += velocity.y;
 	}
 }
 
