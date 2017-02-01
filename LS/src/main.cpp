@@ -93,7 +93,7 @@ void setupWindow()
 	Mesh cube;
 	Model guardModel(&cube, &meshShader, &material);
 	Guard guardenn(guardModel, &gridtest);
-	guardenn.update(0.16f);
+	
 
 	Model goModel(&wallMesh, &meshShader, &material);
 	GameObject go(goModel);
@@ -118,6 +118,7 @@ void setupWindow()
     {
         //update
 		float dT = 0.016f;
+		guardenn.update(0.16f);
 		scene.update(dT);
         player->update(dT);
 		camera.update(dT);

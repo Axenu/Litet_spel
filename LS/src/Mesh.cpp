@@ -26,10 +26,10 @@ Mesh::Mesh()
 {
 	//Create base cube
 	//Front
-	_position.push_back(glm::vec3(0.5, 0.5, -0.5));
-	_position.push_back(glm::vec3(-0.5, 0.5, -0.5));
-	_position.push_back(glm::vec3(0.5, -0.5, -0.5));
-	_position.push_back(glm::vec3(-0.5, -0.5, -0.5));
+	_position.push_back(glm::vec3(1, 1, 0));
+	_position.push_back(glm::vec3(0, 1, 0));
+	_position.push_back(glm::vec3(1, 0, 0));
+	_position.push_back(glm::vec3(0, 0, 0));
 
 	_normal.push_back(glm::vec3(0, 0, -1));
 	_normal.push_back(glm::vec3(0, 0, -1));
@@ -44,10 +44,10 @@ Mesh::Mesh()
 	_indices.push_back(GLuint(3));
 
 	//Back
-	_position.push_back(glm::vec3(-0.5, 0.5, 0.5));
-	_position.push_back(glm::vec3(0.5, 0.5, 0.5));
-	_position.push_back(glm::vec3(-0.5, -0.5, 0.5));
-	_position.push_back(glm::vec3(0.5, -0.5, 0.5));
+	_position.push_back(glm::vec3(0, 1, 1));
+	_position.push_back(glm::vec3(1, 1, 1));
+	_position.push_back(glm::vec3(0, 0, 1));
+	_position.push_back(glm::vec3(1, 0, 1));
 
 	_normal.push_back(glm::vec3(0, 0, 1));
 	_normal.push_back(glm::vec3(0, 0, 1));
@@ -62,10 +62,10 @@ Mesh::Mesh()
 	_indices.push_back(GLuint(7));
 
 	//Right
-	_position.push_back(glm::vec3(-0.5, 0.5, -0.5));
-	_position.push_back(glm::vec3(-0.5, 0.5, 0.5));
-	_position.push_back(glm::vec3(-0.5, -0.5, -0.5));
-	_position.push_back(glm::vec3(-0.5, -0.5, 0.5));
+	_position.push_back(glm::vec3(0, 1, 0));
+	_position.push_back(glm::vec3(0, 1, 1));
+	_position.push_back(glm::vec3(0, 0, 0));
+	_position.push_back(glm::vec3(0, 0, 1));
 
 	_normal.push_back(glm::vec3(-1, 0, 0));
 	_normal.push_back(glm::vec3(-1, 0, 0));
@@ -80,10 +80,10 @@ Mesh::Mesh()
 	_indices.push_back(GLuint(11));
 
 	//Left
-	_position.push_back(glm::vec3(0.5, 0.5, 0.5));
-	_position.push_back(glm::vec3(0.5, 0.5, -0.5));
-	_position.push_back(glm::vec3(0.5, -0.5, 0.5));
-	_position.push_back(glm::vec3(0.5, -0.5, -0.5));
+	_position.push_back(glm::vec3(1, 1, 1));
+	_position.push_back(glm::vec3(1, 1, 0));
+	_position.push_back(glm::vec3(1, 0, 1));
+	_position.push_back(glm::vec3(1, 0, 0));
 
 	_normal.push_back(glm::vec3(1, 0, 0));
 	_normal.push_back(glm::vec3(1, 0, 0));
@@ -97,10 +97,10 @@ Mesh::Mesh()
 	_indices.push_back(GLuint(14));
 	_indices.push_back(GLuint(15));
 	//Top
-	_position.push_back(glm::vec3(0.5, 0.5, 0.5));
-	_position.push_back(glm::vec3(-0.5, 0.5, 0.5));
-	_position.push_back(glm::vec3(0.5, 0.5, -0.5));
-	_position.push_back(glm::vec3(-0.5, 0.5, -0.5));
+	_position.push_back(glm::vec3(1, 1, 1));
+	_position.push_back(glm::vec3(0, 1, 1));
+	_position.push_back(glm::vec3(1, 1, 0));
+	_position.push_back(glm::vec3(0, 1, 0));
 
 	_normal.push_back(glm::vec3(0, 1, 0));
 	_normal.push_back(glm::vec3(0, 1, 0));
@@ -114,10 +114,10 @@ Mesh::Mesh()
 	_indices.push_back(GLuint(18));
 	_indices.push_back(GLuint(19));
 	//Bottom
-	_position.push_back(glm::vec3(0.5, -0.5, -0.5));
-	_position.push_back(glm::vec3(-0.5, -0.5, -0.5));
-	_position.push_back(glm::vec3(0.5, -0.5, 0.5));
-	_position.push_back(glm::vec3(-0.5, -0.5, 0.5));
+	_position.push_back(glm::vec3(1, 0, 0));
+	_position.push_back(glm::vec3(0, 0, 0));
+	_position.push_back(glm::vec3(1, 0, 1));
+	_position.push_back(glm::vec3(0, 0, 1));
 
 	_normal.push_back(glm::vec3(0, -1, 0));
 	_normal.push_back(glm::vec3(0, -1, 0));
