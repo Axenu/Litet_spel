@@ -2,7 +2,7 @@
 SRCDIR=src/
 ODIR=build/
 lIBDIR=lib/OSX/
-IDIR=include/OSX/
+IDIR=include/
 HDIR=header/
 
 SOURCESGAME=$(wildcard $(SRCDIR)*.cpp)
@@ -13,7 +13,7 @@ SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOUR
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
-CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long
+CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual -Wno-reorder
 # The c++ compiler to use for compilation
 CC = g++
 
@@ -48,6 +48,6 @@ $(ODIR)%.o: $(SRCDIR)Render/%.cpp
 # 	$(CC) -I $(IDIR) -I$(HDIR) -std=c++11 -Wno-c++11-long-long -Wall -c -o $@ $<
 
 clean:
-	rm -f $(ODIR)/*.o
-	rm -f $(ODIR)/*.a
+	rm -f $(ODIR)*.o
+	rm -f $(ODIR)*.a
 	rm $(EXEC)

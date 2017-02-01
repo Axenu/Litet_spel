@@ -134,6 +134,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\DrawFrame.cpp" />
+    <ClCompile Include="src\AABB.cpp" />
+    <ClCompile Include="src\BasicColorMaterial.cpp" />
+    <ClCompile Include="src\Guard.cpp" />
+    <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\EventManager.cpp" />
+    <ClCompile Include="src\gl\VAData.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Render\MeshShader.cpp" />
     <ClCompile Include="src\Render\DeferredMeshShader.cpp" />
     <ClCompile Include="src\Character.cpp" />
@@ -158,6 +167,14 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Scene\DrawFrame.h" />
+    <ClInclude Include="header\AABB.h" />
+    <ClInclude Include="header\BasicColorMaterial.h" />
+    <ClInclude Include="header\EventManager.h" />
+    <ClInclude Include="header\gl\VAData.h" />
+    <ClInclude Include="header\Guard.h" />
+    <ClInclude Include="header\Material.h" />
+    <ClInclude Include="header\GameObject.h" />
     <ClInclude Include="header\Render\DeferredMeshShader.h" />
     <ClInclude Include="header\Character.h" />
     <ClInclude Include="header\gl\DeferredBuffer.h" />
@@ -181,6 +198,8 @@
     <ClInclude Include="header\gl\RenderQuad.h" />
     <ClInclude Include="header\Render\QuadShader.h" />
     <ClInclude Include="header\Render\MeshShader.h" />
+    <ClInclude Include="header\type_info.h" />
+    <ClInclude Include="header\Scene\Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

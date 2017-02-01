@@ -3,79 +3,154 @@
 void Character::setCamera(Camera* camera)
 {
     _camera = camera;
+    _camera->setY(0.8f);
+    _velocity = glm::vec3(0,0,0);
 }
 void Character::onUpdate(float dt)
 {
-    // std::cout << dt << std::endl;
-
+    _camera->setRX(_rotation.x);
+    _camera->setRY(_rotation.y);
+	glm::vec3 collissionTest = _camera->getPosition();
+	collissionTest.x += _velocity.y * dt * sin(_rotation.x);
+	collissionTest.z += _velocity.y * dt * cos(_rotation.x);
+	collissionTest.x += _velocity.x * dt * cos(_rotation.x);
+	collissionTest.z += _velocity.x * dt * -sin(_rotation.x);
+	if (_currentLevel->wallCollission(collissionTest) == false) // no collission, move
+	{
+		_camera->moveX(_velocity.y * dt * sin(_rotation.x));
+		_camera->moveZ(_velocity.y * dt * cos(_rotation.x));
+		_camera->moveX(_velocity.x * dt * cos(_rotation.x));
+		_camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
+	}
+	else                                                        // if colission, slide along the wall
+	{
+		collissionTest = _camera->getPosition();
+		collissionTest.x += _velocity.y * dt * sin(_rotation.x);
+		collissionTest.x += _velocity.x * dt * cos(_rotation.x);
+		if (_currentLevel->wallCollission(collissionTest) == false)
+		{
+			_camera->moveX(_velocity.y * dt * sin(_rotation.x));
+			_camera->moveX(_velocity.x * dt * cos(_rotation.x));
+		}
+		collissionTest = _camera->getPosition();
+		collissionTest.z += _velocity.y * dt * cos(_rotation.x);
+		collissionTest.z += _velocity.x * dt * -sin(_rotation.x);
+		if (_currentLevel->wallCollission(collissionTest) == false)
+		{
+			_camera->moveZ(_velocity.y * dt * cos(_rotation.x));
+			_camera->moveZ(_velocity.x * dt * -sin(_rotation.x));
+		}
+	}
 }
 void Character::onRender()
 {
 
 }
-void Character::moveCharacter(int buttonID, int action)
+void Character::moveCharacter(const KeyboardEvent* event)
 {
-    if (buttonID == GLFW_KEY_W)
+    if (event->getKey() == GLFW_KEY_W)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.y += 1.f;
-        } else if (action == GLFW_RELEASE) {
-            _velocity.y -= 1.f;
+            _velocity.y -= 1.0f;
+        }
+        else if (event->getAction() == GLFW_RELEASE)
+        {
+            _velocity.y += 1.0f;
         }
     }
-    else if (buttonID == GLFW_KEY_A)
+    else if (event->getKey() == GLFW_KEY_A)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.x -= 1.f;
-        } else if (action == GLFW_RELEASE) {
-            _velocity.x += 1.f;
+            _velocity.x -= 1.0f;
+        }
+        else if (event->getAction() == GLFW_RELEASE)
+        {
+            _velocity.x += 1.0f;
         }
     }
-    else if (buttonID == GLFW_KEY_S)
+    else if (event->getKey() == GLFW_KEY_S)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.y -= 1.f;
-        } else if (action == GLFW_RELEASE) {
-            _velocity.y += 1.f;
+            _velocity.y += 1.0f;
+        }
+        else if (event->getAction() == GLFW_RELEASE)
+        {
+            _velocity.y -= 1.0f;
         }
     }
-    else if (buttonID == GLFW_KEY_D)
+    else if (event->getKey() == GLFW_KEY_D)
     {
-        if (action == GLFW_PRESS)
+        if (event->getAction() == GLFW_PRESS)
         {
-            _velocity.x += 1.f;
-        } else if (action == GLFW_RELEASE) {
-            _velocity.x -= 1.f;
+            _velocity.x += 1.0f;
+        }
+        else if (event->getAction() == GLFW_RELEASE)
+        {
+            _velocity.x -= 1.0f;
         }
     }
-    std::cout << "x: " << _velocity.x << " y: " << _velocity.y << " z: " << _velocity.z << std::endl;
+    else if (event->getKey() == GLFW_KEY_T)
+    {
+        if (event->getAction() == GLFW_PRESS)
+        {
+            if (_cursorMode == GLFW_CURSOR_NORMAL)
+            {
+                _cursorMode = GLFW_CURSOR_DISABLED;
+            }
+            else
+            {
+                _cursorMode = GLFW_CURSOR_NORMAL;
+            }
+            _hasMoved = false;
+            _eventManager->execute(new cursorModeChangeEvent(_cursorMode));
+        }
+    }
 }
-void Character::moveMouse(double x, double y)
+void Character::moveMouse(const MouseMoveEvent* event)
 {
-    std::cout << x << std::endl;
-    std::cout << y << std::endl;
+    if (_hasMoved == false)
+    {
+        _hasMoved = true;
+        _lastCursorPos = event->getPos();
+        return;
+    }
+    glm::vec2 currentCurserPos = event->getPos();
+    glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
+    _lastCursorPos = currentCurserPos;
+    if (_cursorMode == GLFW_CURSOR_DISABLED)
+    {
+        rotateY(deltaPos.y * -RotationSpeed);
+        rotateX(deltaPos.x * -RotationSpeed);
+    }
+    if (getRY() > glm::pi<float>()*0.5f)
+    {
+        setRY(glm::pi<float>()*0.5f);
+    }
+    if (getRY() < glm::pi<float>()*-0.5f)
+    {
+        setRY(glm::pi<float>()*-0.5f);
+    }
+}
+void Character::collectLoot(const CollectLootEvent* event)
+{
+    std::cout << "recieved loot of value: " << event->getValue() << std::endl;
+    _lootValue += event->getValue();
+}
+void Character::setLevel(Grid *level)
+{
+	this->_currentLevel = level;
+}
+Character::Character(EventManager *manager) : _eventManager(manager)
+{
+    _eventManager->listen(this, &Character::moveCharacter);
+    _eventManager->listen(this, &Character::moveMouse);
+    _eventManager->listen(this, &Character::collectLoot);
 }
 Character::Character()
 {
-    // _manager = manager;
-
-    InputManager *myEventManager = InputManager::Instance();
-    myEventManager->subscribe<Character, int, int>("key", this, &Character::moveCharacter);
-    myEventManager->subscribe<Character, double, double>("mouse", this, &Character::moveMouse);
-
-    // _manager->subscribeToKey(GLFW_KEY_W, [=](int keyID, int action){
-    //     std::cout << keyID << std::endl;
-    // });
-    // InputManager *m = InputManager::Instance();
-    // m->createEvent("testEvent");
-    // m->subscribe("testEvent", this, &Character::cb);
-    // _manager->subscribeToKey(GLFW_KEY_A, callback, this);
-    // _manager->subscribeToKey(GLFW_KEY_S, callback, this);
-    // _manager->subscribeToKey(GLFW_KEY_D, callback, this);
-    // _camera = Camera(float fov, float aspect, float near, float far);
 }
 Character::~Character()
 {

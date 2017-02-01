@@ -1,22 +1,25 @@
 #include "Node.h"
 #include <iostream>
+#define GLM_FORCE_RADIANS
+#include<glm/gtx/euler_angles.hpp>
+
 
 Node::Node() {
-	scale = glm::vec3(1,1,1);
-    position = glm::vec3(0,0,0);
-    rotation = glm::vec3(0,0,0);
-    this->isActive = true;
-    this->modelMatrix = glm::mat4();
+	_scale = glm::vec3(1,1,1);
+    _position = glm::vec3(0,0,0);
+    _rotation = glm::vec3(0,0,0);
+    this->_isActive = true;
+    this->_modelMatrix = glm::mat4();
 }
 
 void Node::addChild(Node *child) {
-	children.push_back(child);
+	_children.push_back(child);
     child->setParent(this);
 }
 
 std::vector<Node *> Node::getAllChildren() {
 	std::vector<Node *> v;
-	for (Node *child : children) {
+	for (Node *child : _children) {
 		for (Node *n : child->getAllChildren()) {
 			v.push_back(n);
 		}
@@ -26,165 +29,169 @@ std::vector<Node *> Node::getAllChildren() {
 }
 
 void Node::setParent(Node *parent) {
-    this->parent = parent;
+    this->_parent = parent;
+}
+Node* Node::getParent() {
+	return this->_parent;
 }
 
 void Node::removeFromParent() {
-    if (this->parent != nullptr) {
-        this->parent->removeChild(this);
+    if (this->_parent != nullptr) {
+        this->_parent->removeChild(this);
     }
 }
 
 void Node::removeChild(Node *node) {
     Node *n = nullptr;
-    for (unsigned int i = 0; i < children.size(); i++) {
-        n = children[i];
+    for (unsigned int i = 0; i < _children.size(); i++) {
+        n = _children[i];
         if (n == node) {
             delete n;
-            children.erase(children.begin()+i);
+            _children.erase(_children.begin()+i);
             return;
         }
     }
 }
 
 void Node::update(float dt) {
-    if (!isActive) return;
-    this->modelMatrix = glm::translate(glm::mat4(), this->position);
-    this->modelMatrix = glm::rotate(this->modelMatrix, this->rotation.x, glm::vec3(1,0,0));
-    this->modelMatrix = glm::rotate(this->modelMatrix, this->rotation.y, glm::vec3(0,1,0));
-    this->modelMatrix = glm::rotate(this->modelMatrix, this->rotation.z, glm::vec3(0,0,1));
-    this->modelMatrix = glm::scale(this->modelMatrix, this->scale);
-    if (this->parent != nullptr) {
-        this->modelMatrix = this->parent->modelMatrix * this->modelMatrix;
+    if (!_isActive) return;
+	onUpdate(dt);
+	this->_modelMatrix = glm::scale(glm::mat4(), this->_scale);
+	this->_modelMatrix = glm::yawPitchRoll(_rotation.x, _rotation.y, _rotation.z) * this->_modelMatrix;
+	/* Translate using matrix:
+	 * this->modelMatrix = glm::translate(glm::mat4(), position) * this->modelMatrix;
+	*/
+	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); //Translate / Move
+    if (this->_parent != nullptr) {
+        this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
     }
-    onUpdate(dt);
-    for (Node *Node : children)
+    for (Node *Node : _children)
         Node->update(dt);
 }
 
 void Node::setX(float x) {
-    position.x = x;
+    _position.x = x;
 }
 
 void Node::setY(float y) {
-    position.y = y;
+	_position.y = y;
 }
 
 void Node::setZ(float z) {
-    position.z = z;
+	_position.z = z;
 }
 
 void Node::setPosition(float x, float y, float z) {
-	this->position = glm::vec3(x, y, z);
+	this->_position = glm::vec3(x, y, z);
 }
 
 void Node::setPosition(glm::vec3 pos) {
-    position = pos;
+	_position = pos;
 }
 
 void Node::moveX(float x) {
-    position.x += x;
+	_position.x += x;
 }
 
 void Node::moveY(float y) {
-    position.y += y;
+	_position.y += y;
 }
 
 void Node::moveZ(float z) {
-    position.z += z;
+	_position.z += z;
 }
 
 void Node::move(glm::vec3 p) {
-    position += p;
+	_position += p;
 }
 
 void Node::setScale(float p) {
-    scale = glm::vec3(p,p,p);
+    _scale = glm::vec3(p,p,p);
 }
 
 void Node::setScale(glm::vec3 p) {
-    scale = p;
+	_scale = p;
 }
 
 void Node::setScale(float x, float y) {
-    scale.x = x;
-    scale.y = y;
+	_scale.x = x;
+	_scale.y = y;
 }
 
 void Node::setRX(float rx) {
-    rotation.x = rx;
+	_rotation.x = rx;
 }
 
 void Node::setRY(float ry) {
-    rotation.y = ry;
+	_rotation.y = ry;
 }
 
 void Node::setRZ(float rz) {
-    rotation.z = rz;
+	_rotation.z = rz;
 }
 
 void Node::rotateX(float f) {
-    rotation.x += f;
+	_rotation.x += f;
 }
 
 void Node::rotateY(float f) {
-    rotation.y += f;
+	_rotation.y += f;
 }
 
 void Node::rotateZ(float f) {
-    rotation.z += f;
+    _rotation.z += f;
 }
 
 void Node::rotate(glm::vec3 r) {
-    rotation.x += r.x;
-    rotation.y += r.y;
-    rotation.z += r.z;
+    _rotation.x += r.x;
+	_rotation.y += r.y;
+	_rotation.z += r.z;
 
-    while (rotation.x > M_2PI) rotation.x -= M_2PIf;
-    while (rotation.y > M_2PI) rotation.y -= M_2PIf;
-    while (rotation.z > M_2PI) rotation.z -= M_2PIf;
+    while (_rotation.x > M_2PI) _rotation.x -= M_2PIf;
+    while (_rotation.y > M_2PI) _rotation.y -= M_2PIf;
+    while (_rotation.z > M_2PI) _rotation.z -= M_2PIf;
 
-    while (rotation.x < 0) rotation.x += M_2PIf;
-    while (rotation.y < 0) rotation.y += M_2PIf;
-    while (rotation.z < 0) rotation.z += M_2PIf;
+    while (_rotation.x < 0) _rotation.x += M_2PIf;
+    while (_rotation.y < 0) _rotation.y += M_2PIf;
+    while (_rotation.z < 0) _rotation.z += M_2PIf;
 }
 
 float Node::getX()  {
-    return position.x;
+    return _position.x;
 }
 
 float Node::getY()  {
-    return position.y;
+    return _position.y;
 }
 
 float Node::getZ()  {
-    return position.z;
+    return _position.z;
 }
 
 float Node::getRX()  {
-    return rotation.x;
+    return _rotation.x;
 }
 
 float Node::getRY()  {
-    return rotation.y;
+    return _rotation.y;
 }
 
 float Node::getRZ()  {
-    return rotation.z;
+    return _rotation.z;
 }
 
-glm::vec3 Node::getScale()  {
-    return scale;
+glm::vec3 Node::getScale() const {
+    return _scale;
 }
 
-glm::vec3 Node::getPosition()  {
-    return position;
+glm::vec3 Node::getPosition() const {
+    return _position;
 }
 
-glm::vec3 Node::getRotation()  {
-    return rotation;
+glm::vec3 Node::getRotation() const {
+    return _rotation;
 }
 
 Node::~Node() {
-	
+
 }

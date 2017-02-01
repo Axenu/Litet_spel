@@ -26,7 +26,7 @@
 		//Point light
 		_pLight_fade = _shader.getUniform("pLight_Fade");
 		_pLightPos = _shader.getUniform("pLightPos");
-		_pLightSpecCol = _shader.getUniform("pLightspecCol");
+		_pLightSpecCol = _shader.getUniform("pLightSpecCol");
 		_pLightDiffCol = _shader.getUniform("pLightDiffCol");
 
 
@@ -46,7 +46,7 @@
 
 		/*	Set point light
 		*/
-		glm::vec3 lightPos = fD._V * glm::vec4(0.0f, -6.0f, 2.0f, 1.0f);
+		glm::vec3 lightPos = fD._V * glm::vec4(fD._eye, 1.0f);
 		glUniform3f(_pLightPos, lightPos.x, lightPos.y, lightPos.z);
 		glUniform1f(_pLight_fade, 5.0f);
 		glUniform3f(_pLightDiffCol, 0.8f, 0.8f, 0.8f);
@@ -56,6 +56,7 @@
 	/* Call on window size change
 	*/
 	void RenderDeferred::setWindowSize(float wWidth, float wHeight, const Camera &camera){
+		_shader.bind();
 		glUniform2f(_screenInv, 1.0f / wWidth, 1.0f / wHeight);
 		glUniform1f(_near, camera.getNearPlane());
 		glUniform1f(_far, camera.getFarPlane());

@@ -7,6 +7,7 @@
 #include"TexData.h"
 #include"FBOData.h"
 #include"SamplerObject.h"
+#include"VAData.h"
 
 namespace gl {
 
@@ -64,7 +65,7 @@ namespace gl {
 	indexByteSize	<<	The byte size of each index, 2 byte for int16 and 4 byte for int32 (16 & 32 bit integers)
 	indexCount		<<	The index count
 	*/
-	GLuint generateVAO_Simple(const void* vertexPositions, int vertexCount, const void* indices, int indexByteSize, int indexCount);
+	VAData generateVAO_Simple(const void* vertexPositions, int vertexCount, const void* indices, int indexByteSize, int indexCount);
 
 	/*	Generate a VAO by loading and assigning the vertex and index buffer with the specified data.
 	 * The Vertices will be assigned in AoS (Array of Structures) meaning each vertex struct are placed after eachother in the stream.
@@ -76,7 +77,7 @@ namespace gl {
 	indexByteSize	<<	The byte size of each index (Indices can either be constructed of int16 or int32)
 	indexCount		<<	The index count
 	*/
-	GLuint generateVAO_AoS(const void* vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount);
+	VAData generateVAO_AoS(const void* vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount);
 	/* Generate a VAO by loading and assigning the vertex and index buffer with the specified data.
 	 * The Vertices will be assigned in SoA (Structure of Arrays), where the vertex data is split into multiple arrays.
 	vertexData		<<	List of vertex data arrays that will be sent to the gpu
@@ -86,7 +87,7 @@ namespace gl {
 	indexByteSize	<<	The byte size of each index (Indices can either be constructed of int16 or int32)
 	indexCount		<<	The index count
 	*/
-	GLuint generateVAO_SoA(const std::vector< const void*> &vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount);
+	VAData generateVAO_SoA(const std::vector< const void*> &vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount);
 
 #pragma endregion
 

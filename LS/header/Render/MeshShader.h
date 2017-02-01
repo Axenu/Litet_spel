@@ -15,6 +15,6 @@ public:
 	~MeshShader();
 	/* Bind shader and assign related uniforms
 	*/
-	virtual void assignUniforms(FrameData &fD) = 0;
+	virtual void assignUniforms(FrameData &fD, const glm::mat4 &modelMatrix) = 0;
 };
 

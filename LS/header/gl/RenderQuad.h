@@ -8,7 +8,7 @@ namespace gl {
 	*/
 	class RenderQuad
 	{
-		GLuint _quadVAO;
+		VAData _quadVAO;
 
 	public:
 		/* Load a simple render quad to the device

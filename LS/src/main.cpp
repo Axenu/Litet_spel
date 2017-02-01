@@ -6,6 +6,7 @@
 #endif
 #include <iostream>
 #include <GLFW/glfw3.h>
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include "Model.h"
@@ -16,41 +17,23 @@
 #include "Render/MeshShader.h"
 #include "Render/DeferredMeshShader.h"
 #include "InputManager.h"
-#include "camera.h"
+#include "EventManager.h"
+#include "Camera.h"
 #include "Character.h"
-
+#include "GameObject.h"
+#include "Guard.h"
+#include"Scene/Scene.h"
+#include"Scene/DrawFrame.h"
 GLFWwindow* window;
 Grid gridtest;
-// InputManager manager;
 Camera camera;
-Character player;
-
-// GLFW key callbacks.
-void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE)
-    {
-         glfwSetWindowShouldClose(win, 1);
-    }
-    else
-    {
-        InputManager *myEventManager = InputManager::Instance();
-        myEventManager->execute("key", key, action);
-    }
-}
-
-void mouse_key_callback(GLFWwindow* win, int button, int action, int mods) {
-    InputManager *myEventManager = InputManager::Instance();
-    myEventManager->execute("button", button, action);
-}
-
-void cursorPosition_callback(GLFWwindow* win, double x, double y) {
-    InputManager *myEventManager = InputManager::Instance();
-    myEventManager->execute("mouse", x, y);
-}
-
-void setupWindow() {
-    // init glfw
-	if (!glfwInit()) {
+Character* player;
+Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y),gridtest.getxandypoint12(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y)));
+void setupWindow()
+{
+    // Init glfw
+	if (!glfwInit())
+	{
 		std::cout << "GLFW init failed!" << std::endl;
 	}
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -70,49 +53,60 @@ void setupWindow() {
 
 #ifndef __APPLE__
 	glewExperimental = true; // Needed in core profile
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
+	{
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return;
 	}
 #endif
+	//Set GL vars
+	glEnable(GL_DEPTH_TEST);//Enable depth testinz
+	glDepthFunc(GL_LESS);
+	glEnable(GL_CULL_FACE);//Enable face culling
+	glCullFace(GL_BACK);
+	gl::CheckGLErrors("Init stage failed: State");
 
-    // glfwSetWindowUserPointer(window, &manager);
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetMouseButtonCallback(window, mouse_key_callback);
-    glfwSetCursorPosCallback(window, cursorPosition_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    // glfwSetWindowPos(window, 0, 0);
-    /* Loop until the user closes the window */
+	EventManager *eventManager = new EventManager();
+	InputManager *iManager = new InputManager(window, eventManager);
+
 
 	//basic init
 	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
 	Shader *s = new Shader("Basic");
-	DeferredMeshShader def_mesh;
+	DeferredMeshShader meshShader;
 	RenderDeferred deferred(resource.getQuad());
+	Material material;
+	Scene scene;
+	gl::CheckGLErrors("Init stage failed: Resource");
 
-	// if (gl::CheckGLErrors("Initiation failed: GL Error"))
-		// throw new std::exception("Initiation failed: GL Error");
 
-	Model *m = new Model(def_mesh);
+	Mesh wallMesh = gridtest.generateMesh();
+	
+	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
+	
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
+    player = new Character(eventManager);
+	player->setLevel(&gridtest);
+    player->setCamera(&camera);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
-    player = Character();
-    player.setCamera(&camera);
 
-    // manager.subscribeToKey(GLFW_KEY_Q, qcallback);
-
+/* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        //update
+		float dT = 0.016f;
+		scene.update(dT);
+        player->update(dT);
+		camera.update(dT);
+
 		FrameData fD(resource, camera);
+		DrawFrame dF;
+		scene.fetchDrawables(dF);
 
 		resource.getDeffered().bindDraw();
 
-        //update
-        player.update(0.016f);
-		m->update(0.016f);
-
-		m->render(fD);
+		dF.render(fD);
 		gl::CheckGLErrors("Render stage failed: Mesh");
 
 		/*	Render to backbuffer:
@@ -135,6 +129,7 @@ void setupWindow() {
 void Deanstestingruta()
 {
 	gridtest.print2darraydata();
+	
 }
 
 int main()

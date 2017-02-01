@@ -1,6 +1,6 @@
 #version 400
 
-layout(location = 0) in vec3 Position0;
+in vec3 Position0;
 
 layout(location = 0) out vec4 ColorOut;
 
@@ -20,7 +20,8 @@ uniform float near, far;
 uniform float right, top;
 
 //Light components
-uniform vec3 pLightspecCol;
+uniform uint pNumLights
+uniform vec3 pLightSpecCol;
 uniform vec3 pLightDiffCol;
 uniform vec3 pLightPos;
 uniform float pLight_Fade;
@@ -76,7 +77,7 @@ vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specul
 	float fade_factor = max(1 - (distance(pos, pLightPos) / pLight_Fade), 0);
 
 	return (diffuseCol * pLightDiffCol * lambertian +		//Diffuse calculation
-	 diffuseCol * pLightspecCol * specularCol * specular)	//Specular calculation
+	 diffuseCol * pLightSpecCol * specularCol * specular)	//Specular calculation
 	 * fade_factor;											//Light fade off
 }
 /*	BlinnPhong specular calculation:
