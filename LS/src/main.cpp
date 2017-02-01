@@ -86,13 +86,17 @@ void setupWindow()
 
 	Mesh wallMesh = gridtest.generateMesh();
 	Mesh cube;
-	Guard guardenn(Model(&cube, &meshShader, &material), &gridtest);
+	Model guardModel(&cube, &meshShader, &material);
+	Guard guardenn(guardModel, &gridtest);
 	guardenn.update(0.16f);
 
-	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
+	Model goModel(&wallMesh, &meshShader, &material);
+	GameObject go(goModel);
+
+	scene.add(&go);
 	scene.add(&guardenn);
-	
-	
+
+
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
     player = new Character(eventManager);
