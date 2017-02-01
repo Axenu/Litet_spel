@@ -20,7 +20,6 @@ uniform float near, far;
 uniform float right, top;
 
 //Light components
-uniform uint pNumLights
 uniform vec3 pLightSpecCol;
 uniform vec3 pLightDiffCol;
 uniform vec3 pLightPos;
