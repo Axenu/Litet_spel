@@ -216,6 +216,12 @@
     <ClInclude Include="header\Scene\Scene.h" />
     <ClInclude Include="header\PointLightObject.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\Windows\DevIL.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\Windows\DevIL.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
