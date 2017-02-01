@@ -3,15 +3,15 @@
 #include"GraphicsResource.h"
 #include"camera.h"
 #include<glm/mat4x4.hpp>
+#include"Render/PointLight.h"
 
-/* Forward declare
+/* Forward Declare
 */
-class ModelPart;
 
 /* Frame temporary render information.
  * Used to gather render data before sending it to the render functions.
  */
-class FrameData {
+class RenderInfo {
 private:
 
 public:
@@ -19,7 +19,8 @@ public:
 	const GraphicsResource& _resource;
 	glm::mat4 _V, _VP;
 	glm::vec3 _eye;
+	std::vector<PointLight> _pLightInfo;
 
-	FrameData(const GraphicsResource& resource, const Camera &cam);
-	~FrameData();
+	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);
+	~RenderInfo();
 };

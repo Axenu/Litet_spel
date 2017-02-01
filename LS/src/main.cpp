@@ -13,7 +13,7 @@
 #include "Model.h"
 #include "GridDataStructure.h"
 #include "Render/GraphicsResource.h"
-#include "Render/FrameData.h"
+#include "Render/RenderInfo.h"
 #include "Render/RenderDeferred.h"
 #include "Render/MeshShader.h"
 #include "Render/DeferredMeshShader.h"
@@ -28,12 +28,12 @@
 #include "gui/Label.h"
 #include "gui/Rectangle.h"
 
-GLFWwindow* window;
-Grid gridtest;
-Camera camera;
-Character* player;
+
 void setupWindow()
 {
+#ifdef _WIN32
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
     // Init glfw
 	if (!glfwInit())
 	{
@@ -46,7 +46,7 @@ void setupWindow()
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_DECORATED, true);
 	unsigned int wWidth = 640, wHeight = 480;
-    window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -88,26 +88,28 @@ void setupWindow()
 	Scene scene;
 	gl::CheckGLErrors("Init stage failed: Resource");
 
-
+	Grid gridtest;
 	Mesh wallMesh = gridtest.generateMesh();
 	Mesh cube;
 	Model guardModel(&cube, &meshShader, &material);
-	Guard guardenn(guardModel, &gridtest);
-	guardenn.update(0.16f);
-
 	Model goModel(&wallMesh, &meshShader, &material);
-	GameObject go(goModel);
 
-	scene.add(&go);
-	scene.add(&guardenn);
-
+	Camera camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
+	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 
 
-    camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
-    player = new Character(eventManager);
+    Character* player = new Character(eventManager);
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
-	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+
+	//Add some more game objects
+	scene.add(player);
+	scene.add(new Guard(guardModel, &gridtest));
+	scene.add(new GameObject(goModel));
+
+	//Add some lights
+	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
+	scene.add(new PointLightObject(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 
 	Font *f = new Font("Resources/fonts/arial");
 	gui::Label *label = new gui::Label(f, "Hello World!");
@@ -118,13 +120,12 @@ void setupWindow()
     {
         //update
 		float dT = 0.016f;
-		scene.update(dT);
-        player->update(dT);
 		camera.update(dT);
+		scene.update(dT);
 
-		FrameData fD(resource, camera);
 		DrawFrame dF;
 		scene.fetchDrawables(dF);
+		RenderInfo fD(resource, camera, dF.getLightInfo());
 
 		resource.getDeffered().bindDraw();
 
@@ -152,16 +153,10 @@ void setupWindow()
 
     glfwTerminate();
 }
-void Deanstestingruta()
-{
-	gridtest.print2darraydata();
-
-}
 
 int main()
 {
 	std::cout << "Init window!" << std::endl;
-	Deanstestingruta();
 	setupWindow();
 
 

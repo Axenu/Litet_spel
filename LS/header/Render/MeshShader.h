@@ -2,7 +2,7 @@
 
 #include<string>
 #include"Shader.h"
-#include"FrameData.h"
+#include"RenderInfo.h"
 
 class MeshShader
 {
@@ -15,6 +15,6 @@ public:
 	~MeshShader();
 	/* Bind shader and assign related uniforms
 	*/
-	virtual void assignUniforms(FrameData &fD, const glm::mat4 &modelMatrix) = 0;
+	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) = 0;
 };
 

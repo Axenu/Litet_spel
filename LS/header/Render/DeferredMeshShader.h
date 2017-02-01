@@ -20,6 +20,6 @@ public:
 
 	/* Bind shader and assign related uniforms
 	*/
-	virtual void assignUniforms(FrameData &fD, const glm::mat4 &modelMatrix);
+	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix);
 };
 

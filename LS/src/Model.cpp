@@ -27,7 +27,7 @@ Model::Model(Mesh * pMesh, MeshShader * pShader, Material * pMaterial)
 	_meshParts.push_back(tmpMP);
 }
 
-void Model::render(FrameData &fD, glm::mat4 &modelMatrix) const
+void Model::render(RenderInfo &fD, glm::mat4 &modelMatrix) const
 {
 	for (int i = 0; i < _meshParts.size(); i++)
 	{

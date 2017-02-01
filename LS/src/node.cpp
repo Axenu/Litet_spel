@@ -12,9 +12,17 @@ Node::Node() {
     this->_modelMatrix = glm::mat4();
 }
 
+Node::Node(const glm::vec3 &position)
+	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+}
+Node::Node(const glm::vec3 &position, Node *parent)
+	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	setParent(parent);
+}
+
 void Node::addChild(Node *child) {
-	_children.push_back(child);
-    child->setParent(this);
+	//Use set child to update child
+	child->setParent(this);
 }
 
 std::vector<Node *> Node::getAllChildren() {
@@ -29,7 +37,12 @@ std::vector<Node *> Node::getAllChildren() {
 }
 
 void Node::setParent(Node *parent) {
-    this->_parent = parent;
+	//Remove any old parent and set the new one
+	this->removeFromParent();
+	if (parent != nullptr) { //Verify there is a new parent
+		this->_parent = parent;
+		parent->_children.push_back(this);
+	}
 }
 Node* Node::getParent() {
 	return this->_parent;
@@ -58,10 +71,10 @@ void Node::update(float dt) {
 	onUpdate(dt);
 	this->_modelMatrix = glm::scale(glm::mat4(), this->_scale);
 	this->_modelMatrix = glm::yawPitchRoll(_rotation.x, _rotation.y, _rotation.z) * this->_modelMatrix;
-	 //Translate using matrix:
-	 this->_modelMatrix = glm::translate(glm::mat4(), _position) * this->_modelMatrix;
-	
 	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); //Translate / Move
+	 /*Translate using matrix:
+	  *this->_modelMatrix = glm::translate(glm::mat4(), _position) * this->_modelMatrix;
+	*/
     if (this->_parent != nullptr) {
         this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
     }

@@ -2,7 +2,8 @@
 #include<vector>
 #include<glm/mat4x4.hpp>
 #include"Model.h"
-#include"Render/FrameData.h"
+#include"Render/RenderInfo.h"
+#include"Render/PointLight.h"
 
 /* Struct holding drawables rendered for a frame
 */
@@ -22,6 +23,7 @@ protected:
 	/* The drawables.
 	*/
 	std::vector<MeshDrawable> _meshes;
+	std::vector<PointLight> _lightInfo;
 public:
 	DrawFrame();
 	~DrawFrame();
@@ -29,8 +31,14 @@ public:
 	/* Add a drawable to be rendered
 	*/
 	void add(const Model &m, const glm::mat4 &modelMatrix);
+	/* Add a point point light to be rendered
+	*/
+	void add(const PointLight &light);
 	/* Render the frame
 	*/
-	void render(FrameData &fD);
+	void render(RenderInfo &fD);
+	/* Get batched light info for the frame
+	*/
+	std::vector<PointLight>& getLightInfo();
 };
 

@@ -39,7 +39,7 @@ void DeferredMeshShader::acquireUniforms() {
 
 /* Bind shader and assign related uniforms
 */
-void DeferredMeshShader::assignUniforms(FrameData &fD, const glm::mat4 &modelMatrix) {
+void DeferredMeshShader::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) {
 	_shader.bind();
 	//Todo add game object transforms
 	glm::mat4 mvp = fD._VP * modelMatrix;

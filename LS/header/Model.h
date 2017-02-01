@@ -11,7 +11,7 @@
 #include <vector>
 #include "camera.h"
 #include "Render/MeshShader.h"
-#include "Render/FrameData.h"
+#include "Render/RenderInfo.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -29,7 +29,7 @@ public:
 	Model(std::vector<Mesh*> pMeshes, std::vector<MeshShader*> pShaders, std::vector<Material*> pMaterials);
 	Model(Mesh* pMesh, MeshShader* pShader, Material* pMaterial);
 
-	void render(FrameData &fD, glm::mat4 &modelMatrix) const;
+	void render(RenderInfo &fD, glm::mat4 &modelMatrix) const;
 	const std::vector<MeshPart>& getParts() const;
 
 	~Model();

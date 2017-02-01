@@ -88,7 +88,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions) </PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;devil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>LIBCMT;MSVCRT</IgnoreSpecificDefaultLibraries>
@@ -114,7 +114,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;devil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\PointLightObject.cpp" />
     <ClCompile Include="src\Scene\DrawFrame.cpp" />
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\BasicColorMaterial.cpp" />
@@ -155,7 +156,7 @@
     <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />
-    <ClCompile Include="src\Render\FrameData.cpp" />
+    <ClCompile Include="src\Render\RenderInfo.cpp" />
     <ClCompile Include="src\Render\GraphicsResource.cpp" />
     <ClCompile Include="src\GridDataStructure.cpp" />
     <ClCompile Include="src\camera.cpp" />
@@ -193,7 +194,7 @@
     <ClInclude Include="header\gl\DeferredBuffer.h" />
     <ClInclude Include="header\gl\DefferedSettings.h" />
     <ClInclude Include="header\gl\glInclude.h" />
-    <ClInclude Include="header\Render\FrameData.h" />
+    <ClInclude Include="header\Render\RenderInfo.h" />
     <ClInclude Include="header\Render\GraphicsResource.h" />
     <ClInclude Include="header\GridDataStructure.h" />
     <ClInclude Include="header\camera.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="header\Render\MeshShader.h" />
     <ClInclude Include="header\type_info.h" />
     <ClInclude Include="header\Scene\Scene.h" />
+    <ClInclude Include="header\PointLightObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

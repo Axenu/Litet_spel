@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include"Render/FrameData.h"
 
 class Shader {
 

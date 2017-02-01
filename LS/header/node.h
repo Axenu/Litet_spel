@@ -23,10 +23,10 @@
 #endif
 
 class Node {
-    bool _isActive;
-
 public:
 	Node();
+	Node(const glm::vec3 &position);
+	Node(const glm::vec3 &position, Node *parent);
 
 	void addChild(Node *child);
 	std::vector<Node *> getAllChildren();
@@ -73,6 +73,8 @@ public:
 
 
 
+private:
+	bool _isActive;
 protected:
 	glm::vec3 _position;
 	glm::vec3 _rotation;

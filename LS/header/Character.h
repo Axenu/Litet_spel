@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "node.h"
+#include"GameObject.h"
 #include "camera.h"
 #include "InputManager.h"
 #include "EventManager.h"
@@ -22,7 +22,7 @@ private:
     float _value;
 };
 
-class Character : public Node
+class Character : public GameObject
 {
 public:
     void setCamera(Camera *camera);

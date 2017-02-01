@@ -23,7 +23,7 @@ class RenderDeferred :
 protected:
 
 	virtual bool acquireUniforms();
-	virtual void assignUniforms(FrameData &fD);
+	virtual void assignUniforms(RenderInfo &fD);
 
 public:
 	RenderDeferred(const gl::RenderQuad& quad);
