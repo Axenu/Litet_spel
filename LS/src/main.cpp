@@ -82,7 +82,7 @@ void setupWindow()
 
 	Mesh wallMesh = gridtest.generateMesh();
 	
-	scene.add(GameObject(Model(&wallMesh, &meshShader, &material)));
+	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
 	
 
     camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
@@ -94,7 +94,6 @@ void setupWindow()
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-		// camera.rotateZ(0.001f);
         //update
 		float dT = 0.016f;
 		scene.update(dT);
