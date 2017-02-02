@@ -21,7 +21,7 @@ GameObject()
 
 void Guard::WalkingBetweenFourPoints(float dt)
 {
-std::cout << this->getPosition().z << std::endl;
+//std::cout << this->getPosition().z << std::endl;
 	//walk up to top point
 	float speed = 0.03f;
 	float padding = 0.f;
@@ -91,7 +91,7 @@ Guard::Guard(Model &m, Grid *gridet):
 	guardsstartposition = glm::vec3(gridet->getData(guard).xz.x+0.01, 0.01, gridet->getData(guard).xz.y+0.01);
 	this->setPosition(guardsstartposition);
 	aiChoice = 0;
-	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
+//	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
 void Guard::setPositionfromMap(glm::vec3 Guarden)
