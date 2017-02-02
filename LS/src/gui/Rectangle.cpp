@@ -2,7 +2,7 @@
 
 namespace gui
 {
-    Rectangle::Rectangle(float width, float height) 
+    Rectangle::Rectangle(float width, float height)
 		: Element(), _shader("2DSimple")
     {
         _size.x = width;
@@ -10,6 +10,7 @@ namespace gui
     	_colorUniform = _shader.getUniform("color");
         _positionUniform = _shader.getUniform("position");
         _sizeUniform = _shader.getUniform("size");
+        _color = glm::vec4(1,1,1,1);
 
         _vertexCount = 4;
         _indexCount = 6;
@@ -40,16 +41,16 @@ namespace gui
     {
 
     }
-    void Rectangle::render()
+    void Rectangle::onRender()
     {
         _shader.bind();
         glUniform4fv(_colorUniform, 1, &_color[0]);
-        glUniform3fv(_positionUniform, 1, &_position[0]);
+        glUniform3fv(_positionUniform, 1, &_positionGlobal[0]);
         glUniform2fv(_sizeUniform, 1, &_size[0]);
         _VA.bindVAO();
     	glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, gl::bufferOffset(0));
     }
-    void Rectangle::update(float dt)
+    void Rectangle::onUpdate(float dt)
     {
 
     }

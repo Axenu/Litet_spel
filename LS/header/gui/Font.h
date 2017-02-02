@@ -8,34 +8,40 @@
 #include "gl/glInclude.h"
 #include "gl/Texture.h"
 
-struct glyph {
-	float xAdvance;
-	float x1, x2, y1, y2;
-	float u1, u2, v1, v2;
-};
+namespace gui
+{
+	struct glyph
+	{
+		float xAdvance;
+		float x1, x2, y1, y2;
+		float u1, u2, v1, v2;
+	};
 
-class Font {
+	class Font
+	{
 
-private:
-    float _fontSize;
-	float _fontHeight;
-	float _baseline;
-	float _textureWidth;
-	float _textureHeight;
+	private:
+	    float _fontSize;
+		float _fontHeight;
+		float _baseline;
+		float _textureWidth;
+		float _textureHeight;
 
-    std::map<int, glyph> _glyphs;
-	GLuint _fontTexture;
+	    std::map<int, glyph> _glyphs;
+		GLuint _fontTexture;
 
-    void loadCharacters();
+	    void loadCharacters();
 
-public:
+	public:
 
 
-    Font();
-	Font(std::string path);
-    ~Font();
+	    Font();
+		Font(std::string path);
+	    ~Font();
 
-	float getFontSize();
-	GLuint getFontTexture();
-	glyph* getGlyph(int g);
-};
+		float getFontSize();
+		float getFontHeight();
+		GLuint getFontTexture();
+		glyph* getGlyph(int g);
+	};
+}

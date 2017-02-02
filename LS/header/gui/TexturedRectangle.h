@@ -14,32 +14,32 @@
 namespace gui
 {
 
-class TexturedRectangle : public Element
-{
-private:
-    glm::vec4 _color;
+    class TexturedRectangle : public Element
+    {
+    private:
+        glm::vec4 _color;
 
-    //GL stuff
-    GLint _positionUniform;
-    GLint _colorUniform;;
-    GLint _sizeUniform;
-    GLint _textureUniform;
-    GLuint _texture;
-    gl::VAData _VA;
+        //GL stuff
+        GLint _positionUniform;
+        GLint _colorUniform;;
+        GLint _sizeUniform;
+        GLint _textureUniform;
+        GLuint _texture;
+        gl::VAData _VA;
 
-    Shader* _shader;
+        Shader* _shader;
 
-    void createTexture(std::string path);
+        void createTexture(std::string path);
 
-public:
+    public:
 
-    TexturedRectangle(float width, float height, std::string path);
-    ~TexturedRectangle();
+        TexturedRectangle(float width, float height, std::string path);
+        ~TexturedRectangle();
 
-    void render();
+        void render();
 
-    void update(float dt);
+        void update(float dt);
 
-};
+    };
 
 }

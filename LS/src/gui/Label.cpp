@@ -2,10 +2,11 @@
 
 namespace gui
 {
-    Label::Label(Font* font, std::string text) 
+    Label::Label(Font* font, std::string text)
 		: Element(), _shader("2DTexture")
     {
         _font = font;
+        _textSize.y = font->getFontHeight();
     	_colorUniform = _shader.getUniform("color");
         _positionUniform = _shader.getUniform("position");
         _sizeUniform = _shader.getUniform("size");
@@ -16,20 +17,20 @@ namespace gui
     }
     Label::~Label()
     {
-
+        delete _font;
     }
-    void Label::render()
+    void Label::onRender()
     {
         _shader.bind();
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, _font->getFontTexture());
         glUniform4fv(_colorUniform, 1, &_color[0]);
-        glUniform3fv(_positionUniform, 1, &_position[0]);
+        glUniform3fv(_positionUniform, 1, &_positionGlobal[0]);
         glUniform2fv(_sizeUniform, 1, &_size[0]);
         _VA.bindVAO();
     	glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, gl::bufferOffset(0));
     }
-    void Label::update(float dt)
+    void Label::onUpdate(float dt)
     {
 
     }
@@ -84,6 +85,7 @@ namespace gui
     		x += g->xAdvance;
     		g = _font->getGlyph((int)text[i+1]);
     	}
+        _textSize.x = x;
         _vertexCount = vertices.size() / 4;
         _indexCount = indices.size();
 
@@ -97,6 +99,20 @@ namespace gui
 
     	_VA = gl::generateVAO_AoS(&vertices[0], attri, _vertexCount, &indices[0], sizeof(indices[0]), _indexCount); // Create VAO
     	gl::CheckGLErrors("generate label VA");
+    }
+
+    //getters
+    float Label::getTextWidth()
+    {
+        return _textSize.x;
+    }
+    float Label::getTextHeight()
+    {
+        return _textSize.y;
+    }
+    glm::vec2& Label::getTextSize()
+    {
+        return _textSize;
     }
 
 

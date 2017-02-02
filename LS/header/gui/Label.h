@@ -14,34 +14,41 @@
 namespace gui
 {
 
-class Label : public Element
-{
-private:
-    glm::vec4 _color;
+    class Label : public Element
+    {
+    private:
+        glm::vec4 _color;
+        glm::vec2 _textSize;
 
-    std::string _text;
+        std::string _text;
 
-    //GL stuff
-    GLint _positionUniform;
-    GLint _textureUniform;
-    GLint _colorUniform;
-    GLint _sizeUniform;
-    gl::VAData _VA;
+        //GL stuff
+        GLint _positionUniform;
+        GLint _textureUniform;
+        GLint _colorUniform;
+        GLint _sizeUniform;
+        gl::VAData _VA;
 
     Shader _shader;
     Font* _font;
 
-public:
+    public:
 
     Label(Font* font, std::string text);
 	virtual ~Label();
 
-    void render();
+        void onRender();
 
-    void update(float dt);
+        void onUpdate(float dt);
 
-    void setText(std::string &text);
+        //setters
+        void setText(std::string &text);
 
-};
+        //getters
+        float getTextWidth();
+        float getTextHeight();
+        glm::vec2& getTextSize();
+
+    };
 
 }

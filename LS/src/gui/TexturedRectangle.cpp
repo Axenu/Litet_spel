@@ -13,6 +13,7 @@ namespace gui
         _sizeUniform = _shader->getUniform("size");
         _textureUniform = _shader->getUniform("_texture");
         _texture = Texture::createTexture(path);
+        _color = glm::vec4(1,1,1,1);
 
         _vertexCount = 4;
         _indexCount = 6;

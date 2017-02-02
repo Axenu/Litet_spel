@@ -33,9 +33,9 @@ namespace gui
         Rectangle(float width, float height);
         ~Rectangle();
 
-        void render();
+        void onRender();
 
-        void update(float dt);
+        void onUpdate(float dt);
 
         //getters
         glm::vec4& getColor();
