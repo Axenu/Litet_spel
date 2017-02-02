@@ -1,11 +1,5 @@
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-#define GLEW_STATIC
-#include <GL/glew.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#endif
+#include "gl/glInclude.h"
 #include <iostream>
-#include <GLFW/glfw3.h>
 #define GLM_FORCE_RADIANS
 #include <IL/il.h>
 #include <glm/glm.hpp>
@@ -27,7 +21,6 @@
 #include"Scene/DrawFrame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
-
 
 void setupWindow()
 {
@@ -136,12 +129,19 @@ void setupWindow()
 	guiManager.setWindowSize(640, 480);
 	guiManager.setScene(&guiScene);
 
+	//init dt calculation
+	float lastTime = glfwGetTime();
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         //update
-		float dT = 0.016f;
+		//Calculate dt
+		float currentTime = glfwGetTime();
+	    float dT = currentTime - lastTime;
+	    lastTime = currentTime;
+		// float dT = tpf(lastTime);
+		// dT = 0.016;
 		scene.update(dT);
 
 		DrawFrame dF;
@@ -162,8 +162,6 @@ void setupWindow()
 		deferred.render(fD);
 		gl::CheckGLErrors("Render stage failed: Composition");
 
-		// button.update(dT);
-		// button.render();
 		guiManager.update(dT);
 		guiManager.render();
 

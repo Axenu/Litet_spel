@@ -5,9 +5,9 @@ Grid::Grid()
 {
 	_gotTheTreasure = false;
 
-	exit = getData(exiting).xz;
+	loadingBmpPicture("roomtest.bmp");
 
-	 loadingBmpPicture("roomtest.bmp");	
+	_exit = getData(exiting).xz;
 
 }
 
@@ -28,7 +28,7 @@ void Grid::buildgridarray()
 	{
 		_twodArray[i] = new gridValues[_widthLength];
 	}
-	
+
 
 }
 
@@ -39,7 +39,7 @@ gridValues Grid::getData(gridType Data)
 		for (int j = 0; j < _widthLength; j++)
 		{
 			if (Data == exiting)
-			{	
+			{
 				if (_twodArray[i][j].type == exiting)
 				{
 					return _twodArray[i][j];
@@ -53,7 +53,7 @@ gridValues Grid::getData(gridType Data)
 				}
 			}
 		}
-	
+
 	}
 }
 
@@ -62,7 +62,7 @@ void Grid::print2darraydata()
 	for (int i = 0; i < _heightLength; i++)
 	{
 		for (int j = 0; j < _widthLength; j++)
-		{	
+		{
 	//		std::cout << _twodArray[i][j].color.x << " ";
 			std::cout << _twodArray[i][j].type << " ";
 		}
@@ -105,7 +105,7 @@ void Grid::loadingBmpPicture(char* filename)
 	for (int i = 0; i < _heightLength; i++)
 	{
 		colorarray[i] = new glm::vec3[_widthLength];
-	}	
+	}
 
 	int k = 0;
 	for (int j = 0; j < height; j++)
@@ -152,7 +152,7 @@ void Grid::loadingBmpPicture(char* filename)
 	delete[] colorarray;
 		delete[] datan;
 		datan = 0;
-	
+
 }
 
 Mesh Grid::generateMesh()
@@ -390,11 +390,11 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 void Grid::checkifPlayerWon(glm::vec3 playerpos)
 {
 	glm::vec2 fixedPlayerPos;
-	exit.x = glm::floor(exit.x / GRIDSPACE);
-	exit.y = glm::floor(exit.y / GRIDSPACE);
+	_exit.x = glm::floor(_exit.x / GRIDSPACE);
+	_exit.y = glm::floor(_exit.y / GRIDSPACE);
 	fixedPlayerPos.x = (int)glm::floor(playerpos.x / GRIDSPACE);
 	fixedPlayerPos.y = (int)glm::floor(playerpos.y / GRIDSPACE);
-	if (fixedPlayerPos == exit && _gotTheTreasure == true)
+	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
 	{
 		std::cout << "you won Congratulations" << std::endl;
 	}
@@ -409,7 +409,7 @@ glm::vec3 Grid::getxandypoint12(int i)
 void Grid::Createxandypoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
-	
+
 	int i = (int)guardposition.x;
 	int j = (int)guardposition.z;
 	//first wall upwards
@@ -538,5 +538,5 @@ void Grid::Createxandypoint12(glm::vec3 guardposition)
 		}
 	}*/
 
-	
+
 }

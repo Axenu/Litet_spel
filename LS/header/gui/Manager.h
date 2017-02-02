@@ -26,6 +26,7 @@ namespace gui
         Scene* _currentScene;
         glm::vec2 _lastCursorPos;
         glm::vec2 _windowSize;
+        int _cursorMode = GLFW_CURSOR_NORMAL;
 
     public:
         Manager();

@@ -46,24 +46,30 @@ namespace gui
     }
     void Manager::cursorMoved(const MouseMoveEvent& event)
     {
-        _lastCursorPos = event.getPos();
+        if (_cursorMode == GLFW_CURSOR_NORMAL)
+        {
+            _lastCursorPos = event.getPos();
+        }
     }
     void Manager::mouseClick(const MouseClickEvent& event)
     {
-        if (_currentScene != nullptr)
+        if (_cursorMode == GLFW_CURSOR_NORMAL)
         {
-            glm::vec2 pos;
-            pos.x = _lastCursorPos.x / _windowSize.x * 2;
-            pos.y = 2 - (_lastCursorPos.y / _windowSize.y * 2);
-            if (pos.x >= 0 && pos.y >= 0 && pos.x <= 2 && pos.y <= 2)
+            if (_currentScene != nullptr)
             {
-                _currentScene->testClick(pos, event.getAction());
-                //test coliision with scene
+                glm::vec2 pos;
+                pos.x = _lastCursorPos.x / _windowSize.x * 2;
+                pos.y = 2 - (_lastCursorPos.y / _windowSize.y * 2);
+                if (pos.x >= 0 && pos.y >= 0 && pos.x <= 2 && pos.y <= 2)
+                {
+                    _currentScene->testClick(pos, event.getAction());
+                    //test coliision with scene
+                }
             }
         }
     }
     void Manager::cursorModeChanged(const cursorModeChangeEvent& event)
     {
-
+        _cursorMode = event.getState();
     }
 }

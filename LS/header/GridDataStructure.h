@@ -31,7 +31,7 @@ private:
 	int _widthLength;
 	gridValues** _twodArray;
 	bool _gotTheTreasure;
-	glm::vec2 exit;
+	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
 
 public:
