@@ -30,15 +30,15 @@ public:
     virtual void update(float dt);
     void onRender();
 
-    void moveCharacter(const KeyboardEvent* event);
-    void moveMouse(const MouseMoveEvent* event);
-    void collectLoot(const CollectLootEvent* event);
+    void moveCharacter(const KeyboardEvent& event);
+    void moveMouse(const MouseMoveEvent& event);
+    void collectLoot(const CollectLootEvent& event);
 
 	void setLevel(Grid *level);
 
     Character(glm::vec3 pos, EventManager *manager);
     Character();
-    ~Character();
+    virtual ~Character();
 private:
 	Grid *_currentLevel;
     EventManager *_eventManager;

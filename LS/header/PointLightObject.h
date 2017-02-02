@@ -11,7 +11,7 @@ public:
 	PointLightObject();
 	PointLightObject(const PointLight &light);
 	PointLightObject(const PointLight &light, Node *parent);
-	~PointLightObject();
+	virtual ~PointLightObject();
 
 	virtual void update(float dT);
 

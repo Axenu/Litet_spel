@@ -38,7 +38,7 @@ public:
 	float getNearPlane() const;
 	float getFarPlane() const;
 
-	~Camera();
+	virtual ~Camera();
 
 	float degreesToRadians(float degrees);
 };

@@ -10,7 +10,7 @@ class GameObject : public Node
 public:
 	GameObject();
 	GameObject(Model &m);
-	~GameObject();
+	virtual ~GameObject();
 	void onUpdate(float dt);
 	void setModel(Model &m);
 	const Model& getModel();

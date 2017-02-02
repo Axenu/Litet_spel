@@ -12,7 +12,7 @@ protected:
 public:
 	MeshShader(const std::string &shader);
 	MeshShader(Shader &shader);
-	~MeshShader();
+	virtual ~MeshShader();
 	/* Bind shader and assign related uniforms
 	*/
 	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) = 0;

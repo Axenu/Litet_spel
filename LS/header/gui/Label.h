@@ -28,13 +28,13 @@ private:
     GLint _sizeUniform;
     gl::VAData _VA;
 
-    Shader* _shader;
+    Shader _shader;
     Font* _font;
 
 public:
 
     Label(Font* font, std::string text);
-    ~Label();
+	virtual ~Label();
 
     void render();
 

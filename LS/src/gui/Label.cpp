@@ -2,13 +2,13 @@
 
 namespace gui
 {
-    Label::Label(Font* font, std::string text) : Element()
+    Label::Label(Font* font, std::string text) 
+		: Element(), _shader("2DTexture")
     {
         _font = font;
-        _shader = new Shader("2DTexture");
-    	_colorUniform = _shader->getUniform("color");
-        _positionUniform = _shader->getUniform("position");
-        _sizeUniform = _shader->getUniform("size");
+    	_colorUniform = _shader.getUniform("color");
+        _positionUniform = _shader.getUniform("position");
+        _sizeUniform = _shader.getUniform("size");
         _color = glm::vec4(1,1,1,1);
 
         setText(text);
@@ -20,7 +20,7 @@ namespace gui
     }
     void Label::render()
     {
-        _shader->bind();
+        _shader.bind();
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, _font->getFontTexture());
         glUniform4fv(_colorUniform, 1, &_color[0]);

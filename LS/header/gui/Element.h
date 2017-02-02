@@ -19,7 +19,7 @@ namespace gui
     public:
 
         Element();
-        ~Element();
+        virtual ~Element();
 
         virtual void render() = 0;
 

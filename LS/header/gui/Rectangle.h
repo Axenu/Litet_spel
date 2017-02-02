@@ -26,7 +26,7 @@ namespace gui
         //Mesh data
         gl::VAData _VA;
         //Shader
-        Shader* _shader;
+        Shader _shader;
 
     public:
 

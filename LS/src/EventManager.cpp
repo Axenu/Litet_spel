@@ -20,9 +20,9 @@ EventManager::~EventManager()
 	_handlers.clear();
 }
 
-void EventManager::execute(const Event* event)
+void EventManager::execute(const Event& event)
 {
-	Handlers::iterator it = _handlers.find(TypeInfo(typeid(*event)));
+	Handlers::iterator it = _handlers.find(TypeInfo(typeid(event)));
 	if(it != _handlers.end())
 	{
         for (std::vector<HandlerFunctionBase*>::iterator i = it->second.begin(); i != it->second.end(); ++i)

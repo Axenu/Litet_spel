@@ -2,14 +2,14 @@
 
 namespace gui
 {
-    Rectangle::Rectangle(float width, float height) : Element()
+    Rectangle::Rectangle(float width, float height) 
+		: Element(), _shader("2DSimple")
     {
         _size.x = width;
         _size.y = height;
-        _shader = new Shader("2DSimple");
-    	_colorUniform = _shader->getUniform("color");
-        _positionUniform = _shader->getUniform("position");
-        _sizeUniform = _shader->getUniform("size");
+    	_colorUniform = _shader.getUniform("color");
+        _positionUniform = _shader.getUniform("position");
+        _sizeUniform = _shader.getUniform("size");
 
         _vertexCount = 4;
         _indexCount = 6;

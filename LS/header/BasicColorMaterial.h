@@ -11,7 +11,7 @@ class BasicColorMaterial : public Material
 public:
 	BasicColorMaterial();
 	BasicColorMaterial(const BasicColorMaterial&);
-	~BasicColorMaterial();
+	virtual ~BasicColorMaterial();
 	BasicColorMaterial(GLuint);
 	void SetMaterialColor(float, float, float, float);
 	void SetUp();

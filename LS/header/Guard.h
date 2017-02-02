@@ -16,7 +16,7 @@ private:
 	int aiChoice;
 
 public:
-	~Guard();
+	virtual ~Guard();
 	Guard();
 	Guard(glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
