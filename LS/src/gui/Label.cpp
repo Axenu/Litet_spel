@@ -84,7 +84,7 @@ namespace gui
     		x += g->xAdvance;
     		g = _font->getGlyph((int)text[i+1]);
     	}
-        _vertexCount = vertices.size();
+        _vertexCount = vertices.size() / 4;
         _indexCount = indices.size();
 
         std::vector<gl::VertexAttribute> attri;

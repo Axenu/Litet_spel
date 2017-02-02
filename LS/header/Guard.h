@@ -20,8 +20,9 @@ public:
 	Guard();
 	Guard(glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
-	void onUpdate(float dt);
+virtual	void update(float dt);
 	Guard(Model & m, Grid * gridet);
 	void setPositionfromMap(glm::vec3 Guarden);
+	void goToSquare(float dt, glm::vec3 walkTo);
 };
 

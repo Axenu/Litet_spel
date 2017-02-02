@@ -19,65 +19,23 @@ GameObject()
 
 }
 
+
+
 void Guard::WalkingBetweenFourPoints(float dt)
 {
-//std::cout << this->getPosition().z << std::endl;
-	//walk up to top point
-	float speed = 0.03f;
-	float padding = 0.f;
-float zvalue=	this->getPosition().z;
-	if (aiChoice == 1)
-	{
-		if(zvalue - padding <= point2z.z)
-		{ 
-			aiChoice = -1;
-		}
-		else
-		this->move(glm::vec3(0,0,-speed)*dt);
-	}
-	//walk down to the guardstartpoint
-	if (aiChoice == -1)
-	{
-		if (guardsstartposition.z <= zvalue)
-		{
-			aiChoice = 2; // add randomness later
-		}
-		else
-		this->move(glm::vec3(0, 0, speed)*dt);
 
-	}
-
-	//walk down to lowest point
-	if (aiChoice == 2)
-	{
-		if (zvalue  >= point1z.z)
-		{
-			aiChoice = -2;
-		}
-		else
-			this->move(glm::vec3(0, 0, speed)*dt);
-	}
-	//walk up to the guardstartpoint
-	if (aiChoice == -2)
-	{
-		if (guardsstartposition.z >= zvalue)
-		{
-			aiChoice = 0; // add randomness later
-		}
-		else
-		this->move(glm::vec3(0, 0, -speed)*dt);
-
-	}
 
 }
 
 
 
 
-void Guard::onUpdate(float dt)
+void Guard::update(float dt)
 {
 
-	WalkingBetweenFourPoints(dt);
+//	WalkingBetweenFourPoints(dt);
+	goToSquare(dt, glm::vec3(1,0,5));
+	Node::update(dt);
 }
 
 Guard::Guard(Model &m, Grid *gridet):
@@ -90,7 +48,7 @@ Guard::Guard(Model &m, Grid *gridet):
 	point2x = gridet->getxandypoint12(3);
 	guardsstartposition = glm::vec3(gridet->getData(guard).xz.x+0.01, 0.01, gridet->getData(guard).xz.y+0.01);
 	this->setPosition(guardsstartposition);
-	aiChoice = 0;
+	aiChoice = 1;
 //	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
@@ -98,6 +56,34 @@ void Guard::setPositionfromMap(glm::vec3 Guarden)
 {
 	this->setPosition(Guarden);
 
+}
+
+void Guard::goToSquare(float dt,glm::vec3 walkTo)
+{
+//walk up to top point
+float speed = 0.03f;
+float padding = 0.f;
+glm::vec3 value = this->getPosition();
+
+//glm::vec3 value = glm::vec3(1, 0, 5);
+	glm::vec3 distance = walkTo - value;
+	std::cout << distance.x << " " << distance.z << std::endl;
+	if (distance.z > 0)
+	{
+		this->move(glm::vec3(0, 0, speed)*dt);
+	}
+	if (distance.z < 0)
+	{
+		this->move(glm::vec3(0, 0, -speed)*dt);
+	}
+	if (distance.x > 0)
+	{
+		this->move(glm::vec3(speed, 0,0)*dt);
+	}
+	if (distance.x < 0)
+	{
+		this->move(glm::vec3(-speed, 0, 0)*dt);
+	}
 }
 
 
