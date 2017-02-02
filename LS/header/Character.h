@@ -30,9 +30,9 @@ public:
     virtual void update(float dt);
     void onRender();
 
-    void moveCharacter(const KeyboardEvent* event);
-    void moveMouse(const MouseMoveEvent* event);
-    void collectLoot(const CollectLootEvent* event);
+    void moveCharacter(const KeyboardEvent& event);
+    void moveMouse(const MouseMoveEvent& event);
+    void collectLoot(const CollectLootEvent& event);
 
 	void setLevel(Grid *level);
 

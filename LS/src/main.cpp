@@ -27,6 +27,7 @@
 #include"Scene/DrawFrame.h"
 #include "gui/Label.h"
 #include "gui/Rectangle.h"
+#include "gui/Button.h"
 
 
 void setupWindow()
@@ -112,8 +113,14 @@ void setupWindow()
 	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
 	scene.add(new PointLightObject(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 
-	Font *f = new Font("Resources/fonts/arial");
-	gui::Label *label = new gui::Label(f, "Hello World!");
+	gui::Font *f = new gui::Font("Resources/fonts/arial");
+	gui::Label label(f, "Hello World!");
+	label.setZ(99);
+	gui::Rectangle rect(0.5, 0.5);
+	glm::vec4 color(0,0,0,1);
+	rect.setColor(color);
+	gui::Button button(0.5, 0.5, "CLick me!");
+	button.setPosition(1,1);
 
 
 /* Loop until the user closes the window */
@@ -141,8 +148,9 @@ void setupWindow()
 		deferred.render(fD);
 		gl::CheckGLErrors("Render stage failed: Composition");
 
-
-		label->render();
+		// rect.render();
+		// label.render();
+		button.render();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
