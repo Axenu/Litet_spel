@@ -94,8 +94,13 @@ void setupWindow()
 	Grid gridtest;
 	Mesh wallMesh = gridtest.generateMesh();
 	Mesh cube;
-	Model guardModel(MeshPart(&cube, &material));
-	Model goModel(MeshPart(&wallMesh, &material));
+	//avoid this:
+	// Model guardModel(MeshPart(&cube, &material));
+	//do this instead:
+	MeshPart guardModelMeshPart(&cube, &material);
+	Model guardModel(guardModelMeshPart);
+	MeshPart goModelMeshPart(&wallMesh, &material);
+	Model goModel(goModelMeshPart);
 
 	Camera camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);

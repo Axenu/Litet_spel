@@ -73,20 +73,32 @@ bool Material::tryGet(const std::string &id, glm::vec4 &vec) {
 void Material::setFloat(const std::string &id, float value) {
 	float *val = new float[1];
 	val[0] = value;
-	setValue(id, Value(val, 1));
+	//avoid this:
+	// setValue(id, Value(val, 1));
+	//do this instead:
+	Value tempVal(val, 1);
+	setValue(id, tempVal);
 }
 void Material::setVec2(const std::string &id, const glm::vec2 &value) {
 	float *val = new float[2];
 	val[0] = value.x;
 	val[1] = value.y;
-	setValue(id, Value(val, 2));
+	//avoid this:
+	// setValue(id, Value(val, 2));
+	//do this instead:
+	Value tempVal(val, 2);
+	setValue(id, tempVal);
 }
 void Material::setVec3(const std::string &id, const glm::vec3 &value) {
 	float *val = new float[3];
 	val[0] = value.x;
 	val[1] = value.y;
 	val[2] = value.z;
-	setValue(id, Value(val, 3));
+	//avoid this:
+	// setValue(id, Value(val, 3));
+	//do this instead:
+	Value tempVal(val, 3);
+	setValue(id, tempVal);
 }
 void Material::setVec4(const std::string &id, const glm::vec4 &value) {
 	float *val = new float[4];
@@ -94,9 +106,12 @@ void Material::setVec4(const std::string &id, const glm::vec4 &value) {
 	val[1] = value.y;
 	val[2] = value.z;
 	val[3] = value.w;
-	setValue(id, Value(val, 4));
+	//avoid this:
+	// setValue(id, Value(val, 4));
+	//do this instead:
+	Value tempVal(val, 4);
+	setValue(id, tempVal);
 }
 void Material::setColor(const std::string &id, const glm::vec4 &color) {
 	setVec4(id, color);
 }
-
