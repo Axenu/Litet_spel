@@ -14,7 +14,7 @@ private:
 
 public:	
 	DeferredMeshShader();
-	~DeferredMeshShader();
+	virtual ~DeferredMeshShader();
 	void setDif(float r, float g, float b);
 	void setSpec(float r, float g, float b);
 

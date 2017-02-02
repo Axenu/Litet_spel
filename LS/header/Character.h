@@ -38,7 +38,7 @@ public:
 
     Character(glm::vec3 pos, EventManager *manager);
     Character();
-    ~Character();
+    virtual ~Character();
 private:
 	Grid *_currentLevel;
     EventManager *_eventManager;

@@ -15,7 +15,7 @@ protected:
 public:
 	QuadShader(const gl::RenderQuad& quad, Shader &shader);
 	QuadShader(const gl::RenderQuad& quad, const std::string &vertShader, const std::string &fragShader);
-	~QuadShader();
+	virtual ~QuadShader();
 
 
 	void render(RenderInfo &fD);

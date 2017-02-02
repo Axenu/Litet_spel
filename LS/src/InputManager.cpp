@@ -10,18 +10,21 @@ void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods) 
     else
     {
         InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-        iManager->getManager()->execute(new KeyboardEvent(key, action));
+		KeyboardEvent e(key, action);
+        iManager->getManager()->execute(&e);
     }
 }
 
 void mouse_key_callback(GLFWwindow* win, int key, int action, int mods) {
     InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-    iManager->getManager()->execute(new MouseClickEvent(key, action));
+	MouseClickEvent e(key, action);
+    iManager->getManager()->execute(&e);
 }
 
 void cursorPosition_callback(GLFWwindow* win, double x, double y) {
     InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-    iManager->getManager()->execute(new MouseMoveEvent(x, y));
+	MouseMoveEvent e(x, y);
+    iManager->getManager()->execute(&e);
 }
 
 void InputManager::switchCursorMode(const cursorModeChangeEvent* event)

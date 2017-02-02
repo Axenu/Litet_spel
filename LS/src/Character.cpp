@@ -83,7 +83,8 @@ void Character::moveCharacter(const KeyboardEvent* event)
                 _cursorMode = GLFW_CURSOR_NORMAL;
             }
             _hasMoved = false;
-            _eventManager->execute(new cursorModeChangeEvent(_cursorMode));
+			cursorModeChangeEvent e(_cursorMode);
+            _eventManager->execute(&e);
         }
     }
 }

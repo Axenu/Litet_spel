@@ -27,7 +27,7 @@ protected:
 
 public:
 	RenderDeferred(const gl::RenderQuad& quad);
-	~RenderDeferred();
+	virtual ~RenderDeferred();
 
 	/* Call on window size change
 	*/

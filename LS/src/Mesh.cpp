@@ -5,7 +5,7 @@
 void Mesh::setUpMesh()
 {
 
-	_aabb = new AABB(&_position);
+	_aabb = AABB(&_position);
 
 	std::vector<gl::VertexAttribute> attri;
 	attri.push_back(gl::VertexAttribute(0, GL_FLOAT, 3, sizeof(float))); //Pos attribute
@@ -140,7 +140,6 @@ Mesh::Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> 
 }
 Mesh::~Mesh()
 {
-	delete _aabb;
 }
 /* Move the data
 */

@@ -75,13 +75,13 @@ void setupWindow()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	gl::CheckGLErrors("Init stage failed: State");
 
-	EventManager *eventManager = new EventManager();
-	InputManager *iManager = new InputManager(window, eventManager);
+	EventManager eventManager;
+	InputManager iManager(window, &eventManager);
 
 
 	//basic init
 	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
-	Shader *s = new Shader("Basic");
+	Shader s("Basic");
 	DeferredMeshShader meshShader;
 	RenderDeferred deferred(resource.getQuad());
 	Material material;
@@ -98,7 +98,7 @@ void setupWindow()
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 
 
-    Character* player = new Character(glm::vec3(3.0f, 0.0f, 5.0f),eventManager);
+    Character* player = new Character(glm::vec3(3.0f, 0.0f, 5.0f), &eventManager);
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	camera.setParent(player);
@@ -112,8 +112,8 @@ void setupWindow()
 	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
 	scene.add(new PointLightObject(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 
-	Font *f = new Font("Resources/fonts/arial");
-	gui::Label *label = new gui::Label(f, "Hello World!");
+	Font f("Resources/fonts/arial");
+	gui::Label label(&f, "Hello World!");
 
 
 /* Loop until the user closes the window */
@@ -142,7 +142,7 @@ void setupWindow()
 		gl::CheckGLErrors("Render stage failed: Composition");
 
 
-		label->render();
+		label.render();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

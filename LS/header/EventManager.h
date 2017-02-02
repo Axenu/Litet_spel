@@ -41,7 +41,7 @@ class EventManager
 {
 public:
     EventManager();
-	~EventManager();
+	virtual ~EventManager();
 	void execute(const Event*);
 
 	template <class T, class EventT>

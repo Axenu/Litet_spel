@@ -15,6 +15,7 @@ private:
     glm::vec3 _max;
 
 public:
+	AABB();
     AABB(std::vector<glm::vec3> *position);
 
     ~AABB();
