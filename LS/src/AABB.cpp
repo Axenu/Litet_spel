@@ -15,6 +15,23 @@ AABB::AABB(std::vector<glm::vec3> *position)
     // std::cout<<glm::to_string(_max)<<std::endl;
 }
 
+AABB::AABB(const AABB & other)
+{
+	_min = other._min;
+	_max = other._max;
+}
+
+
+glm::vec3 AABB::getMin()
+{
+	return _min;
+}
+
+glm::vec3 AABB::getMax()
+{
+	return _max;
+}
+
 AABB::~AABB()
 {
 

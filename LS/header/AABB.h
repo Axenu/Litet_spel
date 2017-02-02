@@ -8,14 +8,13 @@
 
 class AABB
 {
-private:
-    glm::vec3 _position;
-    glm::vec3 _scale;
-    glm::vec3 _min;
-    glm::vec3 _max;
-
 public:
     AABB(std::vector<glm::vec3> *position);
-
-    ~AABB();
+	AABB(const AABB &other);
+	glm::vec3 getMin();
+	glm::vec3 getMax();
+	~AABB();
+private:
+	glm::vec3 _min;
+	glm::vec3 _max;
 };

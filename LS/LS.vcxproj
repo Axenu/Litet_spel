@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Picking.cpp" />
     <ClCompile Include="src\Scene\DrawFrame.cpp" />
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\BasicColorMaterial.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Picking.h" />
     <ClInclude Include="header\Scene\DrawFrame.h" />
     <ClInclude Include="header\AABB.h" />
     <ClInclude Include="header\BasicColorMaterial.h" />

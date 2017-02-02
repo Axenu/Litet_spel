@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "gl/GLFunctions.h"
+#include "Picking.h"
 
 //Private
 void Mesh::setUpMesh()
@@ -176,3 +177,25 @@ void Mesh::render()
 	_VA.bindVAO();
 	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, gl::bufferOffset(0));
 }
+
+bool Mesh::pick(glm::vec3 origin, glm::vec3 dir)
+{
+	//picking in modelspace
+	if (AABBIntersection(*_aabb, dir, origin))
+	{
+	glm::vec3 tri1, tri2, tri3;
+		for (unsigned int i = 0; i < _indices.size(); i += 3)
+		{
+			tri1 = _position[_indices[i]];
+			tri2 = _position[_indices[i+1]];
+			tri3 = _position[_indices[i+2]];
+			if (TriangleIntersection(tri1, tri2, tri3, origin, dir))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+

@@ -14,6 +14,7 @@
 #include "Render/FrameData.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "AABB.h"
 
 struct MeshPart
 {
@@ -28,10 +29,9 @@ public:
 	Model();
 	Model(std::vector<Mesh*> pMeshes, std::vector<MeshShader*> pShaders, std::vector<Material*> pMaterials);
 	Model(Mesh* pMesh, MeshShader* pShader, Material* pMaterial);
-
 	void render(FrameData &fD, glm::mat4 &modelMatrix) const;
 	const std::vector<MeshPart>& getParts() const;
-
+	bool pick(glm::vec3 origin, glm::vec3 dir);
 	~Model();
 private:
 	std::vector<MeshPart> _meshParts;

@@ -65,6 +65,12 @@ float Camera::getFarPlane() const
 	return _farPlane;
 }
 
+glm::vec4 Camera::getLookAt()
+{
+	glm::mat4 invViewMat = glm::inverse(_viewMatrix);
+	return invViewMat * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f);
+}
+
 
 Camera::~Camera()
 {
