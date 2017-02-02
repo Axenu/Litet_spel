@@ -36,6 +36,20 @@ void Scene::add(PointLightObject *object) {
 	_pLights.push_back(object);
 
 }
+GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
+	for (unsigned int i = 0; i < _objects.size(); i++) {
+		if (_objects[i] == gameObj) {
+			_objects.erase(_objects.begin() + i);
+			gameObj->removeNode(); //Clear the node from the tree
+			if (deleteObj) {
+				delete gameObj;
+				return nullptr;
+			}
+			return gameObj;
+		}
+	}
+	return gameObj;
+}
 
 void Scene::fetchDrawables(DrawFrame &dF) {
 	for (unsigned int i = 0; i < _objects.size(); i++) {

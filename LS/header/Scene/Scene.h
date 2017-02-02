@@ -29,6 +29,9 @@ public:
 	*/
 	void add(GameObject *object);
 	void add(PointLightObject *object);
+	/* Remove the object returns the pointer to any leftover data
+	*/
+	GameObject* remove(GameObject *object, bool deleteObj = true);
 	/* Populates the DrawFrame by fetching and culling the scene drawables
 	*/
 	void fetchDrawables(DrawFrame &dF);

@@ -108,8 +108,10 @@ void setupWindow()
 
 	//Add some more game objects
 	scene.add(player);
-	scene.add(new Guard(guardModel, &gridtest));
+	GameObject *guard = new Guard(guardModel, &gridtest);
+	scene.add(guard);
 	scene.add(new GameObject(goModel));
+	guard = scene.remove(guard);
 
 	//Add some lights
 	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));

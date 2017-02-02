@@ -32,7 +32,12 @@ public:
 	std::vector<Node *> getAllChildren();
     void setParent(Node *parent);
 	Node* getParent();
+	/* Removes the object from the parent
+	*/
     void removeFromParent();
+	/* Remove the node from the tree. Moving children to it's current parent
+	*/
+	void removeNode();
     void removeChild(Node *Node);
 
     virtual void update(float dt);

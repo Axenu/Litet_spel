@@ -19,6 +19,10 @@ Node::Node(const glm::vec3 &position, Node *parent)
 	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
 	setParent(parent);
 }
+Node::~Node() {
+
+}
+
 
 void Node::addChild(Node *child) {
 	//Use set child to update child
@@ -53,13 +57,20 @@ void Node::removeFromParent() {
         this->_parent->removeChild(this);
     }
 }
+/* Remove the node from the tree. Moving children to it's current parent
+*/
+void Node::removeNode() {
+	//Move children to the parent
+	for (unsigned int i = 0; i < _children.size(); i++)
+		_children[i]->setParent(_parent);
+	removeFromParent();
+}
 
 void Node::removeChild(Node *node) {
     Node *n = nullptr;
     for (unsigned int i = 0; i < _children.size(); i++) {
         n = _children[i];
         if (n == node) {
-            delete n;
             _children.erase(_children.begin()+i);
             return;
         }
@@ -203,8 +214,4 @@ glm::vec3 Node::getPosition() const {
 
 glm::vec3 Node::getRotation() const {
     return _rotation;
-}
-
-Node::~Node() {
-
 }
