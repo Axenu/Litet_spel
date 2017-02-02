@@ -32,6 +32,7 @@
 void setupWindow()
 {
 #ifdef _WIN32
+	//Memory leak debug
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
     // Init glfw
@@ -84,15 +85,17 @@ void setupWindow()
 	Shader s("Basic");
 	DeferredMeshShader meshShader;
 	RenderDeferred deferred(resource.getQuad());
-	Material material;
+	Material material(&meshShader);
+	material.setColor("diffuse", glm::vec4(0.8f));
+	material.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
 	Scene scene;
 	gl::CheckGLErrors("Init stage failed: Resource");
 
 	Grid gridtest;
 	Mesh wallMesh = gridtest.generateMesh();
 	Mesh cube;
-	Model guardModel(&cube, &meshShader, &material);
-	Model goModel(&wallMesh, &meshShader, &material);
+	Model guardModel(MeshPart(&cube, &material));
+	Model goModel(MeshPart(&wallMesh, &material));
 
 	Camera camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);

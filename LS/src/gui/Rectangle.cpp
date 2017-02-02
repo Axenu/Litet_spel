@@ -42,7 +42,7 @@ namespace gui
     }
     void Rectangle::render()
     {
-        _shader->bind();
+        _shader.bind();
         glUniform4fv(_colorUniform, 1, &_color[0]);
         glUniform3fv(_positionUniform, 1, &_position[0]);
         glUniform2fv(_sizeUniform, 1, &_size[0]);

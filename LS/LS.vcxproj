@@ -134,10 +134,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\PointLightObject.cpp" />
     <ClCompile Include="src\Scene\DrawFrame.cpp" />
     <ClCompile Include="src\AABB.cpp" />
-    <ClCompile Include="src\BasicColorMaterial.cpp" />
     <ClCompile Include="src\gl\Texture.cpp" />
     <ClCompile Include="src\Guard.cpp" />
     <ClCompile Include="src\gui\Element.cpp" />
@@ -146,7 +146,7 @@
     <ClCompile Include="src\gui\Rectangle.cpp" />
     <ClCompile Include="src\gui\TexturedRectangle.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
-    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Render\Material.cpp" />
     <ClCompile Include="src\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
@@ -174,10 +174,11 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\MeshPart.h" />
+    <ClInclude Include="header\Render\MaterialLink.h" />
     <ClInclude Include="header\Render\PointLight.h" />
     <ClInclude Include="header\Scene\DrawFrame.h" />
     <ClInclude Include="header\AABB.h" />
-    <ClInclude Include="header\BasicColorMaterial.h" />
     <ClInclude Include="header\EventManager.h" />
     <ClInclude Include="header\gl\Texture.h" />
     <ClInclude Include="header\gl\VAData.h" />
@@ -187,7 +188,7 @@
     <ClInclude Include="header\gui\Label.h" />
     <ClInclude Include="header\gui\Rectangle.h" />
     <ClInclude Include="header\gui\TexturedRectangle.h" />
-    <ClInclude Include="header\Material.h" />
+    <ClInclude Include="header\Render\Material.h" />
     <ClInclude Include="header\GameObject.h" />
     <ClInclude Include="header\Render\DeferredMeshShader.h" />
     <ClInclude Include="header\Character.h" />

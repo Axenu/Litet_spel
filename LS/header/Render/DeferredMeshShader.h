@@ -8,18 +8,27 @@ class DeferredMeshShader
 {
 private:
 
+	class DeferredMaterial :
+		public MaterialLink {
+	public:
+		glm::vec4 _diffuse, _specular;
+
+		DeferredMaterial(){}
+		virtual ~DeferredMaterial(){}
+	};
+
 	GLint _mvpUniform, _mvUniform, _difColUniform, _specColUniform;
-	glm::vec3 _difCol, _specCol;
 	void acquireUniforms();
 
 public:	
 	DeferredMeshShader();
 	virtual ~DeferredMeshShader();
-	void setDif(float r, float g, float b);
-	void setSpec(float r, float g, float b);
 
 	/* Bind shader and assign related uniforms
 	*/
-	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix);
+	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix, MaterialLink *material);
+	/* Link the shader to the material
+	*/
+	virtual std::shared_ptr<MaterialLink> linkMaterial(Material &mat);
 };
 

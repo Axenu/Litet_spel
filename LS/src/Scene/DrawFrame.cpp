@@ -25,8 +25,7 @@ void DrawFrame::add(const PointLight &light) {
 void DrawFrame::render(RenderInfo &fD) {
 	for (unsigned int i = 0; i < _meshes.size(); i++) {
 		const MeshDrawable &ref = _meshes[i];
-		ref._part->_shader->assignUniforms(fD, *ref._transform);
-		ref._part->_mesh->render();
+		ref._part->render(fD, *ref._transform);
 	}
 }
 

@@ -9,25 +9,18 @@
 
 #include <iostream>
 #include <vector>
-#include "camera.h"
+#include "MeshPart.h"
 #include "Render/MeshShader.h"
 #include "Render/RenderInfo.h"
 #include "Mesh.h"
-#include "Material.h"
-
-struct MeshPart
-{
-	Mesh *_mesh;
-	MeshShader *_shader;
-	Material *_material;
-};
+#include "Render/Material.h"
 
 
 class Model{
 public:
 	Model();
-	Model(std::vector<Mesh*> pMeshes, std::vector<MeshShader*> pShaders, std::vector<Material*> pMaterials);
-	Model(Mesh* pMesh, MeshShader* pShader, Material* pMaterial);
+	Model(std::vector<MeshPart> &parts);
+	Model(MeshPart &part);
 
 	void render(RenderInfo &fD, glm::mat4 &modelMatrix) const;
 	const std::vector<MeshPart>& getParts() const;
