@@ -13,10 +13,10 @@ class HandlerFunctionBase
 {
 public:
 	virtual ~HandlerFunctionBase() {};
-	void exec(const Event* event) {call(event);}
+	void exec(const Event& event) {call(event);}
 
 private:
-	virtual void call(const Event*) = 0;
+	virtual void call(const Event&) = 0;
 };
 
 
@@ -24,12 +24,12 @@ template <class T, class EventT>
 class MemberFunctionHandler : public HandlerFunctionBase
 {
 public:
-	typedef void (T::*MemberFunc)(EventT*);
+	typedef void (T::*MemberFunc)(EventT&);
 	MemberFunctionHandler(T* instance, MemberFunc memFn) : _instance(instance), _function(memFn) {};
 
-	void call(const Event* event)
+	void call(const Event& event)
 	{
-		(_instance->*_function)(static_cast<EventT*>(event));
+		(_instance->*_function)(static_cast<EventT&>(event));
 	}
 
 private:
@@ -41,11 +41,11 @@ class EventManager
 {
 public:
     EventManager();
-	virtual ~EventManager();
-	void execute(const Event*);
+	~EventManager();
+	void execute(const Event&);
 
 	template <class T, class EventT>
-	void listen(T*, void (T::*memFn)(EventT*));
+	void listen(T*, void (T::*memFn)(EventT&));
 
 private:
 	typedef std::map<TypeInfo, std::vector<HandlerFunctionBase*>> Handlers;
@@ -54,7 +54,7 @@ private:
 
 
 template <class T, class EventT>
-void EventManager::listen(T* obj, void (T::*memFn)(EventT*))
+void EventManager::listen(T* obj, void (T::*memFn)(EventT&))
 {
 	_handlers[TypeInfo(typeid(EventT))].push_back(new MemberFunctionHandler<T, EventT>(obj, memFn));
 }

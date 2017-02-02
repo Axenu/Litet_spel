@@ -66,7 +66,7 @@ public:
     InputManager(GLFWwindow *window, EventManager* manager);
     ~InputManager();
 
-    void switchCursorMode(const cursorModeChangeEvent* event);
+    void switchCursorMode(const cursorModeChangeEvent& event);
     // int getCursorMode();
 
     EventManager* getManager();

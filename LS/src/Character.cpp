@@ -24,55 +24,55 @@ void Character::onRender()
 {
 
 }
-void Character::moveCharacter(const KeyboardEvent* event)
+void Character::moveCharacter(const KeyboardEvent& event)
 {
-    if (event->getKey() == GLFW_KEY_W)
+    if (event.getKey() == GLFW_KEY_W)
     {
-        if (event->getAction() == GLFW_PRESS)
+        if (event.getAction() == GLFW_PRESS)
         {
             _velocity.y -= 1.0f;
         }
-        else if (event->getAction() == GLFW_RELEASE)
+        else if (event.getAction() == GLFW_RELEASE)
         {
             _velocity.y += 1.0f;
         }
     }
-    else if (event->getKey() == GLFW_KEY_A)
+    else if (event.getKey() == GLFW_KEY_A)
     {
-        if (event->getAction() == GLFW_PRESS)
+        if (event.getAction() == GLFW_PRESS)
         {
             _velocity.x -= 1.0f;
         }
-        else if (event->getAction() == GLFW_RELEASE)
+        else if (event.getAction() == GLFW_RELEASE)
         {
             _velocity.x += 1.0f;
         }
     }
-    else if (event->getKey() == GLFW_KEY_S)
+    else if (event.getKey() == GLFW_KEY_S)
     {
-        if (event->getAction() == GLFW_PRESS)
+        if (event.getAction() == GLFW_PRESS)
         {
             _velocity.y += 1.0f;
         }
-        else if (event->getAction() == GLFW_RELEASE)
+        else if (event.getAction() == GLFW_RELEASE)
         {
             _velocity.y -= 1.0f;
         }
     }
-    else if (event->getKey() == GLFW_KEY_D)
+    else if (event.getKey() == GLFW_KEY_D)
     {
-        if (event->getAction() == GLFW_PRESS)
+        if (event.getAction() == GLFW_PRESS)
         {
             _velocity.x += 1.0f;
         }
-        else if (event->getAction() == GLFW_RELEASE)
+        else if (event.getAction() == GLFW_RELEASE)
         {
             _velocity.x -= 1.0f;
         }
     }
-    else if (event->getKey() == GLFW_KEY_T)
+    else if (event.getKey() == GLFW_KEY_T)
     {
-        if (event->getAction() == GLFW_PRESS)
+        if (event.getAction() == GLFW_PRESS)
         {
             if (_cursorMode == GLFW_CURSOR_NORMAL)
             {
@@ -83,20 +83,20 @@ void Character::moveCharacter(const KeyboardEvent* event)
                 _cursorMode = GLFW_CURSOR_NORMAL;
             }
             _hasMoved = false;
-			cursorModeChangeEvent e(_cursorMode);
-            _eventManager->execute(&e);
+            cursorModeChangeEvent event(_cursorMode);
+            _eventManager->execute(event);
         }
     }
 }
-void Character::moveMouse(const MouseMoveEvent* event)
+void Character::moveMouse(const MouseMoveEvent& event)
 {
     if (_hasMoved == false)
     {
         _hasMoved = true;
-        _lastCursorPos = event->getPos();
+        _lastCursorPos = event.getPos();
         return;
     }
-    glm::vec2 currentCurserPos = event->getPos();
+    glm::vec2 currentCurserPos = event.getPos();
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
@@ -113,16 +113,16 @@ void Character::moveMouse(const MouseMoveEvent* event)
         setRY(glm::pi<float>()*-0.5f);
     }
 }
-void Character::collectLoot(const CollectLootEvent* event)
+void Character::collectLoot(const CollectLootEvent& event)
 {
-    std::cout << "recieved loot of value: " << event->getValue() << std::endl;
-    _lootValue += event->getValue();
+    std::cout << "recieved loot of value: " << event.getValue() << std::endl;
+    _lootValue += event.getValue();
 }
 void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
 }
-Character::Character(glm::vec3 pos, EventManager *manager) : 
+Character::Character(glm::vec3 pos, EventManager *manager) :
 	GameObject(), _eventManager(manager)
 {
 	setPosition(pos);
