@@ -1,18 +1,13 @@
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-#define GLEW_STATIC
-#include <GL/glew.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#endif
+#include "gl/glInclude.h"
 #include <iostream>
-#include <GLFW/glfw3.h>
 #define GLM_FORCE_RADIANS
+#include <IL/il.h>
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
 #include "Render/GraphicsResource.h"
-#include "Render/FrameData.h"
+#include "Render/RenderInfo.h"
 #include "Render/RenderDeferred.h"
 #include "Render/MeshShader.h"
 #include "Render/DeferredMeshShader.h"
@@ -24,13 +19,15 @@
 #include "Guard.h"
 #include"Scene/Scene.h"
 #include"Scene/DrawFrame.h"
-GLFWwindow* window;
-Grid gridtest;
-Camera camera;
-Character* player;
-Guard guardtest(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y),gridtest.getxandypoint12(glm::vec3(gridtest.getData(guard).xz.x, 0, gridtest.getData(guard).xz.y)));
+#include "gui/Button.h"
+#include "gui/Manager.h"
+
 void setupWindow()
 {
+#ifdef _WIN32
+	//Memory leak debug
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
     // Init glfw
 	if (!glfwInit())
 	{
@@ -43,7 +40,7 @@ void setupWindow()
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_DECORATED, true);
 	unsigned int wWidth = 640, wHeight = 480;
-    window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -59,50 +56,97 @@ void setupWindow()
 		return;
 	}
 #endif
+
+	//init DevIL
+	ilInit();
+
 	//Set GL vars
 	glEnable(GL_DEPTH_TEST);//Enable depth testinz
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);//Enable face culling
 	glCullFace(GL_BACK);
+	glEnable(GL_BLEND); //Enable alpha on gui elements. Could be done every frame on render?
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	gl::CheckGLErrors("Init stage failed: State");
 
-	EventManager *eventManager = new EventManager();
-	InputManager *iManager = new InputManager(window, eventManager);
+	EventManager eventManager;
+	InputManager iManager(window, &eventManager);
 
 
 	//basic init
 	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
-	Shader *s = new Shader("Basic");
+	Shader s("Basic");
 	DeferredMeshShader meshShader;
 	RenderDeferred deferred(resource.getQuad());
-	Material material;
+	Material material(&meshShader);
+	material.setColor("diffuse", glm::vec4(0.8f));
+	material.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
 	Scene scene;
 	gl::CheckGLErrors("Init stage failed: Resource");
 
-
+	Grid gridtest;
 	Mesh wallMesh = gridtest.generateMesh();
-	
-	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
-	
+	Mesh cube;
+	//avoid this:
+	// Model guardModel(MeshPart(&cube, &material));
+	//do this instead:
+	MeshPart guardModelMeshPart(&cube, &material);
+	Model guardModel(guardModelMeshPart);
+	MeshPart goModelMeshPart(&wallMesh, &material);
+	Model goModel(goModelMeshPart);
 
-    camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
-    player = new Character(eventManager);
+	Camera camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
+	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+
+
+    Character* player = new Character(glm::vec3(3.0f, 0.0f, 5.0f), &eventManager);
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
-	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+	camera.setParent(player);
+
+	//Add some more game objects	
+	scene.add(player);
+	GameObject *guard = new Guard(guardModel, &gridtest);
+	scene.add(guard);
+	scene.add(new GameObject(goModel));
+	guard = scene.remove(guard);
+
+	//Add some lights
+	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
+	scene.add(new PointLightObject(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+
+	// gui::Font *font = new gui::Font("Resources/fonts/arial");
+	// gui::Label label(font, "Hello World!");
+	// label.setZ(99);
+	// gui::Rectangle rect(0.5, 0.5);
+	// glm::vec4 color(0,0,0,1);
+	// rect.setColor(color);
+	gui::Button* button = new gui::Button("CLick me!");
+	button->setPosition(0,1.8);
+	gui::Scene guiScene = gui::Scene();
+	guiScene.addChild(button);
+	gui::Manager guiManager(&eventManager);
+	guiManager.setWindowSize(640, 480);
+	guiManager.setScene(&guiScene);
+
+	//init dt calculation
+	float lastTime = glfwGetTime();
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         //update
-		float dT = 0.016f;
+		//Calculate dt
+		float currentTime = glfwGetTime();
+	    float dT = currentTime - lastTime;
+	    lastTime = currentTime;
+		// float dT = tpf(lastTime);
+		// dT = 0.016;
 		scene.update(dT);
-        player->update(dT);
-		camera.update(dT);
 
-		FrameData fD(resource, camera);
 		DrawFrame dF;
 		scene.fetchDrawables(dF);
+		RenderInfo fD(resource, camera, dF.getLightInfo());
 
 		resource.getDeffered().bindDraw();
 
@@ -117,6 +161,10 @@ void setupWindow()
         //Render
 		deferred.render(fD);
 		gl::CheckGLErrors("Render stage failed: Composition");
+
+		guiManager.update(dT);
+		guiManager.render();
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -126,16 +174,10 @@ void setupWindow()
 
     glfwTerminate();
 }
-void Deanstestingruta()
-{
-	gridtest.print2darraydata();
-	
-}
 
 int main()
 {
 	std::cout << "Init window!" << std::endl;
-	Deanstestingruta();
 	setupWindow();
 
 

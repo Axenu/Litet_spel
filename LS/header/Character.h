@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "node.h"
+#include"GameObject.h"
 #include "camera.h"
 #include "InputManager.h"
 #include "EventManager.h"
@@ -22,23 +22,23 @@ private:
     float _value;
 };
 
-class Character : public Node
+class Character : public GameObject
 {
 public:
     void setCamera(Camera *camera);
 
-    void onUpdate(float dt);
+    virtual void update(float dt);
     void onRender();
 
-    void moveCharacter(const KeyboardEvent* event);
-    void moveMouse(const MouseMoveEvent* event);
-    void collectLoot(const CollectLootEvent* event);
+    void moveCharacter(const KeyboardEvent& event);
+    void moveMouse(const MouseMoveEvent& event);
+    void collectLoot(const CollectLootEvent& event);
 
 	void setLevel(Grid *level);
 
-    Character(EventManager *manager);
+    Character(glm::vec3 pos, EventManager *manager);
     Character();
-    ~Character();
+    virtual ~Character();
 private:
 	Grid *_currentLevel;
     EventManager *_eventManager;

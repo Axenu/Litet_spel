@@ -1,5 +1,8 @@
 #include "AABB.h"
 
+AABB::AABB() {
+
+}
 AABB::AABB(std::vector<glm::vec3> *position)
 {
     for (std::vector<glm::vec3>::iterator it = position->begin(); it != position->end(); ++it) {

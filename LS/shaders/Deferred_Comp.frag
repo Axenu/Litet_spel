@@ -4,6 +4,16 @@ in vec3 Position0;
 
 layout(location = 0) out vec4 ColorOut;
 
+/* Struct of pointlight data. Warning: struct elements are padded as vec4
+*/
+struct PointLight{
+	/* vec3:	Pos
+ 	 * float:	Fade distance*/
+	vec4 pos;
+	vec4 diffuse;
+	vec4 specular;
+};
+
 /* Uniforms
 */
 // Frame buffer textures:
@@ -20,11 +30,11 @@ uniform float near, far;
 uniform float right, top;
 
 //Light components
-uniform uint pNumLights
-uniform vec3 pLightSpecCol;
-uniform vec3 pLightDiffCol;
-uniform vec3 pLightPos;
-uniform float pLight_Fade;
+uniform uint pNumLight;
+uniform vec3 pLightPos[8];
+uniform vec3 pLightDif[8];
+uniform vec3 pLightSpec[8];
+uniform float pLightFade[8];
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
 return	>>	The texture coordinate of the window
@@ -32,7 +42,7 @@ return	>>	The texture coordinate of the window
 vec2 calcFrameCoord();
 vec3 positionFromDepth(in float depth, in vec2 frameCoord);
 vec3 decodeNormal(in vec3 normal);
-vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol);
+vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol);
 float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, out float lambertian);
 
 /* Composition main function
@@ -51,8 +61,9 @@ void main () {
 	vec3 position = positionFromDepth(depth, frameCoord);
 
 	//Calc light
-	ColorOut = vec4(pointLightCalc(position, normal, color, specular) +
-	   							color * 0.2f, 1.0f); //Add ambient
+	ColorOut = vec4(color * 0.2f, 1.0f); //Add ambient
+	for(uint i = 0; i < pNumLight; i++)
+		ColorOut.xyz += pointLightCalc(i, position, normal, color, specular);
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
@@ -65,19 +76,19 @@ vec2 calcFrameCoord(){
 }
 /*	Point light specular calculation:
 */
-vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol){
+vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol){
 
 	//Vector to light
-	vec3 lightDir = normalize(pLightPos - pos);
+	vec3 lightDir = normalize(pLightPos[i] - pos);
 
 	float lambertian;
 	float specular = lightCalc(lightDir, pos, nor, lambertian);
 
 	//Light fades of in the distance:
-	float fade_factor = max(1 - (distance(pos, pLightPos) / pLight_Fade), 0);
+	float fade_factor = max(1 - (distance(pos, pLightPos[i]) / pLightFade[i]), 0);
 
-	return (diffuseCol * pLightDiffCol * lambertian +		//Diffuse calculation
-	 diffuseCol * pLightSpecCol * specularCol * specular)	//Specular calculation
+	return (diffuseCol * pLightDif[i] * lambertian +		//Diffuse calculation
+	 diffuseCol * pLightSpec[i] * specularCol * specular)	//Specular calculation
 	 * fade_factor;											//Light fade off
 }
 /*	BlinnPhong specular calculation:

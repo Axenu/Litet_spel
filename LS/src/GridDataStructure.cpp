@@ -5,9 +5,9 @@ Grid::Grid()
 {
 	_gotTheTreasure = false;
 
-	exit = getData(exiting).xz;
+	loadingBmpPicture("roomtest.bmp");
 
-	 loadingBmpPicture("roomtest.bmp");	
+	_exit = getData(exiting).xz;
 
 }
 
@@ -28,7 +28,7 @@ void Grid::buildgridarray()
 	{
 		_twodArray[i] = new gridValues[_widthLength];
 	}
-	
+
 
 }
 
@@ -39,7 +39,7 @@ gridValues Grid::getData(gridType Data)
 		for (int j = 0; j < _widthLength; j++)
 		{
 			if (Data == exiting)
-			{	
+			{
 				if (_twodArray[i][j].type == exiting)
 				{
 					return _twodArray[i][j];
@@ -53,7 +53,7 @@ gridValues Grid::getData(gridType Data)
 				}
 			}
 		}
-	
+
 	}
 }
 
@@ -62,7 +62,7 @@ void Grid::print2darraydata()
 	for (int i = 0; i < _heightLength; i++)
 	{
 		for (int j = 0; j < _widthLength; j++)
-		{	
+		{
 	//		std::cout << _twodArray[i][j].color.x << " ";
 			std::cout << _twodArray[i][j].type << " ";
 		}
@@ -105,15 +105,15 @@ void Grid::loadingBmpPicture(char* filename)
 	for (int i = 0; i < _heightLength; i++)
 	{
 		colorarray[i] = new glm::vec3[_widthLength];
-	}	
+	}
 
 	int k = 0;
 	for (int j = 0; j < height; j++)
 	{
 		for (int i = 0; i < width; i++)
 		{
-			_twodArray[i][j].xz.y = (float)i;
-			_twodArray[i][j].xz.x = (float)j;
+			_twodArray[i][j].xz.x = (float)i;
+			_twodArray[i][j].xz.y = (float)j;
 			colorarray[height - 1 - j][i].x = datan[k];
 			colorarray[height - 1 - j][i].y = datan[k + 1];
 			colorarray[height - 1 - j][i].z = datan[k + 2];
@@ -152,7 +152,7 @@ void Grid::loadingBmpPicture(char* filename)
 	delete[] colorarray;
 		delete[] datan;
 		datan = 0;
-	
+
 }
 
 Mesh Grid::generateMesh()
@@ -336,85 +336,165 @@ Mesh Grid::generateMesh()
 	return mesh;
 }
 
-//The position used needs to be in the grids modelspace
-bool Grid::wallCollission(glm::vec3 position)
+void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 {
-	int x = (int)glm::floor(position.x / GRIDSPACE);
-	int z = (int)glm::floor(position.z / GRIDSPACE);
-	if (x >= 0 && z >= 0 && x < _widthLength && z < _heightLength) // check if position is inside the grid
+	float padX = 0.f;
+	if (signbit(velocity.x) == false)
 	{
-		if (_twodArray[x][z].type == wall) // check if grid position is a wall
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		padX = 0.3f;
 	}
 	else
 	{
-		return false;
+		padX = -0.3f;
+	}
+	float padZ = 0.f;
+	if (signbit(velocity.y) == false)
+	{
+		padZ = 0.3f;
+	}
+	else
+	{
+		padZ = -0.3f;
+	}
+//	std::cout << "(" << velocity.x << ", " << velocity.y << ", " << velocity.z << ")" << std::endl;
+	glm::vec3 test;
+	test.x = position->x + padX;
+	test.z = position->z + padZ;
+
+	int currentX = (int)glm::floor(test.x / GRIDSPACE);
+	int currentZ = (int)glm::floor(test.z / GRIDSPACE);
+
+	int newX = (int)glm::floor(test.x + velocity.x / GRIDSPACE);
+	int newZ = (int)glm::floor(test.z + velocity.y / GRIDSPACE);
+
+	//horizontal check
+	if (_twodArray[newX][currentZ].type == wall)
+	{
+		//position->x = currentX * GRIDSPACE + pad;
+	}
+	else
+	{
+		position->x += velocity.x;
+	}
+	//vertical check
+	if (_twodArray[currentX][newZ].type == wall)
+	{
+		//position->z = currentZ * GRIDSPACE + pad;
+	}
+	else
+	{
+		position->z += velocity.y;
 	}
 }
 
 void Grid::checkifPlayerWon(glm::vec3 playerpos)
 {
 	glm::vec2 fixedPlayerPos;
-	exit.x = (int)glm::floor(exit.x / GRIDSPACE);
-	exit.y = (int)glm::floor(exit.y / GRIDSPACE);
+	_exit.x = glm::floor(_exit.x / GRIDSPACE);
+	_exit.y = glm::floor(_exit.y / GRIDSPACE);
 	fixedPlayerPos.x = (int)glm::floor(playerpos.x / GRIDSPACE);
 	fixedPlayerPos.y = (int)glm::floor(playerpos.y / GRIDSPACE);
-	if (fixedPlayerPos == exit && _gotTheTreasure == true)
+	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
 	{
 		std::cout << "you won Congratulations" << std::endl;
 	}
 
 }
 
-glm::vec3* Grid::getxandypoint12(glm::vec3 guardposition)
+glm::vec3 Grid::getxandypoint12(int i)
+{
+	return pointxy[i];
+}
+
+void Grid::Createxandypoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
-	glm::vec3 pointxy[4];
-	int j = guardposition.x;
-	int i = guardposition.z;
-	for (i; i < _heightLength; i++)
+
+	int i = (int)guardposition.x;
+	int j = (int)guardposition.z;
+	//first wall upwards
+	for (i;i > -1;i--)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
-			pointxy[0] = glm::vec3(_twodArray[i][j].xz.x, 0, _twodArray[i][j].xz.y - 1);
+			pointxy[0] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y + 1);
 			break;
 		}
 	}
-	j = guardposition.x;
-	i = guardposition.z;
-	for (i ; i > -1; i--)
+	i = (int)guardposition.x;
+	j = (int)guardposition.z;
+
+	//second point downwards
+	for (i;i < _heightLength;i++)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
-			pointxy[1] = glm::vec3(_twodArray[i][j].xz.x, 0, _twodArray[i][j].xz.y + 1);
+			pointxy[1] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y - 1);
+			break;
+		}
+	}
+	i = (int)guardposition.x;
+	j = (int)guardposition.z;
+	//thirdwall left
+	for (j;j > -1;j--)
+	{
+		if (_twodArray[i][j].type == wall)
+		{
+			pointxy[2] = glm::vec3(_twodArray[j][i].xz.x+1, 0, _twodArray[j][i].xz.y);
+			break;
+		}
+	}
+	i = (int)guardposition.x;
+	j = (int)guardposition.z;
+
+	//sfourthwall right
+	for (j;j < _widthLength;j++)
+	{
+		if (_twodArray[i][j].type == wall)
+		{
+			pointxy[3] = glm::vec3(_twodArray[j][i].xz.x - 1, 0, _twodArray[j][i].xz.y);
+			break;
+		}
+	}
+
+/*	for (i; i < _heightLength; i++)
+	{
+		if (_twodArray[j][i].type == wall)
+		{
+			pointxy[0] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y - 1);
+			break;
+		}
+	}
+
+	i = guardposition.x;
+	j = guardposition.z;
+	for (j ; j > -1; j--)
+	{
+		if (_twodArray[j][i].type == wall)
+		{
+			pointxy[1] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y + 1);
 			break;
 		}
 	}
 
 
-	 j = guardposition.x;
-	 i = guardposition.z;
-	for (j; j < _widthLength; j++)
+	 i = guardposition.x;
+	 j = guardposition.z;
+	for (i; i < _widthLength; i++)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[2] = glm::vec3(_twodArray[i][j].xz.x - 1, 0, _twodArray[i][j].xz.y );
+			pointxy[2] = glm::vec3(_twodArray[j][i].xz.x - 1, 0, _twodArray[j][i].xz.y );
 			break;
 		}
 	}
-	j = guardposition.x;
-	i = guardposition.z;
-	for (j; j > -1; j--)
+	i = guardposition.x;
+	j = guardposition.z;
+	for (i; i > -1; i--)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[3] = glm::vec3(_twodArray[i][j].xz.x + 1 , 0, _twodArray[i][j].xz.y);
+			pointxy[3] = glm::vec3(_twodArray[j][i].xz.x + 1 , 0, _twodArray[j][i].xz.y);
 			break;
 		}
 	}
@@ -458,5 +538,5 @@ glm::vec3* Grid::getxandypoint12(glm::vec3 guardposition)
 		}
 	}*/
 
-	return pointxy;
+
 }

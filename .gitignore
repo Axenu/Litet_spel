@@ -1,4 +1,5 @@
 Debug
+Release
 LS/Debug
 *.VC.db
 *.VC.opendb
@@ -11,5 +12,6 @@ LS/Debug
 *.obj
 *.log
 *.DS_Store
+*.suo
 LS/build
 main

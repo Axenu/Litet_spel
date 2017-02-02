@@ -6,34 +6,21 @@ Model::Model() {
 }
 
 
-Model::Model(std::vector<Mesh*> pMeshes, std::vector<MeshShader*> pShaders, std::vector<Material*> pMaterials)
+Model::Model(std::vector<MeshPart> &pMeshes)
+	: _meshParts(pMeshes)
 {
-	for (unsigned int i = 0; i < pMeshes.size(); i++)
-	{
-		MeshPart tmpMP;
-		tmpMP._mesh = pMeshes[i];
-		tmpMP._shader = pShaders[i];
-		tmpMP._material = pMaterials[i];
-		_meshParts.push_back(tmpMP);
-	}
 }
 
-Model::Model(Mesh * pMesh, MeshShader * pShader, Material * pMaterial)
+Model::Model(MeshPart &part) 
+	: _meshParts(1)
 {
-	MeshPart tmpMP;
-	tmpMP._mesh = pMesh;
-	tmpMP._shader = pShader;
-	tmpMP._material = pMaterial;
-	_meshParts.push_back(tmpMP);
+	_meshParts[0] = part;
 }
 
-void Model::render(FrameData &fD, glm::mat4 &modelMatrix) const
+void Model::render(RenderInfo &fD, glm::mat4 &modelMatrix) const
 {
 	for (unsigned int i = 0; i < _meshParts.size(); i++)
-	{
-		_meshParts[i]._shader->assignUniforms(fD, modelMatrix);
-		_meshParts[i]._mesh->render();
-	}
+		_meshParts[i].render(fD, modelMatrix);
 }
 const std::vector<MeshPart>& Model::getParts() const {
 	return _meshParts;

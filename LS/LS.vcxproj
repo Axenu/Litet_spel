@@ -88,7 +88,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions) </PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>LIBCMT;MSVCRT</IgnoreSpecificDefaultLibraries>
@@ -114,7 +114,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
@@ -134,13 +134,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\gui\Button.cpp" />
+    <ClCompile Include="src\gui\GUIScene.cpp" />
+    <ClCompile Include="src\gui\Manager.cpp" />
+    <ClCompile Include="src\MeshPart.cpp" />
+    <ClCompile Include="src\PointLightObject.cpp" />
     <ClCompile Include="src\Picking.cpp" />
     <ClCompile Include="src\Scene\DrawFrame.cpp" />
     <ClCompile Include="src\AABB.cpp" />
-    <ClCompile Include="src\BasicColorMaterial.cpp" />
+    <ClCompile Include="src\gl\Texture.cpp" />
     <ClCompile Include="src\Guard.cpp" />
+    <ClCompile Include="src\gui\Element.cpp" />
+    <ClCompile Include="src\gui\Font.cpp" />
+    <ClCompile Include="src\gui\Label.cpp" />
+    <ClCompile Include="src\gui\Rectangle.cpp" />
+    <ClCompile Include="src\gui\TexturedRectangle.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
-    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Render\Material.cpp" />
     <ClCompile Include="src\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
@@ -150,7 +160,7 @@
     <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />
-    <ClCompile Include="src\Render\FrameData.cpp" />
+    <ClCompile Include="src\Render\RenderInfo.cpp" />
     <ClCompile Include="src\Render\GraphicsResource.cpp" />
     <ClCompile Include="src\GridDataStructure.cpp" />
     <ClCompile Include="src\camera.cpp" />
@@ -168,21 +178,32 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\gui\Button.h" />
+    <ClInclude Include="header\gui\GUIScene.h" />
+    <ClInclude Include="header\gui\Manager.h" />
+    <ClInclude Include="header\MeshPart.h" />
+    <ClInclude Include="header\Render\MaterialLink.h" />
+    <ClInclude Include="header\Render\PointLight.h" />
     <ClInclude Include="header\Picking.h" />
     <ClInclude Include="header\Scene\DrawFrame.h" />
     <ClInclude Include="header\AABB.h" />
-    <ClInclude Include="header\BasicColorMaterial.h" />
     <ClInclude Include="header\EventManager.h" />
+    <ClInclude Include="header\gl\Texture.h" />
     <ClInclude Include="header\gl\VAData.h" />
     <ClInclude Include="header\Guard.h" />
-    <ClInclude Include="header\Material.h" />
+    <ClInclude Include="header\gui\Element.h" />
+    <ClInclude Include="header\gui\Font.h" />
+    <ClInclude Include="header\gui\Label.h" />
+    <ClInclude Include="header\gui\Rectangle.h" />
+    <ClInclude Include="header\gui\TexturedRectangle.h" />
+    <ClInclude Include="header\Render\Material.h" />
     <ClInclude Include="header\GameObject.h" />
     <ClInclude Include="header\Render\DeferredMeshShader.h" />
     <ClInclude Include="header\Character.h" />
     <ClInclude Include="header\gl\DeferredBuffer.h" />
     <ClInclude Include="header\gl\DefferedSettings.h" />
     <ClInclude Include="header\gl\glInclude.h" />
-    <ClInclude Include="header\Render\FrameData.h" />
+    <ClInclude Include="header\Render\RenderInfo.h" />
     <ClInclude Include="header\Render\GraphicsResource.h" />
     <ClInclude Include="header\GridDataStructure.h" />
     <ClInclude Include="header\camera.h" />
@@ -202,6 +223,13 @@
     <ClInclude Include="header\Render\MeshShader.h" />
     <ClInclude Include="header\type_info.h" />
     <ClInclude Include="header\Scene\Scene.h" />
+    <ClInclude Include="header\PointLightObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\Windows\DevIL.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\Windows\DevIL.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

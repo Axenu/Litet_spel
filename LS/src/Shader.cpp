@@ -1,6 +1,5 @@
 #include "Shader.h"
 #include"gl/GLFunctions.h"
-#include"Render/FrameData.h"
 
 Shader::Shader() {
 	shaderProgram = -1;

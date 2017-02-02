@@ -16,7 +16,7 @@ private:
 	std::vector<glm::vec3> _normal;
 	std::vector<GLuint> _indices;
 	gl::VAData _VA;
-	AABB *_aabb;
+	AABB _aabb;
 	void setUpMesh();
 public:
 	Mesh();

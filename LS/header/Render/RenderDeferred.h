@@ -11,19 +11,23 @@
 class RenderDeferred :
 	public QuadShader
 {
+	/* Maximum number of lights available to render.
+	*/
+	const static unsigned int MAXLIGHTCOUNT = 8;
+
 	//Calculation uniforms:
 	GLint _screenInv, _near, _far, _right, _top;
 	//Light uniforms
-	GLint _pLightPos, _pLight_fade, _pLightSpecCol, _pLightDiffCol;
+	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
 
 protected:
 
 	virtual bool acquireUniforms();
-	virtual void assignUniforms(FrameData &fD);
+	virtual void assignUniforms(RenderInfo &fD);
 
 public:
 	RenderDeferred(const gl::RenderQuad& quad);
-	~RenderDeferred();
+	virtual ~RenderDeferred();
 
 	/* Call on window size change
 	*/

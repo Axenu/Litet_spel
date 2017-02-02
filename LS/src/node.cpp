@@ -12,9 +12,21 @@ Node::Node() {
     this->_modelMatrix = glm::mat4();
 }
 
+Node::Node(const glm::vec3 &position)
+	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+}
+Node::Node(const glm::vec3 &position, Node *parent)
+	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	setParent(parent);
+}
+Node::~Node() {
+
+}
+
+
 void Node::addChild(Node *child) {
-	_children.push_back(child);
-    child->setParent(this);
+	//Use set child to update child
+	child->setParent(this);
 }
 
 std::vector<Node *> Node::getAllChildren() {
@@ -29,7 +41,12 @@ std::vector<Node *> Node::getAllChildren() {
 }
 
 void Node::setParent(Node *parent) {
-    this->_parent = parent;
+	//Remove any old parent and set the new one
+	this->removeFromParent();
+	if (parent != nullptr) { //Verify there is a new parent
+		this->_parent = parent;
+		parent->_children.push_back(this);
+	}
 }
 Node* Node::getParent() {
 	return this->_parent;
@@ -40,13 +57,20 @@ void Node::removeFromParent() {
         this->_parent->removeChild(this);
     }
 }
+/* Remove the node from the tree. Moving children to it's current parent
+*/
+void Node::removeNode() {
+	//Move children to the parent
+	for (unsigned int i = 0; i < _children.size(); i++)
+		_children[i]->setParent(_parent);
+	removeFromParent();
+}
 
 void Node::removeChild(Node *node) {
     Node *n = nullptr;
     for (unsigned int i = 0; i < _children.size(); i++) {
         n = _children[i];
         if (n == node) {
-            delete n;
             _children.erase(_children.begin()+i);
             return;
         }
@@ -58,10 +82,10 @@ void Node::update(float dt) {
 	onUpdate(dt);
 	this->_modelMatrix = glm::scale(glm::mat4(), this->_scale);
 	this->_modelMatrix = glm::yawPitchRoll(_rotation.x, _rotation.y, _rotation.z) * this->_modelMatrix;
-	/* Translate using matrix:
-	 * this->modelMatrix = glm::translate(glm::mat4(), position) * this->modelMatrix;
-	*/
 	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); //Translate / Move
+	 /*Translate using matrix:
+	  *this->_modelMatrix = glm::translate(glm::mat4(), _position) * this->_modelMatrix;
+	*/
     if (this->_parent != nullptr) {
         this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
     }
@@ -190,8 +214,4 @@ glm::vec3 Node::getPosition() const {
 
 glm::vec3 Node::getRotation() const {
     return _rotation;
-}
-
-Node::~Node() {
-
 }

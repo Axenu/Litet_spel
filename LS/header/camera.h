@@ -39,7 +39,7 @@ public:
 	float getFarPlane() const;
 	glm::vec4 getLookAt();
 
-	~Camera();
+	virtual ~Camera();
 
 	float degreesToRadians(float degrees);
 };

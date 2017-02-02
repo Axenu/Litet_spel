@@ -9,6 +9,7 @@
 class AABB
 {
 public:
+	AABB();
     AABB(std::vector<glm::vec3> *position);
 	AABB(const AABB &other);
 	glm::vec3 getMin();

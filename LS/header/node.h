@@ -23,16 +23,21 @@
 #endif
 
 class Node {
-    bool _isActive;
-
 public:
 	Node();
+	Node(const glm::vec3 &position);
+	Node(const glm::vec3 &position, Node *parent);
 
 	void addChild(Node *child);
 	std::vector<Node *> getAllChildren();
     void setParent(Node *parent);
 	Node* getParent();
+	/* Removes the object from the parent
+	*/
     void removeFromParent();
+	/* Remove the node from the tree. Moving children to it's current parent
+	*/
+	void removeNode();
     void removeChild(Node *Node);
 
     virtual void update(float dt);
@@ -73,6 +78,8 @@ public:
 
 
 
+private:
+	bool _isActive;
 protected:
 	glm::vec3 _position;
 	glm::vec3 _rotation;

@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include"Render/FrameData.h"
 
 class Shader {
 
@@ -22,7 +21,7 @@ public:
 	Shader(const std::string &file);
 	Shader(const std::string &vert, const std::string &frag);
 	Shader(std::string *vertexShader, std::string *fragmentShader);
-	~Shader();
+	virtual ~Shader();
 	/* Move the Shader data
 	*/
 	Shader(Shader &&move);
