@@ -94,7 +94,7 @@ void setupWindow()
 	Model guardModel(&cube, &meshShader, &material);
 	Model goModel(&wallMesh, &meshShader, &material);
 
-	Camera camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
+	Camera camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 
 
@@ -113,7 +113,7 @@ void setupWindow()
 	scene.add(new PointLightObject(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 
 	Font f("Resources/fonts/arial");
-	gui::Label label(&f, "Hello World!");
+	//gui::Label label(&f, "Hello World!");
 	//label.setZ(99);
 	gui::Rectangle rect(0.5, 0.5);
 	glm::vec4 color(0,0,0,1);
