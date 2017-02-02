@@ -104,7 +104,7 @@ void setupWindow()
     player->setCamera(&camera);
 	camera.setParent(player);
 
-	//Add some more game objects
+	//Add some more game objects	
 	scene.add(player);
 	GameObject *guard = new Guard(guardModel, &gridtest);
 	scene.add(guard);
