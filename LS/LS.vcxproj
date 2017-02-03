@@ -150,12 +150,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Input\InputIncrementer.cpp" />
     <ClCompile Include="src\gui\Button.cpp" />
     <ClCompile Include="src\gui\GUIScene.cpp" />
     <ClCompile Include="src\gui\Manager.cpp" />
+    <ClCompile Include="src\Input\InputKeyState.cpp" />
     <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\PointLightObject.cpp" />
     <ClCompile Include="src\Picking.cpp" />
+    <ClCompile Include="src\Render\RenderDefBuffers.cpp" />
     <ClCompile Include="src\Scene\DrawFrame.cpp" />
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\gl\Texture.cpp" />
@@ -194,6 +197,8 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Input\InputKeyState.h" />
+    <ClInclude Include="header\Render\RenderDefBuffers.h" />
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\GUIScene.h" />
     <ClInclude Include="header\gui\Manager.h" />
@@ -240,6 +245,7 @@
     <ClInclude Include="header\type_info.h" />
     <ClInclude Include="header\Scene\Scene.h" />
     <ClInclude Include="header\PointLightObject.h" />
+    <ClInclude Include="header\Input\InputIncrementer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\Windows\DevIL.dll" />

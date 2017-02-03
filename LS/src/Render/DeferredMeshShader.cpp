@@ -34,11 +34,11 @@ void DeferredMeshShader::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMa
 	DeferredMaterial *mat = dynamic_cast<DeferredMaterial*>(matLink);
 	if (mat) {
 		glUniform3f(_difColUniform, mat->_diffuse.r, mat->_diffuse.g, mat->_diffuse.b);
-		glUniform3f(_specColUniform, mat->_specular.r, mat->_specular.g, mat->_specular.b);
+		glUniform4f(_specColUniform, mat->_specular.r, mat->_specular.g, mat->_specular.b, mat->_shininess);
 	}
 	else {
 		glUniform3f(_difColUniform, 1.0f, 0.0f, 0.0f);
-		glUniform3f(_specColUniform, 1.0f, 0.0f, 0.0f);
+		glUniform4f(_specColUniform, 1.0f, 0.0f, 0.0f, 20.f);
 	}
 }
 
@@ -51,6 +51,8 @@ std::shared_ptr<MaterialLink> DeferredMeshShader::linkMaterial(Material &mat) {
 		data->_diffuse = glm::vec4(0.8f);
 	if (!mat.tryGet("spec", data->_specular))
 		data->_specular = glm::vec4(0.8f);
+	if (!mat.tryGet("shine", data->_shininess))
+		data->_shininess = 20.0f;
 
 	return std::shared_ptr<MaterialLink>(dynamic_cast<MaterialLink*>(data));
 }

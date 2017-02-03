@@ -4,6 +4,7 @@ in vec3 Position0;
 
 layout(location = 0) out vec4 ColorOut;
 
+
 /* Uniforms
 */
 // Frame buffer textures:
@@ -18,13 +19,7 @@ uniform vec2 screenInv;
 uniform float near, far;
 //Right X coord on nearplane, Top Y coord on nearplane
 uniform float right, top;
-
-//Light components
-uniform uint pNumLight;
-uniform vec3 pLightPos[8];
-uniform vec3 pLightDif[8];
-uniform vec3 pLightSpec[8];
-uniform float pLightFade[8];
+uniform uint bufferID;
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
 return	>>	The texture coordinate of the window
@@ -32,9 +27,11 @@ return	>>	The texture coordinate of the window
 vec2 calcFrameCoord();
 vec3 positionFromDepth(in float depth, in vec2 frameCoord);
 vec3 decodeNormal(in vec3 normal);
-vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess);
-float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, out float lambertian);
 
+float mod1(in float value){
+	value = abs(value);
+	return value - floor(value);
+}
 /* Composition main function
 */
 void main () {
@@ -48,12 +45,28 @@ void main () {
 	float depth  = texture(depthBuffer, frameCoord).x;
 
 	normal = decodeNormal(normal);
-	vec3 position = positionFromDepth(depth, frameCoord);
+	vec3 pos = positionFromDepth(depth, frameCoord);
 
+	ColorOut.w = 1.0f;
 	//Calc light
-	ColorOut = vec4(color * 0.2f, 1.0f); //Add ambient
-	for(uint i = 0; i < pNumLight; i++)
-		ColorOut.xyz += pointLightCalc(i, position, normal, color, specular.xyz, specular.w);
+	if (bufferID == 0)
+		ColorOut.xyz = color;
+	else if (bufferID == 1)
+		ColorOut.xyz = normal;
+	else if (bufferID == 2)
+		ColorOut.xyz = specular.xyz;
+	else if (bufferID == 3)
+		ColorOut.xyz = vec3(specular.w);
+	else if (bufferID == 4)
+		ColorOut.xyz = vec3(depth);
+	else if (bufferID == 5)
+		ColorOut.xyz = vec3(mod1(pos.x));
+	else if (bufferID == 6)
+		ColorOut.xyz = vec3(mod1(pos.y));
+	else if (bufferID == 7)
+		ColorOut.xyz = vec3(mod1(pos.z));
+	else if (bufferID == 8)
+		ColorOut.xyz = vec3(mod1(pos.x), mod1(pos.y), mod1(pos.z));
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
@@ -63,40 +76,6 @@ vec2 calcFrameCoord(){
 	//Divide window coordinate by screen size => Range [0, 1]
 	return vec2(gl_FragCoord.x * screenInv.x,
 				gl_FragCoord.y * screenInv.y);
-}
-/*	Point light specular calculation:
-*/
-vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess){
-
-	//Vector to light
-	vec3 lightDir = normalize(pLightPos[i] - pos);
-
-	float lambertian;
-	float specular = lightCalc(lightDir, pos, nor, shininess, lambertian);
-
-	//Light fades of in the distance:
-	float fade_factor = max(1 - (distance(pos, pLightPos[i]) / pLightFade[i]), 0);
-
-	return (diffuseCol * pLightDif[i] * lambertian +		//Diffuse calculation
-	 diffuseCol * pLightSpec[i] * specularCol * specular)	//Specular calculation
-	 * fade_factor;											//Light fade off
-}
-/*	BlinnPhong specular calculation:
-*/
-float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, out float lambertian){
-
-	lambertian = max(dot(lightDir,nor), 0.0f);
-
-	if(lambertian > 0.0f) {
-
-		vec3 viewDir = normalize(-pos);
-
-		// Blinn-Phong calculation:
-		vec3 halfDir = normalize(lightDir + viewDir);
-		float specAngle = max(dot(halfDir, nor), 0.0f);
-		return pow(specAngle, shininess);
-	}
-	return 0.0f;
 }
 /* Decode normal
 */

@@ -2,21 +2,25 @@
 
 namespace gl {
 
-	DeferredBuffer::DeferredBuffer(unsigned int screenWidth, unsigned int screenHeight, unsigned int colorBufferCount)
-		: FrameBuffer(screenWidth, screenHeight), _colorBufferCount(colorBufferCount)
+	DeferredBuffer::DeferredBuffer(unsigned int screenWidth, unsigned int screenHeight, std::vector<DeferredTextureInfo> &setup)
+		: FrameBuffer(screenWidth, screenHeight), _setup(std::move(setup))
 	{
-		//Generate frame buffer
-		if (!gl::generateDeferredBuffers(colorBufferCount, screenWidth, screenHeight, _frameBuffer, _renderTargets))
-			throw new std::invalid_argument("Frame buffer failed to be generated error");
+		generateBuffers();
 	}
 	/* Generate a deffered buffer from the specified settings.
 	*/
-	DeferredBuffer::DeferredBuffer(const DefferredSettings& settings)
-	 : DeferredBuffer(settings._windowWidth, settings._windowHeight, settings._colorBufferCount){}
+	DeferredBuffer::DeferredBuffer(DefferredSettings& settings)
+	 : DeferredBuffer(settings._windowWidth, settings._windowHeight, settings._textureSetup){}
 
 
 	DeferredBuffer::~DeferredBuffer()
 	{	}
+	void DeferredBuffer::generateBuffers() {
+
+		//Generate frame buffer
+		if (!gl::generateDeferredBuffers(_setup, _width, _height, _frameBuffer, _renderTargets))
+			throw new std::invalid_argument("Deferred frame buffer failed to be generated: Error");
+	}
 	/* Destroys the all bound buffers.
 	*/
 	void DeferredBuffer::destroyBuffers(){
@@ -76,9 +80,7 @@ namespace gl {
 		destroyBuffers();
 		_width = screenWidth;
 		_height = screenHeight;
-		//Generate frame buffer
-		if (!gl::generateDeferredBuffers(_colorBufferCount, screenWidth, screenHeight, _frameBuffer, _renderTargets))
-			throw new std::invalid_argument("Deferred frame buffer failed to be generated: Error");
+		generateBuffers();
 	}
 
 

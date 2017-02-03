@@ -12,6 +12,7 @@ private:
 		public MaterialLink {
 	public:
 		glm::vec4 _diffuse, _specular;
+		float _shininess;
 
 		DeferredMaterial(){}
 		virtual ~DeferredMaterial(){}

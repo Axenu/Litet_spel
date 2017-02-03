@@ -16,7 +16,7 @@ class GraphicsResource {
 
 public:
 
-	GraphicsResource(const gl::DefferredSettings &setting);
+	GraphicsResource(gl::DefferredSettings &setting);
 	~GraphicsResource();
 
 	const gl::RenderQuad& getQuad() const;

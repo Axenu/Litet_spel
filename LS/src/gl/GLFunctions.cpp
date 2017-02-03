@@ -453,11 +453,13 @@ namespace gl {
 
 #pragma region Deferred frame buffer
 
-	void generateDeferredTexture(GLuint renderTarget, GLenum attachment, unsigned int width, unsigned int height) {
+	/* Generate a deferred texture
+	*/
+	void generateDeferredTexture(DeferredTextureInfo tex, GLuint renderTarget, GLenum attachment, unsigned int width, unsigned int height) {
 		/* Initiate the generated texture:
 		*/
 		glBindTexture(GL_TEXTURE_2D, renderTarget);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, tex._internalFormat, width, height, 0, tex._internalFormat, GL_UNSIGNED_BYTE, 0);
 
 		// No filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -476,9 +478,9 @@ namespace gl {
 	frameBuffer			<<	Generated frame buffer.
 	renderTargets		<<	Generated render target textures. First item is the depth buffer, the following textures are the render targets in order of render slot.
 	*/
-	bool generateDeferredBuffers(unsigned int colRenderTargets, unsigned int width, unsigned int height, FBOData &frameBuffer, std::vector<TexData> &renderTextures) {
+	bool generateDeferredBuffers(const std::vector<DeferredTextureInfo> &colRenderTargets, unsigned int width, unsigned int height, FBOData &frameBuffer, std::vector<TexData> &renderTextures) {
 
-		unsigned int renderTargetCount = colRenderTargets + 1;
+		unsigned int renderTargetCount = colRenderTargets.size() + 1;
 		renderTextures = std::vector<TexData>(renderTargetCount);
 
 		/*Generate and bind framebuffer. The frame buffer will pack our rendertargets in a single object.
@@ -493,19 +495,19 @@ namespace gl {
 
 
 		// Generate and assign render buffers:
-		std::vector<GLenum> DrawBuffers(colRenderTargets);
+		std::vector<GLenum> DrawBuffers(colRenderTargets.size());
 		for (unsigned int i = 1; i < renderTargetCount; i++) { //Begin at 1 since 0 is depthbuffer
 			/* Generate texture:
 			*/
 			GLenum attachment = GL_COLOR_ATTACHMENT0 + i - 1;
-			generateDeferredTexture(renderTargets[i], attachment, width, height);
+			generateDeferredTexture(colRenderTargets[i - 1], renderTargets[i], attachment,  width, height);
 			// Set render target textures as our colour attachement #i
 			DrawBuffers[i - 1] = attachment;
 			//Assign render targets to the texture array.
 			renderTextures[i] = TexData(renderTargets[i], GL_TEXTURE_2D);
 		}
 		//Assigns layout index to our assigned buffers.
-		glDrawBuffers(colRenderTargets, &DrawBuffers[0]);
+		glDrawBuffers(colRenderTargets.size(), &DrawBuffers[0]);
 		/* Generate and bind depth buffer to frame buffer
 		*/
 		glBindTexture(GL_TEXTURE_2D, renderTargets[0]);
