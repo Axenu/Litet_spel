@@ -180,7 +180,7 @@ void Mesh::render()
 bool Mesh::pick(glm::vec3 origin, glm::vec3 dir)
 {
 	//picking in modelspace
-	if (AABBIntersection(*_aabb, dir, origin))
+	if (AABBIntersection(_aabb, dir, origin))
 	{
 	glm::vec3 tri1, tri2, tri3;
 		for (unsigned int i = 0; i < _indices.size(); i += 3)

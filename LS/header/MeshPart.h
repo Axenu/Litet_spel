@@ -14,5 +14,6 @@ public:
 	MeshPart();
 	MeshPart(Mesh *mesh, Material *mat);
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
+	bool pick(glm::vec3 origin, glm::vec3 dir);
 
 };

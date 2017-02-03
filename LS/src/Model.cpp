@@ -30,7 +30,7 @@ bool Model::pick(glm::vec3 origin, glm::vec3 dir)
 {
 	for (unsigned int i = 0; i < _meshParts.size(); i++)
 	{
-		if (_meshParts[i]._mesh->pick(origin, dir))
+		if (_meshParts[i].pick(origin, dir))
 		{
 			return true;
 		}

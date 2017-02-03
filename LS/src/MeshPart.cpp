@@ -13,3 +13,8 @@ void MeshPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const {
 	_material->assignUniforms(fD, modelMatrix);
 	_mesh->render();
 }
+
+bool MeshPart::pick(glm::vec3 origin, glm::vec3 dir)
+{
+	return _mesh->pick(origin, dir);
+}
