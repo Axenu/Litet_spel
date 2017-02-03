@@ -15,7 +15,7 @@ void Character::update(float dt)
         //calculate inertia
         if (_isMoving < 1)
         {
-            _isMoving += dt*2;
+            _isMoving += dt*8;
             if (_isMoving > 1)
             {
                 _isMoving = 1;

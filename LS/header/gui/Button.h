@@ -14,19 +14,55 @@
 namespace gui
 {
 
+    class ButtonHandlerBase
+    {
+    public:
+    	virtual ~ButtonHandlerBase() {};
+    	void exec(const int action) {call(action);}
+
+    private:
+    	virtual void call(const int) = 0;
+    };
+
+
+    template <class T>
+    class ButtonHandler : public ButtonHandlerBase
+    {
+    public:
+    	typedef void (T::*MemberFunc)(int);
+    	ButtonHandler(T* instance, MemberFunc memFn) : _instance(instance), _function(memFn) {};
+
+    	void call(const int action)
+    	{
+    		(_instance->*_function)(action);
+    	}
+
+    private:
+    	T* _instance;
+    	MemberFunc _function;
+    };
+
     class Button : public Element
     {
     private:
         Label *_label;
         Rectangle *_rect;
 
+        gui::ButtonHandlerBase* _callback;
+
     public:
 
         Button(std::string text);
         ~Button();
 
-        void onRender();
+        template <class T>
+    	void listen(T* obj, void (T::*memFn)(int))
+        {
+            _callback = new gui::ButtonHandler<T>(obj, memFn);
+        }
+        void execute(int action);
 
+        void onRender();
         void onUpdate(float dt);
 
         bool handleClick(int action);

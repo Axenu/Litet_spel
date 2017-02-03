@@ -21,10 +21,11 @@
 #include"Scene/DrawFrame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
+#include "gui/MainMenuScene.h"
 
 void setupWindow()
 {
-#ifndef _WIN32
+#ifndef __APPLE__
 	//Memory leak debug
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
@@ -104,7 +105,7 @@ void setupWindow()
     player->setCamera(&camera);
 	camera.setParent(player);
 
-	//Add some more game objects	
+	//Add some more game objects
 	scene.add(player);
 	GameObject *guard = new Guard(guardModel, &gridtest);
 	scene.add(guard);
@@ -121,10 +122,8 @@ void setupWindow()
 	// gui::Rectangle rect(0.5, 0.5);
 	// glm::vec4 color(0,0,0,1);
 	// rect.setColor(color);
-	gui::Button* button = new gui::Button("CLick me!");
-	button->setPosition(0.f, 1.8f);
-	gui::Scene guiScene = gui::Scene();
-	guiScene.addChild(button);
+
+	gui::MainMenuScene guiScene = gui::MainMenuScene(&eventManager);
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(640, 480);
 	guiManager.setScene(&guiScene);
@@ -140,8 +139,6 @@ void setupWindow()
 		float currentTime = (float)glfwGetTime();
 	    float dT = currentTime - lastTime;
 	    lastTime = currentTime;
-		// float dT = tpf(lastTime);
-		// dT = 0.016;
 		scene.update(dT);
 
 		DrawFrame dF;

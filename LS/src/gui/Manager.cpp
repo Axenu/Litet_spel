@@ -31,13 +31,31 @@ namespace gui
             _currentScene->render();
         }
     }
-    void Manager::setScene(std::string path)
+    bool Manager::setScene(std::string name)
     {
-        //TODO
+        for (Scene* scene : _loadedScenes)
+        {
+            if (scene->getName() == name)
+            {
+                _currentScene = scene;
+                return true;
+            }
+        }
+        return false;
     }
     void Manager::setScene(Scene* scene)
     {
         _currentScene = scene;
+        _currentScene->setParent(this);
+        //add if not existing
+        for (Scene* s : _loadedScenes)
+        {
+            if (s->getName() == scene->getName())
+            {
+                return;
+            }
+        }
+        _loadedScenes.push_back(scene);
     }
     void Manager::setWindowSize(float width, float height)
     {

@@ -60,6 +60,12 @@ private:
     int _state;
 };
 
+class QuitGameEvent : public Event
+{
+public:
+    QuitGameEvent() {};
+};
+
 class InputManager
 {
 public:
@@ -67,6 +73,7 @@ public:
     ~InputManager();
 
     void switchCursorMode(const cursorModeChangeEvent& event);
+    void quitGame(const QuitGameEvent& event);
     // int getCursorMode();
 
     EventManager* getManager();

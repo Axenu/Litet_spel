@@ -27,13 +27,14 @@ namespace gui
         glm::vec2 _lastCursorPos;
         glm::vec2 _windowSize;
         int _cursorMode = GLFW_CURSOR_NORMAL;
+        std::vector<Scene*> _loadedScenes;
 
     public:
         Manager();
         Manager(EventManager* manager);
         ~Manager();
 
-        void setScene(std::string path);
+        bool setScene(std::string name);
         void setScene(Scene* scene);
         void setWindowSize(float width, float height);
 

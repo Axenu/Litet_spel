@@ -9,29 +9,27 @@
 #include "gl/GLFunctions.h"
 #include "Shader.h"
 #include "Font.h"
-#include "gui/Element.h"
+#include "gui/GUIScene.h"
+#include "gui/Button.h"
+#include "InputManager.h"
 
 namespace gui
 {
 
-    class Manager;
-
-    class Scene : public Element
+    class MainMenuScene : public Scene
     {
     private:
-    protected:
-        std::string _name;
-        Manager* _parent;
+        EventManager* _manager;
+        gui::Button* _quitButton;
+
     public:
-        Scene();
-        ~Scene();
+        MainMenuScene(EventManager* manager);
+        ~MainMenuScene();
 
         void onRender();
         void onUpdate(float dt);
 
-        std::string getName();
-
-        void setParent(gui::Manager *manager);
+        void QuitGame(int action);
     };
 
 }

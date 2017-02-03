@@ -7,12 +7,7 @@ namespace gui
         Font *f = new Font("Resources/fonts/arial");
         _label = new Label(f, text);
         _label->setZ(51);
-        // get label size
-        // set rect to labelsize + padding
-        // move label to middle of rect
-
         float padding = 0.05f;
-
         _rect = new Rectangle(_label->getTextWidth() + padding * 2, _label->getTextHeight() + padding * 2);
         glm::vec4 color(0.5,0,0,1);
         _rect->setColor(color);
@@ -33,9 +28,17 @@ namespace gui
     {
 
     }
+    void execute(int action)
+    {
+
+    }
     bool Button::handleClick(int action)
     {
-        std::cout << "Clicked button with action: " << action << std::endl;
-        return true;
+        if (_callback != nullptr)
+        {
+            _callback->exec(action);
+            return true;
+        }
+        return false;
     }
 }

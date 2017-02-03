@@ -19,4 +19,12 @@ namespace gui
     {
 
     }
+    std::string Scene::getName()
+    {
+        return _name;
+    }
+    void Scene::setParent(gui::Manager *manager)
+    {
+        _parent = manager;
+    }
 }
