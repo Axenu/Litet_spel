@@ -5,7 +5,7 @@ namespace gui
     Element::Element()
     {
         _size = glm::vec2(1,1);
-        _position.z = -0.001;
+        _position.z = -0.001f;
     }
     Element::~Element()
     {
@@ -35,7 +35,7 @@ namespace gui
     {
         _positionGlobal.x = _position.x + pos.x;
         _positionGlobal.y = _position.y + pos.y;
-        _positionGlobal.z = fmin(_position.z, pos.z) - 0.001;
+        _positionGlobal.z = fminf(_position.z, pos.z) - 0.001f;
         for (Element *child : _children)
         {
             child->update(dt, _positionGlobal);
@@ -92,7 +92,7 @@ namespace gui
     {
         z = fmax(z, 0.0f);
         z = fmin(z, 99.0f);
-        _position.z = -z/100.0f - 0.001;
+        _position.z = -z/100.0f - 0.001f;
     }
     void Element::setSize(glm::vec2 &size)
     {

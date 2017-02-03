@@ -392,8 +392,8 @@ void Grid::checkifPlayerWon(glm::vec3 playerpos)
 	glm::vec2 fixedPlayerPos;
 	_exit.x = glm::floor(_exit.x / GRIDSPACE);
 	_exit.y = glm::floor(_exit.y / GRIDSPACE);
-	fixedPlayerPos.x = (int)glm::floor(playerpos.x / GRIDSPACE);
-	fixedPlayerPos.y = (int)glm::floor(playerpos.y / GRIDSPACE);
+	fixedPlayerPos.x = glm::floor(playerpos.x / GRIDSPACE);
+	fixedPlayerPos.y = glm::floor(playerpos.y / GRIDSPACE);
 	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
 	{
 		std::cout << "you won Congratulations" << std::endl;
