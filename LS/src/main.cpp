@@ -99,7 +99,7 @@ void setupWindow()
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
 
 
-    Character* player = new Character(glm::vec3(3.0f, 0.0f, 5.0f), &eventManager);
+    Character* player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &eventManager);
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	camera.setParent(player);
