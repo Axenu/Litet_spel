@@ -26,7 +26,7 @@
 
 void setupWindow()
 {
-#ifdef _WIN32
+#ifndef _WIN32
 	//Memory leak debug
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif

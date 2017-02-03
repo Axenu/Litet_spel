@@ -44,7 +44,10 @@ private:
     EventManager *_eventManager;
     Camera* _camera;
     glm::vec2 _lastCursorPos;
+    glm::vec3 _direction;
     glm::vec3 _velocity;
+    float _speed;
+    float _isMoving;
     float _lootValue;
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_NORMAL;
