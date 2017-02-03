@@ -11,7 +11,7 @@ namespace gui
         // set rect to labelsize + padding
         // move label to middle of rect
 
-        float padding = 0.05;
+        float padding = 0.05f;
 
         _rect = new Rectangle(_label->getTextWidth() + padding * 2, _label->getTextHeight() + padding * 2);
         glm::vec4 color(0.5,0,0,1);

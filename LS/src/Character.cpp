@@ -3,7 +3,6 @@
 void Character::setCamera(Camera* camera)
 {
     _camera = camera;
-    _camera->setY(0.8f);
     _velocity = glm::vec3(0,0,0);
     _direction = glm::vec3(0,0,0);
     _speed = 2;

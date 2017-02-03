@@ -1,6 +1,6 @@
 #include "Mesh.h"
 #include "gl/GLFunctions.h"
-#include "Picking.h"
+#include "intersectionFunctions.h"
 
 //Private
 void Mesh::setUpMesh()
