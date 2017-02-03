@@ -10,7 +10,8 @@ SOURCEGL=$(wildcard $(SRCDIR)gl/*.cpp)
 SOURCERender=$(wildcard $(SRCDIR)Render/*.cpp)
 SOURCEScene=$(wildcard $(SRCDIR)Scene/*.cpp)
 SOURCEGUI=$(wildcard $(SRCDIR)gui/*.cpp)
-SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOURCERender:$(SRCDIR)Render/%=%) $(SOURCEScene:$(SRCDIR)Scene/%=%) $(SOURCEGUI:$(SRCDIR)gui/%=%)
+SOURCEINPUT=$(wildcard $(SRCDIR)input/*.cpp)
+SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOURCERender:$(SRCDIR)Render/%=%) $(SOURCEScene:$(SRCDIR)Scene/%=%) $(SOURCEGUI:$(SRCDIR)gui/%=%) $(SOURCEINPUT:$(SRCDIR)input/%=%)
 
 # The executable file that will be created
 EXEC = main
@@ -50,6 +51,9 @@ $(ODIR)%.o: $(SRCDIR)Scene/%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
 $(ODIR)%.o: $(SRCDIR)gui/%.cpp
+	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
+
+$(ODIR)%.o: $(SRCDIR)input/%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
 # $(ODIR)/%.o: $(ENGINESDIR)/%.cpp
