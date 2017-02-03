@@ -8,6 +8,23 @@ Guard::Guard()
 {
 
 }
+glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
+{
+	glm::vec3 returnvalue = normalvalue;
+	if (normalvalue.x < floor(normalvalue.x) + 0.1)
+	{
+		returnvalue.x = floor(normalvalue.x);
+	}
+	if (normalvalue.z < floor(normalvalue.z) + 0.1)
+	{
+		returnvalue.z = floor(normalvalue.z);
+	}
+	if (normalvalue.y < floor(normalvalue.y) + 0.1)
+	{
+		returnvalue.y = floor(normalvalue.y);
+	}
+	return returnvalue;
+}
 Guard::Guard(glm::vec3 Guarden,glm::vec3 positonxy[4]):
 GameObject()
 {
@@ -23,6 +40,76 @@ GameObject()
 
 void Guard::WalkingBetweenFourPoints(float dt)
 {
+	glm::vec3 roundedpositon;
+	roundedpositon = roundTheValuefrom0Comma01(this->getPosition());
+	
+	switch (aiChoice)
+	{
+	case 1:
+	{
+		goToSquare(dt, point1z);
+		if (roundedpositon == glm::vec3(point1z.x, roundedpositon.y, point1z.z))
+		{
+			aiChoice = -1;
+		}
+		break;
+	}
+	case -1:
+	{
+		goToSquare(dt, guardsstartposition);
+		if (roundedpositon == glm::vec3(guardsstartposition.x, roundedpositon.y, guardsstartposition.z))
+		{
+			aiChoice = randomgenerator();
+		}
+		break;
+	}
+	case 2:
+	{
+		goToSquare(dt, point2z);
+		if (roundedpositon == glm::vec3(point2z.x, roundedpositon.y,point2z.z))
+		{
+			aiChoice = -1;
+		}
+		break;
+	}
+	case -2:
+	{
+
+	}
+	case 3:
+	{
+		goToSquare(dt, point2x);
+		if (roundedpositon == glm::vec3(point2x.x, roundedpositon.y, point2x.z))
+		{
+			aiChoice = -1;
+		}
+		break;
+	}
+	case -3:
+	{
+
+	}
+	case 4:
+	{
+		goToSquare(dt, point1x);
+		if (roundedpositon == glm::vec3(point1x.x, roundedpositon.y, point1x.z))
+		{
+			aiChoice = -1;
+		}
+		break;
+	}
+	case -4:
+	{
+
+	}
+	default:
+		std::cout << "something went horribley wrong here AI HAS SOME FLAWS MATE" << std::endl;
+
+}
+
+	
+
+	
 
 
 }
@@ -32,15 +119,14 @@ void Guard::WalkingBetweenFourPoints(float dt)
 
 void Guard::update(float dt)
 {
-
-//	WalkingBetweenFourPoints(dt);
-	goToSquare(dt, glm::vec3(1,0,5));
+	WalkingBetweenFourPoints(dt);
 	Node::update(dt);
 }
 
 Guard::Guard(Model &m, Grid *gridet):
 	GameObject(m)
 {
+	srand(time(NULL));
 	//x = höjd z= bred
 	gridet->Creategetheightandwidthpoint12(gridet->getData(guard));
 	point1z = gridet->getheightandwidthpoint12(0);
@@ -49,8 +135,13 @@ Guard::Guard(Model &m, Grid *gridet):
 	point2x = gridet->getheightandwidthpoint12(3);
 	guardsstartposition = gridet->getData(guard);
 	this->setPosition(guardsstartposition);
-	aiChoice = 1;
+	aiChoice = randomgenerator();
 //	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
+}
+
+int Guard::randomgenerator()
+{
+return (int)rand() % 4 + 1;
 }
 
 void Guard::setPositionfromMap(glm::vec3 Guarden)
@@ -62,7 +153,7 @@ void Guard::setPositionfromMap(glm::vec3 Guarden)
 void Guard::goToSquare(float dt,glm::vec3 walkTo)
 {
 //walk up to top point
-float speed = 0.03f;
+float speed = 0.3f;
 float padding = 0.f;
 glm::vec3 value = this->getPosition();
 

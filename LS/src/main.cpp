@@ -119,7 +119,7 @@ void setupWindow()
 	GameObject *guard = new Guard(guardModel, &gridtest);
 	scene.add(guard);
 	scene.add(new GameObject(goModel));
-	guard = scene.remove(guard);
+//	guard = scene.remove(guard);
 
 	//Add some lights
 	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
@@ -148,8 +148,9 @@ void setupWindow()
 		float currentTime = (float)glfwGetTime();
 	    float dT = currentTime - lastTime;
 	    lastTime = currentTime;
+		guard->update(dT);
 		scene.update(dT);
-
+		
 		DrawFrame dF;
 		scene.fetchDrawables(dF);
 		RenderInfo fD(resource, camera, dF.getLightInfo());

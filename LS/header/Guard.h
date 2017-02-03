@@ -2,7 +2,8 @@
 #include "gl/glInclude.h"
 #include "GameObject.h"
 #include "GridDataStructure.h"
-
+#include <stdlib.h>
+#include <time.h>
 
 
 class Guard : public GameObject
@@ -18,11 +19,13 @@ private:
 public:
 	virtual ~Guard();
 	Guard();
+	glm::vec3 roundTheValuefrom0Comma01(glm::vec3);
 	Guard(glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
 virtual	void update(float dt);
 	Guard(Model & m, Grid * gridet);
+	int randomgenerator();
 	void setPositionfromMap(glm::vec3 Guarden);
-	void goToSquare(float dt, glm::vec3 walkTo);
+	void goToSquare(float dt, glm::vec3 walkTo); 
 };
 
