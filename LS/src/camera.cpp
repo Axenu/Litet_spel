@@ -10,7 +10,7 @@ Camera::Camera(float fov, float aspect, float near, float far) {
     _nearPlane = near;
     _farPlane = far;
     _perspective = true;
-    _position = glm::vec3(0,1,1);
+    _position = glm::vec3(0,0,0);
     // _rotation.x = 1.0;
     initProjection();
 }
