@@ -157,7 +157,6 @@
     <ClCompile Include="src\Input\InputKeyState.cpp" />
     <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\PointLightObject.cpp" />
-    <ClCompile Include="src\Picking.cpp" />
     <ClCompile Include="src\Render\RenderDefBuffers.cpp" />
     <ClCompile Include="src\intersectionFunctions.cpp" />
     <ClCompile Include="src\Scene\DrawFrame.cpp" />

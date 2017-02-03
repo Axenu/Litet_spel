@@ -12,5 +12,6 @@ LS/Debug
 *.obj
 *.log
 *.DS_Store
+*.suo
 LS/build
 main
