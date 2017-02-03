@@ -215,3 +215,8 @@ glm::vec3 Node::getPosition() const {
 glm::vec3 Node::getRotation() const {
     return _rotation;
 }
+
+float Node::getDistance(Node const & other) const
+{
+	return glm::length(_position - other._position);
+}

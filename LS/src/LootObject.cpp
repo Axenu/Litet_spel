@@ -24,7 +24,7 @@ int LootObject::loot(Camera &cam)
 	}
 	else
 	{
-		return -1;  //-1 missed picking
+		return 0;  //-1 missed picking
 	}
 }
 

@@ -10,7 +10,7 @@ public:
 	LootObject();
 	LootObject(Model &m);
 	LootObject(Model &m, int val);
-	int loot(Camera &cam);   //-1 missed picking
+	int loot(Camera &cam);   //0 missed picking
 	~LootObject();
 	void setValue(int val);
 private:
