@@ -153,6 +153,8 @@
     <ClCompile Include="src\gui\Button.cpp" />
     <ClCompile Include="src\gui\GUIScene.cpp" />
     <ClCompile Include="src\gui\Manager.cpp" />
+    <ClCompile Include="src\LootController.cpp" />
+    <ClCompile Include="src\LootObject.cpp" />
     <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\PointLightObject.cpp" />
     <ClCompile Include="src\Picking.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\GUIScene.h" />
     <ClInclude Include="header\gui\Manager.h" />
+    <ClInclude Include="header\LootController.h" />
+    <ClInclude Include="header\LootObject.h" />
     <ClInclude Include="header\MeshPart.h" />
     <ClInclude Include="header\Render\MaterialLink.h" />
     <ClInclude Include="header\Render\PointLight.h" />
