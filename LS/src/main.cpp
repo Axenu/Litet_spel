@@ -122,7 +122,7 @@ void setupWindow()
 	// glm::vec4 color(0,0,0,1);
 	// rect.setColor(color);
 	gui::Button* button = new gui::Button("CLick me!");
-	button->setPosition(0,1.8);
+	button->setPosition(0.f, 1.8f);
 	gui::Scene guiScene = gui::Scene();
 	guiScene.addChild(button);
 	gui::Manager guiManager(&eventManager);
@@ -130,14 +130,14 @@ void setupWindow()
 	guiManager.setScene(&guiScene);
 
 	//init dt calculation
-	float lastTime = glfwGetTime();
+	float lastTime = (float)glfwGetTime();
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         //update
 		//Calculate dt
-		float currentTime = glfwGetTime();
+		float currentTime = (float)glfwGetTime();
 	    float dT = currentTime - lastTime;
 	    lastTime = currentTime;
 		// float dT = tpf(lastTime);
