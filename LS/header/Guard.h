@@ -8,11 +8,11 @@
 class Guard : public GameObject
 {
 private:
-	glm::vec3 point1x;
-	glm::vec3 point2x;
-	glm::vec3 point1z;
-	glm::vec3 point2z;
-	glm::vec3 guardsstartposition;
+	glm::vec3 point1x; //höjden först sen breden. 
+	glm::vec3 point2x; //höjden först sen breden. 
+	glm::vec3 point1z; //höjden först sen breden. 
+	glm::vec3 point2z; //höjden först sen breden. 
+	glm::vec3 guardsstartposition; //höjden först sen breden. 
 	int aiChoice;
 
 public:

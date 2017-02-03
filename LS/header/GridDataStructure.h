@@ -37,15 +37,15 @@ private:
 public:
 	Grid();
 	void buildgridarray();
-	gridValues getData(gridType Data);
+	glm::vec3 getData(gridType Data);
 	~Grid();
 	void print2darraydata();
 	void loadingBmpPicture(char* filename);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
 	void checkifPlayerWon(glm::vec3 playerpos);
-	void Createxandypoint12(glm::vec3 guardposition);
-	glm::vec3 getxandypoint12(int i);
+	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
+	glm::vec3 getheightandwidthpoint12(int i);
 };
 
 

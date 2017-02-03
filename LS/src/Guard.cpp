@@ -41,12 +41,13 @@ void Guard::update(float dt)
 Guard::Guard(Model &m, Grid *gridet):
 	GameObject(m)
 {
-	gridet->Createxandypoint12(glm::vec3(gridet->getData(guard).xz.x, 0, gridet->getData(guard).xz.y));
-	point1z = gridet->getxandypoint12(0);
-	point2z = gridet->getxandypoint12(1);
-	point1x = gridet->getxandypoint12(2);
-	point2x = gridet->getxandypoint12(3);
-	guardsstartposition = glm::vec3(gridet->getData(guard).xz.x+0.01, 0.01, gridet->getData(guard).xz.y+0.01);
+	//x = höjd z= bred
+	gridet->Creategetheightandwidthpoint12(gridet->getData(guard));
+	point1z = gridet->getheightandwidthpoint12(0);
+	point2z = gridet->getheightandwidthpoint12(1);
+	point1x = gridet->getheightandwidthpoint12(2);
+	point2x = gridet->getheightandwidthpoint12(3);
+	guardsstartposition = gridet->getData(guard);
 	this->setPosition(guardsstartposition);
 	aiChoice = 1;
 //	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
@@ -67,7 +68,7 @@ glm::vec3 value = this->getPosition();
 
 //glm::vec3 value = glm::vec3(1, 0, 5);
 	glm::vec3 distance = walkTo - value;
-	std::cout << distance.x << " " << distance.z << std::endl;
+//	std::cout << distance.x << " " << distance.z << std::endl;
 	if (distance.z > 0)
 	{
 		this->move(glm::vec3(0, 0, speed)*dt);

@@ -7,7 +7,7 @@ Grid::Grid()
 
 	loadingBmpPicture("roomtest.bmp");
 
-	_exit = getData(exiting).xz;
+	_exit = glm::vec2(getData(exiting).x,getData(exiting).z);
 
 }
 
@@ -31,7 +31,7 @@ void Grid::buildgridarray()
 }
 
 
-gridValues Grid::getData(gridType Data)
+glm::vec3 Grid::getData(gridType Data)
 {
 	for (int i = 0; i < _heightLength; i++)
 	{
@@ -41,19 +41,20 @@ gridValues Grid::getData(gridType Data)
 			{
 				if (_twodArray[i][j].type == exiting)
 				{
-					return _twodArray[i][j];
+					return glm::vec3(i, 0, j);
 				}
 			}
 			if (Data == guard)
 			{
 				if (_twodArray[i][j].type == guard)
 				{
-					return _twodArray[i][j];
+					return glm::vec3(i, 0, j);
 				}
 			}
 		}
 
 	}
+	return glm::vec3(0, 0, 0);
 }
 
 void Grid::print2darraydata()
@@ -84,7 +85,6 @@ void Grid::loadingBmpPicture(char* filename)
 
 
 
-	int i;
 	FILE* f = fopen(filename, "rb");
 
 	if (f == NULL)
@@ -153,7 +153,7 @@ void Grid::loadingBmpPicture(char* filename)
 		//	cout << "" << endl;
 	}
 	
-	print2darraydata();
+//	print2darraydata();
 }
 
 Mesh Grid::generateMesh()
@@ -417,23 +417,23 @@ void Grid::checkifPlayerWon(glm::vec3 playerpos)
 
 }
 
-glm::vec3 Grid::getxandypoint12(int i)
+glm::vec3 Grid::getheightandwidthpoint12(int i)
 {
 	return pointxy[i];
 }
 
-void Grid::Createxandypoint12(glm::vec3 guardposition)
+void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
 
-	int i = (int)guardposition.x;
-	int j = (int)guardposition.z;
+	int i = (int)guardposition.x;//height
+	int j = (int)guardposition.z; //width
 	//first wall upwards
 	for (i;i > -1;i--)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
-			pointxy[0] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y + 1);
+			pointxy[0] = glm::vec3(i + 1, 0, j);
 			break;
 		}
 	}
@@ -445,7 +445,7 @@ void Grid::Createxandypoint12(glm::vec3 guardposition)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
-			pointxy[1] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y - 1);
+			pointxy[1] = glm::vec3(i - 1, 0, j );
 			break;
 		}
 	}
@@ -456,7 +456,7 @@ void Grid::Createxandypoint12(glm::vec3 guardposition)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
-			pointxy[2] = glm::vec3(_twodArray[j][i].xz.x+1, 0, _twodArray[j][i].xz.y);
+			pointxy[2] = glm::vec3(i, 0, j + 1);
 			break;
 		}
 	}
@@ -468,7 +468,7 @@ void Grid::Createxandypoint12(glm::vec3 guardposition)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
-			pointxy[3] = glm::vec3(_twodArray[j][i].xz.x - 1, 0, _twodArray[j][i].xz.y);
+			pointxy[3] = glm::vec3(i , 0, j - 1);
 			break;
 		}
 	}
