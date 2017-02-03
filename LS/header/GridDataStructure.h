@@ -29,7 +29,7 @@ private:
 	float _roofHeight;
 	int _heightLength;
 	int _widthLength;
-	gridValues** _twodArray;
+	gridValues** _twodArray; //första är heightlength andra är widthlenght
 	bool _gotTheTreasure;
 	glm::vec2 _exit;
 	glm::vec3 pointxy[4];

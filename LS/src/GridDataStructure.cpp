@@ -28,9 +28,8 @@ void Grid::buildgridarray()
 	{
 		_twodArray[i] = new gridValues[_widthLength];
 	}
-
-
 }
+
 
 gridValues Grid::getData(gridType Data)
 {
@@ -59,100 +58,102 @@ gridValues Grid::getData(gridType Data)
 
 void Grid::print2darraydata()
 {
-	for (int i = 0; i < _heightLength; i++)
+
+
+
+	for (int i = 0;i < _heightLength;i++)
 	{
-		for (int j = 0; j < _widthLength; j++)
+		for (int j = 0;j < _widthLength;j++)
 		{
-	//		std::cout << _twodArray[i][j].color.x << " ";
-			std::cout << _twodArray[i][j].type << " ";
+			std::cout << _twodArray[i][j].type;
 		}
 		std::cout << "" << std::endl;
+
 	}
-//	std::cout << _twodArray[6][5].type << std::endl;
+
 }
 
 void Grid::loadingBmpPicture(char* filename)
 {
+	//2
+	//		_heightLength = 10;
+	//		_widthLength = 15;
+	//		buildgridarray();
+	//		_twodArray[9][12].xz = glm::vec2(1,2);
+	//första är heightlength andra är widthlenght
 
+
+
+	int i;
 	FILE* f = fopen(filename, "rb");
-	unsigned char header[54];
-	fread(header, sizeof(unsigned char), 54, f);
 
-	int width = *(int*)&header[18];
-	int height = *(int*)&header[22];
-	int size = 3 * width * height;
+	if (f == NULL)
+		throw "Argument Exception";
 
-	unsigned char* datan = new unsigned char[size]; //Allocating 3bytes for each pixel. R G B
-	fread(datan, 1, size, f);
-	fclose(f);
+	unsigned char info[54];
+	fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
 
-	for (int i = 0; i < size; i += 3)
-	{
-		unsigned char tmp = datan[i];
-		datan[i] = datan[i + 2];
-		datan[i + 2] = tmp;
-	}
+											   // extract image height and width from header
+	int width = *(int*)&info[18];
+	int height = *(int*)&info[22];
 
+//	std::cout<< std::endl;
+//	std::cout<< "  Name: " << filename << std::endl;
+//	std::cout << " Width: " << width << std::endl;
+//	std::cout << "Height: " << height << std::endl;
 	_heightLength = height;
 	_widthLength = width;
 
+
 	buildgridarray();
-	//filling the twodarray with number1;
-
-	glm::vec3** colorarray ;
-	//building the 2D array
-	colorarray = new glm::vec3*[_heightLength];
-	for (int i = 0; i < _heightLength; i++)
+	//		_twodArray[9][12].xz = glm::vec2(1,2);
+	//första är heightlength andra är widthlenght
+	int row_padded = (width * 3 + 3) & (~3);
+	unsigned char* data = new unsigned char[row_padded];
+	unsigned char tmp;
+	int realj = 0;
+	for (int i = 0; i < height; i++)
 	{
-		colorarray[i] = new glm::vec3[_widthLength];
-	}
-
-	int k = 0;
-	for (int j = 0; j < height; j++)
-	{
-		for (int i = 0; i < width; i++)
+		realj = 0;
+		fread(data, sizeof(unsigned char), row_padded, f);
+		for (int j = 0; j < width * 3; j += 3)
 		{
-			_twodArray[i][j].xz.x = (float)i;
-			_twodArray[i][j].xz.y = (float)j;
-			colorarray[height - 1 - j][i].x = datan[k];
-			colorarray[height - 1 - j][i].y = datan[k + 1];
-			colorarray[height - 1 - j][i].z = datan[k + 2];
-			k += 3;
+			// Convert (B, G, R) to (R, G, B)
+			tmp = data[j];
+			data[j] = data[j + 2];
+			data[j + 2] = tmp;
+
+			//	 glm::vec3(data[j], data[j + 1], data[j + 2]);
+			//	cout << "R: " << (int)data[j] << " G: " << (int)data[j + 1] << " B: " << (int)data[j + 2] << endl;
+
+			if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 255, 255))
+			{
+				_twodArray[height - 1 - i][realj].type = wall;
+			}
+			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 0, 0))
+			{
+				_twodArray[height - 1 - i][realj].type = nothing;
+			}
+			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 0, 0))
+			{
+				_twodArray[height - 1 - i][realj].type = exiting;
+			}
+			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
+			{
+				_twodArray[height - 1 - i][realj].type = guard;
+			}
+			else
+			{
+				std::cout << "error" << std::endl;
+				std::cout<<_twodArray[i][realj].xz.x<<","<<_twodArray[i][realj].xz.y<<std::endl;
+			}
+			realj++;
+			//	cout << _twodArray[i][j].type;	
 		}
+		//	cout << "" << endl;
 	}
-	//setting the enum for each vertex.
-	for (int j = 0; j < height; j++)
-	{
-		for (int i = 0; i < width; i++)
-		{
-			if (colorarray[i][j] == glm::vec3(255, 255, 255))
-			{
-				_twodArray[i][j].type = wall;
-			}
-			if (colorarray[i][j] == glm::vec3(0, 0, 0))
-			{
-				_twodArray[i][j].type = nothing;
-			}
-			if (colorarray[i][j] == glm::vec3(255, 0, 0))
-			{
-				_twodArray[i][j].type = exiting;
-			}
-			if (colorarray[i][j] == glm::vec3(0, 255, 0))
-			{
-				_twodArray[i][j].type = guard;
-			}
-
-		}
-	}
-	for (int i = 0; i < _heightLength; i++)
-	{
-		delete[] colorarray[i];
-	}
-
-	delete[] colorarray;
-		delete[] datan;
-		datan = 0;
-
+	
+	print2darraydata();
 }
 
 Mesh Grid::generateMesh()

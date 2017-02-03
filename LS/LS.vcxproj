@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\gui\MainMenuScene.cpp" />
     <ClCompile Include="src\Input\InputIncrementer.cpp" />
     <ClCompile Include="src\gui\Button.cpp" />
     <ClCompile Include="src\gui\GUIScene.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\Input\InputKeyState.h" />
     <ClInclude Include="header\Render\RenderDefBuffers.h" />
     <ClInclude Include="header\gui\Button.h" />
