@@ -42,4 +42,10 @@ bool GameObject::pick(glm::vec4 origin, glm::vec4 dir)
 	return _model.pick(nOrigin, nDir);
 }
 
+bool GameObject::pick(Camera & cam)
+{
+	glm::vec4 origin = glm::vec4(cam.getPosition(), 1.0f);
+	return pick(origin, cam.getLookAt());
+}
+
 

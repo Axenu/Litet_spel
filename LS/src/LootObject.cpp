@@ -11,6 +11,23 @@ LootObject::LootObject(Model & m)
 	_value = 50;
 }
 
+LootObject::LootObject(Model & m, int val)
+{
+	_value = val;
+}
+
+int LootObject::loot(Camera &cam)
+{
+	if (GameObject::pick(cam))
+	{
+		return _value;
+	}
+	else
+	{
+		return -1;  //-1 missed picking
+	}
+}
+
 LootObject::~LootObject()
 {
 

@@ -5,6 +5,7 @@
 #include"Model.h"
 #include "gl/glInclude.h"
 #include "AABB.h"
+#include "camera.h"
 
 class GameObject : public Node
 {
@@ -17,6 +18,7 @@ public:
 	const Model& getModel();
 	const glm::mat4& getModelMatrix();
 	bool pick(glm::vec4 origin, glm::vec4 dir);
+	bool pick(Camera &cam);
 private:
 	Model _model;
 };
