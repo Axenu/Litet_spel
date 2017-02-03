@@ -5,11 +5,31 @@ void Character::setCamera(Camera* camera)
     _camera = camera;
     _camera->setY(0.8f);
     _velocity = glm::vec3(0,0,0);
+    _direction = glm::vec3(0,0,0);
+    _speed = 2;
+    _isMoving = 0;
 }
 void Character::update(float dt)
 {
+    if (_direction.x != 0 || _direction.y != 0)
+    {
+        //calculate inertia
+        if (_isMoving < 1)
+        {
+            _isMoving += dt*2;
+            if (_isMoving > 1)
+            {
+                _isMoving = 1;
+            }
+        }
+        _velocity = glm::normalize(_direction) * _isMoving * _speed;
+    }
+    else
+    {
+        _velocity = glm::vec3(0,0,0);
+        _isMoving = 0;
+    }
 	glm::vec3 actualVelocity;
-
 	//Calculate the velocity
 	actualVelocity.x = _velocity.y * dt * sin(_rotation.x);
 	actualVelocity.x += _velocity.x * dt * cos(_rotation.x);
@@ -30,44 +50,44 @@ void Character::moveCharacter(const KeyboardEvent& event)
     {
         if (event.getAction() == GLFW_PRESS)
         {
-            _velocity.y -= 1.0f;
+            _direction.y -= 1.0f;
         }
         else if (event.getAction() == GLFW_RELEASE)
         {
-            _velocity.y += 1.0f;
+            _direction.y += 1.0f;
         }
     }
     else if (event.getKey() == GLFW_KEY_A)
     {
         if (event.getAction() == GLFW_PRESS)
         {
-            _velocity.x -= 1.0f;
+            _direction.x -= 1.0f;
         }
         else if (event.getAction() == GLFW_RELEASE)
         {
-            _velocity.x += 1.0f;
+            _direction.x += 1.0f;
         }
     }
     else if (event.getKey() == GLFW_KEY_S)
     {
         if (event.getAction() == GLFW_PRESS)
         {
-            _velocity.y += 1.0f;
+            _direction.y += 1.0f;
         }
         else if (event.getAction() == GLFW_RELEASE)
         {
-            _velocity.y -= 1.0f;
+            _direction.y -= 1.0f;
         }
     }
     else if (event.getKey() == GLFW_KEY_D)
     {
         if (event.getAction() == GLFW_PRESS)
         {
-            _velocity.x += 1.0f;
+            _direction.x += 1.0f;
         }
         else if (event.getAction() == GLFW_RELEASE)
         {
-            _velocity.x -= 1.0f;
+            _direction.x -= 1.0f;
         }
     }
     else if (event.getKey() == GLFW_KEY_T)
