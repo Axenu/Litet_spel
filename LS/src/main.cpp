@@ -9,9 +9,11 @@
 #include "Render/GraphicsResource.h"
 #include "Render/RenderInfo.h"
 #include "Render/RenderDeferred.h"
+#include"Render/RenderDefBuffers.h"
 #include "Render/MeshShader.h"
 #include "Render/DeferredMeshShader.h"
 #include "InputManager.h"
+#include "Input/InputKeyState.h"
 #include "EventManager.h"
 #include "Camera.h"
 #include "Character.h"
@@ -75,13 +77,19 @@ void setupWindow()
 
 
 	//basic init
-	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
+	gl::DefferredSettings setting(wWidth, wHeight, 3);
+	setting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
+	GraphicsResource resource(setting);
 	Shader s("Basic");
 	DeferredMeshShader meshShader;
 	RenderDeferred deferred(resource.getQuad());
+	RenderDefBuffers bufferRenderer(resource.getQuad(), eventManager);
+	InputKeyState renderBuffer(eventManager, GLFW_KEY_R);
+
 	Material material(&meshShader);
 	material.setColor("diffuse", glm::vec4(0.8f));
 	material.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
+	material.setFloat("shine", 20.f);
 	Scene scene;
 	gl::CheckGLErrors("Init stage failed: Resource");
 
@@ -98,6 +106,7 @@ void setupWindow()
 
 	Camera camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
 	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+	bufferRenderer.setWindowSize((float)wWidth, (float)wHeight, camera);
 
 
     Character* player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &eventManager);
@@ -114,7 +123,7 @@ void setupWindow()
 
 	//Add some lights
 	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
-	scene.add(new PointLightObject(PointLight(glm::vec3(3.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+	scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 
 	// gui::Font *font = new gui::Font("Resources/fonts/arial");
 	// gui::Label label(font, "Hello World!");
@@ -156,7 +165,10 @@ void setupWindow()
         glClearColor(1, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //Render
-		deferred.render(fD);
+		if (renderBuffer._active)
+			bufferRenderer.render(fD);
+		else
+			deferred.render(fD);
 		gl::CheckGLErrors("Render stage failed: Composition");
 
 		guiManager.update(dT);

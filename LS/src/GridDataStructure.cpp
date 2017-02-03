@@ -338,52 +338,67 @@ Mesh Grid::generateMesh()
 
 void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 {
-	float padX = 0.f;
-	if (signbit(velocity.x) == false)
-	{
-		padX = 0.3f;
-	}
-	else
-	{
-		padX = -0.3f;
-	}
-	float padZ = 0.f;
-	if (signbit(velocity.y) == false)
-	{
-		padZ = 0.3f;
-	}
-	else
-	{
-		padZ = -0.3f;
-	}
-//	std::cout << "(" << velocity.x << ", " << velocity.y << ", " << velocity.z << ")" << std::endl;
-	glm::vec3 test;
-	test.x = position->x + padX;
-	test.z = position->z + padZ;
+	int currentX = (int)glm::floor(position->x / GRIDSPACE);
+	int currentZ = (int)glm::floor(position->z / GRIDSPACE);
 
-	int currentX = (int)glm::floor(test.x / GRIDSPACE);
-	int currentZ = (int)glm::floor(test.z / GRIDSPACE);
-
-	int newX = (int)glm::floor(test.x + velocity.x / GRIDSPACE);
-	int newZ = (int)glm::floor(test.z + velocity.y / GRIDSPACE);
-
-	//horizontal check
-	if (_twodArray[newX][currentZ].type == wall)
+	//std::cout << position->x << ", " << position->z << std::endl;
+	
+	/*glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
+	float len = playerToCorner.x * playerToCorner.x + playerToCorner.y * playerToCorner.y + playerToCorner.z * playerToCorner.z;
+	if (len > 0.3f * 0.3f)
 	{
-		//position->x = currentX * GRIDSPACE + pad;
+	glm::vec3 dist = playerToCorner;
+	dist.x /= len;
+	dist.y /= len;
+	dist.z /= len;
+	position->x = (float)currentX + dist.x * 0.15;
+	position->z = (float)currentZ + dist.z * 0.15;
+	}*/
+
+	if (signbit(velocity.x) == false)// -->
+	{
+		if (_twodArray[currentX + 1][currentZ].type != wall)
+		{
+			position->x += velocity.x;
+		}
+		else if (position->x - currentX < 0.7f)
+		{
+			position->x += velocity.x;
+		}
 	}
 	else
 	{
-		position->x += velocity.x;
+		if (_twodArray[currentX - 1][currentZ].type != wall)
+		{
+			position->x += velocity.x;
+		}
+		else if (position->x - currentX > 0.3f)
+		{
+			position->x += velocity.x;
+		}
 	}
-	//vertical check
-	if (_twodArray[currentX][newZ].type == wall)
+	
+	if (signbit(velocity.y) == false) 
 	{
-		//position->z = currentZ * GRIDSPACE + pad;
+		if (_twodArray[currentX][currentZ + 1].type != wall)
+		{
+			position->z += velocity.y;
+		}
+		else if (position->z - currentZ < 0.7f)
+		{
+			position->z += velocity.y;
+		}
 	}
 	else
 	{
-		position->z += velocity.y;
+		if (_twodArray[currentX][currentZ - 1].type != wall)
+		{
+			position->z += velocity.y;
+		}
+		else if (position->z - currentZ > 0.3f)
+		{
+			position->z += velocity.y;
+		}
 	}
 }
 

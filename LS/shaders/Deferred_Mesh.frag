@@ -10,8 +10,8 @@ layout(location = 2) out vec4 SpecularOut;
 
 /* Uniforms
 */
-uniform vec3 specularCol;
 uniform vec3 diffuseCol;
+uniform vec4 specularCol;
 
 /* Forward declare functions
 */
@@ -22,7 +22,7 @@ void main () {
 	ColorOut = vec4(diffuseCol, 1);
 	//Compress normal:
 	NormalOut = vec4(encodeNormal(Normal0), 1);
-	SpecularOut = vec4(specularCol, 1);
+	SpecularOut = specularCol;
 }
 
 vec3 encodeNormal(in vec3 normal){

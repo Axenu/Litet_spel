@@ -12,24 +12,25 @@ namespace gl{
 	class DeferredBuffer : public FrameBuffer
 	{
 	private:
-		/* Number of color buffers used
-		*/
-		const unsigned int _colorBufferCount;
+		std::vector<DeferredTextureInfo> _setup;
 		/* The render target textures. 
 		0 is the depth buffer. [1, size) is the color texture assigned in framebuffer slot [0, size - 1)
 		*/
 		std::vector<TexData> _renderTargets;
 		
+		/* Generate new buffers
+		*/
+		virtual void generateBuffers();
 	protected:
 		/* Destroys the all bound buffers. Called from destructor and resize.
 		*/
 		virtual void destroyBuffers();
 
 	public:
-		DeferredBuffer(unsigned int screenWidth, unsigned int screenHeight, unsigned int colorBufferCount);
+		DeferredBuffer(unsigned int screenWidth, unsigned int screenHeight, std::vector<DeferredTextureInfo> &setup);
 		/* Settings used to initialize the deffered buffer.
 		*/
-		DeferredBuffer(const DefferredSettings& settings);
+		DeferredBuffer(DefferredSettings& settings);
 		~DeferredBuffer();
 
 		/* Clears the buffers
