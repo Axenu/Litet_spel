@@ -152,7 +152,8 @@ void Grid::loadingBmpPicture(char* filename)
 		}
 		//	cout << "" << endl;
 	}
-	
+	delete[] data;
+	fclose(f);
 //	print2darraydata();
 }
 
@@ -420,6 +421,16 @@ void Grid::checkifPlayerWon(glm::vec3 playerpos)
 glm::vec3 Grid::getheightandwidthpoint12(int i)
 {
 	return pointxy[i];
+}
+
+int Grid::getHeight()
+{
+	return _heightLength;
+}
+
+int Grid::getWidth()
+{
+	return _widthLength;
 }
 
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)

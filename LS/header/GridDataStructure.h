@@ -47,6 +47,8 @@ public:
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
 	gridType returnGridType(int width,int height);
 	glm::vec3 getheightandwidthpoint12(int i);
+	int getHeight();
+	int getWidth();
 };
 
 

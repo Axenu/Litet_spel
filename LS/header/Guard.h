@@ -14,7 +14,12 @@ private:
 	glm::vec3 point1z; //höjden först sen breden. 
 	glm::vec3 point2z; //höjden först sen breden. 
 	glm::vec3 guardsstartposition; //höjden först sen breden. 
+	gridValues** levalues;
 	int aiChoice;
+	int _heightLength;
+	int _widthLength;
+	int height;
+	int width;
 
 public:
 	virtual ~Guard();
@@ -25,6 +30,7 @@ public:
 virtual	void update(float dt);
 	Guard(Model & m, Grid * gridet);
 	int randomgenerator();
+	void buildgridarray();
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
 };

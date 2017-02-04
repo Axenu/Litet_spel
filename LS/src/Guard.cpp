@@ -2,6 +2,12 @@
 
 Guard::~Guard()
 {
+	for (int i = 0; i < height; i++)
+	{
+		delete[] levalues[i];
+	}
+
+	delete[] levalues;
 }
 
 Guard::Guard()
@@ -114,6 +120,31 @@ void Guard::WalkingBetweenFourPoints(float dt)
 
 }
 
+void Guard::buildgridarray()
+{
+	 height=1, width=1;
+	if (guardsstartposition.x >= 5 && guardsstartposition.x+5<=_heightLength)
+	{
+		height = 5;
+	}
+	else if(guardsstartposition.x+guardsstartposition.x<=_heightLength)
+	{
+		height = guardsstartposition.x+1;
+	}
+	else
+	{
+		_heightLength - guardsstartposition.x;
+	}
+
+
+	
+	//building the 2D array
+	levalues = new gridValues*[height];
+	for (int i = 0; i < height; i++)
+	{
+		levalues[i] = new gridValues[width];
+	}
+}
 
 
 
@@ -134,6 +165,8 @@ Guard::Guard(Model &m, Grid *gridet):
 	point1x = gridet->getheightandwidthpoint12(2);
 	point2x = gridet->getheightandwidthpoint12(3);
 	guardsstartposition = gridet->getData(guard);
+	_widthLength = gridet->getWidth();
+	_heightLength = gridet->getHeight();
 	this->setPosition(guardsstartposition);
 	aiChoice = randomgenerator();
 //	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
