@@ -556,3 +556,8 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 
 
 }
+
+gridType Grid::returnGridType(int width, int height)
+{
+	return _twodArray[width][height].type;
+}

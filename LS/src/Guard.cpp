@@ -11,17 +11,17 @@ Guard::Guard()
 glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 {
 	glm::vec3 returnvalue = normalvalue;
-	if (normalvalue.x < floor(normalvalue.x) + 0.1)
+	if (normalvalue.x < round(normalvalue.x) + 0.1)
 	{
-		returnvalue.x = floor(normalvalue.x);
+		returnvalue.x = round(normalvalue.x);
 	}
-	if (normalvalue.z < floor(normalvalue.z) + 0.1)
+	if (normalvalue.z < round(normalvalue.z) + 0.1)
 	{
-		returnvalue.z = floor(normalvalue.z);
+		returnvalue.z = round(normalvalue.z);
 	}
-	if (normalvalue.y < floor(normalvalue.y) + 0.1)
+	if (normalvalue.y < round(normalvalue.y) + 0.1)
 	{
-		returnvalue.y = floor(normalvalue.y);
+		returnvalue.y = round(normalvalue.y);
 	}
 	return returnvalue;
 }
