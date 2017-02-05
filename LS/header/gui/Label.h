@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "Font.h"
 #include "gui/Element.h"
+#include "gui/StringComponents.h"
 
 namespace gui
 {
@@ -22,6 +23,8 @@ namespace gui
 
         std::string _text;
 
+        std::vector<StringComponent*> _sComponents;
+
         //GL stuff
         GLint _positionUniform;
         GLint _textureUniform;
@@ -29,20 +32,23 @@ namespace gui
         GLint _sizeUniform;
         gl::VAData _VA;
 
-    Shader _shader;
-    Font* _font;
+        Shader _shader;
+        Font* _font;
 
     public:
 
-    Label(Font* font, std::string text);
-	virtual ~Label();
+        Label(Font* font, std::string text);
+    	virtual ~Label();
 
         void onRender();
 
         void onUpdate(float dt);
 
+        void updateText();
+
         //setters
         void setText(std::string &text);
+        void addStringComponent(StringComponent* sc);
 
         //getters
         float getTextWidth();

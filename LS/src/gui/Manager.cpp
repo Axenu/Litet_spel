@@ -15,7 +15,10 @@ namespace gui
     }
     Manager::~Manager()
     {
-
+        for (Scene* scene : _loadedScenes)
+        {
+            delete scene;
+        }
     }
     void Manager::update(float dt)
     {

@@ -37,13 +37,10 @@ namespace gui
     }
     void MainMenuScene::QuitGame(int action)
     {
-        //guiManager->setScene("Main menu")
         if (action == GLFW_RELEASE)
         {
             QuitGameEvent event;
             _manager->execute(event);
-            // _parent->setScene(_name);
-            // std::cout << "button callback" << std::endl;
         }
     }
 }

@@ -48,7 +48,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 {
 	glm::vec3 roundedpositon;
 	roundedpositon = roundTheValuefrom0Comma01(this->getPosition());
-	
+
 	switch (aiChoice)
 	{
 	case 1:
@@ -113,9 +113,9 @@ void Guard::WalkingBetweenFourPoints(float dt)
 
 }
 
-	
 
-	
+
+
 
 
 }
@@ -137,7 +137,7 @@ void Guard::buildgridarray()
 	}
 
 
-	
+
 	//building the 2D array
 	levalues = new gridValues*[height];
 	for (int i = 0; i < height; i++)
@@ -158,7 +158,7 @@ Guard::Guard(Model &m, Grid *gridet):
 	GameObject(m)
 {
 	srand(time(NULL));
-	//x = höjd z= bred
+	//x = hï¿½jd z= bred
 	gridet->Creategetheightandwidthpoint12(gridet->getData(guard));
 	point1z = gridet->getheightandwidthpoint12(0);
 	point2z = gridet->getheightandwidthpoint12(1);
@@ -210,6 +210,3 @@ glm::vec3 value = this->getPosition();
 		this->move(glm::vec3(-speed, 0, 0)*dt);
 	}
 }
-
-
-
