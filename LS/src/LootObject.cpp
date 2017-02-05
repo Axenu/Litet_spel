@@ -12,6 +12,7 @@ LootObject::LootObject(Model & m)
 }
 
 LootObject::LootObject(Model & m, int val)
+	: GameObject(m)
 {
 	_value = val;
 }
@@ -24,7 +25,7 @@ int LootObject::loot(Camera &cam)
 	}
 	else
 	{
-		return 0;  //-1 missed picking
+		return 0;  //0 missed picking
 	}
 }
 

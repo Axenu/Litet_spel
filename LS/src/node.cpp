@@ -216,7 +216,22 @@ glm::vec3 Node::getRotation() const {
     return _rotation;
 }
 
+glm::vec3 Node::getWorldPos() const
+{
+	if (_parent != nullptr)
+	{
+		return _position + _parent->getPosition();
+	}
+	return _position;
+
+}
+
 float Node::getDistance(Node const & other) const
 {
-	return glm::length(_position - other._position);
+	return glm::length(getWorldPos() - other.getWorldPos());
+}
+
+float Node::getDistance(glm::vec3 const &pos) const
+{
+	return glm::length(getWorldPos() - pos);
 }

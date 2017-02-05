@@ -21,6 +21,8 @@
 #include"Scene/DrawFrame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
+#include "LootObject.h"
+#include "LootController.h"
 
 void setupWindow()
 {
@@ -132,6 +134,28 @@ void setupWindow()
 	//init dt calculation
 	float lastTime = glfwGetTime();
 
+	//Loot test variables
+	//LootController lootController;
+	//Mesh mesh;
+	//Material lootMat(&meshShader);
+	//lootMat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	//lootMat.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	//MeshPart *meshPart = new MeshPart(&mesh, &lootMat);
+	//Model *model = new Model(*meshPart);
+	//LootObject *loot1 = new LootObject(*model);
+	//LootObject *loot2 = new LootObject(*model, 100);
+
+	//loot1->setPosition(glm::vec3(5, 0.5, 3));
+	//loot2->setPosition(glm::vec3(5, 0.5, 5));
+
+	//scene.add(loot1);
+	//scene.add(loot2);
+
+	//lootController.add(loot1);
+	//lootController.add(loot2);
+
+	//float points = 0;
+
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -152,7 +176,6 @@ void setupWindow()
 
 		dF.render(fD);
 		gl::CheckGLErrors("Render stage failed: Mesh");
-
 		/*	Render to backbuffer:
 		*/
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

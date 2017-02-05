@@ -11,8 +11,8 @@ class LootController
 public:
 	LootController();
 	~LootController();
-	void addLoot(LootObject &loot);
+	void add(LootObject *loot);
 	int loot(Camera &cam, float pickDist);
 private:
-	std::vector<LootObject> _loot;
+	std::vector<LootObject*> _loot;
 };

@@ -8,7 +8,7 @@ LootController::~LootController()
 {
 }
 
-void LootController::addLoot(LootObject & loot)
+void LootController::add(LootObject *loot)
 {
 	_loot.push_back(loot);
 }
@@ -21,7 +21,7 @@ int LootController::loot(Camera & cam, float pickDist)
 	//Sorting out objects close enough to cam
 	for (unsigned int i = 0; i < _loot.size(); i++)
 	{
-		testDist = cam.getDistance(_loot[i]);
+		testDist = cam.getDistance(*_loot[i]);
 		if (testDist < pickDist)
 		{
 			indices.push_back(i);
@@ -48,10 +48,10 @@ int LootController::loot(Camera & cam, float pickDist)
 		}
 	}
 	//Pick against the lootobjects in range, from closest to furthest
-	int value;
+	int value = 0;
 	for (unsigned int i = 0; i < indices.size(); i++)
 	{
-		value = _loot[i].pick(cam);
+		value = _loot[indices[i]]->loot(cam);
 		if (value != 0)
 		{
 			break;
