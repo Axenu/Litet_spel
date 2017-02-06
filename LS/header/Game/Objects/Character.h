@@ -27,10 +27,10 @@ class Character : public GameObject
 {
 public:
     void setCamera(Camera *camera);
-
     virtual void update(float dt);
     void onRender();
 
+	void doYouWantToWin(const KeyboardEvent& event);
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
     void collectLoot(const CollectLootEvent& event);
@@ -42,6 +42,7 @@ public:
     Character();
     virtual ~Character();
 private:
+	bool buttonpressed;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
