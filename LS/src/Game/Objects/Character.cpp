@@ -37,7 +37,7 @@ void Character::update(float dt)
 	
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
-	_currentLevel->checkifPlayerWon(&_position,buttonpressed);
+	WindowClass = _currentLevel->checkifPlayerWon(&_position,buttonpressed);
 	Node::update(dt);
 }
 void Character::onRender()
@@ -46,7 +46,7 @@ void Character::onRender()
 }
 void Character::doYouWantToWin(const KeyboardEvent & event)
 {
-	if (event.getKey() == GLFW_KEY_E)
+	if (event.getKey() == GLFW_KEY_G)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -181,9 +181,15 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);
 	buttonpressed = false;
+	charactermovedoutsidebox = false;
+	WindowClass = false;
 }
 Character::Character()
 {
+}
+bool Character::getWindowclass()
+{
+	return WindowClass;
 }
 Character::~Character()
 {

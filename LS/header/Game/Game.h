@@ -21,7 +21,6 @@ protected:
 public:
 	Game(Setting &setting, EventManager &events);
 	virtual ~Game();
-
 	virtual void initiate();
 
 	void update(float dT);

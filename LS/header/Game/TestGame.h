@@ -4,6 +4,9 @@
 #include "Event/Input/InputKeyState.h"
 #include "Render/DeferredMeshShader.h"
 #include "GridDataStructure.h"
+#include "Game/Objects/Character.h"
+#include "Game/Objects/Guard.h"
+#include "Game/Objects/PointLightObject.h"
 
 class TestGame
 	: public Game {
@@ -13,7 +16,7 @@ protected:
 
 	DeferredMeshShader _shader;
 	Material _material, _lootMat;
-
+	Character* player;
 	Grid _gridtest;
 	Mesh _wallMesh, _cube;
 
@@ -21,7 +24,7 @@ public:
 
 	TestGame(Setting &setting, EventManager &events);
 	virtual ~TestGame();
-
+	bool closeWindow();
 	virtual void initiate();
 	virtual void compose(RenderInfo &rI);
 };

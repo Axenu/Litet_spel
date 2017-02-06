@@ -1,7 +1,5 @@
 #include "Game/TestGame.h"
-#include "Game/Objects/Character.h"
-#include "Game/Objects/Guard.h"
-#include "Game/Objects/PointLightObject.h"
+
 
 
 
@@ -14,7 +12,10 @@ TestGame::TestGame(Setting &setting, EventManager &events)
 TestGame::~TestGame() {
 
 }
-
+bool TestGame::closeWindow()
+{
+	return player->getWindowclass();
+}
 
 void TestGame::initiate() {
 	_material.setColor("diffuse", glm::vec4(0.8f));
@@ -22,7 +23,7 @@ void TestGame::initiate() {
 	_material.setFloat("shine", 20.f);
 
 	_wallMesh = _gridtest.generateMesh();
-	Character* player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &_event);
+	player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &_event);
 	player->setLevel(&_gridtest);
 	player->setCamera(&_camera);
 	_camera.setParent(player);
