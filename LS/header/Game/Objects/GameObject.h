@@ -5,7 +5,7 @@
 #include"Model.h"
 #include "gl/glInclude.h"
 #include "AABB.h"
-#include"Scene/DrawFrame.h"
+#include"Game/Scene/DrawFrame.h"
 #include"GameObjectType.h"
 
 class GameObject : public Node

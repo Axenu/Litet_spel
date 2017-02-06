@@ -20,8 +20,8 @@
 #include "Game/Objects/GameObject.h"
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/PointLightObject.h"
-#include "Scene/Scene.h"
-#include "Scene/DrawFrame.h"
+#include "Game/Scene/Scene.h"
+#include "Game/Scene/DrawFrame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "gui/MainMenuScene.h"
@@ -209,7 +209,6 @@ int main()
 {
 	std::cout << "Init window!" << std::endl;
 	setupWindow();
-
 
     return 0;
 }
