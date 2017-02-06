@@ -26,6 +26,7 @@ void TestGame::initiate() {
 	player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &_event);
 	player->setLevel(&_gridtest);
 	player->setCamera(&_camera);
+	player->setScene(&_scene);
 	_camera.setParent(player);
 
 	MeshPart guardModelMeshPart(&_cube, &_material);
