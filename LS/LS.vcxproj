@@ -198,6 +198,7 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\GameObjectType.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\Input\InputKeyState.h" />
     <ClInclude Include="header\Render\RenderDefBuffers.h" />

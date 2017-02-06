@@ -26,6 +26,9 @@ public:
 	void render(RenderInfo &fD, glm::mat4 &modelMatrix) const;
 	const std::vector<MeshPart>& getParts() const;
 	bool pick(glm::vec3 origin, glm::vec3 dir);
+	/* Update model boxes from model space
+	*/
+	void transform(const glm::mat4 &mat);
 	~Model();
 private:
 	std::vector<MeshPart> _meshParts;

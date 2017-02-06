@@ -3,6 +3,9 @@
 AABB::AABB() {
 
 }
+AABB::AABB(const glm::vec3& min, const glm::vec3& max) 
+	: _min(min), _max(max) {
+}
 AABB::AABB(std::vector<glm::vec3> *position)
 {
     for (std::vector<glm::vec3>::iterator it = position->begin(); it != position->end(); ++it) {
@@ -22,6 +25,9 @@ AABB::AABB(const AABB & other)
 {
 	_min = other._min;
 	_max = other._max;
+}
+AABB AABB::transform(const glm::mat4 &matrix) const {
+	return AABB(matrix * glm::vec4(_min, 1.0f), matrix * glm::vec4(_max, 1.0f));
 }
 
 
