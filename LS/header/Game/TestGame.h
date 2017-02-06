@@ -12,7 +12,7 @@ protected:
 	InputKeyState _renderBuffer;
 
 	DeferredMeshShader _shader;
-	Material _material;
+	Material _material, _lootMat;
 
 	Grid _gridtest;
 	Mesh _wallMesh, _cube;
