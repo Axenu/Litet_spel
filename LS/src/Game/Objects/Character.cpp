@@ -34,15 +34,29 @@ void Character::update(float dt)
 	actualVelocity.x += _velocity.x * dt * cos(_rotation.x);
 	actualVelocity.y = _velocity.y * dt * cos(_rotation.x);
 	actualVelocity.y += _velocity.x * dt * -sin(_rotation.x);
-
+	
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
-	_currentLevel->checkifPlayerWon(&_position);
+	WindowClass = _currentLevel->checkifPlayerWon(&_position,buttonpressed);
 	Node::update(dt);
 }
 void Character::onRender()
 {
 
+}
+void Character::doYouWantToWin(const KeyboardEvent & event)
+{
+	if (event.getKey() == GLFW_KEY_G)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			buttonpressed = true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			buttonpressed = false;
+		}
+	}
 }
 void Character::moveCharacter(const KeyboardEvent& event)
 {
@@ -163,11 +177,19 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 {
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
+	_eventManager->listen(this,&Character::doYouWantToWin);
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);
+	buttonpressed = false;
+	charactermovedoutsidebox = false;
+	WindowClass = false;
 }
 Character::Character()
 {
+}
+bool Character::getWindowclass()
+{
+	return WindowClass;
 }
 Character::~Character()
 {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include"GraphicsResource.h"
-#include"camera.h"
-#include<glm/mat4x4.hpp>
-#include"Render/PointLight.h"
+#include "GraphicsResource.h"
+#include "Game/camera.h"
+#include <glm/mat4x4.hpp>
+#include "Render/PointLight.h"
 
 /* Forward Declare
 */

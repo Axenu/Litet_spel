@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include"GameObject.h"
-#include "camera.h"
+#include "GameObject.h"
+#include "Game/camera.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
 #define GLM_FORCE_RADIANS
@@ -27,10 +27,10 @@ class Character : public GameObject
 {
 public:
     void setCamera(Camera *camera);
-
     virtual void update(float dt);
     void onRender();
 
+	void doYouWantToWin(const KeyboardEvent& event);
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
     void collectLoot(const CollectLootEvent& event);
@@ -40,8 +40,12 @@ public:
 
     Character(glm::vec3 pos, EventManager *manager);
     Character();
+	bool getWindowclass();
     virtual ~Character();
 private:
+	bool WindowClass;
+	bool buttonpressed;
+	bool* charactermovedoutsidebox;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;

@@ -1,7 +1,10 @@
 #pragma once
 
 #include "EventManager.h"
-#include "GridDataStructure.h"
+#include "gl/glInclude.h"
+#include <glm/glm.hpp>
+#include <iostream>
+#include <vector>
 class PossibleVictoryEvent : public Event
 {
 private:
@@ -14,5 +17,5 @@ public:
 	~PossibleVictoryEvent();
 void insquare(bool yesno);
 void givepoints(float points);
-void victory();
+bool victory(bool buttonpressed,bool);
 };

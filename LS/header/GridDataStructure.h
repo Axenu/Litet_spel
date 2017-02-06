@@ -34,6 +34,8 @@ private:
 	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
+	bool outsidethebox;
+	bool doyouwanttoleave = false, yousure = false;
 public:
 	Grid();
 	void buildgridarray();
@@ -43,13 +45,15 @@ public:
 	void loadingBmpPicture(char* filename);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
-	void checkifPlayerWon(glm::vec3 * playerpos);
+	bool checkifPlayerWon(glm::vec3 * playerpos, bool buttonpressed);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
 	gridType returnGridType(int width,int height);
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
+	PossibleVictoryEvent victory;
+
 };
 
 

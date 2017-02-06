@@ -4,7 +4,7 @@
 Grid::Grid()
 {
 	_gotTheTreasure = false;
-
+	outsidethebox = false;
 	loadingBmpPicture((char*)"roomtest.bmp");
 
 	_exit = glm::vec2(getData(exiting).x,getData(exiting).z);
@@ -413,19 +413,30 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 }
 
-void Grid::checkifPlayerWon(glm::vec3 * playerpos)
+bool Grid::checkifPlayerWon(glm::vec3 * playerpos,bool buttonpressed)
 {
+	
 	_gotTheTreasure = true;
 	glm::vec2 fixedPlayerPos;
 	_exit.x = glm::floor(_exit.x / GRIDSPACE);
 	_exit.y = glm::floor(_exit.y / GRIDSPACE);
-	fixedPlayerPos.x = glm::floor(playerpos->x / GRIDSPACE);
-	fixedPlayerPos.y = glm::floor(playerpos->z / GRIDSPACE);
+	fixedPlayerPos.x = glm::floor(playerpos->z / GRIDSPACE);
+	fixedPlayerPos.y = glm::floor(playerpos->x / GRIDSPACE);
 	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
 	{
-		//sumething
+		yousure = true;
+	bool test	= victory.victory(buttonpressed,outsidethebox);
+	outsidethebox = false;
+	return test;
 	}
-
+	doyouwanttoleave = true;
+	if (doyouwanttoleave == true && yousure ==true)
+	{
+		std::cout<<"your not exiting yet keep on adventuring mate" << std::endl;
+		yousure = false;
+	}
+	outsidethebox = true;
+	return false;
 }
 
 glm::vec3 Grid::getheightandwidthpoint12(int i)
