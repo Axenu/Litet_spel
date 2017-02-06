@@ -133,7 +133,7 @@ void Guard::buildgridarray()
 	}
 	else
 	{
-		_heightLength - guardsstartposition.x;
+		height=_heightLength - guardsstartposition.x;
 	}
 
 

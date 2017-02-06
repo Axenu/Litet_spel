@@ -37,6 +37,7 @@ void Character::update(float dt)
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
+	_currentLevel->checkifPlayerWon(&_position);
 	Node::update(dt);
 }
 void Character::onRender()
