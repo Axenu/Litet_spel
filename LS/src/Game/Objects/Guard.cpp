@@ -129,11 +129,11 @@ void Guard::buildgridarray()
 	}
 	else if(guardsstartposition.x+guardsstartposition.x<=_heightLength)
 	{
-		height = guardsstartposition.x+1;
+		height = (int)guardsstartposition.x+1;
 	}
 	else
 	{
-		height=_heightLength - guardsstartposition.x;
+		height = (int)(_heightLength - guardsstartposition.x);
 	}
 
 
@@ -157,7 +157,7 @@ void Guard::update(float dt)
 Guard::Guard(Model &m, Grid *gridet):
 	GameObject(m)
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	//x = h�jd z= bred
 	gridet->Creategetheightandwidthpoint12(gridet->getData(guard));
 	point1z = gridet->getheightandwidthpoint12(0);

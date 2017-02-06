@@ -3,9 +3,6 @@
 #define GLM_FORCE_RADIANS
 #include <IL/il.h>
 #include <glm/glm.hpp>
-#include "Shader.h"
-#include "Model.h"
-#include "GridDataStructure.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
 #include "Game/Setting.h"
@@ -14,7 +11,6 @@
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "gui/MainMenuScene.h"
-#include "Game/Objects/LootObject.h"
 
 void setupWindow()
 {
