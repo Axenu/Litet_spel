@@ -87,6 +87,18 @@ void Character::moveCharacter(const KeyboardEvent& event)
             _eventManager->execute(event);
         }
     }
+	else if (event.getKey() == GLFW_KEY_E)
+	{
+		int points = _currentScene->loot(*_camera, 2);
+		if (points > 0)
+		{
+			if (event.getAction() == GLFW_PRESS)
+			{
+				CollectLootEvent event(points);
+				_eventManager->execute(event);
+			}
+		}
+	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
 {
@@ -122,6 +134,12 @@ void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
 }
+
+void Character::setScene(Scene * scene)
+{
+	_currentScene = scene;
+}
+
 Character::Character(glm::vec3 pos, EventManager *manager) :
 	GameObject(), _eventManager(manager)
 {

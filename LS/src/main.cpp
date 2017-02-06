@@ -104,6 +104,7 @@ void setupWindow()
 	player->setLevel(&gridtest);
     player->setCamera(&camera);
 	camera.setParent(player);
+	player->setScene(&scene);
 
 	//Add some more game objects	
 	scene.add(player);
