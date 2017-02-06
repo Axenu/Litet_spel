@@ -29,12 +29,17 @@ void PossibleVictoryEvent::givepoints(float points)
 	this->points = points;
 }
 
-void PossibleVictoryEvent::victory()
+bool PossibleVictoryEvent::victory(bool buttonpressed)
 {
 
 	if(onlyonce == true)
 	{
-	std::cout << "you won Congratulations" << std::endl;
+		std::cout << "you won Congratulations" << std::endl;
 	}
 	onlyonce = false;
+	if (buttonpressed == true)
+	{
+		return true;
+	}
+	return false;
 }
