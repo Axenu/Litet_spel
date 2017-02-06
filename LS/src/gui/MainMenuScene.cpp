@@ -7,18 +7,20 @@ namespace gui
     {
         _name = "MainMenu";
         _quitButton = new gui::Button("Quit");
-    	_quitButton->setPosition(0, 0);
+    	_quitButton->setPosition(-1, -0.9);
         _quitButton->listen(this, &MainMenuScene::QuitGame);
+        _quitButton->setScale(0.5,0.5);
         addChild(_quitButton);
         // _quitButton = new gui::Button("Start");
     	// _quitButton->setPosition(1, 1.3);
         // _quitButton->listen(this, &MainMenuScene::QuitGame);
         // addChild(_quitButton);
 
-        // gui::Rectangle *rect = new Rectangle(0.1, 0.5);
-        // glm::vec4 color(0,0.5,0,1);
-        // rect->setColor(color);
-        // addChild(rect);
+        gui::Rectangle *rect = new Rectangle(0.015, 0.02);
+        rect->setPosition(-0.0075, -0.01);
+        glm::vec4 color(0, 0, 0, 1);
+        rect->setColor(color);
+        addChild(rect);
 
         //create local buttons.
         //bind to functions
@@ -37,13 +39,11 @@ namespace gui
     }
     void MainMenuScene::QuitGame(int action)
     {
-        //guiManager->setScene("Main menu")
         if (action == GLFW_RELEASE)
         {
-            QuitGameEvent event;
-            _manager->execute(event);
-            // _parent->setScene(_name);
-            // std::cout << "button callback" << std::endl;
+            std::cout << "button click" << std::endl;
+            // QuitGameEvent event;
+            // _manager->execute(event);
         }
     }
 }

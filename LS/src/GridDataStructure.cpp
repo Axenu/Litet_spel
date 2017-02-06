@@ -5,7 +5,7 @@ Grid::Grid()
 {
 	_gotTheTreasure = false;
 
-	loadingBmpPicture("roomtest.bmp");
+	loadingBmpPicture((char*)"roomtest.bmp");
 
 	_exit = glm::vec2(getData(exiting).x,getData(exiting).z);
 
@@ -81,7 +81,7 @@ void Grid::loadingBmpPicture(char* filename)
 	//		_widthLength = 15;
 	//		buildgridarray();
 	//		_twodArray[9][12].xz = glm::vec2(1,2);
-	//första är heightlength andra är widthlenght
+	//fï¿½rsta ï¿½r heightlength andra ï¿½r widthlenght
 
 
 
@@ -107,7 +107,7 @@ void Grid::loadingBmpPicture(char* filename)
 
 	buildgridarray();
 	//		_twodArray[9][12].xz = glm::vec2(1,2);
-	//första är heightlength andra är widthlenght
+	//fï¿½rsta ï¿½r heightlength andra ï¿½r widthlenght
 	int row_padded = (width * 3 + 3) & (~3);
 	unsigned char* data = new unsigned char[row_padded];
 	unsigned char tmp;
@@ -153,7 +153,7 @@ void Grid::loadingBmpPicture(char* filename)
 				std::cout<<i<<","<<realj<<std::endl;
 			}
 			realj++;
-			//	cout << _twodArray[i][j].type;	
+			//	cout << _twodArray[i][j].type;
 		}
 		//	cout << "" << endl;
 	}
@@ -349,7 +349,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	int currentZ = (int)glm::floor(position->z / GRIDSPACE);
 
 	//std::cout << position->x << ", " << position->z << std::endl;
-	
+
 	/*glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
 	float len = playerToCorner.x * playerToCorner.x + playerToCorner.y * playerToCorner.y + playerToCorner.z * playerToCorner.z;
 	if (len > 0.3f * 0.3f)
@@ -389,8 +389,8 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 			position->x += velocity.x;
 		}
 	}
-	
-	if (signbit(velocity.y) == false) 
+
+	if (signbit(velocity.y) == false)
 	{
 		if (_twodArray[currentZ + 1][currentX].type != wall)
 		{
