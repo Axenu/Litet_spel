@@ -1,4 +1,4 @@
-#include"Camera.h"
+#include"Game/Camera.h"
 
 Camera::Camera() {
 
@@ -27,6 +27,10 @@ Camera::Camera(float fov, int width, int height, float near, float far) {
 	_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     // _rotation.x = 1.0;
     initProjection();
+}
+
+Camera::Camera(const Setting &setting)
+	: Camera(setting._fov, setting.Width(), setting.Height(), setting._nearPlane, setting._farPlane) {
 }
 
 void Camera::update(float dT) {

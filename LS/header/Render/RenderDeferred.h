@@ -1,7 +1,7 @@
 #pragma once
 #include"QuadShader.h"
 #include"gl/GLFunctions.h"
-#include"camera.h"
+#include"Game/camera.h"
 
 
 	/* The shader implementation rendering the pre-generated

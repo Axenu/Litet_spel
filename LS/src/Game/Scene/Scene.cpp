@@ -107,6 +107,7 @@ int Scene::loot(Camera & cam, int pickDist)
 			else
 			{
 				value = tmpObj->getValue();
+				this->remove(tmpObj, true);
 				break;
 			}
 		}
