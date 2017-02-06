@@ -10,6 +10,7 @@ namespace gui
     	_colorUniform = _shader.getUniform("color");
         _positionUniform = _shader.getUniform("position");
         _sizeUniform = _shader.getUniform("size");
+        _modelMatrixUniform = _shader.getUniform("modelMatrix");
         _color = glm::vec4(1,1,1,1);
 
         _vertexCount = 4;
@@ -47,6 +48,7 @@ namespace gui
         glUniform4fv(_colorUniform, 1, &_color[0]);
         glUniform3fv(_positionUniform, 1, &_positionGlobal[0]);
         glUniform2fv(_sizeUniform, 1, &_size[0]);
+        glUniformMatrix3fv(_modelMatrixUniform, 1, false, (GLfloat*)&_modelMatrix[0]);
         _VA.bindVAO();
     	glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, gl::bufferOffset(0));
     }

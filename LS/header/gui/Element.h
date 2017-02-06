@@ -4,6 +4,7 @@
 #include <vector>
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
+#include <glm/gtx/matrix_transform_2d.hpp>
 
 namespace gui
 {
@@ -15,7 +16,9 @@ namespace gui
         glm::vec2 _size;
         glm::vec3 _positionGlobal;
         // glm::vec2 _sizeGLobal;
+        glm::mat3 _modelMatrix;
         std::vector<Element*> _children;
+        Element* _parent = nullptr;
         //GL stuff
         int _vertexCount;
         int _indexCount;
@@ -27,7 +30,6 @@ namespace gui
         void render();
         virtual void onRender() = 0;
         void update(float dt);
-        void update(float dt, glm::vec3& pos);
         virtual void onUpdate(float dt) = 0;
 
         void addChild(Element* child);

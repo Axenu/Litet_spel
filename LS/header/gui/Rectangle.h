@@ -23,6 +23,7 @@ namespace gui
         GLint _positionUniform;
         GLint _colorUniform;
         GLint _sizeUniform;
+        GLint _modelMatrixUniform;
         //Mesh data
         gl::VAData _VA;
         //Shader

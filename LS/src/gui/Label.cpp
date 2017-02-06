@@ -10,6 +10,7 @@ namespace gui
     	_colorUniform = _shader.getUniform("color");
         _positionUniform = _shader.getUniform("position");
         _sizeUniform = _shader.getUniform("size");
+        _modelMatrixUniform = _shader.getUniform("modelMatrix");
         _color = glm::vec4(1,1,1,1);
 
         setText(text);
@@ -27,13 +28,23 @@ namespace gui
         glUniform4fv(_colorUniform, 1, &_color[0]);
         glUniform3fv(_positionUniform, 1, &_positionGlobal[0]);
         glUniform2fv(_sizeUniform, 1, &_size[0]);
+        glUniformMatrix3fv(_modelMatrixUniform, 1, false, (GLfloat*)&_modelMatrix[0]);
         _VA.bindVAO();
     	glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, gl::bufferOffset(0));
         _VA.clearBinding();
     }
     void Label::onUpdate(float dt)
     {
-
+        std::string tempText = "";
+        for (StringComponent *sc : _sComponents)
+        {
+            tempText += sc->getString();
+        }
+        if (_text != tempText)
+        {
+            _text = tempText;
+            updateText();
+        }
     }
 
     void Label::addStringComponent(StringComponent* sc)
@@ -43,12 +54,6 @@ namespace gui
     }
     void Label::updateText()
     {
-        std::string tempText = "";
-        for (StringComponent *sc : _sComponents)
-        {
-            tempText += sc->getString();
-        }
-        std::cout << tempText << std::endl;
         // _text = text;
         std::vector<GLfloat> vertices;
     	std::vector<GLuint> indices;
@@ -57,9 +62,9 @@ namespace gui
     	glyph* g;
 
     	//custom anchorpoint?
-    	for (int i = 0; i < (int)tempText.length(); i++)
+    	for (int i = 0; i < (int)_text.length(); i++)
         {
-            g = _font->getGlyph((int)tempText[i]);
+            g = _font->getGlyph((int)_text[i]);
     		//v0 |_
     		vertices.push_back(x + g->x1); //x1
     		vertices.push_back(g->y1); //y1

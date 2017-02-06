@@ -25,25 +25,22 @@ namespace gui
     void Element::update(float dt)
     {
         _positionGlobal = _position;
-        for (Element *child : _children)
-        {
-            child->update(dt, _positionGlobal);
+        _modelMatrix = glm::mat3();
+        _modelMatrix = glm::translate(_modelMatrix, glm::vec2(_position.x, _position.y));
+        _modelMatrix = glm::scale(_modelMatrix, glm::vec2(_size.x,_size.y));
+    	// _modelMatrix[2] = glm::vec3(-0.3, _position.y, 1.0);
+        if (_parent != nullptr) {
+            _modelMatrix = _parent->_modelMatrix * _modelMatrix;
         }
-        onUpdate(dt);
-    }
-    void Element::update(float dt, glm::vec3& pos)
-    {
-        _positionGlobal.x = _position.x + pos.x;
-        _positionGlobal.y = _position.y + pos.y;
-        _positionGlobal.z = fmin(_position.z, pos.z) - 0.001;
         for (Element *child : _children)
         {
-            child->update(dt, _positionGlobal);
+            child->update(dt);
         }
         onUpdate(dt);
     }
     void Element::addChild(Element* child)
     {
+        child->_parent = this;
         _children.push_back(child);
     }
     void Element::testClick(glm::vec2& pos, int action)

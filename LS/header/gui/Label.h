@@ -22,7 +22,6 @@ namespace gui
         glm::vec2 _textSize;
 
         std::string _text;
-
         std::vector<StringComponent*> _sComponents;
 
         //GL stuff
@@ -30,6 +29,7 @@ namespace gui
         GLint _textureUniform;
         GLint _colorUniform;
         GLint _sizeUniform;
+        GLint _modelMatrixUniform;
         gl::VAData _VA;
 
         Shader _shader;
