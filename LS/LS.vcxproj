@@ -199,11 +199,8 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClInclude Include="header\Events.h" />
-=======
     <ClInclude Include="header\GameObjectType.h" />
->>>>>>> master
     <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\Input\InputKeyState.h" />
     <ClInclude Include="header\Render\RenderDefBuffers.h" />
