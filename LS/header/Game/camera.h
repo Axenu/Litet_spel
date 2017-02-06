@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "node.h"
+#include "Setting.h"
 
 class Camera : public Node
 {
@@ -28,6 +29,7 @@ public:
 	Camera();
 	Camera(float fov, float aspect, float near, float far);
 	Camera(float fov, int _width, int _height, float near, float far);
+	Camera(const Setting &setting);
 
 	void initProjection();
 	virtual void update(float dT);

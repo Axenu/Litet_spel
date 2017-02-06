@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include"GameObject.h"
-#include "camera.h"
+#include "GameObject.h"
+#include "Game/camera.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
 #define GLM_FORCE_RADIANS
