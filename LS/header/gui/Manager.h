@@ -11,10 +11,10 @@
 #include "Font.h"
 #include "gui/Element.h"
 #include "gui/GUIScene.h"
-#include "InputManager.h"
+#include "Event/Input/InputManager.h"
 
 //new
-#include "EventManager.h"
+#include "Event/EventManager.h"
 
 namespace gui
 {

@@ -176,6 +176,9 @@ void Mesh::render()
 	_VA.bindVAO();
 	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, gl::bufferOffset(0));
 }
+const AABB& Mesh::getBox() {
+	return _aabb;
+}
 
 bool Mesh::pick(glm::vec3 origin, glm::vec3 dir)
 {

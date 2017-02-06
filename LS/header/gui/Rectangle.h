@@ -20,9 +20,9 @@ namespace gui
 
         //GL stuff
         //Uniforms
-        GLint _positionUniform;
+        GLint _positionZUniform;
         GLint _colorUniform;
-        GLint _sizeUniform;
+        GLint _modelMatrixUniform;
         //Mesh data
         gl::VAData _VA;
         //Shader
@@ -31,7 +31,7 @@ namespace gui
     public:
 
         Rectangle(float width, float height);
-        ~Rectangle();
+        virtual ~Rectangle();
 
         void onRender();
 

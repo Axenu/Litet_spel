@@ -37,7 +37,7 @@ namespace gui
 
 	    Font();
 		Font(std::string path);
-	    ~Font();
+		virtual ~Font();
 
 		float getFontSize();
 		float getFontHeight();

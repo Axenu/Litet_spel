@@ -22,6 +22,10 @@ void Model::render(RenderInfo &fD, glm::mat4 &modelMatrix) const
 	for (unsigned int i = 0; i < _meshParts.size(); i++)
 		_meshParts[i].render(fD, modelMatrix);
 }
+void Model::transform(const glm::mat4 &mat) {
+	for (unsigned int i = 0; i < _meshParts.size(); i++)
+		_meshParts[i]._box = _meshParts[i].getMesh().getBox().transform(mat);
+}
 const std::vector<MeshPart>& Model::getParts() const {
 	return _meshParts;
 }
@@ -30,7 +34,7 @@ bool Model::pick(glm::vec3 origin, glm::vec3 dir)
 {
 	for (unsigned int i = 0; i < _meshParts.size(); i++)
 	{
-		if (_meshParts[i].pick(origin, dir))
+		if (_meshParts[i].getMesh().pick(origin, dir))
 		{
 			return true;
 		}

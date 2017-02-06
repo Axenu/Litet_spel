@@ -11,7 +11,7 @@
 #include "Font.h"
 #include "gui/GUIScene.h"
 #include "gui/Button.h"
-#include "InputManager.h"
+#include "Event/Input/InputManager.h"
 
 namespace gui
 {
@@ -24,7 +24,7 @@ namespace gui
 
     public:
         MainMenuScene(EventManager* manager);
-        ~MainMenuScene();
+        virtual ~MainMenuScene();
 
         void onRender();
         void onUpdate(float dt);

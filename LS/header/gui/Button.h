@@ -10,6 +10,7 @@
 #include "Element.h"
 #include "Rectangle.h"
 #include "Label.h"
+#include "StringComponents.h"
 
 namespace gui
 {
@@ -45,19 +46,22 @@ namespace gui
     class Button : public Element
     {
     private:
-        Label *_label;
-        Rectangle *_rect;
+        Font* _font;
+        Label* _label;
+        Rectangle* _rect;
 
         gui::ButtonHandlerBase* _callback;
 
     public:
 
         Button(std::string text);
-        ~Button();
+		virtual ~Button();
 
         template <class T>
     	void listen(T* obj, void (T::*memFn)(int))
         {
+			if (_callback)
+				delete _callback;
             _callback = new gui::ButtonHandler<T>(obj, memFn);
         }
         void execute(int action);
