@@ -8,7 +8,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "GridDataStructure.h"
-#include "Scene/Scene.h"
+#include "Game/Scene/Scene.h"
 
 #define RotationSpeed 0.005f
 

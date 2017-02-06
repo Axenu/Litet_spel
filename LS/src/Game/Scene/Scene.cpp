@@ -55,3 +55,62 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 	for (unsigned int i = 0; i < _objects.size(); i++)
 		_objects[i]->addToFrame(dF);
 }
+
+
+int Scene::loot(Camera & cam, int pickDist)
+{
+	float testDist;
+	std::vector<int> indices;
+	std::vector<float> distance;
+	//Sorting out objects close enough to cam
+	for (unsigned int i = 0; i < _objects.size(); i++)
+	{
+		testDist = cam.getDistance(*_objects[i]);
+		if (testDist < pickDist)
+		{
+			indices.push_back(i);
+			distance.push_back(testDist);
+		}
+	}
+	//Sorting the lists with closest to camera first
+	int swapIndice;
+	for (unsigned int i = 0; i < distance.size(); i++)
+	{
+		testDist = distance[i];
+		swapIndice = i;
+		for (unsigned int j = (i + 1); j < distance.size(); j++)
+		{
+			if (distance[j] < testDist)
+			{
+				swapIndice = j;
+			}
+		}
+		if (swapIndice != i)
+		{
+			std::iter_swap(indices.begin() + i, indices.begin() + swapIndice);
+			std::iter_swap(distance.begin() + i, distance.begin() + swapIndice);
+		}
+	}
+	//Pick against the lootobjects in range, from closest to furthest
+	bool picked = false;
+	int value = 0;
+	for (unsigned int i = 0; i < indices.size(); i++)
+	{
+		picked = _objects[indices[i]]->pick(cam);
+		if (picked)
+		{
+			LootObject* tmpObj = dynamic_cast<LootObject*> (_objects[indices[i]]);
+			if (tmpObj == nullptr)
+			{
+				break;
+			}
+			else
+			{
+				value = tmpObj->getValue();
+				break;
+			}
+		}
+	}
+
+	return value;
+}

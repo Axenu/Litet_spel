@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include"Game/Objects/GameObject.h"
+#include"Game/Objects/LootObject.h"
 #include"DrawFrame.h"
 #include"node.h"
 
@@ -38,6 +39,8 @@ public:
 	/* Populates the DrawFrame by fetching and culling the scene drawables
 	*/
 	void fetchDrawables(DrawFrame &dF);
+
+	int loot(Camera &cam, int pickDist);
 
 };
 
