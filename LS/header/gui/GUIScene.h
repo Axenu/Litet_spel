@@ -24,7 +24,7 @@ namespace gui
         Manager* _parent;
     public:
         Scene();
-        ~Scene();
+		virtual ~Scene();
 
         void onRender();
         void onUpdate(float dt);

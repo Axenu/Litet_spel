@@ -53,11 +53,13 @@ namespace gui
     public:
 
         Button(std::string text);
-        ~Button();
+		virtual ~Button();
 
         template <class T>
     	void listen(T* obj, void (T::*memFn)(int))
         {
+			if (_callback)
+				delete _callback;
             _callback = new gui::ButtonHandler<T>(obj, memFn);
         }
         void execute(int action);

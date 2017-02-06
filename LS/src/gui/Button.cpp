@@ -18,7 +18,8 @@ namespace gui
     }
     Button::~Button()
     {
-
+		if (_callback)
+			delete _callback;
     }
     void Button::onRender()
     {

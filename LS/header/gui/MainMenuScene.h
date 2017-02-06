@@ -24,7 +24,7 @@ namespace gui
 
     public:
         MainMenuScene(EventManager* manager);
-        ~MainMenuScene();
+        virtual ~MainMenuScene();
 
         void onRender();
         void onUpdate(float dt);

@@ -31,7 +31,7 @@ namespace gui
     public:
 
         Rectangle(float width, float height);
-        ~Rectangle();
+        virtual ~Rectangle();
 
         void onRender();
 
