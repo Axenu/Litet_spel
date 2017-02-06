@@ -32,6 +32,7 @@ namespace gui
         std::string getName();
 
         void setParent(gui::Manager *manager);
+        void testClick(glm::vec2& pos, int action);
     };
 
 }

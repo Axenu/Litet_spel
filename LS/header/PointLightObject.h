@@ -1,9 +1,10 @@
 #pragma once
 #include"node.h"
 #include"Render/PointLight.h"
+#include"GameObject.h"
 
 class PointLightObject
-	: public Node
+	: public GameObject
 {
 private:
 	PointLight _lightInfo;
@@ -15,6 +16,9 @@ public:
 
 	virtual void update(float dT);
 
+	/* Add the object to the frame
+	*/
+	virtual void addToFrame(DrawFrame &dF);
 
 
 	/* Get the light information

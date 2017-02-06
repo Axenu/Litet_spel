@@ -29,10 +29,11 @@ private:
 	float _roofHeight;
 	int _heightLength;
 	int _widthLength;
-	gridValues** _twodArray; //första är heightlength andra är widthlenght
+	gridValues** _twodArray; //fï¿½rsta ï¿½r heightlength andra ï¿½r widthlenght
 	bool _gotTheTreasure;
 	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
+	std::vector<glm::vec3> _lootLocations;
 public:
 	Grid();
 	void buildgridarray();
@@ -48,6 +49,7 @@ public:
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
+	std::vector<glm::vec3> * getLootLocations();
 };
 
 

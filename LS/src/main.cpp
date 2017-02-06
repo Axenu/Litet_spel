@@ -9,7 +9,7 @@
 #include "Render/GraphicsResource.h"
 #include "Render/RenderInfo.h"
 #include "Render/RenderDeferred.h"
-#include"Render/RenderDefBuffers.h"
+#include "Render/RenderDefBuffers.h"
 #include "Render/MeshShader.h"
 #include "Render/DeferredMeshShader.h"
 #include "InputManager.h"
@@ -19,8 +19,8 @@
 #include "Character.h"
 #include "GameObject.h"
 #include "Guard.h"
-#include"Scene/Scene.h"
-#include"Scene/DrawFrame.h"
+#include "Scene/Scene.h"
+#include "Scene/DrawFrame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "gui/MainMenuScene.h"
@@ -132,10 +132,10 @@ void setupWindow()
 	// glm::vec4 color(0,0,0,1);
 	// rect.setColor(color);
 
-	gui::MainMenuScene guiScene = gui::MainMenuScene(&eventManager);
+	gui::MainMenuScene* guiScene = new gui::MainMenuScene(&eventManager);
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(640, 480);
-	guiManager.setScene(&guiScene);
+	guiManager.setScene(guiScene);
 
 	//init dt calculation
 	float lastTime = (float)glfwGetTime();
@@ -150,7 +150,7 @@ void setupWindow()
 	    lastTime = currentTime;
 		guard->update(dT);
 		scene.update(dT);
-		
+
 		DrawFrame dF;
 		scene.fetchDrawables(dF);
 		RenderInfo fD(resource, camera, dF.getLightInfo());

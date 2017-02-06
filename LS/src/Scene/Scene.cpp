@@ -11,8 +11,8 @@ Scene::~Scene()
 {
 	for (unsigned int i = 0; i < _objects.size(); i++)
 	 	delete _objects[i];
-	for (unsigned int i = 0; i < _pLights.size(); i++)
-		delete _pLights[i];
+	for (unsigned int i = 0; i < _nodes.size(); i++)
+		delete _nodes[i];
 }
 
 
@@ -30,10 +30,10 @@ void Scene::add(GameObject *object) {
 	_objects.push_back(std::move(object));
 }
 
-void Scene::add(PointLightObject *object) {
+void Scene::addNode(Node *object) {
 	if (!object->getParent())
 		object->setParent(&_root);
-	_pLights.push_back(object);
+	_nodes.push_back(object);
 
 }
 GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
@@ -52,11 +52,6 @@ GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF) {
-	for (unsigned int i = 0; i < _objects.size(); i++) {
-		//Todo: Culling functionality
-		dF.add(_objects[i]->getModel(), _objects[i]->getModelMatrix());
-	}
-	for (unsigned int i = 0; i < _pLights.size(); i++) {
-		dF.add(_pLights[i]->getLightInfo());
-	}
+	for (unsigned int i = 0; i < _objects.size(); i++)
+		_objects[i]->addToFrame(dF);
 }

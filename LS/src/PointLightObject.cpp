@@ -3,7 +3,7 @@
 
 
 PointLightObject::PointLightObject()
-	: Node(), _lightInfo()
+	: GameObject(), _lightInfo()
 {
 }
 
@@ -11,7 +11,7 @@ PointLightObject::PointLightObject(const PointLight &light)
 	: PointLightObject(light, nullptr) {
 }
 PointLightObject::PointLightObject(const PointLight &light, Node *parent)
-	: Node(light._pos, parent), _lightInfo(light) {
+	: GameObject(parent, light._pos, type::PointLight), _lightInfo(light) {
 
 }
 
@@ -23,6 +23,12 @@ void PointLightObject::update(float dT) {
 	_lightInfo._pos = _modelMatrix[3];
 }
 
+/* Add the object to the frame
+*/
+void PointLightObject::addToFrame(DrawFrame &dF) {
+	GameObject::addToFrame(dF);
+	dF.add(_lightInfo);
+}
 
 /* Get the light information
 */
