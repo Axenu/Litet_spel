@@ -10,7 +10,7 @@
 #include <vector>
 #include <fstream>
 #include "Mesh.h"
-
+#include "Events.h"
 enum gridType
 {
 	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting
@@ -33,7 +33,6 @@ private:
 	bool _gotTheTreasure;
 	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
-
 public:
 	Grid();
 	void buildgridarray();
@@ -43,7 +42,7 @@ public:
 	void loadingBmpPicture(char* filename);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
-	void checkifPlayerWon(glm::vec3 playerpos);
+	void checkifPlayerWon(glm::vec3 * playerpos);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
 	gridType returnGridType(int width,int height);
 	glm::vec3 getheightandwidthpoint12(int i);
