@@ -9,7 +9,7 @@ namespace gui
         _quitButton = new gui::Button("Quit");
     	_quitButton->setPosition(-1, -0.9);
         _quitButton->listen(this, &MainMenuScene::QuitGame);
-        _quitButton->setScale(0.5,0.5);
+        _quitButton->setScale(0.25,0.25);
         addChild(_quitButton);
         // _quitButton = new gui::Button("Start");
     	// _quitButton->setPosition(1, 1.3);

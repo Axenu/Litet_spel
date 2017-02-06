@@ -8,18 +8,19 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "GridDataStructure.h"
+#include "Game/Scene/Scene.h"
 
 #define RotationSpeed 0.005f
 
 class CollectLootEvent : public Event
 {
 public:
-    CollectLootEvent(float value) : _value(value) {};
+    CollectLootEvent(int value) : _value(value) {};
 
-    float getValue() const {return _value;}
+    int getValue() const {return _value;}
 
 private:
-    float _value;
+    int _value;
 };
 
 class Character : public GameObject
@@ -35,14 +36,16 @@ public:
     void collectLoot(const CollectLootEvent& event);
 
 	void setLevel(Grid *level);
+	void setScene(Scene *scene);
 
     Character(glm::vec3 pos, EventManager *manager);
     Character();
     virtual ~Character();
 private:
 	Grid *_currentLevel;
+	Scene *_currentScene;
     EventManager *_eventManager;
-    Camera* _camera;
+	Camera* _camera;
     glm::vec2 _lastCursorPos;
     glm::vec3 _direction;
     glm::vec3 _velocity;

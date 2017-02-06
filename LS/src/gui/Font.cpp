@@ -150,6 +150,7 @@ namespace gui {
 				_glyphs.insert(std::pair<int,glyph>(charID,g));
 			}
 		}
+		fontFile.close();
 		_fontTexture = Texture::createTexture(path + ".png");
 	}
 
@@ -173,6 +174,5 @@ namespace gui {
 
 	Font::~Font()
 	{
-
 	}
 }
