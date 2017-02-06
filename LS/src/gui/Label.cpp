@@ -6,10 +6,9 @@ namespace gui
 		: Element(), _shader("2DTexture")
     {
         _font = font;
-        _textSize.y = font->getFontHeight();
+        _size.y = font->getFontHeight();
     	_colorUniform = _shader.getUniform("color");
-        _positionUniform = _shader.getUniform("position");
-        _sizeUniform = _shader.getUniform("size");
+        _positionZUniform = _shader.getUniform("positionZ");
         _modelMatrixUniform = _shader.getUniform("modelMatrix");
         _color = glm::vec4(1,1,1,1);
 
@@ -26,8 +25,7 @@ namespace gui
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, _font->getFontTexture());
         glUniform4fv(_colorUniform, 1, &_color[0]);
-        glUniform3fv(_positionUniform, 1, &_positionGlobal[0]);
-        glUniform2fv(_sizeUniform, 1, &_size[0]);
+        glUniform1f(_positionZUniform, _position.z);
         glUniformMatrix3fv(_modelMatrixUniform, 1, false, (GLfloat*)&_modelMatrix[0]);
         _VA.bindVAO();
     	glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, gl::bufferOffset(0));
@@ -102,7 +100,7 @@ namespace gui
 
     		x += g->xAdvance;
     	}
-        _textSize.x = x;
+        _size.x = x;
         _vertexCount = vertices.size() / 4;
         _indexCount = indices.size();
 
@@ -173,7 +171,7 @@ namespace gui
 
     		x += g->xAdvance;
     	}
-        _textSize.x = x;
+        _size.x = x;
         _vertexCount = vertices.size() / 4;
         _indexCount = indices.size();
 
@@ -192,15 +190,15 @@ namespace gui
     //getters
     float Label::getTextWidth()
     {
-        return _textSize.x;
+        return _size.x;
     }
     float Label::getTextHeight()
     {
-        return _textSize.y;
+        return _size.y;
     }
     glm::vec2& Label::getTextSize()
     {
-        return _textSize;
+        return _size;
     }
 
 

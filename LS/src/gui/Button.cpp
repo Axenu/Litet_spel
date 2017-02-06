@@ -31,7 +31,8 @@ namespace gui
     void Button::onUpdate(float dt)
     {
         float padding = 0.05f;
-        _rect->setSize(_label->getTextWidth() + padding * 2, _label->getTextHeight() + padding * 2);
+        _rect->setScale(_label->getTextWidth() + padding * 2, _label->getTextHeight() + padding * 2);
+        setSize(_label->getTextWidth() + padding * 2, _label->getTextHeight() + padding * 2);
     }
     void execute(int action)
     {

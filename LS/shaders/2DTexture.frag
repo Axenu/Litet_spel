@@ -18,8 +18,9 @@ out vec4 Frag_Data;
 in vec2 pass_UV;
 
 uniform sampler2D _texture;
+uniform vec4 color;
 
 void main() {
     // Frag_Data = vec4(pass_UV,1,1);
-    Frag_Data = texture(_texture, pass_UV);
+    Frag_Data = texture(_texture, pass_UV) * color;
 }

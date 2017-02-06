@@ -19,16 +19,15 @@ namespace gui
     {
     private:
         glm::vec4 _color;
-        glm::vec2 _textSize;
+        // glm::vec2 _textSize;
 
         std::string _text;
         std::vector<StringComponent*> _sComponents;
 
         //GL stuff
-        GLint _positionUniform;
+        GLint _positionZUniform;
         GLint _textureUniform;
         GLint _colorUniform;
-        GLint _sizeUniform;
         GLint _modelMatrixUniform;
         gl::VAData _VA;
 
