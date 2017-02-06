@@ -38,3 +38,8 @@ void LootObject::setValue(int val)
 {
 	_value = val;
 }
+
+int LootObject::getValue()
+{
+	return _value;
+}

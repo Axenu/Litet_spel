@@ -11,8 +11,9 @@ public:
 	LootObject(Model &m);
 	LootObject(Model &m, int val);
 	int loot(Camera &cam);   //0 missed picking
-	~LootObject();
+	virtual ~LootObject();
 	void setValue(int val);
+	int getValue();
 private:
 	int _value;
 

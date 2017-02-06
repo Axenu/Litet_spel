@@ -22,7 +22,6 @@
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "LootObject.h"
-#include "LootController.h"
 
 void setupWindow()
 {
@@ -135,10 +134,9 @@ void setupWindow()
 	float lastTime = glfwGetTime();
 
 	//Loot test variables
-	//LootController lootController;
 	//Mesh mesh;
 	//Material lootMat(&meshShader);
-	//lootMat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	//lootMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	//lootMat.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	//MeshPart *meshPart = new MeshPart(&mesh, &lootMat);
 	//Model *model = new Model(*meshPart);
@@ -150,9 +148,6 @@ void setupWindow()
 
 	//scene.add(loot1);
 	//scene.add(loot2);
-
-	//lootController.add(loot1);
-	//lootController.add(loot2);
 
 	//float points = 0;
 

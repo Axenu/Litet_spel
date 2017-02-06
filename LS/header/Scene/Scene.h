@@ -4,6 +4,8 @@
 #include"DrawFrame.h"
 #include"node.h"
 #include"../PointLightObject.h"
+#include"../camera.h"
+#include"../LootObject.h"
 
 /* Scene holding the objects 
 */
@@ -35,6 +37,8 @@ public:
 	/* Populates the DrawFrame by fetching and culling the scene drawables
 	*/
 	void fetchDrawables(DrawFrame &dF);
+
+	int loot(Camera &cam, int pickDist);
 
 };
 
