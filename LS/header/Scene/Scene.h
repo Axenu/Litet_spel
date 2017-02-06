@@ -1,8 +1,10 @@
 #pragma once
 #include<vector>
 #include"Game/Objects/GameObject.h"
+#include"Game/Objects/LootObject.h"
 #include"DrawFrame.h"
 #include"node.h"
+#include"camera.h"
 
 /* Scene holding the objects 
 */

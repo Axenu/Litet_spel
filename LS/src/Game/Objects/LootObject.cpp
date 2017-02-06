@@ -1,4 +1,4 @@
-#include "..\header\LootObject.h"
+#include "Game/Objects/LootObject.h"
 
 LootObject::LootObject()
 {

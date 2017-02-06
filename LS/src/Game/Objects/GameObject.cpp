@@ -47,6 +47,10 @@ bool GameObject::pick(glm::vec4 origin, glm::vec4 dir)
 	glm::vec3 nDir = glm::vec3(dir.x, dir.y, dir.z);
 	return _model.pick(nOrigin, nDir);
 }
+bool GameObject::pick(Camera & cam)
+{
+	return pick(cam.getWorldPos(), cam.getLookAt());
+}
 /* Add the object to the frame
 */
 void GameObject::addToFrame(DrawFrame &dF) {
