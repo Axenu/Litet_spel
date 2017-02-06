@@ -38,6 +38,7 @@ public:
 	void setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);
 	void render();
 	bool pick(glm::vec3 origin, glm::vec3 dir);
+	const AABB& getBox();
 };
 
 #endif

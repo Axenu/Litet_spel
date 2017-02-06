@@ -13,7 +13,9 @@ private:
 	/* Data ownership of objects in the scene.
 	*/
 	std::vector<GameObject*> _objects;
-	std::vector<PointLightObject*> _pLights;
+	/* Scene node objects.
+	*/
+	std::vector<Node*> _nodes;
 protected:
 	/* The scene tree root.
 	*/
@@ -28,7 +30,9 @@ public:
 	/* Adds a game object to the scene.
 	*/
 	void add(GameObject *object);
-	void add(PointLightObject *object);
+	/* Add a node object to the scene
+	*/
+	void addNode(Node *object);
 	/* Remove the object returns the pointer to any leftover data
 	*/
 	GameObject* remove(GameObject *object, bool deleteObj = true);

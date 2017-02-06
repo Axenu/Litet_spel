@@ -1,11 +1,11 @@
 #include"MeshPart.h"
 
 MeshPart::MeshPart()
-	: _mesh(nullptr), _material(nullptr) {
+	: _mesh(nullptr), _material(nullptr), _box() {
 }
 
 MeshPart::MeshPart(Mesh *mesh, Material *mat)
-	: _mesh(mesh), _material(mat) {
+	: _mesh(mesh), _material(mat), _box(mesh->getBox()) {
 }
 
 
@@ -14,7 +14,6 @@ void MeshPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const {
 	_mesh->render();
 }
 
-bool MeshPart::pick(glm::vec3 origin, glm::vec3 dir)
-{
-	return _mesh->pick(origin, dir);
+Mesh& MeshPart::getMesh() {
+	return *_mesh;
 }

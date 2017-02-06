@@ -142,10 +142,15 @@ void Grid::loadingBmpPicture(char* filename)
 			{
 				_twodArray[height - 1 - i][realj].type = guard;
 			}
+			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
+			{
+				this->_lootLocations.push_back(glm::vec3(j, 0.f, i));
+				_twodArray[height - 1 - i][realj].type = loot;
+			}
 			else
 			{
 				std::cout << "error" << std::endl;
-				std::cout<<_twodArray[i][realj].xz.x<<","<<_twodArray[i][realj].xz.y<<std::endl;
+				std::cout<<i<<","<<realj<<std::endl;
 			}
 			realj++;
 			//	cout << _twodArray[i][j].type;
@@ -216,11 +221,11 @@ Mesh Grid::generateMesh()
 	{
 		for (int i = 0; i < _widthLength; i++)
 		{
-			if (_twodArray[i][j].type != wall)
+			if (_twodArray[j][i].type != wall)
 			{
 				if (j != 0)
 				{
-					if (_twodArray[i][j - 1].type == wall)
+					if (_twodArray[j - 1][i].type == wall)
 					{
 						// Positions
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
@@ -248,7 +253,7 @@ Mesh Grid::generateMesh()
 				}
 				if (j != _heightLength - 1)
 				{
-					if (_twodArray[i][j + 1].type == wall)
+					if (_twodArray[j + 1][i].type == wall)
 					{
 						// Positions
 						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
@@ -276,7 +281,7 @@ Mesh Grid::generateMesh()
 				}
 				if (i != 0)
 				{
-					if (_twodArray[i + 1][j].type == wall)
+					if (_twodArray[j][i + 1].type == wall)
 					{
 						// Positions
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
@@ -304,7 +309,7 @@ Mesh Grid::generateMesh()
 				}
 				if (i != _widthLength - 1)
 				{
-					if (_twodArray[i - 1][j].type == wall)
+					if (_twodArray[j][i - 1].type == wall)
 					{
 						// Positions
 						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
@@ -356,10 +361,15 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	position->x = (float)currentX + dist.x * 0.15;
 	position->z = (float)currentZ + dist.z * 0.15;
 	}*/
-
+	if (currentX <= 0 || currentZ <= 0 || currentX >= _widthLength || currentZ >= _heightLength)
+	{
+		position->x += velocity.x;
+		position->z += velocity.y;
+		return;
+	}
 	if (signbit(velocity.x) == false)// -->
 	{
-		if (_twodArray[currentX + 1][currentZ].type != wall)
+		if (_twodArray[currentZ][currentX + 1].type != wall)
 		{
 			position->x += velocity.x;
 		}
@@ -370,7 +380,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (_twodArray[currentX - 1][currentZ].type != wall)
+		if (_twodArray[currentZ][currentX - 1].type != wall)
 		{
 			position->x += velocity.x;
 		}
@@ -382,7 +392,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 
 	if (signbit(velocity.y) == false)
 	{
-		if (_twodArray[currentX][currentZ + 1].type != wall)
+		if (_twodArray[currentZ + 1][currentX].type != wall)
 		{
 			position->z += velocity.y;
 		}
@@ -393,7 +403,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (_twodArray[currentX][currentZ - 1].type != wall)
+		if (_twodArray[currentZ - 1][currentX].type != wall)
 		{
 			position->z += velocity.y;
 		}
@@ -431,6 +441,11 @@ int Grid::getHeight()
 int Grid::getWidth()
 {
 	return _widthLength;
+}
+
+std::vector<glm::vec3>* Grid::getLootLocations()
+{
+	return &_lootLocations;
 }
 
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
