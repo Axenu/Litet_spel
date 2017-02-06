@@ -191,6 +191,5 @@ int main()
 	std::cout << "Init window!" << std::endl;
 	setupWindow();
 
-
     return 0;
 }

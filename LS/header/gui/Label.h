@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include"gl/glInclude.h"
+#include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -46,7 +46,6 @@ namespace gui
         void updateText();
 
         //setters
-        void setText(std::string &text);
         void addStringComponent(StringComponent* sc);
 
         //getters
