@@ -1,4 +1,4 @@
-#include"Input/InputKeyState.h"
+#include"Event/Input/InputKeyState.h"
 
 InputKeyState::InputKeyState(EventManager &manager, int key)
 	: _listenKey(key), _keyAction(GLFW_PRESS), _active(false) {

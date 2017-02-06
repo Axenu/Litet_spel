@@ -1,4 +1,4 @@
-#include "eventManager.h"
+#include "Event/eventManager.h"
 
 //better use boost::ptr_map instead of std::map
 EventManager::EventManager()

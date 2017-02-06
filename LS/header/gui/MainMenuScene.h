@@ -11,7 +11,7 @@
 #include "Font.h"
 #include "gui/GUIScene.h"
 #include "gui/Button.h"
-#include "InputManager.h"
+#include "Event/Input/InputManager.h"
 
 namespace gui
 {

@@ -3,8 +3,8 @@
 #include <iostream>
 #include"GameObject.h"
 #include "camera.h"
-#include "InputManager.h"
-#include "EventManager.h"
+#include "Event/Input/InputManager.h"
+#include "Event/EventManager.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "GridDataStructure.h"

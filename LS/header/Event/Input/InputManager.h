@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gl/glinclude.h"
-#include "EventManager.h"
+#include "Event/EventManager.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <vector>

@@ -150,14 +150,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Events.cpp" />
+    <ClCompile Include="src\Event\Events.cpp" />
     <ClCompile Include="src\gui\MainMenuScene.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
-    <ClCompile Include="src\Input\InputIncrementer.cpp" />
+    <ClCompile Include="src\Event\Input\InputIncrementer.cpp" />
     <ClCompile Include="src\gui\Button.cpp" />
     <ClCompile Include="src\gui\GUIScene.cpp" />
     <ClCompile Include="src\gui\Manager.cpp" />
-    <ClCompile Include="src\Input\InputKeyState.cpp" />
+    <ClCompile Include="src\Event\Input\InputKeyState.cpp" />
     <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\PointLightObject.cpp" />
     <ClCompile Include="src\Render\RenderDefBuffers.cpp" />
@@ -173,7 +173,7 @@
     <ClCompile Include="src\gui\TexturedRectangle.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Render\Material.cpp" />
-    <ClCompile Include="src\EventManager.cpp" />
+    <ClCompile Include="src\Event\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Render\MeshShader.cpp" />
@@ -191,7 +191,7 @@
     <ClCompile Include="src\gl\SamplerObject.cpp" />
     <ClCompile Include="src\gl\TexData.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\Event\Input\InputManager.cpp" />
     <ClCompile Include="src\Render\RenderDeferred.cpp" />
     <ClCompile Include="src\gl\RenderQuad.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -200,11 +200,11 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\Events.h" />
+    <ClInclude Include="header\Event\Events.h" />
     <ClInclude Include="header\GameObjectType.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
-    <ClInclude Include="header\Input\InputKeyState.h" />
+    <ClInclude Include="header\Event\Input\InputKeyState.h" />
     <ClInclude Include="header\Render\RenderDefBuffers.h" />
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\GUIScene.h" />
@@ -215,7 +215,7 @@
     <ClInclude Include="header\IntersectionFunctions.h" />
     <ClInclude Include="header\Scene\DrawFrame.h" />
     <ClInclude Include="header\AABB.h" />
-    <ClInclude Include="header\EventManager.h" />
+    <ClInclude Include="header\Event\EventManager.h" />
     <ClInclude Include="header\gl\Texture.h" />
     <ClInclude Include="header\gl\VAData.h" />
     <ClInclude Include="header\Guard.h" />
@@ -240,7 +240,7 @@
     <ClInclude Include="header\gl\SamplerObject.h" />
     <ClInclude Include="header\gl\TexData.h" />
     <ClInclude Include="header\Mesh.h" />
-    <ClInclude Include="header\InputManager.h" />
+    <ClInclude Include="header\Event\Input\InputManager.h" />
     <ClInclude Include="header\Model.h" />
     <ClInclude Include="header\node.h" />
     <ClInclude Include="header\Shader.h" />
@@ -252,7 +252,7 @@
     <ClInclude Include="header\type_info.h" />
     <ClInclude Include="header\Scene\Scene.h" />
     <ClInclude Include="header\PointLightObject.h" />
-    <ClInclude Include="header\Input\InputIncrementer.h" />
+    <ClInclude Include="header\Event\Input\InputIncrementer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\Windows\DevIL.dll" />

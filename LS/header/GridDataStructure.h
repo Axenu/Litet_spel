@@ -10,7 +10,7 @@
 #include <vector>
 #include <fstream>
 #include "Mesh.h"
-#include "Events.h"
+#include "Event/Events.h"
 enum gridType
 {
 	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting
