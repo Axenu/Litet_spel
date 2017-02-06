@@ -22,6 +22,12 @@ ModelLoader::~ModelLoader()
 		delete _mesh[i];
 		_mesh[i] = nullptr;
 	}
+
+	for (unsigned int i = 0; i < _material.size(); i++)
+	{
+		delete _material[i];
+		_material[i] = nullptr;
+	}
 }
 
 Model* ModelLoader::GetModel(std::string modelName, MeshShader *shader)
@@ -91,14 +97,17 @@ MeshPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::strin
 void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string modelName, MeshShader* shader)
 {
 	std::vector<MeshPart> meshParts;
+
 	//Process all node's meshes
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshParts.push_back(ProcessMesh(mesh, scene, modelName, shader));
 	}
+
 	Model* tmpModel = new Model(meshParts);
 	_models.push_back(tmpModel);
+
 	//Do the same for each of its children
 	for (GLuint i = 0; i < node->mNumChildren; i++)
 	{

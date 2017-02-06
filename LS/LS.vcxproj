@@ -150,9 +150,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\camera.cpp" />
     <ClCompile Include="src\Game\Game.cpp" />
     <ClCompile Include="src\Event\Events.cpp" />
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
+    <ClCompile Include="src\Game\Setting.cpp" />
+    <ClCompile Include="src\Game\TestGame.cpp" />
     <ClCompile Include="src\gui\MainMenuScene.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
     <ClCompile Include="src\Event\Input\InputIncrementer.cpp" />
@@ -162,6 +165,7 @@
     <ClCompile Include="src\Event\Input\InputKeyState.cpp" />
     <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
+    <ClCompile Include="src\ModelLoader.cpp" />
     <ClCompile Include="src\Render\RenderDefBuffers.cpp" />
     <ClCompile Include="src\intersectionFunctions.cpp" />
     <ClCompile Include="src\Game\Scene\DrawFrame.cpp" />
@@ -202,13 +206,17 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\Game\Game.h" />
     <ClInclude Include="header\Event\Events.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />
+    <ClInclude Include="header\Game\Setting.h" />
+    <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
     <ClInclude Include="header\Event\Input\InputKeyState.h" />
+    <ClInclude Include="header\ModelLoader.h" />
     <ClInclude Include="header\Render\RenderDefBuffers.h" />
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\GUIScene.h" />
