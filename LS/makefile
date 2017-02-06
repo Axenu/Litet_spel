@@ -5,34 +5,28 @@ lIBDIR=lib/OSX/
 IDIR=include/
 HDIR=header/
 
-SOURCESGAME=$(wildcard $(SRCDIR)*.cpp)
-SOURCEGL=$(wildcard $(SRCDIR)gl/*.cpp)
-SOURCERender=$(wildcard $(SRCDIR)Render/*.cpp)
-SOURCEScene=$(wildcard $(SRCDIR)Scene/*.cpp)
-SOURCEGUI=$(wildcard $(SRCDIR)gui/*.cpp)
-SOURCEINPUT=$(wildcard $(SRCDIR)input/*.cpp)
-SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOURCERender:$(SRCDIR)Render/%=%) $(SOURCEScene:$(SRCDIR)Scene/%=%) $(SOURCEGUI:$(SRCDIR)gui/%=%) $(SOURCEINPUT:$(SRCDIR)input/%=%)
+SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Objects src/Game/Scene src/gui src/Render
+BUILD_DIR := $(SRC_DIR:src%=build%)
+SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
+OBJ_files := $(SRC:src%=build%)
+OBJ       := $(OBJ_files:.cpp=.o)
 
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
-CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual -Wno-reorder
+CXXFLAGS = -Wall -std=c++11 -Wno-c++11-long-long -Wno-reorder -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual
 # The c++ compiler to use for compilation
 CC = g++
 
-
-GAMEOBJECTS = $(addprefix $(ODIR), $(SOURCEFILESGAME:.cpp=.o))
-
-
-#LIB=-lglfw3 -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms
 LIB=-lglfw3 -lil -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms
 #OSX frameworks
 FRAMEWORKS=-framework IOKit -framework Cocoa -framework OpenGL -framework CoreVideo
 
-
 # This section is called on 'make'
 # Will call compile, and then call clean
-all: $(GAMEOBJECTS)
+all: checkdirs buildAll
+
+buildAll: $(OBJ)
 	$(CC) -L $(lIBDIR) -o $(EXEC) $^ $(FRAMEWORKS) $(LIB)
 
 # build/FireArrow.a: $(ENGINEOBJECTS)
@@ -41,25 +35,16 @@ all: $(GAMEOBJECTS)
 $(ODIR)%.o: $(SRCDIR)%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
-$(ODIR)%.o: $(SRCDIR)gl/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
+checkdirs: $(BUILD_DIR)
 
-$(ODIR)%.o: $(SRCDIR)Render/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
-
-$(ODIR)%.o: $(SRCDIR)Scene/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
-
-$(ODIR)%.o: $(SRCDIR)gui/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
-
-$(ODIR)%.o: $(SRCDIR)input/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
-
-# $(ODIR)/%.o: $(ENGINESDIR)/%.cpp
-# 	$(CC) -I $(IDIR) -I$(HDIR) -std=c++11 -Wno-c++11-long-long -Wall -c -o $@ $<
+$(BUILD_DIR):
+	mkdir -p $@
 
 clean:
+	rm -rf $(BUILD_DIR)
 	rm -f $(ODIR)*.o
 	rm -f $(ODIR)*.a
 	rm $(EXEC)
+
+
+# $(foreach bdir,$(BUILD_DIR),$(eval $(call make-goal,$(bdir))))

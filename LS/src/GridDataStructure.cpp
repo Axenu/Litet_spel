@@ -455,7 +455,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	int i = (int)guardposition.x;//height
 	int j = (int)guardposition.z; //width
 	//first wall upwards
-	for (i;i > -1;i--)
+	for (;i > -1;i--)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -467,7 +467,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	j = (int)guardposition.z;
 
 	//second point downwards
-	for (i;i < _heightLength;i++)
+	for (;i < _heightLength;i++)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -478,7 +478,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	i = (int)guardposition.x;
 	j = (int)guardposition.z;
 	//thirdwall left
-	for (j;j > -1;j--)
+	for (;j > -1;j--)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -490,7 +490,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	j = (int)guardposition.z;
 
 	//sfourthwall right
-	for (j;j < _widthLength;j++)
+	for (;j < _widthLength;j++)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -543,7 +543,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 
 
 		//{
-	/*	if (_twodArray[i][j].type == wall)
+		if (_twodArray[i][j].type == wall)
 		{
 			pointxy[0] = glm::vec3(_twodArray[i][j].xz.y,0,_twodArray[i][j].xz.x);
 			break;

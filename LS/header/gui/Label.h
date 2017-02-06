@@ -26,7 +26,6 @@ namespace gui
 
         //GL stuff
         GLint _positionZUniform;
-        GLint _textureUniform;
         GLint _colorUniform;
         GLint _modelMatrixUniform;
         gl::VAData _VA;
