@@ -6,22 +6,11 @@
 #include "Shader.h"
 #include "Model.h"
 #include "GridDataStructure.h"
-#include "Render/GraphicsResource.h"
-#include "Render/RenderInfo.h"
-#include "Render/RenderDeferred.h"
-#include "Render/RenderDefBuffers.h"
-#include "Render/MeshShader.h"
-#include "Render/DeferredMeshShader.h"
 #include "Event/Input/InputManager.h"
-#include "Event/Input/InputKeyState.h"
 #include "Event/EventManager.h"
-#include "Camera.h"
-#include "Game/Objects/Character.h"
-#include "Game/Objects/GameObject.h"
-#include "Game/Objects/Guard.h"
-#include "Game/Objects/PointLightObject.h"
-#include "Game/Scene/Scene.h"
-#include "Game/Scene/DrawFrame.h"
+#include "Game/Setting.h"
+#include "Game/Game.h"
+#include "Game/TestGame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "gui/MainMenuScene.h"
@@ -78,54 +67,14 @@ void setupWindow()
 
 
 	//basic init
-	gl::DefferredSettings setting(wWidth, wHeight, 3);
-	setting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
-	GraphicsResource resource(setting);
-	Shader s("Basic");
-	DeferredMeshShader meshShader;
-	RenderDeferred deferred(resource.getQuad());
-	RenderDefBuffers bufferRenderer(resource.getQuad(), eventManager);
-	InputKeyState renderBuffer(eventManager, GLFW_KEY_R);
+	Setting setting(wWidth, wHeight, 3, 0.1f, 100.f, 70.f);
+	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
-	Material material(&meshShader);
-	material.setColor("diffuse", glm::vec4(0.8f));
-	material.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
-	material.setFloat("shine", 20.f);
-	Scene scene;
+	TestGame game(setting, eventManager);
+
+	game.initiate();
 	gl::CheckGLErrors("Init stage failed: Resource");
-
-	Grid gridtest;
-	Mesh wallMesh = gridtest.generateMesh();
-	Mesh cube;
-	//avoid this:
-	// Model guardModel(MeshPart(&cube, &material));
-	//do this instead:
-	MeshPart guardModelMeshPart(&cube, &material);
-	Model guardModel(guardModelMeshPart);
-	MeshPart goModelMeshPart(&wallMesh, &material);
-	Model goModel(goModelMeshPart);
-
-	Camera camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
-	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
-	bufferRenderer.setWindowSize((float)wWidth, (float)wHeight, camera);
-
-
-    Character* player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &eventManager);
-	player->setLevel(&gridtest);
-    player->setCamera(&camera);
-	camera.setParent(player);
-
-	//Add some more game objects
-	scene.add(player);
-	GameObject *guard = new Guard(guardModel, &gridtest);
-	scene.add(guard);
-	scene.add(new GameObject(goModel));
-//	guard = scene.remove(guard);
-
-	//Add some lights
-	scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
-	scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
-
+	
 	// gui::Font *font = new gui::Font("Resources/fonts/arial");
 	// gui::Label label(font, "Hello World!");
 	// label.setZ(99);
@@ -149,29 +98,10 @@ void setupWindow()
 		float currentTime = (float)glfwGetTime();
 	    float dT = currentTime - lastTime;
 	    lastTime = currentTime;
-		guard->update(dT);
-		scene.update(dT);
-
-		DrawFrame dF;
-		scene.fetchDrawables(dF);
-		RenderInfo fD(resource, camera, dF.getLightInfo());
-
-		resource.getDeffered().bindDraw();
-
-		dF.render(fD);
-		gl::CheckGLErrors("Render stage failed: Mesh");
-
-		/*	Render to backbuffer:
-		*/
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glClearColor(1, 0, 0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //Render
-		if (renderBuffer._active)
-			bufferRenderer.render(fD);
-		else
-			deferred.render(fD);
-		gl::CheckGLErrors("Render stage failed: Composition");
+		//Update game logic
+		game.update(dT);
+		//Draw game drawables
+		game.draw();
 
 		guiManager.update(dT);
 		guiManager.render();

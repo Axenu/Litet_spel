@@ -1,7 +1,7 @@
 #pragma once
 #include"QuadShader.h"
 #include"gl/GLFunctions.h"
-#include"camera.h"
+#include"Game/camera.h"
 #include"Event/Input/InputIncrementer.h"
 
 
