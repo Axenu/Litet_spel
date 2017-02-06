@@ -1,4 +1,4 @@
-#include "GameObject.h" 
+#include "Game/Objects/GameObject.h" 
 
 GameObject::GameObject()
 	: Node(), _model(), _type(type::Empty)

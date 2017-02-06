@@ -1,4 +1,4 @@
-#include "Character.h"
+#include "Game/Objects/Character.h"
 
 void Character::setCamera(Camera* camera)
 {

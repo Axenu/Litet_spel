@@ -1,9 +1,8 @@
 #pragma once
 #include<vector>
-#include"../GameObject.h"
+#include"Game/Objects/GameObject.h"
 #include"DrawFrame.h"
 #include"node.h"
-#include"../PointLightObject.h"
 
 /* Scene holding the objects 
 */

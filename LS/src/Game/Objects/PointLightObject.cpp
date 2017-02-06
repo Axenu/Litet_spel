@@ -1,4 +1,4 @@
-#include "PointLightObject.h"
+#include "Game/Objects/PointLightObject.h"
 
 
 

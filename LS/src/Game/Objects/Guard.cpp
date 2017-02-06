@@ -1,4 +1,4 @@
-#include "Guard.h"
+#include "Game/Objects/Guard.h"
 
 Guard::~Guard()
 {
