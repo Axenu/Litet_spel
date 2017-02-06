@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\Game.cpp" />
     <ClCompile Include="src\Event\Events.cpp" />
     <ClCompile Include="src\gui\MainMenuScene.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Game\Game.h" />
     <ClInclude Include="header\Event\Events.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
