@@ -8,28 +8,25 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "Render/MeshShader.h"
+#include "Model.h"
+#include "MeshPart.h"
 
 class ModelLoader
 {
 private:
-	struct AssimpModel
-	{
-		std::string modelName;
-		std::vector<glm::vec3> _position;
-		std::vector<glm::vec3> _normal;
-		std::vector<GLuint> _indices;
-	};
+	void LoadModel(std::string, MeshShader *shader);
+	MeshPart ProcessMesh(aiMesh*, const aiScene*, std::string, MeshShader *shader);
+	void ProcessNode(aiNode*, const aiScene*, std::string, MeshShader *shader);
 
-	void LoadModel(std::string);
-	AssimpModel ProcessMesh(aiMesh*, const aiScene*, std::string);
-	void ProcessNode(aiNode*, const aiScene*, std::string);
-
-	std::vector<AssimpModel*> _models;
+	std::vector<Model*> _models;
+	std::vector<Mesh*> _mesh;
+	std::vector<Material*> _material;
 
 public:
 	ModelLoader();
 	ModelLoader(const ModelLoader&);
-	~ModelLoader();
-	AssimpModel GetModel(std::string);
+	virtual ~ModelLoader();
+	Model* GetModel(std::string, MeshShader *shader);
 
 };

@@ -42,6 +42,16 @@ bool Model::pick(glm::vec3 origin, glm::vec3 dir)
 	return false;
 }
 
+void Model::setName(std::string & name)
+{
+	_name = name;
+}
+
+std::string Model::getName()
+{
+	return _name;
+}
+
 
 
 Model::~Model() 
