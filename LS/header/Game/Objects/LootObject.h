@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "GameObject.h"
-#include "camera.h"
+#include "Game/camera.h"
 
 class LootObject : public GameObject
 {
