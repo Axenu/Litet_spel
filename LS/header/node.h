@@ -74,6 +74,10 @@ public:
     glm::vec3 getRotation() const;
 
 
+	glm::vec4 getWorldPos() const;
+	float getDistance(Node const &other) const;
+	float getDistance(glm::vec4 const &pos) const;
+
 	virtual ~Node();
 
 

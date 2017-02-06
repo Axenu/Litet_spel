@@ -39,5 +39,7 @@ public:
 	*/
 	void fetchDrawables(DrawFrame &dF);
 
+	int loot(Camera &cam, int pickDist);
+
 };
 
