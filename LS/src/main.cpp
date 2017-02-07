@@ -10,7 +10,7 @@
 #include "Game/TestGame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
-#include "gui/MainMenuScene.h"
+#include "gui/Scenes/MainMenuScene.h"
 
 void setupWindow()
 {

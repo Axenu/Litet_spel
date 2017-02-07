@@ -2,16 +2,18 @@
 
 #include <iostream>
 #include <vector>
-#include"gl/glInclude.h"
+#include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "gl/GLFunctions.h"
 #include "Shader.h"
-#include "Font.h"
+#include "gui/Font.h"
 #include "gui/GUIScene.h"
 #include "gui/Button.h"
 #include "Event/Input/InputManager.h"
+#include "Event/Events.h"
+#include "gui/Scenes/HUDScene.h"
 
 namespace gui
 {

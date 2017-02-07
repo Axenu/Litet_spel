@@ -29,6 +29,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -36,12 +37,14 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -49,6 +52,7 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -73,21 +77,25 @@
     <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
     <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
+    <ExecutablePath>(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
     <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
+    <ExecutablePath>(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
     <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
+    <ExecutablePath>(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -156,7 +164,9 @@
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
     <ClCompile Include="src\Game\Setting.cpp" />
     <ClCompile Include="src\Game\TestGame.cpp" />
-    <ClCompile Include="src\gui\MainMenuScene.cpp" />
+    <ClCompile Include="src\gui\Scenes\GameOverScene.cpp" />
+    <ClCompile Include="src\gui\Scenes\HUDScene.cpp" />
+    <ClCompile Include="src\gui\Scenes\MainMenuScene.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
     <ClCompile Include="src\Event\Input\InputIncrementer.cpp" />
     <ClCompile Include="src\gui\Button.cpp" />
@@ -213,6 +223,9 @@
     <ClInclude Include="header\Game\Setting.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
+    <ClInclude Include="header\gui\Scenes\GameOverScene.h" />
+    <ClInclude Include="header\gui\Scenes\HUDScene.h" />
+    <ClInclude Include="header\gui\Scenes\MainMenuScene.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
     <ClInclude Include="header\Event\Input\InputKeyState.h" />
     <ClInclude Include="header\ModelLoader.h" />
