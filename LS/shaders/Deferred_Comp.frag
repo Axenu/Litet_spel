@@ -78,7 +78,7 @@ vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in 
 	float fade_factor = max(1 - (distance(pos, pLightPos[i]) / pLightFade[i]), 0);
 
 	return (diffuseCol * pLightDif[i] * lambertian +		//Diffuse calculation
-	 diffuseCol * pLightSpec[i] * specularCol * specular)	//Specular calculation
+	 pLightSpec[i] * specularCol * specular)	//Specular calculation
 	 * fade_factor;											//Light fade off
 }
 /*	BlinnPhong specular calculation:
@@ -95,6 +95,10 @@ float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, 
 		vec3 halfDir = normalize(lightDir + viewDir);
 		float specAngle = max(dot(halfDir, nor), 0.0f);
 		return pow(specAngle, shininess);
+		// Phon shading:
+		//vec3 reflectDir = reflect(-lightDir, nor);
+		//float specAngle = max(dot(reflectDir, viewDir), 0.0f);
+		//return pow(specAngle, shininess * 0.25f);
 	}
 	return 0.0f;
 }
