@@ -13,29 +13,31 @@
 #include "gui/Button.h"
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
-#include "gui/HUDScene.h"
 
 namespace gui
 {
 
-    class MainMenuScene : public Scene
+    class GameOverScene : public Scene
     {
     private:
         EventManager* _manager;
         gui::Font *_font;
-        gui::Button* _quitButton;
-        gui::Button* _startButton;
-        float* _fps;
+        // gui::Button* _quitButton;
+        // gui::Button* _startButton;
+        // float* _fps;
 
     public:
-        MainMenuScene(EventManager* manager, float* fps);
-        virtual ~MainMenuScene();
+        GameOverScene(EventManager* manager, const GameOverEvent &event);
+        virtual ~GameOverScene();
 
         void onRender();
         void onUpdate(float dt);
 
-        void QuitGame(int action);
-        void StartGame(int action);
+        // void gameStarted(const GameStartedEvent &event);
+        // void gameOver(const GameOverEvent &event);
+
+        // void QuitGame(int action);
+        // void StartGame(int action);
     };
 
 }

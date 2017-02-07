@@ -46,3 +46,39 @@ bool PossibleVictoryEvent::victory(bool buttonpressed,bool onlyoncereset)
 	}
 	return false;
 }
+
+ChangeGameStateEvent::ChangeGameStateEvent(int state) : _state(state)
+{
+
+}
+ChangeGameStateEvent::~ChangeGameStateEvent()
+{
+
+}
+int ChangeGameStateEvent::getState()
+{
+	return _state;
+}
+GameStartedEvent::GameStartedEvent()
+{
+
+}
+GameStartedEvent::~GameStartedEvent()
+{
+
+}
+GameOverEvent::GameOverEvent(bool hasWon, int score) : _hasWon(hasWon), _score(score)
+{
+}
+GameOverEvent::~GameOverEvent()
+{
+
+}
+bool GameOverEvent::hasWon() const
+{
+	return _hasWon;
+}
+int GameOverEvent::getScore() const
+{
+	return _score;
+}
