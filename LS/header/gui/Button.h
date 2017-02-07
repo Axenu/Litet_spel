@@ -19,10 +19,10 @@ namespace gui
     {
     public:
     	virtual ~ButtonHandlerBase() {};
-    	void exec(const int action) {call(action);}
+    	void exec(int action) {call(action);}
 
     private:
-    	virtual void call(const int) = 0;
+    	virtual void call(int) = 0;
     };
 
 
@@ -33,7 +33,7 @@ namespace gui
     	typedef void (T::*MemberFunc)(int);
     	ButtonHandler(T* instance, MemberFunc memFn) : _instance(instance), _function(memFn) {};
 
-    	void call(const int action)
+    	void call(int action)
     	{
     		(_instance->*_function)(action);
     	}
@@ -50,18 +50,20 @@ namespace gui
         Label* _label;
         Rectangle* _rect;
 
-        gui::ButtonHandlerBase* _callback;
+        float _padding;
+
+        gui::ButtonHandlerBase* _callback = nullptr;
 
     public:
 
-        Button(std::string text);
+        Button();
 		virtual ~Button();
 
         template <class T>
     	void listen(T* obj, void (T::*memFn)(int))
         {
-			if (_callback)
-				delete _callback;
+			// if (_callback)
+			// 	delete _callback;
             _callback = new gui::ButtonHandler<T>(obj, memFn);
         }
         void execute(int action);
@@ -70,6 +72,8 @@ namespace gui
         void onUpdate(float dt);
 
         bool handleClick(int action);
+
+        void addStringComponent(StringComponent* sc);
 
     };
 

@@ -2,7 +2,7 @@
 
 namespace gui
 {
-    Label::Label(Font* font, std::string text)
+    Label::Label(Font* font)
 		: Element(), _shader("2DTexture")
     {
         _font = font;
@@ -12,7 +12,7 @@ namespace gui
         _modelMatrixUniform = _shader.getUniform("modelMatrix");
         _color = glm::vec4(1,1,1,1);
 
-		addStringComponent(new StringComponentString(text));
+		// addStringComponent(new StringComponentString(text));
 
     }
     Label::~Label()

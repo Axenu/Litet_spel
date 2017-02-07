@@ -30,11 +30,11 @@ void Character::update(float dt)
     }
 	glm::vec3 actualVelocity;
 	//Calculate the velocity
-	actualVelocity.x = _velocity.y * dt * sin(_rotation.x);
-	actualVelocity.x += _velocity.x * dt * cos(_rotation.x);
-	actualVelocity.y = _velocity.y * dt * cos(_rotation.x);
-	actualVelocity.y += _velocity.x * dt * -sin(_rotation.x);
-	
+	actualVelocity.x = _velocity.y * dt * sinf(_rotation.x);
+	actualVelocity.x += _velocity.x * dt * cosf(_rotation.x);
+	actualVelocity.y = _velocity.y * dt * cosf(_rotation.x);
+	actualVelocity.y += _velocity.x * dt * -sinf(_rotation.x);
+
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
 	WindowClass = _currentLevel->checkifPlayerWon(&_position,buttonpressed);

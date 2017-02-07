@@ -20,16 +20,20 @@ namespace gui
     {
     private:
         EventManager* _manager;
+        gui::Font *_font;
         gui::Button* _quitButton;
+        gui::Button* _startButton;
+        float* _fps;
 
     public:
-        MainMenuScene(EventManager* manager);
+        MainMenuScene(EventManager* manager, float* fps);
         virtual ~MainMenuScene();
 
         void onRender();
         void onUpdate(float dt);
 
         void QuitGame(int action);
+        void StartGame(int action);
     };
 
 }

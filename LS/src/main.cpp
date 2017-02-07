@@ -68,10 +68,10 @@ void setupWindow()
 	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
 	TestGame game(setting, eventManager);
-	
+
 	game.initiate();
 	gl::CheckGLErrors("Init stage failed: Resource");
-	
+
 	// gui::Font *font = new gui::Font("Resources/fonts/arial");
 	// gui::Label label(font, "Hello World!");
 	// label.setZ(99);
@@ -79,13 +79,18 @@ void setupWindow()
 	// glm::vec4 color(0,0,0,1);
 	// rect.setColor(color);
 
-	gui::MainMenuScene* guiScene = new gui::MainMenuScene(&eventManager);
+	//init dt calculation
+	float lastTime = (float)glfwGetTime();
+	float currentTime;
+	float dT;
+	float FPS;
+
+	gui::MainMenuScene* guiScene = new gui::MainMenuScene(&eventManager, &FPS);
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(640, 480);
 	guiManager.setScene(guiScene);
 
-	//init dt calculation
-	float lastTime = (float)glfwGetTime();
+
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -97,9 +102,10 @@ void setupWindow()
 		}
         //update
 		//Calculate dt
-		float currentTime = (float)glfwGetTime();
-	    float dT = currentTime - lastTime;
+		currentTime = (float)glfwGetTime();
+		dT = currentTime - lastTime;
 	    lastTime = currentTime;
+		FPS = 1.0f/dT;
 		//Update game logic
 		game.update(dT);
 		//Draw game drawables

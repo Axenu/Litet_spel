@@ -91,8 +91,8 @@ namespace gui
     }
     void Element::setZ(float z)
     {
-        z = fmax(z, 0.0f);
-        z = fmin(z, 99.0f);
+        z = std::max(z, 0.0f);
+        z = std::min(z, 99.0f);
         _position.z = -z/100.0f - 0.001f;
     }
     void Element::setSize(glm::vec2 &size)
@@ -112,5 +112,10 @@ namespace gui
     {
         _scale.x = x;
         _scale.y = y;
+    }
+    void Element::setScale(float s)
+    {
+        _scale.x = s;
+        _scale.y = s;
     }
 }
