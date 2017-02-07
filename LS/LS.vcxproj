@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\camera.cpp" />
     <ClCompile Include="src\Game\Game.cpp" />
     <ClCompile Include="src\Event\Events.cpp" />
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="src\Event\Input\InputKeyState.cpp" />
     <ClCompile Include="src\MeshPart.cpp" />
     <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
+    <ClCompile Include="src\ModelLoader.cpp" />
     <ClCompile Include="src\Render\RenderDefBuffers.cpp" />
     <ClCompile Include="src\intersectionFunctions.cpp" />
     <ClCompile Include="src\Game\Scene\DrawFrame.cpp" />
@@ -189,7 +191,6 @@
     <ClCompile Include="src\Render\RenderInfo.cpp" />
     <ClCompile Include="src\Render\GraphicsResource.cpp" />
     <ClCompile Include="src\GridDataStructure.cpp" />
-    <ClCompile Include="src\Game\camera.cpp" />
     <ClCompile Include="src\gl\FBOData.cpp" />
     <ClCompile Include="src\gl\GLFunctions.cpp" />
     <ClCompile Include="src\gl\SamplerObject.cpp" />
@@ -204,14 +205,17 @@
     <ClCompile Include="src\node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\Game\Game.h" />
     <ClInclude Include="header\Event\Events.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />
     <ClInclude Include="header\Game\Setting.h" />
+    <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
     <ClInclude Include="header\Event\Input\InputKeyState.h" />
+    <ClInclude Include="header\ModelLoader.h" />
     <ClInclude Include="header\Render\RenderDefBuffers.h" />
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\GUIScene.h" />
@@ -241,7 +245,6 @@
     <ClInclude Include="header\Render\RenderInfo.h" />
     <ClInclude Include="header\Render\GraphicsResource.h" />
     <ClInclude Include="header\GridDataStructure.h" />
-    <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\gl\FBOData.h" />
     <ClInclude Include="header\gl\GLFunctions.h" />
     <ClInclude Include="header\gl\SamplerObject.h" />
@@ -260,7 +263,6 @@
     <ClInclude Include="header\Game\Scene\Scene.h" />
     <ClInclude Include="header\Game\Objects\PointLightObject.h" />
     <ClInclude Include="header\Event\Input\InputIncrementer.h" />
-    <ClInclude Include="header\Game\TestGame.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\Windows\DevIL.dll" />

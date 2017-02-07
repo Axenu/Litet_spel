@@ -4,7 +4,7 @@
 Grid::Grid()
 {
 	_gotTheTreasure = false;
-
+	outsidethebox = false;
 	loadingBmpPicture((char*)"roomtest.bmp");
 
 	_exit = glm::vec2(getData(exiting).x,getData(exiting).z);
@@ -344,29 +344,19 @@ Mesh Grid::generateMesh()
 
 void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 {
+	//calculate current grid position
 	int currentX = (int)glm::floor(position->x / GRIDSPACE);
 	int currentZ = (int)glm::floor(position->z / GRIDSPACE);
 
-	//std::cout << position->x << ", " << position->z << std::endl;
-
-	/*glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
-	float len = playerToCorner.x * playerToCorner.x + playerToCorner.y * playerToCorner.y + playerToCorner.z * playerToCorner.z;
-	if (len > 0.3f * 0.3f)
-	{
-	glm::vec3 dist = playerToCorner;
-	dist.x /= len;
-	dist.y /= len;
-	dist.z /= len;
-	position->x = (float)currentX + dist.x * 0.15;
-	position->z = (float)currentZ + dist.z * 0.15;
-	}*/
-	if (currentX <= 0 || currentZ <= 0 || currentX >= _widthLength || currentZ >= _heightLength)
+	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength || currentZ > _heightLength)
 	{
 		position->x += velocity.x;
 		position->z += velocity.y;
 		return;
 	}
-	if (signbit(velocity.x) == false)// -->
+
+	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
+	if (signbit(velocity.x) == false)
 	{
 		if (_twodArray[currentZ][currentX + 1].type != wall)
 		{
@@ -389,6 +379,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		}
 	}
 
+	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
 	if (signbit(velocity.y) == false)
 	{
 		if (_twodArray[currentZ + 1][currentX].type != wall)
@@ -411,10 +402,67 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 			position->z += velocity.y;
 		}
 	}
+	//Check if there's a wall in the north east square, if true, move the player 0.3 units away from the corner in the direction he was moving
+	if (_twodArray[currentZ - 1][currentX - 1].type == wall)
+	{
+		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
+		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		if (len < 0.3f && len != 0)
+		{
+			glm::vec3 dist = playerToCorner;
+			dist.x /= len;
+			dist.z /= len;
+			position->x = (float)currentX - dist.x * 0.3f;
+			position->z = (float)currentZ - dist.z * 0.3f;
+		}
+	}
+	//north west square
+	if (_twodArray[currentZ - 1][currentX + 1].type == wall)
+	{
+		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ - position->z);
+		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		if (len < 0.3f && len != 0)
+		{
+			glm::vec3 dist = playerToCorner;
+			dist.x /= len;
+			dist.z /= len;
+			position->x = (float)currentX + 1 - dist.x * 0.3f;
+			position->z = (float)currentZ - dist.z * 0.3f;
+		}
+	}
+	//south east square
+	if (_twodArray[currentZ + 1][currentX - 1].type == wall)
+	{
+		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ + 1 - position->z);
+		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		if (len < 0.3f && len != 0)
+		{
+			glm::vec3 dist = playerToCorner;
+			dist.x /= len;
+			dist.z /= len;
+			position->x = (float)currentX - dist.x * 0.3f;
+			position->z = (float)currentZ + 1 - dist.z * 0.3f;
+		}
+	}
+	//south west square
+	if (_twodArray[currentZ + 1][currentX + 1].type == wall)
+	{
+		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ + 1 - position->z);
+		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		if (len < 0.3f && len != 0)
+		{
+			glm::vec3 dist = playerToCorner;
+			dist.x /= len;
+			dist.z /= len;
+			position->x = (float)currentX + 1 - dist.x * 0.3f;
+			position->z = (float)currentZ + 1 - dist.z * 0.3f;
+		}
+	}
 }
 
 bool Grid::checkifPlayerWon(glm::vec3 * playerpos,bool buttonpressed)
 {
+	
 	_gotTheTreasure = true;
 	glm::vec2 fixedPlayerPos;
 	_exit.x = glm::floor(_exit.x / GRIDSPACE);
@@ -423,8 +471,18 @@ bool Grid::checkifPlayerWon(glm::vec3 * playerpos,bool buttonpressed)
 	fixedPlayerPos.y = glm::floor(playerpos->x / GRIDSPACE);
 	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
 	{
-		return victory.victory(buttonpressed);
+		yousure = true;
+	bool test	= victory.victory(buttonpressed,outsidethebox);
+	outsidethebox = false;
+	return test;
 	}
+	doyouwanttoleave = true;
+	if (doyouwanttoleave == true && yousure ==true)
+	{
+		std::cout<<"your not exiting yet keep on adventuring mate" << std::endl;
+		yousure = false;
+	}
+	outsidethebox = true;
 	return false;
 }
 

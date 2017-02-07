@@ -26,10 +26,13 @@ public:
 	void render(RenderInfo &fD, glm::mat4 &modelMatrix) const;
 	const std::vector<MeshPart>& getParts() const;
 	bool pick(glm::vec3 origin, glm::vec3 dir);
+	void setName(std::string &name);
+	std::string getName();
 	/* Update model boxes from model space
 	*/
 	void transform(const glm::mat4 &mat);
 	~Model();
 private:
+	std::string _name;
 	std::vector<MeshPart> _meshParts;
 };

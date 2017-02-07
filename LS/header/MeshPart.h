@@ -17,6 +17,7 @@ public:
 
 	MeshPart();
 	MeshPart(Mesh *mesh, Material *mat);
+	virtual ~MeshPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
 	Mesh& getMesh();
 };

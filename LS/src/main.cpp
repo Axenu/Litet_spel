@@ -61,14 +61,14 @@ void setupWindow()
 
 	EventManager eventManager;
 	InputManager iManager(window, &eventManager);
-
+	bool windowalive=false;
 
 	//basic init
 	Setting setting(wWidth, wHeight, 3, 0.1f, 100.f, 70.f);
 	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
 	TestGame game(setting, eventManager);
-
+	
 	game.initiate();
 	gl::CheckGLErrors("Init stage failed: Resource");
 	
@@ -90,6 +90,11 @@ void setupWindow()
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+		windowalive = game.closeWindow();
+		if (windowalive == true)
+		{
+			break;
+		}
         //update
 		//Calculate dt
 		float currentTime = (float)glfwGetTime();

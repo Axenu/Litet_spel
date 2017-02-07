@@ -40,9 +40,12 @@ public:
 
     Character(glm::vec3 pos, EventManager *manager);
     Character();
+	bool getWindowclass();
     virtual ~Character();
 private:
+	bool WindowClass;
 	bool buttonpressed;
+	bool* charactermovedoutsidebox;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
