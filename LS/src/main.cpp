@@ -11,6 +11,7 @@
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "gui/Scenes/MainMenuScene.h"
+#include "StaticVars.h"
 
 void setupWindow()
 {
@@ -93,14 +94,8 @@ void setupWindow()
 
 
 /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window) && !sic::CloseWindow)
     {
-		windowalive = game.closeWindow();
-		if (windowalive == true)
-		{
-			break;
-		}
-        //update
 		//Calculate dt
 		currentTime = (float)glfwGetTime();
 		dT = currentTime - lastTime;

@@ -27,6 +27,6 @@ public:
 	ModelLoader();
 	ModelLoader(const ModelLoader&);
 	virtual ~ModelLoader();
-	Model* GetModel(std::string, MeshShader *shader);
+	Model* GetModel(std::string modelName, MeshShader *shader);
 
 };

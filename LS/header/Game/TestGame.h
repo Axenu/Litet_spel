@@ -28,7 +28,6 @@ public:
 
 	TestGame(Setting &setting, EventManager &events);
 	virtual ~TestGame();
-	bool closeWindow();
 	virtual void initiate();
 	virtual void compose(RenderInfo &rI);
 };

@@ -1,4 +1,5 @@
 #include "Game/Objects/Character.h"
+#include "StaticVars.h"
 
 void Character::setCamera(Camera* camera)
 {
@@ -37,7 +38,8 @@ void Character::update(float dt)
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
-	WindowClass = _currentLevel->checkifPlayerWon(&_position,buttonpressed);
+	if (_currentLevel->checkifPlayerWon(&_position, buttonpressed))
+		sic::CloseWindow = true;
 	Node::update(dt);
 }
 void Character::onRender()
@@ -182,14 +184,9 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
     _eventManager->listen(this, &Character::collectLoot);
 	buttonpressed = false;
 	charactermovedoutsidebox = false;
-	WindowClass = false;
 }
 Character::Character()
 {
-}
-bool Character::getWindowclass()
-{
-	return WindowClass;
 }
 Character::~Character()
 {
