@@ -1,5 +1,5 @@
-#include "Render/Material.h"
-#include"Render/MeshShader.h"
+#include "Render/Mesh/Material.h"
+#include "Render/Mesh/Shader/MeshShader.h"
 
 Material::Material(MeshShader *shader)
 	: _shader(shader)

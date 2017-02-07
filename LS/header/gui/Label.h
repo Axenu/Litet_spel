@@ -7,10 +7,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "gl/GLFunctions.h"
-#include "Shader.h"
+#include "Render/Shader.h"
 #include "Font.h"
 #include "gui/Element.h"
 #include "gui/StringComponents.h"
+#include "Factory.h"
 
 namespace gui
 {
@@ -30,7 +31,7 @@ namespace gui
         GLint _modelMatrixUniform;
         gl::VAData _VA;
 
-        Shader _shader;
+        Shader *_shader;
         Font* _font;
 
     public:

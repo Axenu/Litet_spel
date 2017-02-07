@@ -1,6 +1,64 @@
 #include "GridDataStructure.h"
 #pragma warning(disable:4996)
 
+int Grid::IsInVector(glm::ivec2 pos, std::vector<gridNode>* vector)
+{
+	for (unsigned int i = 0; i < vector->size(); i++)
+	{
+		if (vector->at(i).position == pos)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
+{
+	//checks surrounding grid cells  
+	int test = IsInVector(glm::ivec2(pos.x, pos.y), vector);
+	if (test >= 0)
+	{
+		if (vector->at(test).needsCheck == true)
+		{
+			return false;
+		}
+	}
+	test = IsInVector(glm::ivec2(pos.x, pos.y - 1), vector);
+	if (test >= 0)    // ^  
+	{
+		if (vector->at(test).needsCheck == true)
+		{
+			return false;
+		}
+	}
+	test = IsInVector(glm::ivec2(pos.x + 1, pos.y), vector);
+	if (test >= 0)    // >  
+	{
+		if (vector->at(test).needsCheck == true)
+		{
+			return false;
+		}
+	}
+	test = IsInVector(glm::ivec2(pos.x, pos.y + 1), vector);
+	if (test >= 0)    // v  
+	{
+		if (vector->at(test).needsCheck == true)
+		{
+			return false;
+		}
+	}
+	test = IsInVector(glm::ivec2(pos.x - 1, pos.y), vector);
+	if (test >= 0)    // <  
+	{
+		if (vector->at(test).needsCheck == true)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 Grid::Grid()
 {
 	_gotTheTreasure = false;
@@ -118,7 +176,6 @@ void Grid::loadingBmpPicture(char* filename)
 			tmp = data[j];
 			data[j] = data[j + 2];
 			data[j + 2] = tmp;
-
 			//	 glm::vec3(data[j], data[j + 1], data[j + 2]);
 			//	cout << "R: " << (int)data[j] << " G: " << (int)data[j + 1] << " B: " << (int)data[j + 2] << endl;
 
@@ -140,7 +197,7 @@ void Grid::loadingBmpPicture(char* filename)
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
-				this->_lootLocations.push_back(glm::vec3(height - 1 - i, 0.f, realj));
+				this->_lootLocations.push_back(glm::vec3(j, 0.f, i));
 				_twodArray[height - 1 - i][realj].type = loot;
 			}
 			else
@@ -504,6 +561,104 @@ std::vector<glm::vec3>* Grid::getLootLocations()
 	return &_lootLocations;
 }
 
+bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
+{
+	glm::ivec2 currentPos = start;
+	std::vector<gridNode> nodes;
+	gridNode root;
+	root.needsCheck = false;
+	root.position = start;
+	nodes.push_back(root);
+	int index;
+	while (currentPos != end)
+	{
+		int currentIndex = IsInVector(glm::ivec2(currentPos.x, currentPos.y), &nodes);
+		nodes[currentIndex].needsCheck = false;
+		//checks surrounding grid cells  
+		if (_twodArray[currentPos.y - 1][currentPos.x].type != wall && _twodArray[currentPos.y - 1][currentPos.x].type != exiting)    // ^  
+		{
+			index = IsInVector(glm::ivec2(currentPos.x, currentPos.y - 1), &nodes);
+			if (index == -1)
+			{
+				gridNode tmp;
+				tmp.needsCheck = true;
+				tmp.position = glm::ivec2(currentPos.x, currentPos.y - 1);
+				nodes.push_back(tmp);
+			}
+			else
+			{
+				if (removeGridCell(glm::ivec2(currentPos.x, currentPos.y - 1), &nodes))
+				{
+					nodes.erase(nodes.begin() + index);
+				}
+			}
+		}
+		if (_twodArray[currentPos.y][currentPos.x + 1].type != wall && _twodArray[currentPos.y][currentPos.x + 1].type != exiting)    // >  
+		{
+			index = IsInVector(glm::ivec2(currentPos.x + 1, currentPos.y), &nodes);
+			if (index == -1)
+			{
+				gridNode tmp;
+				tmp.needsCheck = true;
+				tmp.position = glm::ivec2(currentPos.x + 1, currentPos.y);
+				nodes.push_back(tmp);
+			}
+			else
+			{
+				if (removeGridCell(glm::ivec2(currentPos.x + 1, currentPos.y), &nodes))
+				{
+					nodes.erase(nodes.begin() + index);
+				}
+			}
+		}
+		if (_twodArray[currentPos.y + 1][currentPos.x].type != wall && _twodArray[currentPos.y + 1][currentPos.x].type != exiting)    // v  
+		{
+			index = IsInVector(glm::ivec2(currentPos.x, currentPos.y + 1), &nodes);
+			if (index == -1)
+			{
+				gridNode tmp;
+				tmp.needsCheck = true;
+				tmp.position = glm::ivec2(currentPos.x, currentPos.y + 1);
+				nodes.push_back(tmp);
+			}
+			else
+			{
+				if (removeGridCell(glm::ivec2(currentPos.x, currentPos.y + 1), &nodes))
+				{
+					nodes.erase(nodes.begin() + index);
+				}
+			}
+		}
+		if (_twodArray[currentPos.y][currentPos.x - 1].type != wall && _twodArray[currentPos.y][currentPos.x - 1].type != exiting)    // <  
+		{
+			index = IsInVector(glm::ivec2(currentPos.x - 1, currentPos.y), &nodes);
+			if (index == -1)
+			{
+				gridNode tmp;
+				tmp.needsCheck = true;
+				tmp.position = glm::ivec2(currentPos.x - 1, currentPos.y);
+				nodes.push_back(tmp);
+			}
+			else
+			{
+				if (removeGridCell(glm::ivec2(currentPos.x - 1, currentPos.y), &nodes))
+				{
+					nodes.erase(nodes.begin() + index);
+				}
+			}
+		}
+		currentIndex = IsInVector(glm::ivec2(currentPos.x, currentPos.y), &nodes);
+		if (nodes.size() == 0 || nodes.size() == currentIndex + 1)
+		{
+			return false;
+		}
+		currentPos = nodes[currentIndex + 1].position;
+
+	}
+	std::cout << nodes.size() << std::endl;
+	return true;
+}
+
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
@@ -563,3 +718,6 @@ gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[width][height].type;
 }
+
+				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
+				this->_lootLocations.push_back(tmpVec);

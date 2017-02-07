@@ -3,14 +3,15 @@
 namespace gui
 {
     Rectangle::Rectangle(float width, float height)
-		: Element(), _shader("2DSimple")
+		: Element()
     {
+        _shader = Factory::getInstance().getShader("2DSimple");
         _scale.x = width;
         _scale.y = height;
         _size = glm::vec2(1,1);
-    	_colorUniform = _shader.getUniform("color");
-        _positionZUniform = _shader.getUniform("positionZ");
-        _modelMatrixUniform = _shader.getUniform("modelMatrix");
+    	_colorUniform = _shader->getUniform("color");
+        _positionZUniform = _shader->getUniform("positionZ");
+        _modelMatrixUniform = _shader->getUniform("modelMatrix");
         _color = glm::vec4(1,1,1,1);
 
         _vertexCount = 4;
@@ -44,7 +45,7 @@ namespace gui
     }
     void Rectangle::onRender()
     {
-        _shader.bind();
+        _shader->bind();
         glUniform4fv(_colorUniform, 1, &_color[0]);
         glUniform1f(_positionZUniform, _position.z);
         glUniformMatrix3fv(_modelMatrixUniform, 1, false, (GLfloat*)&_modelMatrix[0]);

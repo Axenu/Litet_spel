@@ -3,13 +3,15 @@
 namespace gui
 {
     Label::Label(Font* font)
-		: Element(), _shader("2DTexture")
+		: Element()
     {
+
+        _shader = Factory::getInstance().getShader("2DTexture");
         _font = font;
         _size.y = font->getFontHeight();
-    	_colorUniform = _shader.getUniform("color");
-        _positionZUniform = _shader.getUniform("positionZ");
-        _modelMatrixUniform = _shader.getUniform("modelMatrix");
+    	_colorUniform = _shader->getUniform("color");
+        _positionZUniform = _shader->getUniform("positionZ");
+        _modelMatrixUniform = _shader->getUniform("modelMatrix");
         _color = glm::vec4(1,1,1,1);
 
 		// addStringComponent(new StringComponentString(text));
@@ -24,7 +26,7 @@ namespace gui
     }
     void Label::onRender()
     {
-        _shader.bind();
+        _shader->bind();
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, _font->getFontTexture());
         glUniform4fv(_colorUniform, 1, &_color[0]);

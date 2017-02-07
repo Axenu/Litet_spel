@@ -1,7 +1,7 @@
 #pragma once
 #include"Mesh.h"
 #include"Render/RenderInfo.h"
-#include"Render/Material.h"
+#include"Material.h"
 #include"AABB.h"
 
 

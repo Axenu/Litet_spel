@@ -1,12 +1,13 @@
 #pragma once
 #include "Game/Game.h"
-#include "Render/RenderDefBuffers.h"
+#include "Render/Composition/RenderDefBuffers.h"
 #include "Event/Input/InputKeyState.h"
-#include "Render/DeferredMeshShader.h"
+#include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "GridDataStructure.h"
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/PointLightObject.h"
+#include "ModelLoader.h"
 
 class TestGame
 	: public Game {
@@ -20,11 +21,13 @@ protected:
 	Grid _gridtest;
 	Mesh _wallMesh, _cube;
 
+	ModelLoader _modelLoader;
+
+
 public:
 
 	TestGame(Setting &setting, EventManager &events);
 	virtual ~TestGame();
-	bool closeWindow();
 	virtual void initiate();
 	virtual void compose(RenderInfo &rI);
 };

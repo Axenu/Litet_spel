@@ -1,4 +1,4 @@
-#include "Render/RenderDefBuffers.h"
+#include "Render/Composition/RenderDefBuffers.h"
 
 RenderDefBuffers::RenderDefBuffers(const gl::RenderQuad& quad, EventManager &manager)
 	: QuadShader(quad, "Quad", "Deferred_Buffer"), _curBuffer(manager, GLFW_KEY_KP_ADD, GLFW_KEY_KP_SUBTRACT, 0, 8)
