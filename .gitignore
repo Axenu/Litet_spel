@@ -1,7 +1,7 @@
-Debug
-Release
-LS/Debug
-LS/Release
+Debug/
+Release/
+LS/Debug/
+LS/Release/
 *.VC.db
 *.VC.opendb
 *.vcxproj.user
@@ -18,7 +18,9 @@ LS/Release
 *.vs
 *.VC.db
 *.VC.VC.opendb
-x64
-LS/x64
+x64/
+x86/
+LS/x64/
+LS/x86/
 LS/build
 main
