@@ -18,7 +18,7 @@ CXXFLAGS = -Wall -std=c++11 -Wno-c++11-long-long -Wno-reorder -Wno-unknown-pragm
 # The c++ compiler to use for compilation
 CC = g++
 
-LIB=-lglfw3 -lil -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms
+LIB=-lglfw3 -lil -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms -lassimp
 #OSX frameworks
 FRAMEWORKS=-framework IOKit -framework Cocoa -framework OpenGL -framework CoreVideo
 
