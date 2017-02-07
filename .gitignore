@@ -16,6 +16,7 @@ LS/Debug
 *.sdf
 *.vs
 *.VC.db
+*.VC.VC.opendb
 x64
 LS/x64
 LS/build
