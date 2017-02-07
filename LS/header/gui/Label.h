@@ -35,7 +35,7 @@ namespace gui
 
     public:
 
-        Label(Font* font, std::string text);
+        Label(Font* font);
     	virtual ~Label();
 
         void onRender();

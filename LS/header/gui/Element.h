@@ -51,6 +51,7 @@ namespace gui
         void setSize(float width, float height);
         void setScale(glm::vec2 &scale);
         void setScale(float x, float y);
+        void setScale(float s);
 
     };
 

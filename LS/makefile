@@ -14,7 +14,7 @@ OBJ       := $(OBJ_files:.cpp=.o)
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
-CXXFLAGS = -Wall -std=c++11 -Wno-c++11-long-long -Wno-reorder -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual
+CXXFLAGS = -Wall -Wextra -std=c++11 -Wno-c++11-long-long -Wdouble-promotion -Wno-sign-conversion -Wno-unused-parameter -Wno-reorder -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual
 # The c++ compiler to use for compilation
 CC = g++
 
