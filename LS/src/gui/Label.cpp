@@ -17,7 +17,7 @@ namespace gui
     }
     Label::~Label()
     {
-		for (int i = 0; i < _sComponents.size(); i++)
+		for (unsigned int i = 0; i < _sComponents.size(); i++)
 		{
 			delete _sComponents[i];
 		}

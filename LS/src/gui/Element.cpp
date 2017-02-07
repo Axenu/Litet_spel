@@ -6,7 +6,7 @@ namespace gui
     {
         _size = glm::vec2(1,1);
         _scale = glm::vec2(1,1);
-        _position.z = -0.001;
+        _position.z = -0.001f;
     }
     Element::~Element()
     {
@@ -93,7 +93,7 @@ namespace gui
     {
         z = fmax(z, 0.0f);
         z = fmin(z, 99.0f);
-        _position.z = -z/100.0f - 0.001;
+        _position.z = -z/100.0f - 0.001f;
     }
     void Element::setSize(glm::vec2 &size)
     {
