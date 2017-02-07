@@ -7,6 +7,7 @@
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/PointLightObject.h"
+#include "ModelLoader.h"
 
 class TestGame
 	: public Game {
@@ -19,6 +20,9 @@ protected:
 	Character* player;
 	Grid _gridtest;
 	Mesh _wallMesh, _cube;
+
+	ModelLoader _modelLoader;
+
 
 public:
 

@@ -12,13 +12,13 @@ AABB::AABB(std::vector<glm::vec3> *position)
         _min.x = std::min(_min.x, it->x);
         _min.y = std::min(_min.y, it->y);
         _min.z = std::min(_min.z, it->z);
-        _max.x = std::min(_max.x, it->x);
-        _max.y = std::min(_max.y, it->y);
-        _max.z = std::min(_max.z, it->z);
+        _max.x = std::max(_max.x, it->x);
+        _max.y = std::max(_max.y, it->y);
+        _max.z = std::max(_max.z, it->z);
     }
     //Debug
-    // std::cout<<glm::to_string(_min)<<std::endl;
-    // std::cout<<glm::to_string(_max)<<std::endl;
+     //std::cout<<glm::to_string(_min)<<std::endl;
+     //std::cout<<glm::to_string(_max)<<std::endl;
 }
 
 AABB::AABB(const AABB & other)

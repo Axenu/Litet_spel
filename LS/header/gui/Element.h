@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
+#include <algorithm>
 
 namespace gui
 {

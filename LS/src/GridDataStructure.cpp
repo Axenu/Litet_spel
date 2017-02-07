@@ -121,7 +121,6 @@ void Grid::loadingBmpPicture(char* filename)
 			tmp = data[j];
 			data[j] = data[j + 2];
 			data[j + 2] = tmp;
-
 			//	 glm::vec3(data[j], data[j + 1], data[j + 2]);
 			//	cout << "R: " << (int)data[j] << " G: " << (int)data[j + 1] << " B: " << (int)data[j + 2] << endl;
 
@@ -143,7 +142,7 @@ void Grid::loadingBmpPicture(char* filename)
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
-				this->_lootLocations.push_back(glm::vec3(j, 0.f, i));
+				this->_lootLocations.push_back(glm::vec3(realj * GRIDSPACE, 0.f, (height - 1 - i) * GRIDSPACE));
 				_twodArray[height - 1 - i][realj].type = loot;
 			}
 			else

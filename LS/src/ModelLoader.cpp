@@ -89,7 +89,7 @@ MeshPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::strin
 	outMat = new Material(shader);
 
 	//set color
-	outMat->setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	outMat->setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	outMat->setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	_material.push_back(outMat);
 
