@@ -1,4 +1,4 @@
-#include "gui/GameOverScene.h"
+#include "gui/Scenes/GameOverScene.h"
 #include "gui/Manager.h"
 
 namespace gui {

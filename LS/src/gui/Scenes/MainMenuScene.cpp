@@ -1,4 +1,4 @@
-#include "gui/MainMenuScene.h"
+#include "gui/Scenes/MainMenuScene.h"
 #include "gui/Manager.h"
 
 namespace gui

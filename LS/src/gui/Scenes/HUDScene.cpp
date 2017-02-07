@@ -1,4 +1,4 @@
-#include "gui/HUDScene.h"
+#include "gui/Scenes/HUDScene.h"
 #include "gui/Manager.h"
 
 namespace gui {

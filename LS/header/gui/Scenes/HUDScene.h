@@ -8,12 +8,12 @@
 #include <glm/gtx/string_cast.hpp>
 #include "gl/GLFunctions.h"
 #include "Shader.h"
-#include "Font.h"
+#include "gui/Font.h"
 #include "gui/GUIScene.h"
 #include "gui/Button.h"
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
-#include "gui/GameOverScene.h"
+#include "gui/Scenes/GameOverScene.h"
 
 namespace gui
 {
