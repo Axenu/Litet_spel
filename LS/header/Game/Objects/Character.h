@@ -45,7 +45,7 @@ public:
 private:
 	bool WindowClass;
 	bool buttonpressed;
-	bool* charactermovedoutsidebox;
+	bool charactermovedoutsidebox;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;

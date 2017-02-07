@@ -20,7 +20,7 @@ void PossibleVictoryEvent::insquare(bool yesno)
 	}
 	else
 	{
-		false;
+		inSquare = false;
 	}
 }
 
