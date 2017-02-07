@@ -223,6 +223,7 @@
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />
     <ClInclude Include="header\Game\Setting.h" />
+    <ClInclude Include="header\StaticVars.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
     <ClInclude Include="header\gui\Scenes\GameOverScene.h" />

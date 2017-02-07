@@ -12,10 +12,6 @@ TestGame::TestGame(Setting &setting, EventManager &events)
 TestGame::~TestGame() {
 
 }
-bool TestGame::closeWindow()
-{
-	return player->getWindowclass();
-}
 
 void TestGame::initiate() {
 	_material.setColor("diffuse", glm::vec4(0.8f));
