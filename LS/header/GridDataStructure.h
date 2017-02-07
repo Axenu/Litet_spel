@@ -22,6 +22,11 @@ struct gridValues {
 	gridType type;
 };
 
+struct gridNode {
+	bool needsCheck = true;
+	glm::ivec2 position;
+};
+
 class Grid {
 
 private:
@@ -36,6 +41,8 @@ private:
 	std::vector<glm::vec3> _lootLocations;
 	bool outsidethebox;
 	bool doyouwanttoleave = false, yousure = false;
+	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
+	bool removeGridCell(glm::ivec2 pos, std::vector<gridNode> *vector);
 public:
 	Grid();
 	void buildgridarray();
@@ -53,6 +60,7 @@ public:
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
 	PossibleVictoryEvent victory;
+	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
 
 };
 
