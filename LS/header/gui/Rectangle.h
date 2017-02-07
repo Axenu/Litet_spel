@@ -9,6 +9,7 @@
 #include"gl/GLFunctions.h"
 #include "Element.h"
 #include "Shader.h"
+#include "Factory.h"
 
 namespace gui
 {
@@ -26,7 +27,7 @@ namespace gui
         //Mesh data
         gl::VAData _VA;
         //Shader
-        Shader _shader;
+        Shader *_shader;
 
     public:
 
