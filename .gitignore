@@ -1,6 +1,7 @@
 Debug
 Release
 LS/Debug
+LS/Release
 *.VC.db
 *.VC.opendb
 *.vcxproj.user
