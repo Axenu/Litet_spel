@@ -156,7 +156,9 @@
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
     <ClCompile Include="src\Game\Setting.cpp" />
     <ClCompile Include="src\Game\TestGame.cpp" />
-    <ClCompile Include="src\gui\MainMenuScene.cpp" />
+    <ClCompile Include="src\gui\Scenes\GameOverScene.cpp" />
+    <ClCompile Include="src\gui\Scenes\HUDScene.cpp" />
+    <ClCompile Include="src\gui\Scenes\MainMenuScene.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
     <ClCompile Include="src\Event\Input\InputIncrementer.cpp" />
     <ClCompile Include="src\gui\Button.cpp" />
@@ -213,6 +215,9 @@
     <ClInclude Include="header\Game\Setting.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\MainMenuScene.h" />
+    <ClInclude Include="header\gui\Scenes\GameOverScene.h" />
+    <ClInclude Include="header\gui\Scenes\HUDScene.h" />
+    <ClInclude Include="header\gui\Scenes\MainMenuScene.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
     <ClInclude Include="header\Event\Input\InputKeyState.h" />
     <ClInclude Include="header\ModelLoader.h" />
