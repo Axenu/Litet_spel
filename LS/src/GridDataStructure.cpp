@@ -75,15 +75,12 @@ void Grid::print2darraydata()
 
 void Grid::loadingBmpPicture(char* filename)
 {
-	//2
-	//		_heightLength = 10;
-	//		_widthLength = 15;
-	//		buildgridarray();
-	//		_twodArray[9][12].xz = glm::vec2(1,2);
-	//f�rsta �r heightlength andra �r widthlenght
-
-
-
+//2
+//		_heightLength = 10;
+//		_widthLength = 15;
+//		buildgridarray();
+//		_twodArray[9][12].xz = glm::vec2(1,2);
+//f�rsta �r heightlength andra �r widthlenght
 	FILE* f = fopen(filename, "rb");
 
 	if (f == NULL)
@@ -143,7 +140,7 @@ void Grid::loadingBmpPicture(char* filename)
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
-				this->_lootLocations.push_back(glm::vec3(j, 0.f, i));
+				this->_lootLocations.push_back(glm::vec3(height - 1 - i, 0.f, realj));
 				_twodArray[height - 1 - i][realj].type = loot;
 			}
 			else
@@ -151,6 +148,7 @@ void Grid::loadingBmpPicture(char* filename)
 				std::cout << "error" << std::endl;
 				std::cout<<i<<","<<realj<<std::endl;
 			}
+//			_twodArray[height - 1 - i][realj].xz = glm::vec2(height - 1 - i, realj);
 			realj++;
 			//	cout << _twodArray[i][j].type;
 		}
@@ -513,7 +511,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	int i = (int)guardposition.x;//height
 	int j = (int)guardposition.z; //width
 	//first wall upwards
-	for (;i > -1;i--)
+	for (i;i > -1;i--)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -525,7 +523,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	j = (int)guardposition.z;
 
 	//second point downwards
-	for (;i < _heightLength;i++)
+	for (i;i < _heightLength;i++)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -536,7 +534,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	i = (int)guardposition.x;
 	j = (int)guardposition.z;
 	//thirdwall left
-	for (;j > -1;j--)
+	for (j;j > -1;j--)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -548,7 +546,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	j = (int)guardposition.z;
 
 	//sfourthwall right
-	for (;j < _widthLength;j++)
+	for (j;j < _widthLength;j++)
 	{
 		if (_twodArray[i][j].type == wall)
 		{
@@ -557,86 +555,6 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 		}
 	}
 
-/*	for (i; i < _heightLength; i++)
-	{
-		if (_twodArray[j][i].type == wall)
-		{
-			pointxy[0] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y - 1);
-			break;
-		}
-	}
-
-	i = guardposition.x;
-	j = guardposition.z;
-	for (j ; j > -1; j--)
-	{
-		if (_twodArray[j][i].type == wall)
-		{
-			pointxy[1] = glm::vec3(_twodArray[j][i].xz.x, 0, _twodArray[j][i].xz.y + 1);
-			break;
-		}
-	}
-
-
-	 i = guardposition.x;
-	 j = guardposition.z;
-	for (i; i < _widthLength; i++)
-	{
-		if (_twodArray[j][i].type == wall)
-		{
-			pointxy[2] = glm::vec3(_twodArray[j][i].xz.x - 1, 0, _twodArray[j][i].xz.y );
-			break;
-		}
-	}
-	i = guardposition.x;
-	j = guardposition.z;
-	for (i; i > -1; i--)
-	{
-		if (_twodArray[j][i].type == wall)
-		{
-			pointxy[3] = glm::vec3(_twodArray[j][i].xz.x + 1 , 0, _twodArray[j][i].xz.y);
-			break;
-		}
-	}
-
-
-		//{
-		if (_twodArray[i][j].type == wall)
-		{
-			pointxy[0] = glm::vec3(_twodArray[i][j].xz.y,0,_twodArray[i][j].xz.x);
-			break;
-		}
-	}
-	i = guardposition.x;
-	 j = guardposition.z;
-	for (i; i > -1; i--)
-	{
-		if (_twodArray[i][j].type == wall)
-		{
-			pointxy[1] = glm::vec3(_twodArray[i][j].xz.y +1, 0, _twodArray[i][j].xz.x);
-			break;
-		}
-	}
-	 i = guardposition.x;
-	 j = guardposition.z;
-	for (j; j < _heightLength; j++)
-	{
-		if (_twodArray[i][j].type == wall)
-		{
-			pointxy[2] = glm::vec3(_twodArray[i][j].xz.y, 0, _twodArray[i][j].xz.x);
-			break;
-		}
-	}
-	i = guardposition.x;
-	j = guardposition.z;
-	for (j; j > -1; j--)
-	{
-		if (_twodArray[i][j].type == wall)
-		{
-			pointxy[3] = glm::vec3(_twodArray[i][j].xz.y, 0, _twodArray[i][j].xz.x + 1);
-			break;
-		}
-	}*/
 
 
 }

@@ -14,6 +14,144 @@ Guard::Guard()
 {
 
 }
+void Guard::print()
+{
+
+	for (int i = 0;i < height;i++)
+	{
+		for (int j = 0;j < width;j++)
+		{
+			if(levalues[i][j].value== -1 || levalues[i][j].value == -2)
+			std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/levalues[i][j].value<<" "; 
+			else
+			std::cout <<"+"<< /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/levalues[i][j].value << " ";
+		}
+		std::cout<<""<<std::endl;
+	}
+	std::cout << "end" << std::endl;
+
+}
+void Guard::gridWalkingBetweenTwoPoints(glm::vec3 GoalPosition)
+{
+int maxvalue = height*width-1;
+int oldmaxvalue = 0;
+int value = 0;
+int heightpositionofthegoal = GoalPosition.x;
+int widthpositionofthegoal = GoalPosition.z;
+//-1 outforskadmark ej gåbart
+// -2 vägg
+while (maxvalue != 0)
+{
+	oldmaxvalue = maxvalue;
+	for (int i = 0;i < height;i++)
+	{
+		for (int j = 0;j < width;j++)
+		{
+
+			if(i ==3 && j ==6)
+			{
+			//	std::cout << "swag" << std::endl;
+			}
+			if(levalues[i][j].type == nothing || levalues[i][j].type == guard)
+			{
+				if (levalues[i][j].value == value)
+				{
+
+					if (i == 0)
+					{
+
+					}
+					else if (i > 0 && levalues[i - 1][j].value == -1 && (levalues[i - 1][j].type == nothing || levalues[i - 1][j].type == guard))
+					{
+						levalues[i-1][j].value = value + 1;
+						maxvalue--;
+					}
+					if (i == height-1)
+					{
+
+					}
+					else if (i < height && levalues[i + 1][j].value == -1 && (levalues[i + 1][j].type == nothing || levalues[i + 1][j].type == guard))
+					{
+						levalues[i + 1][j].value = value + 1;
+						maxvalue--;
+					}
+					
+					
+					if (j == 0)
+					{
+
+					}
+					else if (j > 0 && levalues[i][j -1].value == - 1 && (levalues[i][j -1].type == nothing || levalues[i][j - 1].type == guard))
+					{
+						levalues[i ][j - 1].value = value + 1;
+						maxvalue--;
+					}
+
+
+					if (j == width-1)
+					{
+
+					}
+					else if (j < width&& levalues[i][j + 1].value == -1 && (levalues[i][j + 1].type == nothing || levalues[i][j + 1].type == guard))
+					{
+						levalues[i][j + 1].value = value + 1;
+						maxvalue--;
+					}
+				}
+			}
+		}
+	}
+//print();
+if (oldmaxvalue == maxvalue)
+{
+	break;
+}
+value++;
+
+}
+
+for (int i = 0;i < height;i++)
+{
+	for (int j = 0;j < width;j++)
+	{
+		if (levalues[i][j].type == wall)
+			levalues[i][j].value = -2;
+	}
+}
+
+//first check down 
+int newvalue = 100000000000;
+int smallestvalue = 100000000000;
+if (GoalPosition.x > 0)
+{
+	newvalue = smallestvalue=levalues[heightpositionofthegoal-1][widthpositionofthegoal].value;
+}
+//secondcheck upwards
+if (GoalPosition.x < height)
+{
+	if(smallestvalue>newvalue)
+	{
+	newvalue = smallestvalue = levalues[heightpositionofthegoal + 1][widthpositionofthegoal].value;
+	}
+}
+//checking leftvalue
+if (GoalPosition.z > 0)
+{
+	if (smallestvalue > newvalue)
+	{
+		newvalue = smallestvalue = levalues[heightpositionofthegoal][widthpositionofthegoal - 1].value;
+	}
+}
+//checking rightvalue
+if (GoalPosition.z < width)
+{
+	if (smallestvalue > newvalue)
+	{
+		newvalue = smallestvalue = levalues[heightpositionofthegoal][widthpositionofthegoal + 1].value;
+	}
+}
+//print();
+}
 glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 {
 	glm::vec3 returnvalue = normalvalue;
@@ -36,7 +174,7 @@ GameObject()
 {
 	this->setPosition(Guarden);
 	 point1x = positonxy[0];
-	 point2x = positonxy[1];
+	 point2x = positonxy[1];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 	 point1z = positonxy[2];
 	 point2z = positonxy[3];
 
@@ -120,23 +258,27 @@ void Guard::WalkingBetweenFourPoints(float dt)
 
 }
 
-void Guard::buildgridarray()
+void Guard::buildgridarray(Grid * gridet)
 {
+	int maxsizewidth = 6;
 	 height=1, width=1;
-	if (guardsstartposition.x >= 5 && guardsstartposition.x+5<=_heightLength)
+for(int i = maxsizewidth;i>0;i--)
+{
+	if (guardsstartposition.x >= i && guardsstartposition.x+i<=_heightLength)
 	{
-		height = 5;
+		height = i*2;
+		break;
 	}
-	else if(guardsstartposition.x+guardsstartposition.x<=_heightLength)
+}
+int maxsizeheight = 6;
+for (int i = maxsizeheight; i > 0;i--)
+{
+	if (guardsstartposition.z >= i && guardsstartposition.z + i <= _widthLength)
 	{
-		height = (int)guardsstartposition.x+1;
+		width = i*2;
+		break;
 	}
-	else
-	{
-		height = (int)(_heightLength - guardsstartposition.x);
-	}
-
-
+}
 
 	//building the 2D array
 	levalues = new gridValues*[height];
@@ -144,6 +286,24 @@ void Guard::buildgridarray()
 	{
 		levalues[i] = new gridValues[width];
 	}
+	for (int i = 0;i < height;i++)
+	{
+		for (int j = 0;j < width;j++)
+		{
+			levalues[i][j].type = gridet->returnGridType(guardsstartposition.x + i - (height/2), guardsstartposition.z + j - (width / 2));
+			levalues[i][j].xz = glm::vec2(guardsstartposition.x + i - (height / 2), guardsstartposition.z + j - (width / 2));
+			if (levalues[i][j].type == guard)
+			{
+				levalues[i][j].value = 0;
+			}
+			else
+			{
+				levalues[i][j].value = -1;
+			}
+	//		std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
+		}
+	}
+//	print();
 }
 
 
@@ -169,6 +329,8 @@ Guard::Guard(Model &m, Grid *gridet):
 	_heightLength = gridet->getHeight();
 	this->setPosition(guardsstartposition);
 	aiChoice = randomgenerator();
+	buildgridarray(gridet);
+	gridWalkingBetweenTwoPoints(glm::vec3(5, 0, 6));
 //	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 

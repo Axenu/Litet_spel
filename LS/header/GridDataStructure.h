@@ -20,6 +20,7 @@ enum gridType
 struct gridValues {
 	glm::vec2 xz;
 	gridType type;
+	int value;
 };
 
 class Grid {
@@ -33,6 +34,8 @@ private:
 	bool _gotTheTreasure;
 	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
+	std::vector<glm::vec3> _guardPositions;
+	std::vector<glm::vec3> _exitposition;
 	std::vector<glm::vec3> _lootLocations;
 	bool outsidethebox;
 	bool doyouwanttoleave = false, yousure = false;
