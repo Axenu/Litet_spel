@@ -62,7 +62,6 @@ void TestGame::initiate() {
 		tmpLoot->setY(1.0f);
 		_scene.add(tmpLoot);
 	}
-
 }
 
 

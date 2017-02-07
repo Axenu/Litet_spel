@@ -77,13 +77,13 @@
     <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
     <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
-    <ExecutablePath>(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
