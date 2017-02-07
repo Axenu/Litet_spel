@@ -7,11 +7,13 @@ LS/Debug
 *.vcxproj.filters
 *.tlog
 *.lastbuildstate
+*.obj
 *.pdb
 *.ipdb
-*.obj
 *.log
 *.DS_Store
 *.suo
+*.sdf
+x64
 LS/build
 main
