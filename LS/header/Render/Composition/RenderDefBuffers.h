@@ -1,24 +1,20 @@
 #pragma once
-#include"QuadShader.h"
-#include"gl/GLFunctions.h"
-#include"Game/camera.h"
+#include "../QuadShader.h"
+#include "gl/GLFunctions.h"
+#include "Game/camera.h"
+#include "Event/Input/InputIncrementer.h"
 
 
 	/* The shader implementation rendering the pre-generated
 	deferred buffers and other shading data (shadowmaps) for the final composition.
 
 	*/
-class RenderDeferred :
+class RenderDefBuffers :
 	public QuadShader
 {
-	/* Maximum number of lights available to render.
-	*/
-	const static unsigned int MAXLIGHTCOUNT = 8;
-
+	InputIncrementer _curBuffer;
 	//Calculation uniforms:
-	GLint _screenInv, _near, _far, _right, _top;
-	//Light uniforms
-	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
+	GLint  _bufferID, _screenInv, _near, _far, _right, _top;
 
 protected:
 
@@ -26,8 +22,8 @@ protected:
 	virtual void assignUniforms(RenderInfo &fD);
 
 public:
-	RenderDeferred(const gl::RenderQuad& quad);
-	virtual ~RenderDeferred();
+	RenderDefBuffers(const gl::RenderQuad& quad, EventManager &manager);
+	virtual ~RenderDefBuffers();
 
 	/* Call on window size change
 	*/

@@ -8,9 +8,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "Render/MeshShader.h"
-#include "Model.h"
-#include "MeshPart.h"
+#include "Render/Mesh/Shader/MeshShader.h"
+#include "Render/Mesh/Model.h"
+#include "Render/Mesh/MeshPart.h"
 
 class ModelLoader
 {

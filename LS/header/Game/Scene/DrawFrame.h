@@ -1,7 +1,7 @@
 #pragma once
 #include<vector>
 #include<glm/mat4x4.hpp>
-#include"Model.h"
+#include"Render/Mesh/Model.h"
 #include"Render/RenderInfo.h"
 #include"Render/PointLight.h"
 

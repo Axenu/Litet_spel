@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "Mesh.h"
+#include "Render/Mesh/Mesh.h"
 #include "Event/Events.h"
 enum gridType
 {

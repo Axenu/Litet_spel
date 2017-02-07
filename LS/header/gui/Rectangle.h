@@ -8,7 +8,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include"gl/GLFunctions.h"
 #include "Element.h"
-#include "Shader.h"
+#include "Render/Shader.h"
 #include "Factory.h"
 
 namespace gui

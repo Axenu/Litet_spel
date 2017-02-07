@@ -2,7 +2,7 @@
 
 #include <gl/glInclude.h>
 #include"MaterialLink.h"
-#include"RenderInfo.h"
+#include"../RenderInfo.h"
 #include<map>
 
 /* Forward declare

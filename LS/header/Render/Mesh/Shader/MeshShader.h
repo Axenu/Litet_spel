@@ -1,10 +1,10 @@
 #pragma once
 
 #include<string>
-#include"Shader.h"
-#include"RenderInfo.h"
-#include"Material.h"
-#include"MaterialLink.h"
+#include"../../Shader.h"
+#include"../../RenderInfo.h"
+#include"../Material.h"
+#include"../MaterialLink.h"
 
 class MeshShader
 {

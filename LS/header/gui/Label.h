@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "gl/GLFunctions.h"
-#include "Shader.h"
+#include "Render/Shader.h"
 #include "Font.h"
 #include "gui/Element.h"
 #include "gui/StringComponents.h"

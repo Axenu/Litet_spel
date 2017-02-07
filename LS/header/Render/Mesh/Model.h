@@ -10,10 +10,10 @@
 #include <iostream>
 #include <vector>
 #include "MeshPart.h"
-#include "Render/MeshShader.h"
+#include "Shader/MeshShader.h"
 #include "Render/RenderInfo.h"
 #include "Mesh.h"
-#include "Render/Material.h"
+#include "Material.h"
 #include "AABB.h"
 
 

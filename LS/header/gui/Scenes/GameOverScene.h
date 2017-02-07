@@ -6,8 +6,6 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
-#include "gl/GLFunctions.h"
-#include "Shader.h"
 #include "gui/Font.h"
 #include "gui/GUIScene.h"
 #include "gui/Button.h"

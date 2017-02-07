@@ -1,8 +1,8 @@
 #pragma once
 #include "Game/Game.h"
-#include "Render/RenderDefBuffers.h"
+#include "Render/Composition/RenderDefBuffers.h"
 #include "Event/Input/InputKeyState.h"
-#include "Render/DeferredMeshShader.h"
+#include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "GridDataStructure.h"
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"

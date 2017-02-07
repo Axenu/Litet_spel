@@ -2,11 +2,11 @@
 #ifndef GAMEOBJECT_H 
 #define GAMEOBJECT_H 
 #include "node.h"
-#include"Model.h"
+#include "Render/Mesh/Model.h"
 #include "gl/glInclude.h"
 #include "AABB.h"
-#include"Game/Scene/DrawFrame.h"
-#include"GameObjectType.h"
+#include "Game/Scene/DrawFrame.h"
+#include "GameObjectType.h"
 
 class GameObject : public Node
 {

@@ -1,4 +1,4 @@
-#include"MeshPart.h"
+#include"Render/Mesh/MeshPart.h"
 
 MeshPart::MeshPart()
 	: _mesh(nullptr), _material(nullptr), _box() {
