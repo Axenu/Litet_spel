@@ -15,5 +15,6 @@ LS/Debug
 *.suo
 *.sdf
 x64
+LS/x64
 LS/build
 main
