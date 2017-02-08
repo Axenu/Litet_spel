@@ -21,3 +21,8 @@ void ModelPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const {
 Mesh& ModelPart::getMesh() {
 	return *_mesh;
 }
+
+void ModelPart::setMaterial(Material & mat)
+{
+	_material = mat;
+}
