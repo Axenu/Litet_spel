@@ -7,6 +7,7 @@ namespace gui
         _size = glm::vec2(1,1);
         _scale = glm::vec2(1,1);
         _position.z = -0.001f;
+        _isActive = true;
     }
     Element::~Element()
     {
@@ -17,6 +18,8 @@ namespace gui
     }
     void Element::render()
     {
+        if (!_isActive)
+            return;
         onRender();
         for (Element* child : _children)
         {
@@ -25,6 +28,8 @@ namespace gui
     }
     void Element::update(float dt)
     {
+        if (!_isActive)
+            return;
         _modelMatrix = glm::mat3();
         _modelMatrix = glm::translate(_modelMatrix, glm::vec2(_position.x, _position.y));
         _modelMatrix = glm::scale(_modelMatrix, glm::vec2(_scale.x,_scale.y));
@@ -117,5 +122,13 @@ namespace gui
     {
         _scale.x = s;
         _scale.y = s;
+    }
+    void Element::activate()
+    {
+        _isActive = true;
+    }
+    void Element::deactivate()
+    {
+        _isActive = false;
     }
 }

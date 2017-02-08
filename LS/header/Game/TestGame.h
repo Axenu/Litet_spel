@@ -3,7 +3,7 @@
 #include "Render/Composition/RenderDefBuffers.h"
 #include "Event/Input/InputKeyState.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
-#include "GridDataStructure.h"
+#include "Game/Level/Level.h"
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/PointLightObject.h"
@@ -17,10 +17,9 @@ protected:
 
 	DeferredMeshShader _shader;
 	Material _material, _lootMat;
+	Level* _level;
 	Character* player;
-	Guard* guard;
-	Grid _gridtest;
-	Mesh _wallMesh, _cube;
+	Mesh  _cube;
 
 	ModelLoader _modelLoader;
 

@@ -62,8 +62,6 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 Grid::Grid()
 {
 	loadingBmpPicture((char*)"roomtest.bmp");
-
-	_exit = glm::vec2(getData(exiting).x,getData(exiting).z);
 }
 
 Grid::~Grid()
@@ -698,9 +696,9 @@ bool Grid::isInside(glm::ivec2 sq) const {
 glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const {
 	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
 }
-gridType Grid::operator[](const glm::vec3 &vec) const {
+GridSquare Grid::operator[](glm::vec3 vec) const {
 	glm::ivec2 sq = getSquare(vec);
-	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::nothing;
+	return isInside(sq) ? GridSquare(sq, _twodArray[sq.y][sq.x].type) : GridSquare();
 }
 
 gridType Grid::operator[](const glm::ivec2 &sq) const {

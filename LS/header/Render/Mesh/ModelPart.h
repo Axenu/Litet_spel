@@ -9,15 +9,16 @@ class ModelPart
 {
 private:
 	Mesh *_mesh;
-	Material *_material;
+	Material _material;
 public:
 	/* Mesh box in local space
 	*/
 	AABB _box;
 
 	ModelPart();
-	ModelPart(Mesh *mesh, Material *mat);
+	ModelPart(Mesh *mesh, Material &mat);
 	virtual ~ModelPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
 	Mesh& getMesh();
+	void setMaterial(Material &mat);
 };

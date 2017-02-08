@@ -1,17 +1,17 @@
 #pragma once
 #include "Event/Events.h"
 #include "Character.h"
-#include "GridDataStructure.h"
+#include "Game/Level/GridSquare.h"
 
 /* Event triggered when character moves to the next square
 */
 class CharacterSquareEvent : public Event
 {
 public:
-	CharacterSquareEvent(Character *ref, glm::ivec2 square, gridType type) : _ref(ref), _square(square), _type(type) {};
+	CharacterSquareEvent(Character *ref, GridSquare square) : _ref(ref), _square(square) {};
+	~CharacterSquareEvent() {}
 
 	Character *const _ref;
-	const glm::ivec2 _square;
-	const gridType _type;
+	const GridSquare _square;
 
 };

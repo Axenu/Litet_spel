@@ -4,7 +4,7 @@
 namespace gui {
     HUDView::HUDView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
     {
-        _name = "HUDScene";
+        _name = "HUDView";
 
         _font = new gui::Font("Resources/fonts/arial");
         gui::Label *l = new gui::Label(_font);
@@ -13,6 +13,14 @@ namespace gui {
         l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
         l->setScale(0.5);
         addChild(l);
+
+        _tipDisplay = new gui::Label(_font);
+        _tipDisplay->addStringComponent(new StringComponentString("Temp string"));
+        // _tipDisplay->addStringComponent(new StringComponentFloat(_fps));
+        _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
+        _tipDisplay->setScale(0.5);
+        _tipDisplay->deactivate();
+        addChild(_tipDisplay);
 
         gui::Rectangle *rect = new Rectangle(0.015f, 0.02f);
         rect->setPosition(-0.0075f, -0.01f);
@@ -41,6 +49,11 @@ namespace gui {
     }
     void HUDView::initiate()
     {
+        if (_game != nullptr)
+        {
+            std::cout << "delete game" << std::endl;
+            delete _game;
+        }
         //init game
         Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 100.f, 70.f);
     	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
@@ -57,33 +70,33 @@ namespace gui {
     }
     void HUDView::gameOver(const GameOverEvent &event)
     {
-        // std::cout << "GAME OVER!" << std::endl;
         if (!_parent->setView("GameOverView"))
         {
-            // std::cout << "scene not found \n Creating new..." << std::endl;
             _parent->setView(new GameOverView(_manager, event));
         }
-        // _parent->setScene(new HUDScene(_manager, _fps));
-        // ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
-        // _manager->execute(event);
     }
-    void HUDView::exitSquareTrigger(const ExitTriggerEvent &event)
+    void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {
-        if (event.didEnter())
+        if (event._square._grid == gridType::exiting)
         {
-            std::cout << "player entered exit" << std::endl;
+            if (!_isAtExit)
+            {
+                std::cout << "player entered exit" << std::endl;
+                _tipDisplay->updateStringComponent(0, new StringComponentString("Press G to finish."));
+                _tipDisplay->activate();
+                _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
+                _tipDisplay->update(0.0f);
+                _isAtExit = true;
+            }
         }
         else
         {
-            std::cout << "player left exit" << std::endl;
+            if (_isAtExit)
+            {
+                std::cout << "player left exit" << std::endl;
+                _tipDisplay->deactivate();
+                _isAtExit = false;
+            }
         }
     }
-    // void HUDScene::endGame(int action)
-    // {
-    //     if (action == GLFW_RELEASE)
-    //     {
-    //         GameOverEvent event(false, 1000);
-    //         _manager->execute(event);
-    //     }
-    // }
 }

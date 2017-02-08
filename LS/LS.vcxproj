@@ -222,6 +222,7 @@
     <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\Game\Game.h" />
     <ClInclude Include="header\Event\Events.h" />
+    <ClInclude Include="header\Game\Level\GridSquare.h" />
     <ClInclude Include="header\Game\Objects\CharacterEvents.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />

@@ -13,16 +13,13 @@ void Character::setCamera(Camera* camera)
 void Character::onUpdate(float dt)
 {
 	move(dt);
-	glm::ivec2 newSquare = _currentLevel->getSquare(getWorldPos());
-	gridType grid = _currentLevel->operator[](newSquare);
+	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
-	if (newSquare != _gridSquare) {
-		CharacterSquareEvent squareEvent(this, newSquare, grid);
+	if (newSquare._square != _gridSquare._square) {
+		CharacterSquareEvent squareEvent(this, newSquare);
 		_eventManager->execute(squareEvent);
 		this->_gridSquare = newSquare;
 	}
-	if (grid == gridType::exiting)
-		_isAtExit = true;
 }
 
 void Character::move(float dt) {
@@ -109,23 +106,6 @@ void Character::moveCharacter(const KeyboardEvent& event)
             _direction.x -= 1.0f;
         }
     }
-    else if (event.getKey() == GLFW_KEY_T)
-    {
-        if (event.getAction() == GLFW_PRESS)
-        {
-            if (_cursorMode == GLFW_CURSOR_NORMAL)
-            {
-                _cursorMode = GLFW_CURSOR_DISABLED;
-            }
-            else
-            {
-                _cursorMode = GLFW_CURSOR_NORMAL;
-            }
-            _hasMoved = false;
-            cursorModeChangeEvent event(_cursorMode);
-            _eventManager->execute(event);
-        }
-    }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
 		int points = _currentScene->loot(*_camera, 2);
@@ -142,7 +122,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	{
         if (event.getAction() == GLFW_PRESS)
         {
-            if (_isAtExit) // && _hasVictoryLoot TODO
+            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
             {
                 //call endGameEvent
                 GameOverEvent event(true, _lootValue);
@@ -184,12 +164,12 @@ void Character::collectLoot(const CollectLootEvent& event)
 
 #pragma endregion
 
-#pragma region Set & Construction 
+#pragma region Set & Construction
 
 void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
-	this->_gridSquare = level->getSquare(getWorldPos());
+	this->_gridSquare = level->operator[](glm::vec3(getWorldPos()));
 }
 void Character::setScene(Scene * scene)
 {
