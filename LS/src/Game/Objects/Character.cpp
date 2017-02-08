@@ -22,7 +22,7 @@ void Character::onUpdate(float dt)
 		this->_gridSquare = newSquare;
 	}
 	if (grid == gridType::exiting)
-		sic::CloseWindow = true;
+		_isAtExit = true;
 }
 
 void Character::move(float dt) {
@@ -63,20 +63,6 @@ void Character::onRender()
 
 #pragma region Events
 
-void Character::doYouWantToWin(const KeyboardEvent & event)
-{
-	if (event.getKey() == GLFW_KEY_G)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-			buttonpressed = true;
-		}
-		else if (event.getAction() == GLFW_RELEASE)
-		{
-			buttonpressed = false;
-		}
-	}
-}
 void Character::moveCharacter(const KeyboardEvent& event)
 {
     if (event.getKey() == GLFW_KEY_W)

@@ -61,8 +61,6 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 
 Grid::Grid()
 {
-	_gotTheTreasure = false;
-	outsidethebox = false;
 	loadingBmpPicture((char*)"roomtest.bmp");
 
 	_exit = glm::vec2(getData(exiting).x,getData(exiting).z);

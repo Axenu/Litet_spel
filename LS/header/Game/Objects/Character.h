@@ -30,7 +30,6 @@ public:
     virtual void onUpdate(float dt);
     void onRender();
 
-	void doYouWantToWin(const KeyboardEvent& event);
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
     void collectLoot(const CollectLootEvent& event);
