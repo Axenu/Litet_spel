@@ -9,13 +9,9 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Game/Level/GridSquare.h"
 #include "Render/Mesh/Mesh.h"
 #include "Event/Events.h"
-enum gridType
-{
-	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting
-	nothing = 0, wall = 1, tresure = 2, loot = 3, door = 4, exiting = 5, guard = 6
-};
 
 struct gridValues {
 	glm::vec2 xz;
@@ -36,7 +32,6 @@ private:
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray; //f�rsta �r heightlength andra �r widthlenght
-	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
 	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
@@ -62,7 +57,7 @@ public:
 	bool isInside(glm::ivec2 vec) const;
 	gridType returnGridType(int width,int height);
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;
-	gridType operator[](const glm::vec3 &vec) const;
+	GridSquare operator[](glm::vec3 vec) const;
 	gridType operator[](const glm::ivec2 &sq) const;
 };
 

@@ -13,16 +13,13 @@ void Character::setCamera(Camera* camera)
 void Character::onUpdate(float dt)
 {
 	move(dt);
-	glm::ivec2 newSquare = _currentLevel->getSquare(getWorldPos());
-	gridType grid = _currentLevel->operator[](newSquare);
+	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
-	if (newSquare != _gridSquare) {
-		CharacterSquareEvent squareEvent(this, newSquare, grid);
+	if (newSquare._square != _gridSquare._square) {
+		CharacterSquareEvent squareEvent(this, newSquare);
 		_eventManager->execute(squareEvent);
 		this->_gridSquare = newSquare;
 	}
-	if (grid == gridType::exiting)
-		_isAtExit = true;
 }
 
 void Character::move(float dt) {
@@ -142,7 +139,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	{
         if (event.getAction() == GLFW_PRESS)
         {
-            if (_isAtExit) // && _hasVictoryLoot TODO
+            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
             {
                 //call endGameEvent
                 GameOverEvent event(true, _lootValue);
@@ -189,7 +186,7 @@ void Character::collectLoot(const CollectLootEvent& event)
 void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
-	this->_gridSquare = level->getSquare(getWorldPos());
+	this->_gridSquare = level->operator[](glm::vec3(getWorldPos()));
 }
 void Character::setScene(Scene * scene)
 {
