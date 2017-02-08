@@ -18,24 +18,26 @@ void TestGame::initiate() {
 	_material.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
 	_material.setFloat("shine", 20.f);
 
-	_wallMesh = _gridtest.generateMesh();
+	_level = new Level(_event, _shader);
+	_scene.add(_level);
+	
 	player = new Character(glm::vec3(3.0f, 0.8f, 5.0f), &_event);
-	player->setLevel(&_gridtest);
+	player->setLevel(&_level->getGrid());
 	player->setCamera(&_camera);
 	player->setScene(&_scene);
 	_camera.setParent(player);
 
 	ModelPart guardModelMeshPart(&_cube, &_material);
 	Model guardModel(guardModelMeshPart);
-	ModelPart goModelMeshPart(&_wallMesh, &_material);
-	Model goModel(goModelMeshPart);
 	//Add some more game objects
 	_scene.add(player);
-	_scene.add(new Guard(guardModel, &_gridtest));
-	_scene.add(new GameObject(goModel));
+	_scene.add(new Guard(guardModel, &_level->getGrid()));
 	//Add some lights
 	_scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
-	_scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.3f, 0.3f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+	_scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+	_scene.add(new PointLightObject(PointLight(glm::vec3(12.0f, 1.0f, 7.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+	_scene.add(new PointLightObject(PointLight(glm::vec3(5.0f, 1.0f, 15.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+	_scene.add(new PointLightObject(PointLight(glm::vec3(25.0f, 1.0f, 7.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 	//Add loot
 	//_lootMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	//_lootMat.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -49,7 +51,7 @@ void TestGame::initiate() {
 
 	//_scene.add(loot1);
 	//_scene.add(loot2);
-	std::vector<glm::vec3>* pLootPosList = _gridtest.getLootLocations();
+	std::vector<glm::vec3>* pLootPosList = _level->getGrid().getLootLocations();
 	Material *tmpMat = new Material(&_shader);
 	tmpMat->setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	tmpMat->setColor("spec", glm::vec4(1.0f));

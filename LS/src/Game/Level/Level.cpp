@@ -2,8 +2,10 @@
 
 
 
-Level::Level(EventManager &events)
+Level::Level(EventManager &events, DeferredMeshShader &shader)
+	: _grid(), _gridMesh(_grid.generateMesh())
 {
+	//setModel()
 }
 
 
