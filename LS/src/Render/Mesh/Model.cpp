@@ -47,6 +47,14 @@ void Model::setName(std::string & name)
 	_name = name;
 }
 
+void Model::setMaterial(Material & mat)
+{
+	for (unsigned int i = 0; i < _meshParts.size(); i++)
+	{
+		_meshParts[i].setMaterial(mat);
+	}
+}
+
 std::string Model::getName()
 {
 	return _name;

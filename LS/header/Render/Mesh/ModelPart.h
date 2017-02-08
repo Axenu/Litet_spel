@@ -20,4 +20,5 @@ public:
 	virtual ~ModelPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
 	Mesh& getMesh();
+	void setMaterial(Material &mat);
 };

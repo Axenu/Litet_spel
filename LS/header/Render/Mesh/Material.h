@@ -41,14 +41,22 @@ protected:
 	struct Value {
 		int _size;
 		std::unique_ptr<float> _value;
+
 		Value(){}
 		Value(float *value, int size) : _size(size), _value(value) {}
-		Value(const Value &copy) : _size(copy._size), _value(new float[_size])
+		Value(const Value &copy) : _size(copy._size), _value(copy.copyValue())
 		{
-			std::memcpy(_value.get(), copy._value.get(), sizeof(float) * _size);
 		}
 		Value(Value &&copy) : _size(copy._size), _value(std::move(copy._value))
 		{		}
+		Value& operator=(const Value& val)
+		{
+			if (this == &val)
+				return *this;
+			_value = val.copyValue();
+			_size = val._size;
+			return *this;
+		}
 		Value& operator=(Value&& val)
 		{
 			if (this == &val)
@@ -56,6 +64,12 @@ protected:
 			_value = std::move(val._value);
 			_size = val._size;
 			return *this;
+		}
+	private:
+		std::unique_ptr<float> copyValue() const {
+			float *value = new float[_size];
+			std::memcpy(_value.get(), _value.get(), sizeof(float) * _size);
+			return std::unique_ptr<float>(value);
 		}
 	};
 	/* Pointer reference to the shader
