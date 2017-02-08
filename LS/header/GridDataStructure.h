@@ -14,7 +14,7 @@
 #include "Event/Events.h"
 
 struct gridValues {
-	glm::vec2 xz;
+	glm::ivec2 xz;
 	gridType type;
 	int value;
 };
@@ -51,8 +51,7 @@ public:
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
 	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
-
-
+	float getGridSpace();
 	bool isInside(glm::ivec2 vec) const;
 	gridType returnGridType(int width,int height);
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;

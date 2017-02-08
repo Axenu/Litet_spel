@@ -2,11 +2,10 @@
 
 Guard::~Guard()
 {
-	for (int i = 0; i < _height; i++)
+	for (int j = 0; j < _height; j++)
 	{
-		delete[] _levalues[i];
+		delete[] _levalues[j];
 	}
-
 	delete[] _levalues;
 }
 
@@ -14,108 +13,151 @@ Guard::Guard()
 {
 
 }
+
 void Guard::print()
 {
-	for (int i = 0; i < _height; i++)
+	for (int j = 0; j < _height; j++)
 	{
-		for (int j = 0; j < _width; j++)
+		for (int i = 0; i < _width; i++)
 		{
-			if (_levalues[i][j].value == -1 || _levalues[i][j].value == -2)
+			if (_levalues[j][i].value == -1 || _levalues[j][i].value == -2)
 			{
-				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[i][j].value << " ";
+				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
+			}
+			else if (_levalues[j][i].value >=0 && _levalues[j][i].value < 10)
+			{
+				std::cout << "+" << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
 			}
 			else
-			{
-				std::cout << "+" << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[i][j].value << " ";
-			}
+				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
 		}
 		std::cout << "" << std::endl;
 	}
 	std::cout << "end" << std::endl;
 }
-void Guard::gridWalkingBetweenTwoPoints(glm::vec3 GoalPosition)
+
+std::vector<glm::ivec2> Guard::gridWalkingBetweenTwoPoints(glm::ivec2 GoalPosition)
 {
 	int maxvalue = _height * _width - 1;
 	int oldmaxvalue = 0;
 	int value = 0;
-	int heightpositionofthegoal = (int)GoalPosition.x;
-	int widthpositionofthegoal = (int)GoalPosition.z;
+	glm::ivec2 goalPos = glm::ivec2((int)GoalPosition.x, (int)GoalPosition.y);
 	//-1 outforskadmark ej gåbart
 	// -2 vägg
 	while (maxvalue != 0)
 	{
 		oldmaxvalue = maxvalue;
-		for (int i = 0; i < _height; i++)
+		for (int j = 0; j < _height; j++)
 		{
-			for (int j = 0; j < _width; j++)
+			for (int i = 0; i < _width; i++)
 			{
-				if (_levalues[i][j].type == nothing || _levalues[i][j].type == guard)
+				if (_levalues[j][i].type == nothing || _levalues[j][i].type == guard)
 				{
-					if (_levalues[i][j].value == value)
+					if (_levalues[j][i].value == value)
 					{
-						if (i == 0)
-						{
-
-						}
-						else if (i > 0 && _levalues[i - 1][j].value == -1 && (_levalues[i - 1][j].type == nothing || _levalues[i - 1][j].type == guard))
-						{
-							_levalues[i-1][j].value = value + 1;
-							maxvalue--;
-						}
-						if (i == _height - 1)
-						{
-
-						}
-						else if (i < _height && _levalues[i + 1][j].value == -1 && (_levalues[i + 1][j].type == nothing || _levalues[i + 1][j].type == guard))
-						{
-							_levalues[i + 1][j].value = value + 1;
-							maxvalue--;
-						}
-					
-					
 						if (j == 0)
 						{
 
 						}
-						else if (j > 0 && _levalues[i][j -1].value == -1 && (_levalues[i][j -1].type == nothing || _levalues[i][j - 1].type == guard))
+						else if (j > 0 && _levalues[j - 1][i].value == -1 && (_levalues[j - 1][i].type == nothing || _levalues[j - 1][i].type == guard))
 						{
-							_levalues[i][j - 1].value = value + 1;
+							_levalues[j - 1][i].value = value + 1;
+							maxvalue--;
+						}
+
+						if (j == _height - 1)
+						{
+
+						}
+						else if (j < _height && _levalues[j + 1][i].value == -1 && (_levalues[j + 1][i].type == nothing || _levalues[j + 1][i].type == guard))
+						{
+							_levalues[j + 1][i].value = value + 1;
+							maxvalue--;
+						}
+
+						if (i == 0)
+						{
+
+						}
+						else if (i > 0 && _levalues[j][i - 1].value == -1 && (_levalues[j][i - 1].type == nothing || _levalues[j][i - 1].type == guard))
+						{
+							_levalues[j][i - 1].value = value + 1;
 							maxvalue--;
 						}
 
 
-						if (j == _width - 1)
+						if (i == _width - 1)
 						{
 
 						}
-						else if (j < _width && _levalues[i][j + 1].value == -1 && (_levalues[i][j + 1].type == nothing || _levalues[i][j + 1].type == guard))
+						else if (i < _width && _levalues[j][i + 1].value == -1 && (_levalues[j][i + 1].type == nothing || _levalues[j][i + 1].type == guard))
 						{
-							_levalues[i][j + 1].value = value + 1;
+							_levalues[j][i + 1].value = value + 1;
 							maxvalue--;
 						}
 					}
 				}
 			}
 		}
-		//print();
 		if (oldmaxvalue == maxvalue)
 		{
 			break;
 		}
 		value++;
 	}
-
-	for (int i = 0; i < _height; i++)
+	for (int j = 0; j < _height; j++)
 	{
-		for (int j = 0; j < _width; j++)
+		for (int i = 0; i < _width; i++)
 		{
-			if (_levalues[i][j].type == wall)
+			if (_levalues[j][i].type == wall)
 			{
-				_levalues[i][j].value = -2;
+				_levalues[j][i].value = -2;
 			}
 		}
 	}
+	print();  
+
+	std::vector<glm::ivec2> path;
+
+	glm::ivec2 currentPos = goalPos;
+	path.push_back(goalPos);
+
+	glm::ivec2 startPos = glm::ivec2(_width / 2, _height / 2);
+
+	int currentValue = _levalues[goalPos.y][goalPos.x].value;
+	while (currentValue > 1)
+	{
+		if (_levalues[currentPos.y - 1][currentPos.x].value < currentValue && _levalues[currentPos.y - 1][currentPos.x].value >= 0)
+		{
+			currentPos.y -= 1;
+			path.insert(path.begin(), currentPos);
+		}
+		else if (_levalues[currentPos.y + 1][currentPos.x].value < currentValue && _levalues[currentPos.y + 1][currentPos.x].value >= 0)
+		{
+			currentPos.y += 1;
+			path.insert(path.begin(), currentPos);
+		}
+		else if (_levalues[currentPos.y][currentPos.x - 1].value < currentValue && _levalues[currentPos.y][currentPos.x - 1].value >= 0)
+		{
+			currentPos.x -= 1;
+			path.insert(path.begin(), currentPos);
+		}
+		else if (_levalues[currentPos.y][currentPos.x + 1].value < currentValue && _levalues[currentPos.y][currentPos.x + 1].value >= 0)
+		{
+			currentPos.x += 1;
+			path.insert(path.begin(), currentPos);
+		}
+		currentValue--;
+	}
+
+	for (unsigned int i = 0; i < path.size(); i++) 
+	{
+		path[i] = _levalues[path[i].y][path[i].x].xz;
+	}
+
+	return path;
 }
+
 glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 {
 	glm::vec3 returnvalue = normalvalue;
@@ -164,7 +206,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 			goToSquare(dt, _guardsstartposition);
 			if (roundedpositon == glm::vec3(_guardsstartposition.x, roundedpositon.y, _guardsstartposition.z))
 			{
-				_aiChoice = randomgenerator();
+				_aiChoice = randomgenerator(4);
 			}
 			break;
 		}
@@ -214,56 +256,56 @@ void Guard::WalkingBetweenFourPoints(float dt)
 	}
 }
 
-void Guard::buildgridarray(Grid * gridet)
+void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY)
 {
-	int maxsizewidth = 6;
+	_currentGridSpace = gridet->getGridSpace();
+	unsigned int maxsizewidth = sizeX;
 	_height = 1, _width = 1;
 	
-	for(int i = maxsizewidth; i > 0; i--)
+	for (unsigned int i = maxsizewidth; i > 0; i--)
 	{
-		if (_guardsstartposition.x >= i && _guardsstartposition.x+i<=_heightLength)
+		if (_guardsstartposition.x >= i && _guardsstartposition.x + i <= _widthLength)
 		{
-			_height = i * 2;
+			_width = i * 2;
 			break;
 		}
 	}
-	int maxsizeheight = 6;
-	for (int i = maxsizeheight; i > 0; i--)
+	int maxsizeheight = sizeY;
+	for (unsigned int j = maxsizeheight; j > 0; j--)
 	{
-		if (_guardsstartposition.z >= i && _guardsstartposition.z + i <= _widthLength)
+		if (_guardsstartposition.z >= j && _guardsstartposition.z + j <= _heightLength)
 		{
-			_width = i * 2;
+			_height = j * 2;
 			break;
 		}
 	}
 
 	//building the 2D array
 	_levalues = new gridValues*[_height];
-	for (int i = 0; i < _height; i++)
+	for (int j = 0; j < _height; j++)
 	{
-		_levalues[i] = new gridValues[_width];
+		_levalues[j] = new gridValues[_width];
 	}
-	for (int i = 0; i < _height; i++)
+
+	for (int j = 0; j < _height; j++)
 	{
-		for (int j = 0; j  < _width; j++)
+		for (int i = 0; i < _width; i++)
 		{
-			_levalues[i][j].type = gridet->returnGridType((int)_guardsstartposition.x + i - (_height / 2), (int)_guardsstartposition.z + j - (_width / 2));
-			_levalues[i][j].xz = glm::vec2((int)_guardsstartposition.x + i - (_height / 2), (int)_guardsstartposition.z + j - (_width / 2));
-			if (_levalues[i][j].type == guard)
+			_levalues[j][i].type = gridet->returnGridType((int)_guardsstartposition.x + i - (_width / 2), (int)_guardsstartposition.z + j - (_height / 2));
+			_levalues[j][i].xz = glm::vec2((int)_guardsstartposition.x + i - (_width / 2), (int)_guardsstartposition.z + j - (_height / 2));
+			if (_levalues[j][i].type == guard)
 			{
-				_levalues[i][j].value = 0;
+				_levalues[j][i].value = 0;
 			}
 			else
 			{
-				_levalues[i][j].value = -1;
+				_levalues[j][i].value = -1;
 			}
 			//std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
 		}
 	}
-	print();
+//	print();
 }
-
-
 
 void Guard::update(float dt)
 {
@@ -294,28 +336,27 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_heightLength = gridet->getHeight();
 	this->setPosition(_guardsstartposition);
 	
-	_aiChoice = randomgenerator();
-	buildgridarray(gridet);
-	gridWalkingBetweenTwoPoints(glm::vec3(5, 0, 6));
+	_aiChoice = randomgenerator(4);
+	buildgridarray(gridet, 10, 20);
+	gridWalkingBetweenTwoPoints(glm::ivec2(5, 8));
 	//	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
-int Guard::randomgenerator()
+int Guard::randomgenerator(int randomNumber)
 {
-	return (int)rand() % 4 + 1;
+	return (int)rand() % randomNumber + 1;
 }
 
 void Guard::setPositionfromMap(glm::vec3 Guarden)
 {
 	this->setPosition(Guarden);
-
 }
 
-void Guard::goToSquare(float dt,glm::vec3 walkTo)
+void Guard::goToSquare(float dt, glm::vec3 walkTo)
 {
 	//walk up to top point
 	float speed = 0.3f;
-	float padding = 0.f;
+	//float padding = 0.f;
 	glm::vec3 value = this->getPosition();
 
 	//glm::vec3 value = glm::vec3(1, 0, 5);

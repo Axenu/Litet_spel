@@ -66,97 +66,92 @@ Grid::Grid()
 
 Grid::~Grid()
 {
-	for (int i = 0; i < _heightLength; i++)
+	for (int j = 0; j < _heightLength; j++)
 	{
-		delete[] _twodArray[i];
+		delete[] _twodArray[j];
 	}
-
 	delete[] _twodArray;
 }
+
 void Grid::buildgridarray()
 {
 	//building the 2D array
 	_twodArray = new gridValues*[_heightLength];
-	for (int i = 0; i < _heightLength; i++)
+	for (int j = 0; j < _heightLength; j++)
 	{
-		_twodArray[i] = new gridValues[_widthLength];
+		_twodArray[j] = new gridValues[_widthLength];
 	}
 }
 
-
 glm::vec3 Grid::getData(gridType Data)
 {
-	for (int i = 0; i < _heightLength; i++)
+	for (int j = 0; j < _heightLength; j++)
 	{
-		for (int j = 0; j < _widthLength; j++)
+		for (int i = 0; i < _widthLength; i++)
 		{
 			if (Data == exiting)
 			{
-				if (_twodArray[i][j].type == exiting)
+				if (_twodArray[j][i].type == exiting)
 				{
 					return glm::vec3(i, 0, j);
 				}
 			}
 			if (Data == guard)
 			{
-				if (_twodArray[i][j].type == guard)
+				if (_twodArray[j][i].type == guard)
 				{
 					return glm::vec3(i, 0, j);
 				}
 			}
 		}
-
 	}
 	return glm::vec3(0, 0, 0);
 }
 
 void Grid::print2darraydata()
 {
-
-
-
-	for (int i = 0;i < _heightLength;i++)
+	for (int j = 0; j < _heightLength; j++)
 	{
-		for (int j = 0;j < _widthLength;j++)
+		for (int i = 0; i < _widthLength; i++)
 		{
-			std::cout << _twodArray[i][j].type;
+			std::cout << _twodArray[j][i].type;
 		}
 		std::cout << "" << std::endl;
-
 	}
-
 }
 
 void Grid::loadingBmpPicture(char* filename)
 {
-//2
-//		_heightLength = 10;
-//		_widthLength = 15;
-//		buildgridarray();
-//		_twodArray[9][12].xz = glm::vec2(1,2);
-//f�rsta �r heightlength andra �r widthlenght
+	//
+	//_heightLength = 10;
+	//_widthLength = 15;
+	//buildgridarray();
+	//_twodArray[9][12].xz = glm::vec2(1,2);
+	//f�rsta �r heightlength andra �r widthlenght
 	FILE* f = fopen(filename, "rb");
 
 	if (f == NULL)
+	{
 		throw "Argument Exception";
+	}
 
 	unsigned char info[54];
 	fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
 
 											   // extract image height and width from header
-	int width = *(int*)&info[18];
-	int height = *(int*)&info[22];
+	int width = *(int*) &info[18];
+	int height = *(int*) &info[22];
 
-//	std::cout<< std::endl;
-//	std::cout<< "  Name: " << filename << std::endl;
-//	std::cout << " Width: " << width << std::endl;
-//	std::cout << "Height: " << height << std::endl;
+	//	std::cout<< std::endl;
+	//	std::cout<< "  Name: " << filename << std::endl;
+	//	std::cout << " Width: " << width << std::endl;
+	//	std::cout << "Height: " << height << std::endl;
 	_heightLength = height;
 	_widthLength = width;
 
 
 	buildgridarray();
-	//		_twodArray[9][12].xz = glm::vec2(1,2);
+	//	_twodArray[9][12].xz = glm::vec2(1,2);
 	//f�rsta �r heightlength andra �r widthlenght
 	int row_padded = (width * 3 + 3) & (~3);
 	unsigned char* data = new unsigned char[row_padded];
@@ -212,6 +207,26 @@ void Grid::loadingBmpPicture(char* filename)
 	fclose(f);
 //	print2darraydata();
 }
+
+#pragma region Grid Square
+
+bool Grid::isInside(glm::ivec2 sq) const {
+	return sq.x >= 0 && sq.x < _widthLength && sq.y >= 0 && sq.y < _heightLength;
+}
+
+glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const {
+	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
+}
+GridSquare Grid::operator[](glm::vec3 vec) const {
+	glm::ivec2 sq = getSquare(vec);
+	return isInside(sq) ? GridSquare(sq, _twodArray[sq.y][sq.x].type) : GridSquare();
+}
+
+gridType Grid::operator[](const glm::ivec2 &sq) const {
+	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::nothing;
+}
+
+#pragma endregion
 
 Mesh Grid::generateMesh()
 {
@@ -512,7 +527,6 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 }
 
-
 glm::vec3 Grid::getheightandwidthpoint12(int i)
 {
 	return pointxy[i];
@@ -631,83 +645,62 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 	return true;
 }
 
+float Grid::getGridSpace()
+{
+	return GRIDSPACE;
+}
+
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
-
-	int i = (int)guardposition.x;//height
-	int j = (int)guardposition.z; //width
+	//gridet är zx men alla andra värden i världen är xz
+	int i = (int)guardposition.x; //width
+	int j = (int)guardposition.z; //height
 	//first wall upwards
-	for (i;i > -1;i--)
+	for (j; j > -1; j--)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[0] = glm::vec3(i + 1, 0, j);
+			pointxy[0] = glm::vec3(i, 0, j + 1);
 			break;
 		}
 	}
-	i = (int)guardposition.x;
 	j = (int)guardposition.z;
 
 	//second point downwards
-	for (i;i < _heightLength;i++)
+	for (j; j < _heightLength; j++)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[1] = glm::vec3(i - 1, 0, j );
+			pointxy[1] = glm::vec3(i, 0, j - 1);
 			break;
 		}
 	}
-	i = (int)guardposition.x;
 	j = (int)guardposition.z;
 	//thirdwall left
-	for (j;j > -1;j--)
+	for (i; i > -1; i--)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[2] = glm::vec3(i, 0, j + 1);
+			pointxy[2] = glm::vec3(i + 1, 0, j);
 			break;
 		}
 	}
 	i = (int)guardposition.x;
-	j = (int)guardposition.z;
 
-	//sfourthwall right
-	for (j;j < _widthLength;j++)
+	//fourthwall right
+	for (i; i < _widthLength; i++)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[3] = glm::vec3(i , 0, j - 1);
+			pointxy[3] = glm::vec3(i - 1, 0, j);
 			break;
 		}
 	}
-
-
-
 }
 
-
-#pragma region Grid Square
-
-bool Grid::isInside(glm::ivec2 sq) const {
-	return sq.x >= 0 && sq.x < _widthLength && sq.y >= 0 && sq.y < _heightLength;
-}
-
-glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const {
-	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
-}
-GridSquare Grid::operator[](glm::vec3 vec) const {
-	glm::ivec2 sq = getSquare(vec);
-	return isInside(sq) ? GridSquare(sq, _twodArray[sq.y][sq.x].type) : GridSquare();
-}
-
-gridType Grid::operator[](const glm::ivec2 &sq) const {
-	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::nothing;
-}
 gridType Grid::returnGridType(int width, int height)
 {
-	return _twodArray[width][height].type;
+	return _twodArray[height][width].type;
 }
-
-#pragma endregion
 

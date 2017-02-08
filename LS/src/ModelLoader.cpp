@@ -48,7 +48,7 @@ Model ModelLoader::GetModel(std::string modelName, MeshShader * shader)
 void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 {
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(modelName, aiProcess_Triangulate | aiProcess_GenNormals);
+	const aiScene* scene = import.ReadFile(modelName, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -87,11 +87,28 @@ ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::stri
 			indice.push_back(face.mIndices[j]);
 		}
 	}
-
 	outMesh = new Mesh(pos, norm, indice);
 	_mesh.push_back(outMesh);
+
 	//Get Models material
 	Material mat(shader);
+	aiMaterial* tmpMat = scene->mMaterials[mesh->mMaterialIndex];
+
+	//Get Diffuse color
+	aiColor4D aiCol;
+	tmpMat->Get(AI_MATKEY_COLOR_DIFFUSE, aiCol);
+	glm::vec4 col = glm::vec4(aiCol.r, aiCol.g, aiCol.b, aiCol.a);
+	mat.setColor("diffuse", col);
+
+	//Get spec color
+	tmpMat->Get(AI_MATKEY_COLOR_SPECULAR, aiCol);
+	col = glm::vec4(aiCol.r, aiCol.g, aiCol.b, aiCol.a);
+	mat.setColor("spec", col);
+
+	//Get shine
+	float shine;
+	tmpMat->Get(AI_MATKEY_SHININESS, shine);
+	mat.setFloat("shine", shine);
 
 	return ModelPart(outMesh, mat);
 }

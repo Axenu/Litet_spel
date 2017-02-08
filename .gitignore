@@ -4,11 +4,9 @@ LS/Debug/
 LS/Release/
 *.VC.db
 *.VC.opendb
-
 *.vcxproj.filters
 *.tlog
 *.lastbuildstate
-*.obj
 *.pdb
 *.ipdb
 *.log
