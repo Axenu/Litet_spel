@@ -70,6 +70,8 @@ void setupWindow()
 
 	TestGame game(setting, eventManager);
 
+	/* Load game
+	*/
 	game.initiate();
 	gl::CheckGLErrors("Init stage failed: Resource");
 

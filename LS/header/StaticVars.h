@@ -3,6 +3,6 @@
 //StatIC variables
 namespace sic {
 
-	static bool CloseWindow = false;
+	extern bool CloseWindow;
 
 }
