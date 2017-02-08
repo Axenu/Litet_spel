@@ -9,6 +9,7 @@ class CharacterSquareEvent : public Event
 {
 public:
 	CharacterSquareEvent(Character *ref, GridSquare square) : _ref(ref), _square(square) {};
+	~CharacterSquareEvent() {}
 
 	Character *const _ref;
 	const GridSquare _square;

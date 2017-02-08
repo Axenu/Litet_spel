@@ -13,6 +13,7 @@
 #include "Event/Events.h"
 #include "gui/Views/GameOverView.h"
 #include "Game/TestGame.h"
+#include "Game/Objects/CharacterEvents.h"
 
 namespace gui
 {
@@ -26,6 +27,7 @@ namespace gui
         // gui::Button* _startButton;
         TestGame *_game;
         float* _fps;
+        bool _isAtExit = false;
 
     public:
         HUDView(EventManager* manager, float* fps);
@@ -38,7 +40,7 @@ namespace gui
 
         void gameStarted(const GameStartedEvent &event);
         void gameOver(const GameOverEvent &event);
-        void exitSquareTrigger(const ExitTriggerEvent &event);
+        void exitSquareTrigger(const CharacterSquareEvent &event);
 
         // void endGame(int action);
 

@@ -4,7 +4,8 @@
 Material::Material(MeshShader *shader)
 	: _shader(shader)
 {
-	link();
+	if (_shader)
+		link();
 }
 
 Material::~Material()
@@ -14,7 +15,7 @@ Material::~Material()
 
 /* Bind shader and assign related uniforms
 */
-void Material::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) {
+void Material::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) const {
 	_shader->assignUniforms(fD, modelMatrix, _shaderLink.get());
 }
 
@@ -114,4 +115,9 @@ void Material::setVec4(const std::string &id, const glm::vec4 &value) {
 }
 void Material::setColor(const std::string &id, const glm::vec4 &color) {
 	setVec4(id, color);
+}
+
+MeshShader * Material::getpShader()
+{
+	return _shader;
 }

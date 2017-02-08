@@ -27,7 +27,7 @@ void TestGame::initiate() {
 	player->setScene(&_scene);
 	_camera.setParent(player);
 
-	ModelPart guardModelMeshPart(&_cube, &_material);
+	ModelPart guardModelMeshPart(&_cube, _material);
 	Model guardModel(guardModelMeshPart);
 	//Add some more game objects
 	_scene.add(player);
@@ -51,11 +51,11 @@ void TestGame::initiate() {
 
 	//_scene.add(loot1);
 	//_scene.add(loot2);
-	std::vector<glm::vec3>* pLootPosList = _level->getGrid().getLootLocations();
-	Material *tmpMat = new Material(&_shader);
-	tmpMat->setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	tmpMat->setColor("spec", glm::vec4(1.0f));
-	tmpMat->setFloat("shine", 20.0f);
+	std::vector<glm::vec3>* pLootPosList = _gridtest.getLootLocations();
+	Material tmpMat(&_shader);
+	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	tmpMat.setColor("spec", glm::vec4(1.0f));
+	tmpMat.setFloat("shine", 20.0f);
 	Model tmpModel = _modelLoader.GetModel("Resources/cube.obj", tmpMat);
 	for (unsigned int i = 0; i < pLootPosList->size(); i++)
 	{

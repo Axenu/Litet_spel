@@ -57,33 +57,28 @@ namespace gui {
     }
     void HUDView::gameOver(const GameOverEvent &event)
     {
-        // std::cout << "GAME OVER!" << std::endl;
         if (!_parent->setView("GameOverView"))
         {
-            // std::cout << "scene not found \n Creating new..." << std::endl;
             _parent->setView(new GameOverView(_manager, event));
         }
-        // _parent->setScene(new HUDScene(_manager, _fps));
-        // ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
-        // _manager->execute(event);
     }
-    void HUDView::exitSquareTrigger(const ExitTriggerEvent &event)
+    void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {
-        if (event.didEnter())
+        if (event._square._grid == gridType::exiting)
         {
-            std::cout << "player entered exit" << std::endl;
+            if (!_isAtExit)
+            {
+                std::cout << "player entered exit" << std::endl;
+                _isAtExit = true;
+            }
         }
         else
         {
-            std::cout << "player left exit" << std::endl;
+            if (_isAtExit)
+            {
+                std::cout << "player left exit" << std::endl;
+                _isAtExit = false;
+            }
         }
     }
-    // void HUDScene::endGame(int action)
-    // {
-    //     if (action == GLFW_RELEASE)
-    //     {
-    //         GameOverEvent event(false, 1000);
-    //         _manager->execute(event);
-    //     }
-    // }
 }
