@@ -9,27 +9,27 @@
 class Guard : public GameObject
 {
 private:
-	glm::vec3 point1x; //höjden först sen breden. 
-	glm::vec3 point2x; //höjden först sen breden. 
-	glm::vec3 point1z; //höjden först sen breden. 
-	glm::vec3 point2z; //höjden först sen breden. 
-	glm::vec3 guardsstartposition; //höjden först sen breden. 
-	gridValues** levalues;
-	int aiChoice;
+	glm::vec3 _point1x; //höjden först sen breden. 
+	glm::vec3 _point2x; //höjden först sen breden. 
+	glm::vec3 _point1z; //höjden först sen breden. 
+	glm::vec3 _point2z; //höjden först sen breden. 
+	glm::vec3 _guardsstartposition; //höjden först sen breden. 
+	gridValues** _levalues;
+	int _aiChoice;
 	int _heightLength;
 	int _widthLength;
-	int height;
-	int width;
+	int _height;
+	int _width;
 
 public:
 	virtual ~Guard();
 	Guard();
-void print();
-void gridWalkingBetweenTwoPoints(glm::vec3 GoalPosition);
+	void print();
+	void gridWalkingBetweenTwoPoints(glm::vec3 GoalPosition);
 	glm::vec3 roundTheValuefrom0Comma01(glm::vec3);
 	Guard(glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
-virtual	void update(float dt);
+	virtual	void update(float dt);
 	Guard(Model & m, Grid * gridet);
 	int randomgenerator();
 	void buildgridarray(Grid * gridet);
