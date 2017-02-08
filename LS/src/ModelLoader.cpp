@@ -29,19 +29,19 @@ ModelLoader::~ModelLoader()
 	}
 }
 
-Model* ModelLoader::GetModel(std::string modelName, Material* material)
+Model ModelLoader::GetModel(std::string modelName, Material* material)
 {
 	for (unsigned int i = 0; i < _models.size(); i++)
 	{
 		if (_models[i]->getName() == modelName)
 		{
-			return _models[i];
+			return *_models[i];
 		}
 	}
 
 	LoadModel(modelName, material);
 
-	return _models.back();
+	return *_models.back();
 }
 
 void ModelLoader::LoadModel(std::string modelName, Material* material)

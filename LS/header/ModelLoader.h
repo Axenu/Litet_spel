@@ -22,11 +22,11 @@ private:
 	std::vector<Model*> _models;
 	std::vector<Mesh*> _mesh;
 	std::vector<Material*> _material;
-
+	//std::map <std::string, std::vector<Mesh*>> _modelMeshes;
 public:
 	ModelLoader();
 	ModelLoader(const ModelLoader&);
 	virtual ~ModelLoader();
-	Model* GetModel(std::string, Material* material);
+	Model GetModel(std::string, Material* material);
 
 };
