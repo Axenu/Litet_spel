@@ -51,7 +51,7 @@ void TestGame::initiate() {
 
 	//_scene.add(loot1);
 	//_scene.add(loot2);
-	std::vector<glm::vec3>* pLootPosList = _gridtest.getLootLocations();
+	std::vector<glm::vec3>* pLootPosList = _level->getGrid().getLootLocations();
 	Material tmpMat(&_shader);
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	tmpMat.setColor("spec", glm::vec4(1.0f));
