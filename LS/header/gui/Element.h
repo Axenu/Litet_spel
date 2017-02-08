@@ -20,6 +20,7 @@ namespace gui
         glm::mat3 _modelMatrix;
         std::vector<Element*> _children;
         Element* _parent = nullptr;
+        bool _isActive = true;
         //GL stuff
         int _vertexCount;
         int _indexCount;
@@ -53,6 +54,9 @@ namespace gui
         void setScale(glm::vec2 &scale);
         void setScale(float x, float y);
         void setScale(float s);
+
+        void activate();
+        void deactivate();
 
     };
 
