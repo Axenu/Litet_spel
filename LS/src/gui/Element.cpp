@@ -47,24 +47,29 @@ namespace gui
         child->_parent = this;
         _children.push_back(child);
     }
-    void Element::testClick(glm::vec2& pos, int action)
+    Element *Element::checkCollision(glm::vec2 &pos)
     {
-        //test collision with this
         glm::vec3 min = _modelMatrix * glm::vec3(0, 0, 1.0);
         glm::vec3 max = _modelMatrix * glm::vec3(_size.x, _size.y, 1.0);
         if (pos.x < max.x && pos.x > min.x)
         {
             if (pos.y < max.y && pos.y > min.y)
             {
-                if (!handleClick(action))
+                if (_isReactive)
                 {
-                    for (Element* child : _children)
+                    return this;
+                }
+                for (Element* child : _children)
+                {
+                    Element *e = child->checkCollision(pos);
+                    if (e != nullptr)
                     {
-                        child->testClick(pos, action);
+                        return e;
                     }
                 }
             }
         }
+        return nullptr;
     }
     bool Element::handleClick(int action)
     {

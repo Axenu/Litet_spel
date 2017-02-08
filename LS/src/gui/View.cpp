@@ -29,11 +29,16 @@ namespace gui
     {
         _parent = manager;
     }
-    void View::testClick(glm::vec2& pos, int action)
+    Element *View::checkCollision(glm::vec2 &pos)
     {
         for (Element* child : _children)
         {
-            child->testClick(pos, action);
+            Element *e = child->checkCollision(pos);
+            if (e != nullptr)
+            {
+                return e;
+            }
         }
+        return nullptr;
     }
 }

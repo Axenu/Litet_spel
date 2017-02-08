@@ -71,6 +71,8 @@ namespace gui
         void onRender();
         void onUpdate(float dt);
 
+        virtual void cursorDidEnter();
+        virtual void cursorDidExit();
         bool handleClick(int action);
 
         void addStringComponent(StringComponent* sc);

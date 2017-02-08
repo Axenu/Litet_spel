@@ -13,7 +13,8 @@ namespace gui
         _rect->setColor(color);
         _label->setPosition(_padding, _padding);
         _label->updateText();
-         _size = _rect->getSize();
+        _size = _rect->getSize();
+        _isReactive = true;
         addChild(_rect);
         addChild(_label);
     }
@@ -36,6 +37,18 @@ namespace gui
     void execute(int action)
     {
 
+    }
+    void Button::cursorDidEnter()
+    {
+        // std::cout << "enter" << std::endl;
+        glm::vec4 color(0.5,0.5,0,1);
+        _rect->setColor(color);
+    }
+    void Button::cursorDidExit()
+    {
+        // std::cout << "exit" << std::endl;
+        glm::vec4 color(0.5,0.0,0,1);
+        _rect->setColor(color);
     }
     bool Button::handleClick(int action)
     {

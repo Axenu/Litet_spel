@@ -28,6 +28,7 @@ namespace gui
         std::vector<View*> _loadedViews;
         unsigned int _windowWidth;
         unsigned int _windowHeight;
+        Element *_selectedElement = nullptr;
 
     public:
         Manager();

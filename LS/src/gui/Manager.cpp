@@ -69,9 +69,41 @@ namespace gui
     }
     void Manager::cursorMoved(const MouseMoveEvent& event)
     {
-        if (_cursorMode == GLFW_CURSOR_NORMAL)
+        if (_cursorMode == GLFW_CURSOR_NORMAL && _currentView != nullptr)
         {
             _lastCursorPos = event.getPos();
+            glm::vec2 pos;
+            pos.x = (_lastCursorPos.x / (float)_windowWidth * 2) - 1;
+            pos.y = (1 - (_lastCursorPos.y / (float)_windowHeight * 2));
+            if (pos.x >= -1 && pos.y >= -1 && pos.x <= 1 && pos.y <= 1)
+            {
+                // std::cout << "x: " << pos.x << " y: " << pos.y << std::endl;
+                // std::cout << "ds" << std::endl;
+                Element *e = _currentView->View::checkCollision(pos);
+                if (e != nullptr)
+                {
+                    // std::cout << "col" << std::endl;
+                    if (_selectedElement == nullptr)
+                    {
+                        _selectedElement = e;
+                        e->cursorDidEnter();
+                    }
+                    else if (_selectedElement != e)
+                    {
+                        _selectedElement->cursorDidExit();
+                        _selectedElement = e;
+                        e->cursorDidEnter();
+                    }
+                }
+                else
+                {
+                    if (_selectedElement != nullptr)
+                    {
+                        _selectedElement->cursorDidExit();
+                        _selectedElement = nullptr;
+                    }
+                }
+            }
         }
     }
 
@@ -90,13 +122,9 @@ namespace gui
         {
             if (_currentView != nullptr)
             {
-                glm::vec2 pos;
-                pos.x = (_lastCursorPos.x / (float)_windowWidth * 2) - 1;
-                pos.y = (1 - (_lastCursorPos.y / (float)_windowHeight * 2));
-                if (pos.x >= -1&& pos.y >= -1 && pos.x <= 1 && pos.y <= 1)
+                if (_selectedElement != nullptr)
                 {
-                    _currentView->View::testClick(pos, event.getAction());
-                    //test coliision with scene
+                    _selectedElement->handleClick(event.getAction());
                 }
             }
         }

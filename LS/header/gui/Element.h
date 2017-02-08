@@ -21,6 +21,7 @@ namespace gui
         std::vector<Element*> _children;
         Element* _parent = nullptr;
         bool _isActive = true;
+        bool _isReactive = false;
         //GL stuff
         int _vertexCount;
         int _indexCount;
@@ -36,7 +37,9 @@ namespace gui
 
         void addChild(Element* child);
 
-        void testClick(glm::vec2& pos, int action);
+        Element *checkCollision(glm::vec2 &pos);
+        virtual void cursorDidEnter() {}
+        virtual void cursorDidExit() {}
         virtual bool handleClick(int action);
 
 
