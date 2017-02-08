@@ -22,6 +22,11 @@ ModelLoader::~ModelLoader()
 		delete _mesh[i];
 		_mesh[i] = nullptr;
 	}
+	for (unsigned int i = 0; i < _material.size(); i++)
+	{
+		delete _material[i];
+		_material[i] = nullptr;
+	}
 }
 
 Model* ModelLoader::GetModel(std::string modelName, Material* material)
@@ -80,7 +85,7 @@ MeshPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::strin
 
 	outMesh = new Mesh(pos, norm, indice);
 	_mesh.push_back(outMesh);
-
+	_material.push_back(material);
 	return MeshPart(outMesh, material);
 }
 

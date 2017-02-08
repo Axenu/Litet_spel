@@ -21,6 +21,7 @@ private:
 
 	std::vector<Model*> _models;
 	std::vector<Mesh*> _mesh;
+	std::vector<Material*> _material;
 
 public:
 	ModelLoader();
