@@ -17,11 +17,11 @@ namespace gui
     }
     void Element::render()
     {
+        onRender();
         for (Element* child : _children)
         {
             child->render();
         }
-        onRender();
     }
     void Element::update(float dt)
     {

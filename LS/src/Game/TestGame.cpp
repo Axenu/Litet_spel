@@ -4,7 +4,7 @@
 
 
 TestGame::TestGame(Setting &setting, EventManager &events)
-	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _renderBuffer(events, GLFW_KEY_R), 
+	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _renderBuffer(events, GLFW_KEY_R),
 	  _material(&_shader), _lootMat(&_shader) {
 
 	_bufferRenderer.setWindowSize((float)setting.Width(), (float)setting.Height(), _camera);

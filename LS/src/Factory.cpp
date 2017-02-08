@@ -24,7 +24,6 @@ Shader* Factory::getShader(std::string name)
 Shader* Factory::getShader(std::string vert, std::string frag)
 {
     std::string name = vert+frag;
-    std::cout << name << std::endl;
     std::map<std::string,Shader*>::iterator it = _shaders.find(name);
     if (it != _shaders.end())
     {
