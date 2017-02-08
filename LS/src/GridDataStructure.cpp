@@ -197,7 +197,8 @@ void Grid::loadingBmpPicture(char* filename)
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
-				this->_lootLocations.push_back(glm::vec3(j, 0.f, i));
+				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
+				this->_lootLocations.push_back(tmpVec);
 				_twodArray[height - 1 - i][realj].type = loot;
 			}
 			else
@@ -719,5 +720,3 @@ gridType Grid::returnGridType(int width, int height)
 	return _twodArray[width][height].type;
 }
 
-				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
-				this->_lootLocations.push_back(tmpVec);
