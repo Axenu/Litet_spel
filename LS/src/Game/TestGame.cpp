@@ -4,7 +4,7 @@
 
 
 TestGame::TestGame(Setting &setting, EventManager &events)
-	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _renderBuffer(events, GLFW_KEY_R), 
+	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _renderBuffer(events, GLFW_KEY_R),
 	  _material(&_shader), _lootMat(&_shader) {
 
 	_bufferRenderer.setWindowSize((float)setting.Width(), (float)setting.Height(), _camera);
@@ -25,9 +25,9 @@ void TestGame::initiate() {
 	player->setScene(&_scene);
 	_camera.setParent(player);
 
-	MeshPart guardModelMeshPart(&_cube, &_material);
+	ModelPart guardModelMeshPart(&_cube, &_material);
 	Model guardModel(guardModelMeshPart);
-	MeshPart goModelMeshPart(&_wallMesh, &_material);
+	ModelPart goModelMeshPart(&_wallMesh, &_material);
 	Model goModel(goModelMeshPart);
 	//Add some more game objects
 	_scene.add(player);
@@ -54,10 +54,10 @@ void TestGame::initiate() {
 	tmpMat->setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	tmpMat->setColor("spec", glm::vec4(1.0f));
 	tmpMat->setFloat("shine", 20.0f);
-	Model* tmpModel = _modelLoader.GetModel("Resources/cube.obj", tmpMat);
+	Model tmpModel = _modelLoader.GetModel("Resources/cube.obj", tmpMat);
 	for (unsigned int i = 0; i < pLootPosList->size(); i++)
 	{
-		LootObject *tmpLoot = new LootObject(*tmpModel);
+		LootObject *tmpLoot = new LootObject(tmpModel);
 		tmpLoot->setPosition((*pLootPosList)[i]);
 		tmpLoot->setY(1.0f);
 		_scene.add(tmpLoot);

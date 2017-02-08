@@ -44,8 +44,6 @@ public:
     Character();
     virtual ~Character();
 private:
-	bool buttonpressed;
-	bool charactermovedoutsidebox;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
@@ -58,5 +56,6 @@ private:
     float _isMoving;
     float _lootValue;
     bool _hasMoved = false;
-    int _cursorMode = GLFW_CURSOR_NORMAL;
+    int _cursorMode = GLFW_CURSOR_DISABLED;
+    bool _isAtExit = false;
 };

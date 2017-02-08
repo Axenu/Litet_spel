@@ -7,33 +7,39 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "gui/Font.h"
-#include "gui/GUIScene.h"
+#include "gui/View.h"
 #include "gui/Button.h"
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
-#include "gui/Scenes/HUDScene.h"
 
 namespace gui
 {
 
-    class MainMenuScene : public Scene
+    class GameOverView : public View
     {
     private:
         EventManager* _manager;
         gui::Font *_font;
         gui::Button* _quitButton;
-        gui::Button* _startButton;
-        float* _fps;
+        // gui::Button* _startButton;
+        // float* _fps;
 
     public:
-        MainMenuScene(EventManager* manager, float* fps);
-        virtual ~MainMenuScene();
+        GameOverView(EventManager* manager, const GameOverEvent &event);
+        virtual ~GameOverView();
 
         void onRender();
         void onUpdate(float dt);
 
+        virtual void initiate();
+
         void QuitGame(int action);
-        void StartGame(int action);
+
+        // void gameStarted(const GameStartedEvent &event);
+        // void gameOver(const GameOverEvent &event);
+
+        // void QuitGame(int action);
+        // void StartGame(int action);
     };
 
 }

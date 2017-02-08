@@ -66,8 +66,6 @@ bool Shader::bindSampler(const std::string &varName, int sampleSlot) {
 	return false;
 }
 
-
-
 void Shader::printListOfUniforms() {
     std::cout << "Printing program uniforms: " << std::endl;
     int total = -1;
@@ -82,68 +80,6 @@ void Shader::printListOfUniforms() {
         std::cout << name << std::endl;
         // GLuint location = glGetUniformLocation( shaderProgram, name );
     }
-}
-
-GLint Shader::createShader(std::string path, GLenum shaderType) const {
-    std::fstream fin;
-    GLuint shaderID = glCreateShader(shaderType);
-
-    // Vertex Shader
-    fin.open(path);
-    if(!fin.is_open()) {
-        fin.close();
-        std::cout << "File not found: '" << path << "'" << std::endl;
-        return 0;
-    }
-
-    std::string source((std::istreambuf_iterator<GLchar>(fin)), std::istreambuf_iterator<GLchar>());
-    fin.close();
-
-    const GLchar *shaderSource = source.c_str();
-    glShaderSource(shaderID, 1, &shaderSource, NULL);
-
-    glCompileShader(shaderID);
-
-    GLint compileStatus;
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compileStatus);
-    if (compileStatus == GL_FALSE) {
-        std::cout << "Shader failed to compile: '" << path << "'" << std::endl;
-        std::cout << source << std::endl;
-
-        GLint infoLogLength = 0;
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
-		std::vector<GLchar> errorLog(infoLogLength);
-        GLchar *infoLog = new GLchar[infoLogLength + 1];
-        glGetShaderInfoLog(shaderID, infoLogLength, &infoLogLength, &errorLog[0]);
-        std::cout << infoLog << std::endl;
-        delete[] infoLog;
-        return 0;
-    }
-    return shaderID;
-}
-
-GLint Shader::createShaderFromString(std::string *shader, GLenum shaderType) const {
-	GLuint shaderID = glCreateShader(shaderType);
-
-    const GLchar *shaderSource = shader->c_str();
-    glShaderSource(shaderID, 1, &shaderSource, NULL);
-
-    glCompileShader(shaderID);
-
-    GLint compileStatus;
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compileStatus);
-    if (compileStatus != GL_TRUE) {
-        std::cout << "Shader failed to compile: '" << shader << "'" << std::endl;
-
-        GLint infoLogLength;
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
-        GLchar *infoLog = new GLchar[infoLogLength + 1];
-        glGetShaderInfoLog(shaderID, infoLogLength, NULL, infoLog);
-        std::cout << infoLog << std::endl;
-        delete[] infoLog;
-        return 0;
-    }
-    return shaderID;
 }
 
 Shader::~Shader() {

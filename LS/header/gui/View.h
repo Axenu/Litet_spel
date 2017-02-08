@@ -15,18 +15,20 @@ namespace gui
 
     class Manager;
 
-    class Scene : public Element
+    class View : public Element
     {
     private:
     protected:
         std::string _name;
         Manager* _parent;
     public:
-        Scene();
-		virtual ~Scene();
+        View();
+		virtual ~View();
 
         void onRender();
         void onUpdate(float dt);
+
+        virtual void initiate() = 0;
 
         std::string getName();
 

@@ -22,21 +22,26 @@ ModelLoader::~ModelLoader()
 		delete _mesh[i];
 		_mesh[i] = nullptr;
 	}
+	for (unsigned int i = 0; i < _material.size(); i++)
+	{
+		delete _material[i];
+		_material[i] = nullptr;
+	}
 }
 
-Model* ModelLoader::GetModel(std::string modelName, Material* material)
+Model ModelLoader::GetModel(std::string modelName, Material* material)
 {
 	for (unsigned int i = 0; i < _models.size(); i++)
 	{
 		if (_models[i]->getName() == modelName)
 		{
-			return _models[i];
+			return *_models[i];
 		}
 	}
 
 	LoadModel(modelName, material);
 
-	return _models.back();
+	return *_models.back();
 }
 
 void ModelLoader::LoadModel(std::string modelName, Material* material)
@@ -53,7 +58,7 @@ void ModelLoader::LoadModel(std::string modelName, Material* material)
 	ProcessNode(scene->mRootNode, scene, modelName, material);
 }
 
-MeshPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string modelName, Material* material)
+ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string modelName, Material* material)
 {
 	Mesh *outMesh;
 
@@ -80,13 +85,13 @@ MeshPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::strin
 
 	outMesh = new Mesh(pos, norm, indice);
 	_mesh.push_back(outMesh);
-
-	return MeshPart(outMesh, material);
+	_material.push_back(material);
+	return ModelPart(outMesh, material);
 }
 
 void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string modelName, Material* material)
 {
-	std::vector<MeshPart> meshParts;
+	std::vector<ModelPart> meshParts;
 
 	//Process all node's meshes
 	for (GLuint i = 0; i < node->mNumMeshes; i++)

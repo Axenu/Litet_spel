@@ -9,7 +9,7 @@
 #include "gl/GLFunctions.h"
 #include "Font.h"
 #include "gui/Element.h"
-#include "gui/GUIScene.h"
+#include "gui/View.h"
 #include "Event/Input/InputManager.h"
 
 //new
@@ -22,20 +22,24 @@ namespace gui
     {
     private:
         EventManager* _manager;
-        Scene* _currentScene;
+        View* _currentView;
         glm::vec2 _lastCursorPos;
-        glm::vec2 _windowSize;
         int _cursorMode = GLFW_CURSOR_NORMAL;
-        std::vector<Scene*> _loadedScenes;
+        std::vector<View*> _loadedViews;
+        unsigned int _windowWidth;
+        unsigned int _windowHeight;
 
     public:
         Manager();
         Manager(EventManager* manager);
         ~Manager();
 
-        bool setScene(std::string name);
-        void setScene(Scene* scene);
-        void setWindowSize(float width, float height);
+        bool setView(std::string name);
+        void setView(View* view);
+        void setWindowSize(unsigned int width, unsigned int height);
+
+        unsigned int getWindowWidth();
+        unsigned int getWindowHeight();
 
         void update(float dt);
         void render();

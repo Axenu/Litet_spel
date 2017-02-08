@@ -10,7 +10,8 @@
 #include "Game/TestGame.h"
 #include "gui/Button.h"
 #include "gui/Manager.h"
-#include "gui/Scenes/MainMenuScene.h"
+#include "gui/Views/MainMenuView.h"
+#include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 
 void setupWindow()
@@ -65,14 +66,14 @@ void setupWindow()
 	bool windowalive=false;
 
 	//basic init
-	Setting setting(wWidth, wHeight, 3, 0.1f, 100.f, 70.f);
-	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
-
-	TestGame game(setting, eventManager);
+	// Setting setting(wWidth, wHeight, 3, 0.1f, 100.f, 70.f);
+	// setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
+	//
+	// TestGame game(setting, eventManager);
 
 	/* Load game
 	*/
-	game.initiate();
+	// game.initiate();
 	gl::CheckGLErrors("Init stage failed: Resource");
 
 	// gui::Font *font = new gui::Font("Resources/fonts/arial");
@@ -88,25 +89,27 @@ void setupWindow()
 	float dT;
 	float FPS;
 
-	gui::MainMenuScene* guiScene = new gui::MainMenuScene(&eventManager, &FPS);
+	gui::MainMenuView* guiScene = new gui::MainMenuView(&eventManager, &FPS);
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(640, 480);
-	guiManager.setScene(guiScene);
+	guiManager.setView(guiScene);
 
 
 
 /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window) && !sic::CloseWindow)
+    while (!glfwWindowShouldClose(window))
     {
+		glClearColor(1.0, 0.0, 1.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Calculate dt
 		currentTime = (float)glfwGetTime();
 		dT = currentTime - lastTime;
 	    lastTime = currentTime;
 		FPS = 1.0f/dT;
 		//Update game logic
-		game.update(dT);
+		// game.update(dT);
 		//Draw game drawables
-		game.draw();
+		// game.draw();
 
 		guiManager.update(dT);
 		guiManager.render();
@@ -123,7 +126,7 @@ void setupWindow()
 
 int main()
 {
-	std::cout << "Init window!" << std::endl;
+	// std::cout << "Init window!" << std::endl;
 	setupWindow();
 
     return 0;

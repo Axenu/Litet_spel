@@ -152,6 +152,18 @@ void Character::moveCharacter(const KeyboardEvent& event)
 			}
 		}
 	}
+    else if (event.getKey() == GLFW_KEY_G)
+	{
+        if (event.getAction() == GLFW_PRESS)
+        {
+            if (_isAtExit) // && _hasVictoryLoot TODO
+            {
+                //call endGameEvent
+                GameOverEvent event(true, _lootValue);
+                _eventManager->execute(event);
+            }
+        }
+	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
 {
@@ -168,14 +180,14 @@ void Character::moveMouse(const MouseMoveEvent& event)
     {
         rotateY(deltaPos.y * -RotationSpeed);
         rotateX(deltaPos.x * -RotationSpeed);
-    }
-    if (getRY() > glm::pi<float>()*0.5f)
-    {
-        setRY(glm::pi<float>()*0.5f);
-    }
-    if (getRY() < glm::pi<float>()*-0.5f)
-    {
-        setRY(glm::pi<float>()*-0.5f);
+        if (getRY() > glm::pi<float>()*0.5f)
+        {
+            setRY(glm::pi<float>()*0.5f);
+        }
+        if (getRY() < glm::pi<float>()*-0.5f)
+        {
+            setRY(glm::pi<float>()*-0.5f);
+        }
     }
 }
 void Character::collectLoot(const CollectLootEvent& event)
@@ -202,11 +214,8 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 {
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
-	_eventManager->listen(this,&Character::doYouWantToWin);
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);
-	buttonpressed = false;
-	charactermovedoutsidebox = false;
 }
 Character::Character()
 {
