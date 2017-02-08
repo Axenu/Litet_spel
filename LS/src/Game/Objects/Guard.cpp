@@ -330,3 +330,15 @@ void Guard::goToSquare(float dt,glm::vec3 walkTo)
 		this->move(glm::vec3(-speed, 0, 0) * dt);
 	}
 }
+
+bool Guard::DetectedPlayer(glm::vec3 player)
+{
+	float distance = getDistance(glm::vec4(player, 1.0f));
+
+	if (distance > 1.0f)
+	{
+		return false;
+	}
+
+	return true;
+}

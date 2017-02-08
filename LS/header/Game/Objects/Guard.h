@@ -35,5 +35,6 @@ public:
 	void buildgridarray(Grid * gridet);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
+	bool DetectedPlayer(glm::vec3);
 };
 

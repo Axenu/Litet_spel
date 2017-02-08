@@ -29,9 +29,12 @@ void TestGame::initiate() {
 	Model guardModel(guardModelMeshPart);
 	ModelPart goModelMeshPart(&_wallMesh, &_material);
 	Model goModel(goModelMeshPart);
+
+	guard = new Guard(guardModel, &_gridtest);
+
 	//Add some more game objects
 	_scene.add(player);
-	_scene.add(new Guard(guardModel, &_gridtest));
+	_scene.add(guard);
 	_scene.add(new GameObject(goModel));
 	//Add some lights
 	_scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));

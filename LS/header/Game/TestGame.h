@@ -18,6 +18,7 @@ protected:
 	DeferredMeshShader _shader;
 	Material _material, _lootMat;
 	Character* player;
+	Guard* guard;
 	Grid _gridtest;
 	Mesh _wallMesh, _cube;
 
