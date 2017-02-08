@@ -25,9 +25,9 @@ void TestGame::initiate() {
 	player->setScene(&_scene);
 	_camera.setParent(player);
 
-	MeshPart guardModelMeshPart(&_cube, &_material);
+	ModelPart guardModelMeshPart(&_cube, &_material);
 	Model guardModel(guardModelMeshPart);
-	MeshPart goModelMeshPart(&_wallMesh, &_material);
+	ModelPart goModelMeshPart(&_wallMesh, &_material);
 	Model goModel(goModelMeshPart);
 	//Add some more game objects
 	_scene.add(player);

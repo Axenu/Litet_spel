@@ -16,7 +16,7 @@ class ModelLoader
 {
 private:
 	void LoadModel(std::string, Material* material);
-	MeshPart ProcessMesh(aiMesh*, const aiScene*, std::string, Material* material);
+	ModelPart ProcessMesh(aiMesh*, const aiScene*, std::string, Material* material);
 	void ProcessNode(aiNode*, const aiScene*, std::string, Material* material);
 
 	std::vector<Model*> _models;

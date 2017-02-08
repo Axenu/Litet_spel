@@ -99,7 +99,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>header</AdditionalIncludeDirectories>
@@ -174,7 +174,7 @@
     <ClCompile Include="src\gui\GUIScene.cpp" />
     <ClCompile Include="src\gui\Manager.cpp" />
     <ClCompile Include="src\Event\Input\InputKeyState.cpp" />
-    <ClCompile Include="src\Render\Mesh\MeshPart.cpp" />
+    <ClCompile Include="src\Render\Mesh\ModelPart.cpp" />
     <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
     <ClCompile Include="src\ModelLoader.cpp" />
     <ClCompile Include="src\Render\Composition\RenderDefBuffers.cpp" />
@@ -237,7 +237,7 @@
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\GUIScene.h" />
     <ClInclude Include="header\gui\Manager.h" />
-    <ClInclude Include="header\Render\Mesh\MeshPart.h" />
+    <ClInclude Include="header\Render\Mesh\ModelPart.h" />
     <ClInclude Include="header\Render\Mesh\MaterialLink.h" />
     <ClInclude Include="header\Render\PointLight.h" />
     <ClInclude Include="header\IntersectionFunctions.h" />

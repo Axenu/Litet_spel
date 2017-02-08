@@ -11,7 +11,7 @@ DrawFrame::~DrawFrame()
 {
 }
 void DrawFrame::add(const Model &m, const glm::mat4 &modelMatrix) {
-	const std::vector<MeshPart> &parts = m.getParts();
+	const std::vector<ModelPart> &parts = m.getParts();
 	for (unsigned int i = 0; i < parts.size(); i++)
 		_meshes.push_back(MeshDrawable(parts[i], modelMatrix));
 }
