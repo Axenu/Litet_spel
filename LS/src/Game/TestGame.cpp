@@ -59,9 +59,10 @@ void TestGame::initiate() {
 	Model tmpModel = _modelLoader.GetModel("Resources/cube.obj", tmpMat);
 	for (unsigned int i = 0; i < pLootPosList->size(); i++)
 	{
-		LootObject *tmpLoot = new LootObject(_modelLoader.GetModel("Resources/cube.obj", tmpMat));
+		LootObject *tmpLoot = new LootObject(tmpModel);
 		tmpLoot->setPosition((*pLootPosList)[i]);
 		tmpLoot->setY(1.0f);
+		tmpLoot->setScale(0.5f);
 		_scene.add(tmpLoot);
 	}
 }
