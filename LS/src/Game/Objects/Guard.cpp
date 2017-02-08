@@ -24,10 +24,12 @@ void Guard::print()
 			{
 				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
 			}
-			else
+			else if (_levalues[j][i].value >=0 && _levalues[j][i].value < 10)
 			{
 				std::cout << "+" << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
 			}
+			else
+				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
 		}
 		std::cout << "" << std::endl;
 	}
@@ -262,7 +264,7 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 	
 	for (unsigned int i = maxsizewidth; i > 0; i--)
 	{
-		if (_guardsstartposition.x >= i && _guardsstartposition.x + i <=_heightLength)
+		if (_guardsstartposition.x >= i && _guardsstartposition.x + i <= _widthLength)
 		{
 			_width = i * 2;
 			break;
@@ -271,7 +273,7 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 	int maxsizeheight = sizeY;
 	for (unsigned int j = maxsizeheight; j > 0; j--)
 	{
-		if (_guardsstartposition.z >= j && _guardsstartposition.z + j <= _widthLength)
+		if (_guardsstartposition.z >= j && _guardsstartposition.z + j <= _heightLength)
 		{
 			_height = j * 2;
 			break;
@@ -335,8 +337,8 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	this->setPosition(_guardsstartposition);
 	
 	_aiChoice = randomgenerator(4);
-	buildgridarray(gridet, 6, 6);
-	gridWalkingBetweenTwoPoints(glm::ivec2(6, 4));
+	buildgridarray(gridet, 10, 20);
+	gridWalkingBetweenTwoPoints(glm::ivec2(5, 8));
 	//	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
