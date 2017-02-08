@@ -1,5 +1,6 @@
 #include "Game/Objects/Character.h"
 #include "StaticVars.h"
+#include "Game/Objects/CharacterEvents.h"
 
 void Character::setCamera(Camera* camera)
 {
@@ -9,26 +10,38 @@ void Character::setCamera(Camera* camera)
     _speed = 2;
     _isMoving = 0;
 }
-void Character::update(float dt)
+void Character::onUpdate(float dt)
 {
-    if (_direction.x != 0 || _direction.y != 0)
-    {
-        //calculate inertia
-        if (_isMoving < 1)
-        {
-            _isMoving += dt*8;
-            if (_isMoving > 1)
-            {
-                _isMoving = 1;
-            }
-        }
-        _velocity = glm::normalize(_direction) * _isMoving * _speed;
-    }
-    else
-    {
-        _velocity = glm::vec3(0,0,0);
-        _isMoving = 0;
-    }
+	move(dt);
+	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
+	//Character moved on a square
+	if (newSquare._square != _gridSquare._square) {
+		CharacterSquareEvent squareEvent(this, newSquare);
+		_eventManager->execute(squareEvent);
+		this->_gridSquare = newSquare;
+	}
+}
+
+void Character::move(float dt) {
+
+	if (_direction.x != 0 || _direction.y != 0)
+	{
+		//calculate inertia
+		if (_isMoving < 1)
+		{
+			_isMoving += dt * 8;
+			if (_isMoving > 1)
+			{
+				_isMoving = 1;
+			}
+		}
+		_velocity = glm::normalize(_direction) * _isMoving * _speed;
+	}
+	else
+	{
+		_velocity = glm::vec3(0, 0, 0);
+		_isMoving = 0;
+	}
 	glm::vec3 actualVelocity;
 	//Calculate the velocity
 	actualVelocity.x = _velocity.y * dt * sinf(_rotation.x);
@@ -38,28 +51,15 @@ void Character::update(float dt)
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
-	if (_currentLevel->checkifPlayerWon(&_position, buttonpressed))
-		sic::CloseWindow = true;
-	Node::update(dt);
 }
+
 void Character::onRender()
 {
 
 }
-void Character::doYouWantToWin(const KeyboardEvent & event)
-{
-	if (event.getKey() == GLFW_KEY_G)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-			buttonpressed = true;
-		}
-		else if (event.getAction() == GLFW_RELEASE)
-		{
-			buttonpressed = false;
-		}
-	}
-}
+
+#pragma region Events
+
 void Character::moveCharacter(const KeyboardEvent& event)
 {
     if (event.getKey() == GLFW_KEY_W)
@@ -106,23 +106,6 @@ void Character::moveCharacter(const KeyboardEvent& event)
             _direction.x -= 1.0f;
         }
     }
-    else if (event.getKey() == GLFW_KEY_T)
-    {
-        if (event.getAction() == GLFW_PRESS)
-        {
-            if (_cursorMode == GLFW_CURSOR_NORMAL)
-            {
-                _cursorMode = GLFW_CURSOR_DISABLED;
-            }
-            else
-            {
-                _cursorMode = GLFW_CURSOR_NORMAL;
-            }
-            _hasMoved = false;
-            cursorModeChangeEvent event(_cursorMode);
-            _eventManager->execute(event);
-        }
-    }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
 		int points = _currentScene->loot(*_camera, 2);
@@ -134,6 +117,18 @@ void Character::moveCharacter(const KeyboardEvent& event)
 				_eventManager->execute(event);
 			}
 		}
+	}
+    else if (event.getKey() == GLFW_KEY_G)
+	{
+        if (event.getAction() == GLFW_PRESS)
+        {
+            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
+            {
+                //call endGameEvent
+                GameOverEvent event(true, _lootValue);
+                _eventManager->execute(event);
+            }
+        }
 	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
@@ -151,14 +146,14 @@ void Character::moveMouse(const MouseMoveEvent& event)
     {
         rotateY(deltaPos.y * -RotationSpeed);
         rotateX(deltaPos.x * -RotationSpeed);
-    }
-    if (getRY() > glm::pi<float>()*0.5f)
-    {
-        setRY(glm::pi<float>()*0.5f);
-    }
-    if (getRY() < glm::pi<float>()*-0.5f)
-    {
-        setRY(glm::pi<float>()*-0.5f);
+        if (getRY() > glm::pi<float>()*0.5f)
+        {
+            setRY(glm::pi<float>()*0.5f);
+        }
+        if (getRY() < glm::pi<float>()*-0.5f)
+        {
+            setRY(glm::pi<float>()*-0.5f);
+        }
     }
 }
 void Character::collectLoot(const CollectLootEvent& event)
@@ -166,9 +161,15 @@ void Character::collectLoot(const CollectLootEvent& event)
     std::cout << "recieved loot of value: " << event.getValue() << std::endl;
     _lootValue += event.getValue();
 }
+
+#pragma endregion
+
+#pragma region Set & Construction
+
 void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
+	this->_gridSquare = level->operator[](glm::vec3(getWorldPos()));
 }
 void Character::setScene(Scene * scene)
 {
@@ -179,11 +180,8 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 {
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
-	_eventManager->listen(this,&Character::doYouWantToWin);
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);
-	buttonpressed = false;
-	charactermovedoutsidebox = false;
 }
 Character::Character()
 {
@@ -192,3 +190,5 @@ Character::~Character()
 {
 
 }
+
+#pragma endregion

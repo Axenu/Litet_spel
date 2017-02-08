@@ -46,6 +46,23 @@ namespace gui
         _sComponents.push_back(sc);
         updateText();
     }
+    void Label::clearStringComponents()
+    {
+        for (unsigned int i = 0; i < _sComponents.size(); i++)
+		{
+			delete _sComponents[i];
+		}
+        _sComponents.clear();
+    }
+    void Label::updateStringComponent(int index, StringComponent *sc)
+    {
+        if (index >= 0 && index < (int)_sComponents.size())
+        {
+            delete _sComponents[index];
+            _sComponents[index] = sc;
+        }
+        updateText();
+    }
     void Label::updateText()
     {
 		std::string tempText = "";

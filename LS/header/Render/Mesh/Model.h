@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <vector>
-#include "MeshPart.h"
+#include "ModelPart.h"
 #include "Shader/MeshShader.h"
 #include "Render/RenderInfo.h"
 #include "Mesh.h"
@@ -20,13 +20,14 @@
 class Model{
 public:
 	Model();
-	Model(std::vector<MeshPart> &parts);
-	Model(MeshPart &part);
+	Model(std::vector<ModelPart> &parts);
+	Model(ModelPart &part);
 
 	void render(RenderInfo &fD, glm::mat4 &modelMatrix) const;
-	const std::vector<MeshPart>& getParts() const;
+	const std::vector<ModelPart>& getParts() const;
 	bool pick(glm::vec3 origin, glm::vec3 dir);
 	void setName(std::string &name);
+	void setMaterial(Material &mat);
 	std::string getName();
 	/* Update model boxes from model space
 	*/
@@ -34,5 +35,5 @@ public:
 	~Model();
 private:
 	std::string _name;
-	std::vector<MeshPart> _meshParts;
+	std::vector<ModelPart> _meshParts;
 };

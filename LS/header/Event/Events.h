@@ -21,6 +21,16 @@ public:
 	bool victory(bool buttonpressed,bool);
 };
 
+class ExitTriggerEvent : public Event
+{
+private:
+	bool _didEnter;
+public:
+	ExitTriggerEvent(bool didEnter);
+	~ExitTriggerEvent();
+	bool didEnter() const;
+};
+
 class ChangeGameStateEvent : public Event
 {
 private:

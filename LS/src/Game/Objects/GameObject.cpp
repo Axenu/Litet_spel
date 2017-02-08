@@ -19,9 +19,10 @@ GameObject::~GameObject()
 
 }
 
-void GameObject::onUpdate(float dt)
+void GameObject::update(float dt)
 {
 	_model.transform(_modelMatrix);
+	Node::update(dt);
 }
 
 

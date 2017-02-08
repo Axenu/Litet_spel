@@ -15,55 +15,57 @@ namespace gui
     }
     Manager::~Manager()
     {
-        for (Scene* scene : _loadedScenes)
+        for (View* view : _loadedViews)
         {
-            delete scene;
+            delete view;
         }
     }
     void Manager::update(float dt)
     {
-        if (_currentScene != nullptr)
+        if (_currentView != nullptr)
         {
-            _currentScene->update(dt);
+            _currentView->update(dt);
         }
     }
     void Manager::render()
     {
-        if (_currentScene != nullptr)
+        if (_currentView != nullptr)
         {
-            _currentScene->render();
+            _currentView->render();
         }
     }
-    bool Manager::setScene(std::string name)
+    bool Manager::setView(std::string name)
     {
-        for (Scene* scene : _loadedScenes)
+        for (View* view : _loadedViews)
         {
-            if (scene->getName() == name)
+            if (view->getName() == name)
             {
-                _currentScene = scene;
+                _currentView = view;
+                _currentView->initiate();
                 return true;
             }
         }
         return false;
     }
-    void Manager::setScene(Scene* scene)
+    void Manager::setView(View* view)
     {
-        _currentScene = scene;
-        _currentScene->setParent(this);
+        _currentView = view;
+        _currentView->setParent(this);
+        _currentView->initiate();
         //add if not existing
-        for (Scene* s : _loadedScenes)
+        for (View* v : _loadedViews)
         {
-            if (s->getName() == scene->getName())
+            if (v->getName() == view->getName())
             {
                 return;
             }
         }
-        _loadedScenes.push_back(scene);
+        _loadedViews.push_back(view);
     }
-    void Manager::setWindowSize(float width, float height)
+    void Manager::setWindowSize(unsigned int width, unsigned int height)
     {
-        _windowSize.x = width;
-        _windowSize.y = height;
+        _windowWidth = width;
+        _windowHeight = height;
     }
     void Manager::cursorMoved(const MouseMoveEvent& event)
     {
@@ -72,18 +74,28 @@ namespace gui
             _lastCursorPos = event.getPos();
         }
     }
+
+    unsigned int Manager::getWindowWidth()
+    {
+        return _windowWidth;
+    }
+    unsigned int Manager::getWindowHeight()
+    {
+        return _windowHeight;
+    }
+
     void Manager::mouseClick(const MouseClickEvent& event)
     {
         if (_cursorMode == GLFW_CURSOR_NORMAL)
         {
-            if (_currentScene != nullptr)
+            if (_currentView != nullptr)
             {
                 glm::vec2 pos;
-                pos.x = (_lastCursorPos.x / _windowSize.x * 2) - 1;
-                pos.y = (1 - (_lastCursorPos.y / _windowSize.y * 2));
+                pos.x = (_lastCursorPos.x / (float)_windowWidth * 2) - 1;
+                pos.y = (1 - (_lastCursorPos.y / (float)_windowHeight * 2));
                 if (pos.x >= -1&& pos.y >= -1 && pos.x <= 1 && pos.y <= 1)
                 {
-                    _currentScene->Scene::testClick(pos, event.getAction());
+                    _currentView->View::testClick(pos, event.getAction());
                     //test coliision with scene
                 }
             }

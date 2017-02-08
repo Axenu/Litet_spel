@@ -9,13 +9,9 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Game/Level/GridSquare.h"
 #include "Render/Mesh/Mesh.h"
 #include "Event/Events.h"
-enum gridType
-{
-	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting
-	nothing = 0, wall = 1, tresure = 2, loot = 3, door = 4, exiting = 5, guard = 6
-};
 
 struct gridValues {
 	glm::ivec2 xz;
@@ -36,12 +32,8 @@ private:
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray; //f�rsta �r heightlength andra �r widthlenght
-	bool _gotTheTreasure;
-	glm::vec2 _exit;
 	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
-	bool outsidethebox;
-	bool doyouwanttoleave = false, yousure = false;
 	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
 	bool removeGridCell(glm::ivec2 pos, std::vector<gridNode> *vector);
 public:
@@ -53,16 +45,18 @@ public:
 	void loadingBmpPicture(char* filename);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
-	bool checkifPlayerWon(glm::vec3 * playerpos, bool buttonpressed);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
-	gridType returnGridType(int width,int height);
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
-	PossibleVictoryEvent victory;
 	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
 	float getGridSpace();
+	bool isInside(glm::ivec2 vec) const;
+	gridType returnGridType(int width,int height);
+	glm::ivec2 getSquare(const glm::vec3 &pos) const;
+	GridSquare operator[](glm::vec3 vec) const;
+	gridType operator[](const glm::ivec2 &sq) const;
 };
 
 #endif

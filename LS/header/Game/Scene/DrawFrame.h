@@ -13,10 +13,10 @@ protected:
 	/* Struct holding mesh data awaiting draw.
 	*/
 	struct MeshDrawable{
-		const MeshPart* _part;
+		const ModelPart* _part;
 		const glm::mat4* _transform;
 		MeshDrawable(){}
-		MeshDrawable(const MeshPart &part, const glm::mat4 &modelMatrix)
+		MeshDrawable(const ModelPart &part, const glm::mat4 &modelMatrix)
 			: _part(&part), _transform(&modelMatrix){
 		}
 	};

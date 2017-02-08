@@ -46,7 +46,18 @@ bool PossibleVictoryEvent::victory(bool buttonpressed,bool onlyoncereset)
 	}
 	return false;
 }
+ExitTriggerEvent::ExitTriggerEvent(bool didEnter)
+{
+	_didEnter = didEnter;
+}
+ExitTriggerEvent::~ExitTriggerEvent()
+{
 
+}
+bool ExitTriggerEvent::didEnter() const
+{
+	return _didEnter;
+}
 ChangeGameStateEvent::ChangeGameStateEvent(int state) : _state(state)
 {
 

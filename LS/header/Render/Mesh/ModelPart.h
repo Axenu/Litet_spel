@@ -5,19 +5,20 @@
 #include"AABB.h"
 
 
-class MeshPart
+class ModelPart
 {
 private:
 	Mesh *_mesh;
-	Material *_material;
+	Material _material;
 public:
 	/* Mesh box in local space
 	*/
 	AABB _box;
 
-	MeshPart();
-	MeshPart(Mesh *mesh, Material *mat);
-	virtual ~MeshPart();
+	ModelPart();
+	ModelPart(Mesh *mesh, Material &mat);
+	virtual ~ModelPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
 	Mesh& getMesh();
+	void setMaterial(Material &mat);
 };

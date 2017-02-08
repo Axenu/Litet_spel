@@ -15,18 +15,17 @@
 class ModelLoader
 {
 private:
-	void LoadModel(std::string, Material* material);
-	MeshPart ProcessMesh(aiMesh*, const aiScene*, std::string, Material* material);
-	void ProcessNode(aiNode*, const aiScene*, std::string, Material* material);
+	void LoadModel(std::string&, MeshShader *shader);
+	ModelPart ProcessMesh(aiMesh*, const aiScene*, std::string&, MeshShader *shader);
+	void ProcessNode(aiNode*, const aiScene*, std::string&, MeshShader *shader, std::vector<ModelPart> &);
 
 	std::vector<Model*> _models;
 	std::vector<Mesh*> _mesh;
-	std::vector<Material*> _material;
-
 public:
 	ModelLoader();
 	ModelLoader(const ModelLoader&);
 	virtual ~ModelLoader();
-	Model* GetModel(std::string, Material* material);
+	Model GetModel(std::string, Material &material);
+	Model GetModel(std::string, MeshShader *shader);
 
 };

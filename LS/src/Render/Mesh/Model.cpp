@@ -6,12 +6,12 @@ Model::Model() {
 }
 
 
-Model::Model(std::vector<MeshPart> &pMeshes)
+Model::Model(std::vector<ModelPart> &pMeshes)
 	: _meshParts(pMeshes)
 {
 }
 
-Model::Model(MeshPart &part) 
+Model::Model(ModelPart &part) 
 	: _meshParts(1)
 {
 	_meshParts[0] = part;
@@ -26,7 +26,7 @@ void Model::transform(const glm::mat4 &mat) {
 	for (unsigned int i = 0; i < _meshParts.size(); i++)
 		_meshParts[i]._box = _meshParts[i].getMesh().getBox().transform(mat);
 }
-const std::vector<MeshPart>& Model::getParts() const {
+const std::vector<ModelPart>& Model::getParts() const {
 	return _meshParts;
 }
 
@@ -45,6 +45,14 @@ bool Model::pick(glm::vec3 origin, glm::vec3 dir)
 void Model::setName(std::string & name)
 {
 	_name = name;
+}
+
+void Model::setMaterial(Material & mat)
+{
+	for (unsigned int i = 0; i < _meshParts.size(); i++)
+	{
+		_meshParts[i].setMaterial(mat);
+	}
 }
 
 std::string Model::getName()

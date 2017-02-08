@@ -5,7 +5,7 @@ lIBDIR=lib/OSX/
 IDIR=include/
 HDIR=header/
 
-SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Objects src/Game/Scene src/gui src/gui/Scenes src/Render
+SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Objects src/Game/Scene src/gui src/gui/Views src/Render src/Render/Mesh src/Render/Mesh/Shader src/Render/Composition
 BUILD_DIR := $(SRC_DIR:src%=build%)
 SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ_files := $(SRC:src%=build%)
@@ -29,9 +29,6 @@ all: checkdirs buildAll
 buildAll: $(OBJ)
 	$(CC) -L $(lIBDIR) -o $(EXEC) $^ $(FRAMEWORKS) $(LIB)
 
-# build/FireArrow.a: $(ENGINEOBJECTS)
-	# ar rvs build/FireArrow.a $^
-
 $(ODIR)%.o: $(SRCDIR)%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
@@ -42,9 +39,4 @@ $(BUILD_DIR):
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f $(ODIR)*.o
-	rm -f $(ODIR)*.a
 	rm $(EXEC)
-
-
-# $(foreach bdir,$(BUILD_DIR),$(eval $(call make-goal,$(bdir))))
