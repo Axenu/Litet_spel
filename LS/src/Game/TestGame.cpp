@@ -50,7 +50,11 @@ void TestGame::initiate() {
 	//_scene.add(loot1);
 	//_scene.add(loot2);
 	std::vector<glm::vec3>* pLootPosList = _gridtest.getLootLocations();
-	Model* tmpModel = _modelLoader.GetModel("Resources/cube.obj", &_shader);
+	Material *tmpMat = new Material(&_shader);
+	tmpMat->setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	tmpMat->setColor("spec", glm::vec4(1.0f));
+	tmpMat->setFloat("shine", 20.0f);
+	Model* tmpModel = _modelLoader.GetModel("Resources/cube.obj", tmpMat);
 	for (unsigned int i = 0; i < pLootPosList->size(); i++)
 	{
 		LootObject *tmpLoot = new LootObject(*tmpModel);
