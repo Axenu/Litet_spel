@@ -44,6 +44,8 @@ namespace gui
         void onUpdate(float dt);
 
         void updateText();
+        void clearStringComponents();
+        void updateStringComponent(int index, StringComponent *sc);
 
         //setters
         void addStringComponent(StringComponent* sc);

@@ -41,6 +41,7 @@ namespace gui
             if (view->getName() == name)
             {
                 _currentView = view;
+                _currentView->initiate();
                 return true;
             }
         }

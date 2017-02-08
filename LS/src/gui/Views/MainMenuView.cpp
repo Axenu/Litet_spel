@@ -26,23 +26,8 @@ namespace gui
     }
     MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
     {
-        _name = "MainMenu";
-    }
-    MainMenuView::~MainMenuView()
-    {
-        delete _font;
-        // std::cout << "gui scene destructor" << std::endl;
-    }
-    void MainMenuView::onRender()
-    {
+        _name = "MainMenuView";
 
-    }
-    void MainMenuView::onUpdate(float dt)
-    {
-
-    }
-    void MainMenuView::initiate()
-    {
         _font = new gui::Font("Resources/fonts/arial");
         gui::Label *l = new gui::Label(_font);
         l->addStringComponent(new StringComponentString("FPS: "));
@@ -64,5 +49,21 @@ namespace gui
         _startButton->listen(this, &MainMenuView::StartGame);
         _startButton->setScale(0.5,0.5);
         addChild(_startButton);
+    }
+    MainMenuView::~MainMenuView()
+    {
+        delete _font;
+        // std::cout << "gui scene destructor" << std::endl;
+    }
+    void MainMenuView::onRender()
+    {
+
+    }
+    void MainMenuView::onUpdate(float dt)
+    {
+
+    }
+    void MainMenuView::initiate()
+    {
     }
 }

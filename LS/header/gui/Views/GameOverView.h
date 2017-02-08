@@ -21,7 +21,7 @@ namespace gui
         EventManager* _manager;
         gui::Font *_font;
         gui::Button* _quitButton;
-        // gui::Button* _startButton;
+        gui::Button* _mainMenuButton;
         // float* _fps;
 
     public:
@@ -34,6 +34,7 @@ namespace gui
         virtual void initiate();
 
         void QuitGame(int action);
+        void gotoMainMenu(int action);
 
         // void gameStarted(const GameStartedEvent &event);
         // void gameOver(const GameOverEvent &event);

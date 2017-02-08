@@ -23,9 +23,10 @@ namespace gui
     private:
         EventManager* _manager;
         gui::Font *_font;
+        Label *_tipDisplay;
         // gui::Button* _quitButton;
         // gui::Button* _startButton;
-        TestGame *_game;
+        TestGame *_game = nullptr;
         float* _fps;
         bool _isAtExit = false;
 

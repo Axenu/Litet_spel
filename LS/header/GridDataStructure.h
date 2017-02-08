@@ -50,7 +50,6 @@ public:
 	int getHeight();
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
-	PossibleVictoryEvent victory;
 	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
 
 
