@@ -1,5 +1,6 @@
 #include "Game/Objects/Character.h"
 #include "StaticVars.h"
+#include "Game/Objects/CharacterEvents.h"
 
 void Character::setCamera(Camera* camera)
 {
@@ -9,26 +10,41 @@ void Character::setCamera(Camera* camera)
     _speed = 2;
     _isMoving = 0;
 }
-void Character::update(float dt)
+void Character::onUpdate(float dt)
 {
-    if (_direction.x != 0 || _direction.y != 0)
-    {
-        //calculate inertia
-        if (_isMoving < 1)
-        {
-            _isMoving += dt*8;
-            if (_isMoving > 1)
-            {
-                _isMoving = 1;
-            }
-        }
-        _velocity = glm::normalize(_direction) * _isMoving * _speed;
-    }
-    else
-    {
-        _velocity = glm::vec3(0,0,0);
-        _isMoving = 0;
-    }
+	move(dt);
+	glm::ivec2 newSquare = _currentLevel->getSquare(getWorldPos());
+	gridType grid = _currentLevel->operator[](newSquare);
+	//Character moved on a square
+	if (newSquare != _gridSquare) {
+		CharacterSquareEvent squareEvent(this, newSquare, grid);
+		_eventManager->execute(squareEvent);
+		this->_gridSquare = newSquare;
+	}
+	if (grid == gridType::exiting)
+		sic::CloseWindow = true;
+}
+
+void Character::move(float dt) {
+
+	if (_direction.x != 0 || _direction.y != 0)
+	{
+		//calculate inertia
+		if (_isMoving < 1)
+		{
+			_isMoving += dt * 8;
+			if (_isMoving > 1)
+			{
+				_isMoving = 1;
+			}
+		}
+		_velocity = glm::normalize(_direction) * _isMoving * _speed;
+	}
+	else
+	{
+		_velocity = glm::vec3(0, 0, 0);
+		_isMoving = 0;
+	}
 	glm::vec3 actualVelocity;
 	//Calculate the velocity
 	actualVelocity.x = _velocity.y * dt * sinf(_rotation.x);
@@ -38,14 +54,15 @@ void Character::update(float dt)
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
-	if (_currentLevel->checkifPlayerWon(&_position, buttonpressed))
-		sic::CloseWindow = true;
-	Node::update(dt);
 }
+
 void Character::onRender()
 {
 
 }
+
+#pragma region Events
+
 void Character::doYouWantToWin(const KeyboardEvent & event)
 {
 	if (event.getKey() == GLFW_KEY_G)
@@ -166,9 +183,15 @@ void Character::collectLoot(const CollectLootEvent& event)
     std::cout << "recieved loot of value: " << event.getValue() << std::endl;
     _lootValue += event.getValue();
 }
+
+#pragma endregion
+
+#pragma region Set & Construction 
+
 void Character::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
+	this->_gridSquare = level->getSquare(getWorldPos());
 }
 void Character::setScene(Scene * scene)
 {
@@ -192,3 +215,5 @@ Character::~Character()
 {
 
 }
+
+#pragma endregion

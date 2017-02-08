@@ -21,7 +21,7 @@ public:
 	GameObject(Model &m);
 	GameObject(Model &m, type::GameObjectType type);
 	virtual ~GameObject();
-	void onUpdate(float dt);
+	virtual void update(float dt);
 	void setModel(Model &m);
 	const Model& getModel();
 	const glm::mat4& getModelMatrix();

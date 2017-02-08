@@ -36,8 +36,8 @@ void Guard::gridWalkingBetweenTwoPoints(glm::vec3 GoalPosition)
 int maxvalue = height*width-1;
 int oldmaxvalue = 0;
 int value = 0;
-int heightpositionofthegoal = GoalPosition.x;
-int widthpositionofthegoal = GoalPosition.z;
+int heightpositionofthegoal = (int)GoalPosition.x;
+int widthpositionofthegoal = (int)GoalPosition.z;
 //-1 outforskadmark ej gåbart
 // -2 vägg
 while (maxvalue != 0)
@@ -120,8 +120,8 @@ for (int i = 0;i < height;i++)
 }
 
 //first check down 
-int newvalue = 100000000000;
-int smallestvalue = 100000000000;
+int newvalue = 1000000000;
+int smallestvalue = 1000000000;
 if (GoalPosition.x > 0)
 {
 	newvalue = smallestvalue=levalues[heightpositionofthegoal-1][widthpositionofthegoal].value;
@@ -261,24 +261,24 @@ void Guard::WalkingBetweenFourPoints(float dt)
 void Guard::buildgridarray(Grid * gridet)
 {
 	int maxsizewidth = 6;
-	 height=1, width=1;
-for(int i = maxsizewidth;i>0;i--)
-{
-	if (guardsstartposition.x >= i && guardsstartposition.x+i<=_heightLength)
+	height = 1, width = 1;
+	for (int i = maxsizewidth; i > 0; i--)
 	{
-		height = i*2;
-		break;
+		if (guardsstartposition.x >= i && guardsstartposition.x + i <= _heightLength)
+		{
+			height = i * 2;
+			break;
+		}
 	}
-}
-int maxsizeheight = 6;
-for (int i = maxsizeheight; i > 0;i--)
-{
-	if (guardsstartposition.z >= i && guardsstartposition.z + i <= _widthLength)
+	int maxsizeheight = 6;
+	for (int i = maxsizeheight; i > 0; i--)
 	{
-		width = i*2;
-		break;
+		if (guardsstartposition.z >= i && guardsstartposition.z + i <= _widthLength)
+		{
+			width = i * 2;
+			break;
+		}
 	}
-}
 
 	//building the 2D array
 	levalues = new gridValues*[height];
@@ -286,11 +286,12 @@ for (int i = maxsizeheight; i > 0;i--)
 	{
 		levalues[i] = new gridValues[width];
 	}
-	for (int i = 0;i < height;i++)
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0;j < width;j++)
+		for (int j = 0; j < width; j++)
 		{
-			levalues[i][j].type = gridet->returnGridType(guardsstartposition.x + i - (height/2), guardsstartposition.z + j - (width / 2));
+
+			levalues[i][j].type = gridet->returnGridType(guardsstartposition.x + i - (height / 2), guardsstartposition.z + j - (width / 2));
 			levalues[i][j].xz = glm::vec2(guardsstartposition.x + i - (height / 2), guardsstartposition.z + j - (width / 2));
 			if (levalues[i][j].type == guard)
 			{
@@ -300,10 +301,10 @@ for (int i = maxsizeheight; i > 0;i--)
 			{
 				levalues[i][j].value = -1;
 			}
-	//		std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
+			//		std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
 		}
 	}
-//	print();
+	//	print();
 }
 
 

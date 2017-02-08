@@ -218,7 +218,7 @@ glm::vec3 Node::getRotation() const {
 
 glm::vec4 Node::getWorldPos() const
 {
-	return _modelMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	return _modelMatrix[3];
 
 }
 

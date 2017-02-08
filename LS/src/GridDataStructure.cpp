@@ -516,31 +516,6 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 }
 
-bool Grid::checkifPlayerWon(glm::vec3 * playerpos,bool buttonpressed)
-{
-	
-	_gotTheTreasure = true;
-	glm::vec2 fixedPlayerPos;
-	_exit.x = glm::floor(_exit.x / GRIDSPACE);
-	_exit.y = glm::floor(_exit.y / GRIDSPACE);
-	fixedPlayerPos.x = glm::floor(playerpos->z / GRIDSPACE);
-	fixedPlayerPos.y = glm::floor(playerpos->x / GRIDSPACE);
-	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
-	{
-		yousure = true;
-	bool test	= victory.victory(buttonpressed,outsidethebox);
-	outsidethebox = false;
-	return test;
-	}
-	doyouwanttoleave = true;
-	if (doyouwanttoleave == true && yousure ==true)
-	{
-		std::cout<<"your not exiting yet keep on adventuring mate" << std::endl;
-		yousure = false;
-	}
-	outsidethebox = true;
-	return false;
-}
 
 glm::vec3 Grid::getheightandwidthpoint12(int i)
 {
@@ -715,8 +690,28 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 
 }
 
+
+#pragma region Grid Square
+
+bool Grid::isInside(glm::ivec2 sq) const {
+	return sq.x >= 0 && sq.x < _widthLength && sq.y >= 0 && sq.y < _heightLength;
+}
+
+glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const {
+	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
+}
+gridType Grid::operator[](const glm::vec3 &vec) const {
+	glm::ivec2 sq = getSquare(vec);
+	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::nothing;
+}
+
+gridType Grid::operator[](const glm::ivec2 &sq) const {
+	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::nothing;
+}
 gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[width][height].type;
 }
+
+#pragma endregion
 
