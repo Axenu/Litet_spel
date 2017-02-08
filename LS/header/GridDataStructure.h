@@ -18,7 +18,7 @@ enum gridType
 };
 
 struct gridValues {
-	glm::vec2 xz;
+	glm::ivec2 xz;
 	gridType type;
 	int value;
 };
@@ -62,7 +62,7 @@ public:
 	std::vector<glm::vec3> * getLootLocations();
 	PossibleVictoryEvent victory;
 	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
-
+	float getGridSpace();
 };
 
 #endif

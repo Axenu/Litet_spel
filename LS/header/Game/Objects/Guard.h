@@ -20,19 +20,20 @@ private:
 	int _widthLength;
 	int _height;
 	int _width;
+	float _currentGridSpace;
 
 public:
 	virtual ~Guard();
 	Guard();
 	void print();
-	void gridWalkingBetweenTwoPoints(glm::vec3 GoalPosition);
+	std::vector<glm::ivec2> gridWalkingBetweenTwoPoints(glm::ivec2 GoalPosition);
 	glm::vec3 roundTheValuefrom0Comma01(glm::vec3);
 	Guard(glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
 	virtual	void update(float dt);
 	Guard(Model & m, Grid * gridet);
-	int randomgenerator();
-	void buildgridarray(Grid * gridet);
+	int randomgenerator(int randomNumber);
+	void buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
 };

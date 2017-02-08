@@ -660,63 +660,62 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 	return true;
 }
 
+float Grid::getGridSpace()
+{
+	return GRIDSPACE;
+}
+
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 {
 	//0 = x1,1=x2,2=y1,3=y2
-
-	int i = (int)guardposition.x;//height
-	int j = (int)guardposition.z; //width
+	//gridet är zx men alla andra värden i världen är xz
+	int i = (int)guardposition.x; //width
+	int j = (int)guardposition.z; //height
 	//first wall upwards
-	for (i;i > -1;i--)
+	for (j; j > -1; j--)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[0] = glm::vec3(i + 1, 0, j);
+			pointxy[0] = glm::vec3(i, 0, j + 1);
 			break;
 		}
 	}
-	i = (int)guardposition.x;
 	j = (int)guardposition.z;
 
 	//second point downwards
-	for (i;i < _heightLength;i++)
+	for (j; j < _heightLength; j++)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[1] = glm::vec3(i - 1, 0, j );
+			pointxy[1] = glm::vec3(i, 0, j - 1);
 			break;
 		}
 	}
-	i = (int)guardposition.x;
 	j = (int)guardposition.z;
 	//thirdwall left
-	for (j;j > -1;j--)
+	for (i; i > -1; i--)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[2] = glm::vec3(i, 0, j + 1);
+			pointxy[2] = glm::vec3(i + 1, 0, j);
 			break;
 		}
 	}
 	i = (int)guardposition.x;
-	j = (int)guardposition.z;
 
-	//sfourthwall right
-	for (j;j < _widthLength;j++)
+	//fourthwall right
+	for (i; i < _widthLength; i++)
 	{
-		if (_twodArray[i][j].type == wall)
+		if (_twodArray[j][i].type == wall)
 		{
-			pointxy[3] = glm::vec3(i , 0, j - 1);
+			pointxy[3] = glm::vec3(i - 1, 0, j);
 			break;
 		}
 	}
-
-
-
 }
 
 gridType Grid::returnGridType(int width, int height)
 {
-	return _twodArray[width][height].type;
+	return _twodArray[height][width].type;
 }
 
