@@ -214,6 +214,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Render\Mesh\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Factory.h" />
