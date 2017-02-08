@@ -31,7 +31,7 @@ void TestGame::initiate() {
 	Model guardModel(guardModelMeshPart);
 	//Add some more game objects
 	_scene.add(player);
-	_scene.add(new Guard(guardModel, &_level->getGrid()));
+	_scene.add(new Guard(player, &_event, guardModel, &_level->getGrid()));
 	//Add some lights
 	_scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
 	_scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
