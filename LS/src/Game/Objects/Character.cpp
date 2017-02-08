@@ -106,23 +106,6 @@ void Character::moveCharacter(const KeyboardEvent& event)
             _direction.x -= 1.0f;
         }
     }
-    else if (event.getKey() == GLFW_KEY_T)
-    {
-        if (event.getAction() == GLFW_PRESS)
-        {
-            if (_cursorMode == GLFW_CURSOR_NORMAL)
-            {
-                _cursorMode = GLFW_CURSOR_DISABLED;
-            }
-            else
-            {
-                _cursorMode = GLFW_CURSOR_NORMAL;
-            }
-            _hasMoved = false;
-            cursorModeChangeEvent event(_cursorMode);
-            _eventManager->execute(event);
-        }
-    }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
 		int points = _currentScene->loot(*_camera, 2);
@@ -181,7 +164,7 @@ void Character::collectLoot(const CollectLootEvent& event)
 
 #pragma endregion
 
-#pragma region Set & Construction 
+#pragma region Set & Construction
 
 void Character::setLevel(Grid *level)
 {
