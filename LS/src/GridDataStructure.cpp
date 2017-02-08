@@ -15,7 +15,7 @@ int Grid::IsInVector(glm::ivec2 pos, std::vector<gridNode>* vector)
 
 bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 {
-	//checks surrounding grid cells  
+	//checks surrounding grid cells
 	int test = IsInVector(glm::ivec2(pos.x, pos.y), vector);
 	if (test >= 0)
 	{
@@ -25,7 +25,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x, pos.y - 1), vector);
-	if (test >= 0)    // ^  
+	if (test >= 0)    // ^
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -33,7 +33,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x + 1, pos.y), vector);
-	if (test >= 0)    // >  
+	if (test >= 0)    // >
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -41,7 +41,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x, pos.y + 1), vector);
-	if (test >= 0)    // v  
+	if (test >= 0)    // v
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -49,7 +49,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x - 1, pos.y), vector);
-	if (test >= 0)    // <  
+	if (test >= 0)    // <
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -516,29 +516,17 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 }
 
-bool Grid::checkifPlayerWon(glm::vec3 * playerpos,bool buttonpressed)
+bool Grid::checkifPlayerWon(glm::vec3 *playerpos)
 {
-	
-	_gotTheTreasure = true;
 	glm::vec2 fixedPlayerPos;
 	_exit.x = glm::floor(_exit.x / GRIDSPACE);
 	_exit.y = glm::floor(_exit.y / GRIDSPACE);
 	fixedPlayerPos.x = glm::floor(playerpos->z / GRIDSPACE);
 	fixedPlayerPos.y = glm::floor(playerpos->x / GRIDSPACE);
-	if (fixedPlayerPos == _exit && _gotTheTreasure == true)
+	if (fixedPlayerPos == _exit)
 	{
-		yousure = true;
-	bool test	= victory.victory(buttonpressed,outsidethebox);
-	outsidethebox = false;
-	return test;
+		return true;
 	}
-	doyouwanttoleave = true;
-	if (doyouwanttoleave == true && yousure ==true)
-	{
-		std::cout<<"your not exiting yet keep on adventuring mate" << std::endl;
-		yousure = false;
-	}
-	outsidethebox = true;
 	return false;
 }
 
@@ -575,8 +563,8 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 	{
 		int currentIndex = IsInVector(glm::ivec2(currentPos.x, currentPos.y), &nodes);
 		nodes[currentIndex].needsCheck = false;
-		//checks surrounding grid cells  
-		if (_twodArray[currentPos.y - 1][currentPos.x].type != wall && _twodArray[currentPos.y - 1][currentPos.x].type != exiting)    // ^  
+		//checks surrounding grid cells
+		if (_twodArray[currentPos.y - 1][currentPos.x].type != wall && _twodArray[currentPos.y - 1][currentPos.x].type != exiting)    // ^
 		{
 			index = IsInVector(glm::ivec2(currentPos.x, currentPos.y - 1), &nodes);
 			if (index == -1)
@@ -594,7 +582,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 				}
 			}
 		}
-		if (_twodArray[currentPos.y][currentPos.x + 1].type != wall && _twodArray[currentPos.y][currentPos.x + 1].type != exiting)    // >  
+		if (_twodArray[currentPos.y][currentPos.x + 1].type != wall && _twodArray[currentPos.y][currentPos.x + 1].type != exiting)    // >
 		{
 			index = IsInVector(glm::ivec2(currentPos.x + 1, currentPos.y), &nodes);
 			if (index == -1)
@@ -612,7 +600,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 				}
 			}
 		}
-		if (_twodArray[currentPos.y + 1][currentPos.x].type != wall && _twodArray[currentPos.y + 1][currentPos.x].type != exiting)    // v  
+		if (_twodArray[currentPos.y + 1][currentPos.x].type != wall && _twodArray[currentPos.y + 1][currentPos.x].type != exiting)    // v
 		{
 			index = IsInVector(glm::ivec2(currentPos.x, currentPos.y + 1), &nodes);
 			if (index == -1)
@@ -630,7 +618,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 				}
 			}
 		}
-		if (_twodArray[currentPos.y][currentPos.x - 1].type != wall && _twodArray[currentPos.y][currentPos.x - 1].type != exiting)    // <  
+		if (_twodArray[currentPos.y][currentPos.x - 1].type != wall && _twodArray[currentPos.y][currentPos.x - 1].type != exiting)    // <
 		{
 			index = IsInVector(glm::ivec2(currentPos.x - 1, currentPos.y), &nodes);
 			if (index == -1)
@@ -719,4 +707,3 @@ gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[width][height].type;
 }
-

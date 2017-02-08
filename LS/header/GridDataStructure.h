@@ -53,7 +53,7 @@ public:
 	void loadingBmpPicture(char* filename);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
-	bool checkifPlayerWon(glm::vec3 * playerpos, bool buttonpressed);
+	bool checkifPlayerWon(glm::vec3 *playerpos);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
 	gridType returnGridType(int width,int height);
 	glm::vec3 getheightandwidthpoint12(int i);

@@ -11,8 +11,6 @@ class Shader {
 
 private:
 	std::string name;
-	GLint createShader(std::string path, GLenum shaderType) const;
-	GLint createShaderFromString(std::string *shader, GLenum shaderType) const;
 public:
 
 	GLuint shaderProgram;

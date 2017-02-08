@@ -38,27 +38,29 @@ void Character::update(float dt)
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
-	if (_currentLevel->checkifPlayerWon(&_position, buttonpressed))
-		sic::CloseWindow = true;
+	if (_currentLevel->checkifPlayerWon(&_position))
+    {
+        if (!_isAtExit)
+        {
+            // did enter exit square
+            ExitTriggerEvent event(true);
+            _eventManager->execute(event);
+            _isAtExit = true;
+        }
+    }
+    else if (_isAtExit)
+    {
+        //did leave exit square
+        ExitTriggerEvent event(false);
+        _eventManager->execute(event);
+        _isAtExit = false;
+    }
+		// sic::CloseWindow = true;
 	Node::update(dt);
 }
 void Character::onRender()
 {
 
-}
-void Character::doYouWantToWin(const KeyboardEvent & event)
-{
-	if (event.getKey() == GLFW_KEY_G)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-			buttonpressed = true;
-		}
-		else if (event.getAction() == GLFW_RELEASE)
-		{
-			buttonpressed = false;
-		}
-	}
 }
 void Character::moveCharacter(const KeyboardEvent& event)
 {
@@ -135,6 +137,18 @@ void Character::moveCharacter(const KeyboardEvent& event)
 			}
 		}
 	}
+    else if (event.getKey() == GLFW_KEY_G)
+	{
+        if (event.getAction() == GLFW_PRESS)
+        {
+            if (_isAtExit) // && _hasVictoryLoot TODO
+            {
+                //call endGameEvent
+                GameOverEvent event(true, _lootValue);
+                _eventManager->execute(event);
+            }
+        }
+	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
 {
@@ -151,14 +165,14 @@ void Character::moveMouse(const MouseMoveEvent& event)
     {
         rotateY(deltaPos.y * -RotationSpeed);
         rotateX(deltaPos.x * -RotationSpeed);
-    }
-    if (getRY() > glm::pi<float>()*0.5f)
-    {
-        setRY(glm::pi<float>()*0.5f);
-    }
-    if (getRY() < glm::pi<float>()*-0.5f)
-    {
-        setRY(glm::pi<float>()*-0.5f);
+        if (getRY() > glm::pi<float>()*0.5f)
+        {
+            setRY(glm::pi<float>()*0.5f);
+        }
+        if (getRY() < glm::pi<float>()*-0.5f)
+        {
+            setRY(glm::pi<float>()*-0.5f);
+        }
     }
 }
 void Character::collectLoot(const CollectLootEvent& event)
@@ -179,11 +193,8 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 {
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
-	_eventManager->listen(this,&Character::doYouWantToWin);
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);
-	buttonpressed = false;
-	charactermovedoutsidebox = false;
 }
 Character::Character()
 {
