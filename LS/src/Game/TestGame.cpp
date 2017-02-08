@@ -30,7 +30,7 @@ void TestGame::initiate() {
 	ModelPart goModelMeshPart(&_wallMesh, &_material);
 	Model goModel(goModelMeshPart);
 
-	guard = new Guard(guardModel, &_gridtest);
+	guard = new Guard(player, &_event, guardModel, &_gridtest);
 
 	//Add some more game objects
 	_scene.add(player);

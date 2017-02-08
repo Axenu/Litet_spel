@@ -133,7 +133,8 @@ glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 	}
 	return returnvalue;
 }
-Guard::Guard(glm::vec3 Guarden, glm::vec3 positonxy[4]) : GameObject()
+Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec3 positonxy[4]) : 
+	GameObject(), _player(player), _eventManager(event)
 {
 	this->setPosition(Guarden);
 	_point1x = positonxy[0];
@@ -267,11 +268,18 @@ void Guard::buildgridarray(Grid * gridet)
 void Guard::update(float dt)
 {
 	WalkingBetweenFourPoints(dt);
+
+	if (this->DetectedPlayer())
+	{
+		GameOverEvent event(true, 0);
+		_eventManager->execute(event);
+	}
+
 	Node::update(dt);
 }
 
-Guard::Guard(Model &m, Grid *gridet):
-	GameObject(m)
+Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
+	GameObject(m), _player(player), _eventManager(event)
 {
 	srand((unsigned int)time(NULL));
 	//x = h�jd z= bred
@@ -331,11 +339,11 @@ void Guard::goToSquare(float dt,glm::vec3 walkTo)
 	}
 }
 
-bool Guard::DetectedPlayer(glm::vec3 player)
+bool Guard::DetectedPlayer()
 {
-	float distance = getDistance(glm::vec4(player, 1.0f));
+	float distance = getDistance(*_player);
 
-	if (distance > 1.0f)
+	if (distance > 2.0f)
 	{
 		return false;
 	}
