@@ -183,6 +183,7 @@ void Character::setScene(Scene * scene)
 Character::Character(glm::vec3 pos, EventManager *manager) :
 	GameObject(), _eventManager(manager)
 {
+    _lootValue = 0;
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
     _eventManager->listen(this, &Character::moveMouse);
@@ -190,9 +191,13 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 }
 Character::Character()
 {
+    _lootValue = 0;
 }
 Character::~Character()
 {
+    _eventManager->unlisten(this, &Character::moveCharacter);
+    _eventManager->unlisten(this, &Character::moveMouse);
+    _eventManager->unlisten(this, &Character::collectLoot);
 
 }
 

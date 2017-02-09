@@ -28,14 +28,22 @@ namespace gui {
         rect->setColor(color);
         addChild(rect);
 
+        _scoreLabel= new gui::Label(_font);
+        _scoreLabel->addStringComponent(new StringComponentString("Score: "));
+        _scoreLabel->addStringComponent(new StringComponentString(""));
+        _scoreLabel->setPosition(-1.0, 0.85-l->getSize().y*0.5f);
+        _scoreLabel->setScale(0.5);
+        addChild(_scoreLabel);
+
         _manager->listen(this, &HUDView::gameStarted);
         _manager->listen(this, &HUDView::gameOver);
         _manager->listen(this, &HUDView::exitSquareTrigger);
-        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
-        _manager->execute(event);
     }
     HUDView::~HUDView()
     {
+        _manager->unlisten(this, &HUDView::gameStarted);
+        _manager->unlisten(this, &HUDView::gameOver);
+        _manager->unlisten(this, &HUDView::exitSquareTrigger);
         delete _font;
         delete _game;
     }
@@ -63,13 +71,12 @@ namespace gui {
         /* Load game
     	*/
     	_game->initiate();
-        //Add score to ui
-        gui::Label *l = new gui::Label(_font);
-        l->addStringComponent(new StringComponentString("Score: "));
-        l->addStringComponent(new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
-        l->setPosition(0.90f-l->getSize().x*0.5f, 1-l->getSize().y*0.5f);
-        l->setScale(0.5);
-        addChild(l);
+        //Update score ui
+        _scoreLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
+
+        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
+        _manager->execute(event);
+
     }
     void HUDView::gameStarted(const GameStartedEvent &event)
     {
