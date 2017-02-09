@@ -113,16 +113,16 @@ void Character::moveCharacter(const KeyboardEvent& event)
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
-		int points = _currentScene->loot(*_camera, 2);
-		if (points > 0)
-		{
 			if (event.getAction() == GLFW_PRESS)
 			{
-				CollectLootEvent event(points);
-				_lootValue += points;
-				_eventManager->execute(event);
+				int points = _currentScene->loot(*_camera, 2);
+				if (points > 0)
+				{
+					CollectLootEvent event(points);
+					_lootValue += points;
+					_eventManager->execute(event);
+				}
 			}
-		}
 	}
     else if (event.getKey() == GLFW_KEY_G)
 	{
