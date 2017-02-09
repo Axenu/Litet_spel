@@ -58,6 +58,11 @@ void Character::onRender()
 
 }
 
+int* Character::getLootValuePointer()
+{
+    return &_lootValue;
+}
+
 #pragma region Events
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -125,7 +130,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
             if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
             {
                 //call endGameEvent
-                GameOverEvent event(true, _lootValue);
+                GameOverEvent event(true);
                 _eventManager->execute(event);
             }
         }

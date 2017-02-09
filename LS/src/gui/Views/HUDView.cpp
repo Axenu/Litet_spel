@@ -63,6 +63,13 @@ namespace gui {
         /* Load game
     	*/
     	_game->initiate();
+        //Add score to ui
+        gui::Label *l = new gui::Label(_font);
+        l->addStringComponent(new StringComponentString("Score: "));
+        l->addStringComponent(new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
+        l->setPosition(0.90f-l->getSize().x*0.5f, 1-l->getSize().y*0.5f);
+        l->setScale(0.5);
+        addChild(l);
     }
     void HUDView::gameStarted(const GameStartedEvent &event)
     {
@@ -70,10 +77,13 @@ namespace gui {
     }
     void HUDView::gameOver(const GameOverEvent &event)
     {
-        if (!_parent->setView("GameOverView"))
+        GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
+        if (view == nullptr)
         {
-            _parent->setView(new GameOverView(_manager, event));
+            view = new GameOverView(_manager, event);
+            _parent->setView(view);
         }
+        view->setScore(*_game->getCharacter()->getLootValuePointer());
     }
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {

@@ -115,7 +115,7 @@ std::vector<glm::ivec2> Guard::gridWalkingBetweenTwoPoints(glm::ivec2 GoalPositi
 			}
 		}
 	}
-	print();  
+	print();
 
 	std::vector<glm::ivec2> path;
 
@@ -150,7 +150,7 @@ std::vector<glm::ivec2> Guard::gridWalkingBetweenTwoPoints(glm::ivec2 GoalPositi
 		currentValue--;
 	}
 
-	for (unsigned int i = 0; i < path.size(); i++) 
+	for (unsigned int i = 0; i < path.size(); i++)
 	{
 		path[i] = _levalues[path[i].y][path[i].x].xz;
 	}
@@ -175,7 +175,7 @@ glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 	}
 	return returnvalue;
 }
-Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec3 positonxy[4]) : 
+Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec3 positonxy[4]) :
 	GameObject(), _player(player), _eventManager(event)
 {
 	this->setPosition(Guarden);
@@ -261,7 +261,7 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 	_currentGridSpace = gridet->getGridSpace();
 	unsigned int maxsizewidth = sizeX;
 	_height = 1, _width = 1;
-	
+
 	for (unsigned int i = maxsizewidth; i > 0; i--)
 	{
 		if (_guardsstartposition.x >= i && _guardsstartposition.x + i <= _widthLength)
@@ -313,7 +313,7 @@ void Guard::update(float dt)
 
 	if (this->DetectedPlayer())
 	{
-		GameOverEvent event(true, 0);
+		GameOverEvent event(false);
 		_eventManager->execute(event);
 	}
 
@@ -330,12 +330,12 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_point2z = gridet->getheightandwidthpoint12(1);
 	_point1x = gridet->getheightandwidthpoint12(2);
 	_point2x = gridet->getheightandwidthpoint12(3);
-	
+
 	_guardsstartposition = gridet->getData(guard);
 	_widthLength = gridet->getWidth();
 	_heightLength = gridet->getHeight();
 	this->setPosition(_guardsstartposition);
-	
+
 	_aiChoice = randomgenerator(4);
 	buildgridarray(gridet, 10, 20);
 	gridWalkingBetweenTwoPoints(glm::ivec2(5, 8));

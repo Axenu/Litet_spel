@@ -22,6 +22,7 @@ namespace gui
         gui::Font *_font;
         gui::Button* _quitButton;
         gui::Button* _mainMenuButton;
+        int _score;
         // float* _fps;
 
     public:
@@ -32,6 +33,8 @@ namespace gui
         void onUpdate(float dt);
 
         virtual void initiate();
+
+        void setScore(int score);
 
         void QuitGame(int action);
         void gotoMainMenu(int action);
