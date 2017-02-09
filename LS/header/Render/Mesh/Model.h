@@ -32,6 +32,7 @@ public:
 	/* Update model boxes from model space
 	*/
 	void transform(const glm::mat4 &mat);
+	const AABB& getBox() const;
 	~Model();
 private:
 	std::string _name;

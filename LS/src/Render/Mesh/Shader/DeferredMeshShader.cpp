@@ -23,7 +23,7 @@ void DeferredMeshShader::acquireUniforms() {
 
 /* Bind shader and assign related uniforms
 */
-void DeferredMeshShader::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix, MaterialLink *matLink) {
+void DeferredMeshShader::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix, MaterialLink *matLink) const {
 	_shader.bind();
 	//Todo add game object transforms
 	glm::mat4 mvp = fD._VP * modelMatrix;
@@ -45,7 +45,7 @@ void DeferredMeshShader::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMa
 
 /* Link the shader to the material
 */
-std::shared_ptr<MaterialLink> DeferredMeshShader::linkMaterial(Material &mat) {
+std::shared_ptr<MaterialLink> DeferredMeshShader::linkMaterial(Material &mat) const {
 	DeferredMaterial *data = new DeferredMaterial();
 	if(!mat.tryGet("diffuse", data->_diffuse))
 		data->_diffuse = glm::vec4(0.8f);

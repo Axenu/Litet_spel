@@ -14,8 +14,8 @@ public:
 	AABB(const glm::vec3& min, const glm::vec3& max);
     AABB(std::vector<glm::vec3> *position);
 	AABB(const AABB &other);
-	glm::vec3 getMin();
-	glm::vec3 getMax();
+	glm::vec3 getMin() const;
+	glm::vec3 getMax() const;
 	~AABB();
 
 	AABB transform(const glm::mat4 &matrix) const;

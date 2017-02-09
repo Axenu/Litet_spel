@@ -54,7 +54,7 @@ void LootObject::update(float dt)
 {
 	_totRotX += _rotX * dt;
 	
-	if (_totRotX > 2 * M_PI)
+	if (_totRotX > 2 * M_PIf)
 	{
 		_totRotX -= (float)(2 * M_PI);
 	}

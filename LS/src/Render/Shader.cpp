@@ -44,7 +44,7 @@ Shader& Shader::operator=(Shader &&move) {
 	return *this;
 }
 
-void Shader::bind() {
+void Shader::bind() const {
 	glUseProgram(this->shaderProgram);
 }
 /* Get a uniform from the shader. The shader needs to be bound to device.

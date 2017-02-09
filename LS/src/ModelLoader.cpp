@@ -42,7 +42,11 @@ Model ModelLoader::GetModel(std::string modelName, MeshShader * shader)
 	}
 
 	LoadModel(modelName, shader);
-	return *_models.back();
+	//Check model was loaded
+	if (_models.size() > 0)
+		return *_models.back();
+	std::cout << "Model failed to load: " + modelName;
+	return Model();
 }
 
 void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)

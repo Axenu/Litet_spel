@@ -21,6 +21,18 @@ Scene::~Scene()
 void Scene::update(float dT) {
 	_root.update(dT);
 }
+Camera& Scene::setCamera(Setting &camSetting) {
+	Camera* cam = new Camera(camSetting);
+	_nodes.push_back(cam);
+	std::swap(cam, _cam);
+	//remove the old camera if it existed
+	if (cam)
+		removeNode(cam);
+	return *_cam;
+}
+Camera& Scene::getCamera() {
+	return *_cam;
+}
 /* Adds a game object to the scene.
 */
 void Scene::add(GameObject *object) {
@@ -50,6 +62,22 @@ GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
 	}
 	return gameObj;
 }
+/* Remove the node object returns the pointer to any leftover data
+*/
+Node* Scene::removeNode(Node *object, bool deleteObj) {
+	for (unsigned int i = 0; i < _objects.size(); i++) {
+		if (_objects[i] == object) {
+			_objects.erase(_objects.begin() + i);
+			object->removeNode(); //Clear the node from the tree
+			if (deleteObj) {
+				delete object;
+				return nullptr;
+			}
+			return object;
+		}
+	}
+	return object;
+}
 
 void Scene::fetchDrawables(DrawFrame &dF) {
 	for (unsigned int i = 0; i < _objects.size(); i++)
@@ -57,7 +85,7 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 }
 
 
-int Scene::loot(Camera & cam, int pickDist)
+int Scene::loot(int pickDist)
 {
 	float testDist;
 	std::vector<int> indices;
@@ -65,7 +93,7 @@ int Scene::loot(Camera & cam, int pickDist)
 	//Sorting out objects close enough to cam
 	for (unsigned int i = 0; i < _objects.size(); i++)
 	{
-		testDist = cam.getDistance(*_objects[i]);
+		testDist = _cam->getDistance(*_objects[i]);
 		if (testDist < pickDist)
 		{
 			indices.push_back(i);
@@ -96,7 +124,7 @@ int Scene::loot(Camera & cam, int pickDist)
 	int value = 0;
 	for (unsigned int i = 0; i < indices.size(); i++)
 	{
-		picked = _objects[indices[i]]->pick(cam);
+		picked = _objects[indices[i]]->pick(*_cam);
 		if (picked)
 		{
 			LootObject* tmpObj = dynamic_cast<LootObject*> (_objects[indices[i]]);

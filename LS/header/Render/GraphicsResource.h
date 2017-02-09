@@ -5,7 +5,7 @@
 
 
 	/* Class holding the graphical resources used for rendering.
-	 * Not designed to hold assests.
+	 * Not designed to hold assets?
 	 */
 class GraphicsResource {
 

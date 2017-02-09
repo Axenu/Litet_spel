@@ -4,6 +4,7 @@
 #include "Event/EventManager.h"
 #include"Setting.h"
 #include"camera.h"
+#include "Level/ObjectFactory.h"
 
 /* The game 
 */
@@ -15,7 +16,7 @@ protected:
 	Scene _scene;
 	GraphicsResource _resource;
 	RenderDeferred _deferred;
-	Camera _camera;
+	ObjectFactory _factory;
 
 	virtual void compose(RenderInfo &rI);
 public:

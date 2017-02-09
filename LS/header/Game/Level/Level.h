@@ -16,8 +16,8 @@ private:
 
 public:
 
-	Level(EventManager &events, DeferredMeshShader &shader);
-	~Level();
+	Level(const std::string &level, EventManager &events, MeshShader &shader);
+	virtual ~Level();
 
 	Grid& getGrid();
 
