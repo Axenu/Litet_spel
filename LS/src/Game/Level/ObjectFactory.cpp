@@ -13,9 +13,7 @@ ObjectFactory::~ObjectFactory()
 glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box) {
 	glm::vec3 vec = _level->getGrid().getCenter(square);
 	//Move so object is centered on top of the square.
-	vec.x += box.getMin().x;
 	vec.y -= box.getMin().y;
-	vec.z += box.getMin().z;
 	return vec;
 }
 
@@ -58,7 +56,7 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	tmpMat.setColor("spec", glm::vec4(1.0f));
 	tmpMat.setFloat("shine", 20.0f);
-	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
+	Model tmpModel = _models.GetModel(_path + model, tmpMat);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 	object->setPosition(pos);
 	_scene.add(object);

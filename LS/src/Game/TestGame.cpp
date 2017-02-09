@@ -18,7 +18,7 @@ void TestGame::initiate() {
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
 	_player = player;
 	_factory.createGuard("cube.obj", glm::ivec2(2, 2), *player);
-	_factory.createObject("Table.obj", glm::ivec2(3, 5));
+	_factory.createObject("Table.obj", glm::ivec2(3, 1));
 	//Add some lights
 	PointLight l(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
 	_factory.createLight(l, player);
