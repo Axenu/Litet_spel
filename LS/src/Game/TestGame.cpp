@@ -14,8 +14,9 @@ TestGame::~TestGame() {
 
 void TestGame::initiate() {
 
-	Level* level = _factory.createLevel();
+	Level* level = _factory.createLevel("Demo1.bmp");
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
+	_player = player;
 	_factory.createGuard("cube.obj", glm::ivec2(2, 2), *player);
 	_factory.createObject("Table.obj", glm::ivec2(3, 5));
 	//Add some lights
@@ -38,4 +39,9 @@ void TestGame::compose(RenderInfo &rI) {
 		_bufferRenderer.render(rI);
 	else
 		Game::compose(rI);
+}
+
+
+Character* TestGame::getCharacter() {
+	return _player;
 }

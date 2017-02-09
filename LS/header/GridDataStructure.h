@@ -37,12 +37,12 @@ private:
 	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
 	bool removeGridCell(glm::ivec2 pos, std::vector<gridNode> *vector);
 public:
-	Grid();
+	Grid(const std::string& level);
 	void buildgridarray();
 	glm::vec3 getData(gridType Data);
 	~Grid();
 	void print2darraydata();
-	void loadingBmpPicture(char* filename);
+	void loadingBmpPicture(const char* filename);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);

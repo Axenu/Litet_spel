@@ -2,8 +2,8 @@
 
 
 
-Level::Level(EventManager &events, MeshShader &shader)
-	: _grid(), _gridMesh(_grid.generateMesh())
+Level::Level(const std::string &level, EventManager &events, MeshShader &shader)
+	: _grid(level), _gridMesh(_grid.generateMesh())
 {
 	Material mat(&shader);
 	ModelPart part(&_gridMesh, mat);

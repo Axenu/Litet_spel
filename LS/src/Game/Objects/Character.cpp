@@ -107,7 +107,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	{
 			if (event.getAction() == GLFW_PRESS)
 			{
-				int points = _currentScene->loot(*_camera, 2);
+				int points = _currentScene->loot(2);
 				if (points > 0)
 				{
 					CollectLootEvent event(points);

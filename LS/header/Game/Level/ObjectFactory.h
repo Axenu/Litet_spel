@@ -29,7 +29,7 @@ public:
 	ObjectFactory(Scene &scene, EventManager &events, const std::string &resourcePath = "");
 	~ObjectFactory();
 
-	Level* createLevel();
+	Level* createLevel(const std::string &level);
 	Character* createCharacter(glm::ivec2 square, float height);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player);
 

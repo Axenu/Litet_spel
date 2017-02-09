@@ -13,6 +13,7 @@ class TestGame
 protected:
 	RenderDefBuffers _bufferRenderer;
 	InputKeyState _renderBuffer;
+	Character *_player;
 
 public:
 

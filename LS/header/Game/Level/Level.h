@@ -16,7 +16,7 @@ private:
 
 public:
 
-	Level(EventManager &events, MeshShader &shader);
+	Level(const std::string &level, EventManager &events, MeshShader &shader);
 	virtual ~Level();
 
 	Grid& getGrid();

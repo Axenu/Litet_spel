@@ -59,9 +59,9 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 	return true;
 }
 
-Grid::Grid()
+Grid::Grid(const std::string &level)
 {
-	loadingBmpPicture((char*)"roomtest.bmp");
+	loadingBmpPicture(level.c_str());
 }
 
 Grid::~Grid()
@@ -120,7 +120,7 @@ void Grid::print2darraydata()
 	}
 }
 
-void Grid::loadingBmpPicture(char* filename)
+void Grid::loadingBmpPicture(const char* filename)
 {
 	//
 	//_heightLength = 10;
