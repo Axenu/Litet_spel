@@ -31,7 +31,7 @@ namespace gui {
         _scoreLabel= new gui::Label(_font);
         _scoreLabel->addStringComponent(new StringComponentString("Score: "));
         _scoreLabel->addStringComponent(new StringComponentString(""));
-        _scoreLabel->setPosition(-1.0, 0.85-l->getSize().y*0.5f);
+        _scoreLabel->setPosition(-1.0f, 0.85f-l->getSize().y*0.5f);
         _scoreLabel->setScale(0.5);
         addChild(_scoreLabel);
 

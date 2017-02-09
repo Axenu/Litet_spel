@@ -192,7 +192,6 @@ Character::~Character()
 {
     _eventManager->unlisten(this, &Character::moveCharacter);
     _eventManager->unlisten(this, &Character::moveMouse);
-    _eventManager->unlisten(this, &Character::collectLoot);
 
 }
 
