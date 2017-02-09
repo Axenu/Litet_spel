@@ -313,7 +313,7 @@ void Guard::update(float dt)
 
 	if (this->DetectedPlayer())
 	{
-		GameOverEvent event(true, 0);
+		GameOverEvent event(false, 0);
 		_eventManager->execute(event);
 	}
 
