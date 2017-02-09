@@ -35,6 +35,8 @@ public:
 	const AABB& getBox() const;
 	~Model();
 private:
+	void initAABB();
+	AABB _aabb;
 	std::string _name;
 	std::vector<ModelPart> _meshParts;
 };

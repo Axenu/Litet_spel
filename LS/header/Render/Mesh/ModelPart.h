@@ -21,4 +21,5 @@ public:
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
 	Mesh& getMesh();
 	void setMaterial(Material &mat);
+	const AABB& getBox();
 };

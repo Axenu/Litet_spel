@@ -26,3 +26,8 @@ void ModelPart::setMaterial(Material & mat)
 {
 	_material = mat;
 }
+
+const AABB & ModelPart::getBox()
+{
+	return _mesh->getBox();
+}
