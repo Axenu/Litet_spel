@@ -91,6 +91,7 @@ namespace gui {
             _parent->setView(view);
         }
         view->setScore(*_game->getCharacter()->getLootValuePointer());
+        view->updateText(event);
     }
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {

@@ -22,6 +22,7 @@ namespace gui
         gui::Font *_font;
         gui::Button* _quitButton;
         gui::Button* _mainMenuButton;
+        gui::Label *_victoryLabel;
         int _score;
         // float* _fps;
 
@@ -33,6 +34,7 @@ namespace gui
         void onUpdate(float dt);
 
         virtual void initiate();
+        void updateText(const GameOverEvent &event);
 
         void setScore(int score);
 

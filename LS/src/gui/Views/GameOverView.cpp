@@ -9,19 +9,19 @@ namespace gui {
         _name = "GameOverView";
 
         _font = new gui::Font("Resources/fonts/arial");
-        gui::Label *l = new gui::Label(_font);
+        _victoryLabel = new gui::Label(_font);
         if (event.hasWon())
         {
-            l->addStringComponent(new StringComponentString("Success"));
+            _victoryLabel->addStringComponent(new StringComponentString("Success"));
         }
         else
         {
-            l->addStringComponent(new StringComponentString("Defeat"));
+            _victoryLabel->addStringComponent(new StringComponentString("Defeat"));
         }
-        l->setPosition(-l->getSize().x*0.5f, 0.2f);
-        addChild(l);
+        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.2f);
+        addChild(_victoryLabel);
 
-        l = new gui::Label(_font);
+        gui::Label *l = new gui::Label(_font);
         l->addStringComponent(new StringComponentString("Score: "));
         l->addStringComponent(new StringComponentInt(&_score));
         l->setScale(0.5f);
@@ -59,6 +59,18 @@ namespace gui {
     {
         cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
         _manager->execute(cEvent);
+    }
+    void GameOverView::updateText(const GameOverEvent &event)
+    {
+        if (event.hasWon())
+        {
+            _victoryLabel->updateStringComponent(0, new StringComponentString("Success"));
+        }
+        else
+        {
+            _victoryLabel->updateStringComponent(0, new StringComponentString("Defeat"));
+        }
+        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.2f);
     }
     void GameOverView::setScore(int score)
     {
