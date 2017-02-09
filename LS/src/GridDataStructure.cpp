@@ -61,7 +61,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 
 Grid::Grid()
 {
-	loadingBmpPicture((char*)"roomtest.bmp");
+	loadingBmpPicture((char*)"Resources/Demo1.bmp");
 }
 
 Grid::~Grid()
