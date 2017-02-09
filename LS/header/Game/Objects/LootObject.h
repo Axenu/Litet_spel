@@ -14,7 +14,10 @@ public:
 	virtual ~LootObject();
 	void setValue(int val);
 	int getValue();
+	virtual void update(float);
 private:
 	int _value;
+	float _rotX;
+	float _totRotX;
 
 };

@@ -58,6 +58,11 @@ void Character::onRender()
 
 }
 
+int* Character::getLootValuePointer()
+{
+    return &_lootValue;
+}
+
 #pragma region Events
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -108,15 +113,16 @@ void Character::moveCharacter(const KeyboardEvent& event)
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
-		int points = _currentScene->loot(*_camera, 2);
-		if (points > 0)
-		{
 			if (event.getAction() == GLFW_PRESS)
 			{
-				CollectLootEvent event(points);
-				_eventManager->execute(event);
+				int points = _currentScene->loot(*_camera, 2);
+				if (points > 0)
+				{
+					CollectLootEvent event(points);
+					_lootValue += points;
+					_eventManager->execute(event);
+				}
 			}
-		}
 	}
     else if (event.getKey() == GLFW_KEY_G)
 	{
@@ -125,7 +131,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
             if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
             {
                 //call endGameEvent
-                GameOverEvent event(true, _lootValue);
+                GameOverEvent event(true);
                 _eventManager->execute(event);
             }
         }
@@ -156,11 +162,6 @@ void Character::moveMouse(const MouseMoveEvent& event)
         }
     }
 }
-void Character::collectLoot(const CollectLootEvent& event)
-{
-    std::cout << "recieved loot of value: " << event.getValue() << std::endl;
-    _lootValue += event.getValue();
-}
 
 #pragma endregion
 
@@ -178,16 +179,19 @@ void Character::setScene(Scene * scene)
 Character::Character(glm::vec3 pos, EventManager *manager) :
 	GameObject(), _eventManager(manager)
 {
+    _lootValue = 0;
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
     _eventManager->listen(this, &Character::moveMouse);
-    _eventManager->listen(this, &Character::collectLoot);
 }
 Character::Character()
 {
+    _lootValue = 0;
 }
 Character::~Character()
 {
+    _eventManager->unlisten(this, &Character::moveCharacter);
+    _eventManager->unlisten(this, &Character::moveMouse);
 
 }
 

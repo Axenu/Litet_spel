@@ -28,14 +28,22 @@ namespace gui {
         rect->setColor(color);
         addChild(rect);
 
+        _scoreLabel= new gui::Label(_font);
+        _scoreLabel->addStringComponent(new StringComponentString("Score: "));
+        _scoreLabel->addStringComponent(new StringComponentString(""));
+        _scoreLabel->setPosition(-1.0f, 0.85f-l->getSize().y*0.5f);
+        _scoreLabel->setScale(0.5);
+        addChild(_scoreLabel);
+
         _manager->listen(this, &HUDView::gameStarted);
         _manager->listen(this, &HUDView::gameOver);
         _manager->listen(this, &HUDView::exitSquareTrigger);
-        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
-        _manager->execute(event);
     }
     HUDView::~HUDView()
     {
+        _manager->unlisten(this, &HUDView::gameStarted);
+        _manager->unlisten(this, &HUDView::gameOver);
+        _manager->unlisten(this, &HUDView::exitSquareTrigger);
         delete _font;
         delete _game;
     }
@@ -63,6 +71,12 @@ namespace gui {
         /* Load game
     	*/
     	_game->initiate();
+        //Update score ui
+        _scoreLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
+
+        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
+        _manager->execute(event);
+
     }
     void HUDView::gameStarted(const GameStartedEvent &event)
     {
@@ -70,10 +84,14 @@ namespace gui {
     }
     void HUDView::gameOver(const GameOverEvent &event)
     {
-        if (!_parent->setView("GameOverView"))
+        GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
+        if (view == nullptr)
         {
-            _parent->setView(new GameOverView(_manager, event));
+            view = new GameOverView(_manager, event);
+            _parent->setView(view);
         }
+        view->setScore(*_game->getCharacter()->getLootValuePointer());
+        view->updateText(event);
     }
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {

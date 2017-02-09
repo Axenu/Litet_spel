@@ -18,7 +18,7 @@ protected:
 	DeferredMeshShader _shader;
 	Material _material, _lootMat;
 	Level* _level;
-	Character* player;
+	Character* _player;
 	Mesh  _cube;
 
 	ModelLoader _modelLoader;
@@ -30,4 +30,5 @@ public:
 	virtual ~TestGame();
 	virtual void initiate();
 	virtual void compose(RenderInfo &rI);
+	Character *getCharacter();
 };

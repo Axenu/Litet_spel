@@ -5,23 +5,25 @@
 namespace gui {
     GameOverView::GameOverView(EventManager* manager, const GameOverEvent &event) : _manager(manager), View()
     {
+        _score = 0;
         _name = "GameOverView";
 
         _font = new gui::Font("Resources/fonts/arial");
-        gui::Label *l = new gui::Label(_font);
+        _victoryLabel = new gui::Label(_font);
         if (event.hasWon())
         {
-            l->addStringComponent(new StringComponentString("Success"));
+            _victoryLabel->addStringComponent(new StringComponentString("Success"));
         }
         else
         {
-            l->addStringComponent(new StringComponentString("Defeat"));
+            _victoryLabel->addStringComponent(new StringComponentString("Defeat"));
         }
-        l->setPosition(-l->getSize().x*0.5f, 0.2f);
-        addChild(l);
+        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.2f);
+        addChild(_victoryLabel);
 
-        l = new gui::Label(_font);
-        l->addStringComponent(new StringComponentString("Score: " + std::to_string(event.getScore())));
+        gui::Label *l = new gui::Label(_font);
+        l->addStringComponent(new StringComponentString("Score: "));
+        l->addStringComponent(new StringComponentInt(&_score));
         l->setScale(0.5f);
         l->setPosition(-l->getSize().x*0.25f, 0.0f);
         addChild(l);
@@ -40,8 +42,6 @@ namespace gui {
         _mainMenuButton->setScale(0.5,0.5);
         addChild(_mainMenuButton);
 
-        cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
-        _manager->execute(cEvent);
     }
     GameOverView::~GameOverView()
     {
@@ -57,7 +57,24 @@ namespace gui {
     }
     void GameOverView::initiate()
     {
-        
+        cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
+        _manager->execute(cEvent);
+    }
+    void GameOverView::updateText(const GameOverEvent &event)
+    {
+        if (event.hasWon())
+        {
+            _victoryLabel->updateStringComponent(0, new StringComponentString("Success"));
+        }
+        else
+        {
+            _victoryLabel->updateStringComponent(0, new StringComponentString("Defeat"));
+        }
+        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.2f);
+    }
+    void GameOverView::setScore(int score)
+    {
+        _score = score;
     }
     void GameOverView::QuitGame(int action)
     {
@@ -71,14 +88,13 @@ namespace gui {
     {
         if (action == GLFW_RELEASE)
         {
-            if (!_parent->setView("MainMenuView"))
+            MainMenuView *view = dynamic_cast<MainMenuView*>(_parent->setView("MainMenuView"));
+            if (view == nullptr)
             {
-                std::cout << "scene not found \n Creating new... (Should already exist)" << std::endl;
                 float f = 0.0f;
-                _parent->setView(new MainMenuView(_manager, &f));
+                view = new MainMenuView(_manager, &f);
+                _parent->setView(view);
             }
-            ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
-            _manager->execute(event);
         }
     }
 }
