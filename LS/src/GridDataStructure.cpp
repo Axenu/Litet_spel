@@ -117,7 +117,7 @@ glm::vec3 Grid::getData(gridType Data)
 			{
 				if (_twodArray[j][i].type == guard)
 				{
-					return  glm::vec3(i/* + GRIDSPACE * 0.5f*/, GRIDSPACE * 0.5f, j - GRIDSPACE * 0.5f);
+					return  glm::vec3(i ,0.25 , j);
 				}
 			}
 		}

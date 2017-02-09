@@ -25,6 +25,7 @@ private:
 	int _widthLength;
 	int _height;
 	int _width;
+	glm::vec3 displacement =glm::vec3(0.5, 0.5, 0.5);
 	float _currentGridSpace;
 	std::vector<glm::ivec2> _currentPath;
 	bool DetectedPlayer();
@@ -35,7 +36,7 @@ public:
 	void print();
 	std::vector<glm::ivec2> generatingPath(glm::ivec2 GoalPosition);
 	bool walkingInThePaths(float dt);
-	glm::ivec2 roundTheValuefrom0Comma01(glm::vec3);
+	glm::vec2 roundTheValuefrom0Comma01(glm::vec3);
 	Guard(Character* player, EventManager* event, glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
 	virtual	void update(float dt);
