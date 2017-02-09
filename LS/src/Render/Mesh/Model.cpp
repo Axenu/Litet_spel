@@ -9,12 +9,14 @@ Model::Model() {
 Model::Model(std::vector<ModelPart> &pMeshes)
 	: _meshParts(pMeshes)
 {
+	initAABB();
 }
 
 Model::Model(ModelPart &part) 
 	: _meshParts(1)
 {
 	_meshParts[0] = part;
+	initAABB();
 }
 
 void Model::render(RenderInfo &fD, glm::mat4 &modelMatrix) const
@@ -27,9 +29,7 @@ void Model::transform(const glm::mat4 &mat) {
 		_meshParts[i]._box = _meshParts[i].getMesh().getBox().transform(mat);
 }
 const AABB& Model::getBox() const {
-	if (_meshParts.size() > 0)
-		return _meshParts[0]._box;
-	return AABB();
+	return _aabb;
 }
 const std::vector<ModelPart>& Model::getParts() const {
 	return _meshParts;
@@ -70,4 +70,20 @@ std::string Model::getName()
 Model::~Model() 
 {
 
+}
+
+void Model::initAABB()
+{
+	if (_meshParts.size() > 0)
+	{
+		std::vector<glm::vec3> pos;
+		for (unsigned int i = 0; i < _meshParts.size(); i++)
+		{
+			AABB tmpBB;
+			tmpBB = _meshParts[i].getBox();
+			pos.push_back(tmpBB.getMax());
+			pos.push_back(tmpBB.getMin());
+		}
+		_aabb = AABB(&pos);
+	}
 }
