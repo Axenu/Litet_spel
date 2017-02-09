@@ -1,11 +1,11 @@
-# Blender MTL File: 'borocco_table_EDITED.blend'
+# Blender MTL File: 'Concepts.blend'
 # Material Count: 1
 
-newmtl (null)
-Ns 96.078431
+newmtl Material.002
+Ns 194.117647
 Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
+Kd 0.800000 0.575307 0.019900
+Ks 0.7 0.7 0.7
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000

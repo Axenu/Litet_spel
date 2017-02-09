@@ -41,10 +41,6 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 
 
 GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square) {
-	Material mat(&_meshShader);
-	mat.setColor("diffuse", glm::vec4(0.8f));
-	mat.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
-	mat.setFloat("shine", 20.f);
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
@@ -56,7 +52,7 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	tmpMat.setColor("spec", glm::vec4(1.0f));
 	tmpMat.setFloat("shine", 20.0f);
-	Model tmpModel = _models.GetModel(_path + model, tmpMat);
+	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 	object->setPosition(pos);
 	_scene.add(object);

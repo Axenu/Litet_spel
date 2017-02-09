@@ -44,7 +44,7 @@ void main () {
 	vec4 specular = texture(specBuffer, frameCoord);
 	float depth  = texture(depthBuffer, frameCoord).x;
 
-	normal = decodeNormal(normal);
+	//normal = decodeNormal(normal);
 	vec3 pos = positionFromDepth(depth, frameCoord);
 
 	ColorOut.w = 1.0f;
