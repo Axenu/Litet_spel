@@ -24,12 +24,19 @@ void TestGame::initiate() {
 	_player->setScene(&_scene);
 	_camera.setParent(_player);
 
-	ModelPart guardModelMeshPart(&_cube, _material);
-	Model guardModel(guardModelMeshPart);
+	/*ModelPart guardModelMeshPart(&_cube, _material);
+	Model guardModel(guardModelMeshPart);*/
+
+	Material tmpMat(&_shader);
+	tmpMat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	tmpMat.setColor("spec", glm::vec4(1.0f));
+	tmpMat.setFloat("shine", 20.0f);
+	Model guardModel = _modelLoader.GetModel("Resources/cube.obj", tmpMat);
+	Guard *guard = new Guard(_player, &_event, guardModel, &_level->getGrid());
 	
 	//Add some more game objects
 	_scene.add(_player);
-	_scene.add(new Guard(_player, &_event, guardModel, &_level->getGrid()));
+	_scene.add(guard);
 	//Add some lights
 	_scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), _player));
 	_scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
@@ -39,19 +46,16 @@ void TestGame::initiate() {
 	
 	//Add loot
 	std::vector<glm::vec3>* pLootPosList = _level->getGrid().getLootLocations();
-	Material tmpMat(&_shader);
-	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	tmpMat.setColor("spec", glm::vec4(1.0f));
-	tmpMat.setFloat("shine", 20.0f);
-	Model tmpModel = _modelLoader.GetModel("Resources/coin.obj", tmpMat);
+	Model tmpModel = _modelLoader.GetModel("Resources/coin.obj", &_shader);
 	for (unsigned int i = 0; i < pLootPosList->size(); i++)
 	{
 		LootObject *tmpLoot = new LootObject(tmpModel);
 		tmpLoot->setPosition((*pLootPosList)[i]);
 		tmpLoot->setY(1.0f);
-		tmpLoot->setScale(0.05f);
-		tmpLoot->setRZ(M_PI/2);
-		tmpLoot->setRY(M_PI/2);
+		tmpLoot->setScale(0.025f);
+		tmpLoot->setRZ((float)(M_PI / 2));
+		tmpLoot->setRY((float)(M_PI / 2));
+		tmpLoot->moveY(-0.5f);
 		_scene.add(tmpLoot);
 	}
 }
