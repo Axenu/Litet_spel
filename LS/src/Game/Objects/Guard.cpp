@@ -36,7 +36,7 @@ void Guard::print()
 	std::cout << "end" << std::endl;
 }
 
-std::vector<glm::ivec2> Guard::gridWalkingBetweenTwoPoints(glm::ivec2 GoalPosition)
+std::vector<glm::ivec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 {
 	int maxvalue = _height * _width - 1;
 	int oldmaxvalue = 0;
@@ -130,22 +130,22 @@ std::vector<glm::ivec2> Guard::gridWalkingBetweenTwoPoints(glm::ivec2 GoalPositi
 		if (_levalues[currentPos.y - 1][currentPos.x].value < currentValue && _levalues[currentPos.y - 1][currentPos.x].value >= 0)
 		{
 			currentPos.y -= 1;
-			path.insert(path.begin(), currentPos);
+			path.push_back(currentPos);
 		}
 		else if (_levalues[currentPos.y + 1][currentPos.x].value < currentValue && _levalues[currentPos.y + 1][currentPos.x].value >= 0)
 		{
 			currentPos.y += 1;
-			path.insert(path.begin(), currentPos);
+			path.push_back(currentPos);
 		}
 		else if (_levalues[currentPos.y][currentPos.x - 1].value < currentValue && _levalues[currentPos.y][currentPos.x - 1].value >= 0)
 		{
 			currentPos.x -= 1;
-			path.insert(path.begin(), currentPos);
+			path.push_back(currentPos);
 		}
 		else if (_levalues[currentPos.y][currentPos.x + 1].value < currentValue && _levalues[currentPos.y][currentPos.x + 1].value >= 0)
 		{
 			currentPos.x += 1;
-			path.insert(path.begin(), currentPos);
+			path.push_back(currentPos);
 		}
 		currentValue--;
 	}
@@ -154,26 +154,36 @@ std::vector<glm::ivec2> Guard::gridWalkingBetweenTwoPoints(glm::ivec2 GoalPositi
 	{
 		path[i] = _levalues[path[i].y][path[i].x].xz;
 	}
-
 	return path;
 }
 
-glm::vec3 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
+void Guard::walkingInThePaths(float dt)
 {
-	glm::vec3 returnvalue = normalvalue;
-	if (normalvalue.x < round(normalvalue.x) + 0.1f)
+	if (_currentPath.size() == 0)
 	{
-		returnvalue.x = round(normalvalue.x);
+		return;
 	}
-	if (normalvalue.z < round(normalvalue.z) + 0.1f)
+	glm::ivec2 roundedpositon = roundTheValuefrom0Comma01(this->getWorldPos());
+	goToSquare(dt, _currentPath[_currentPath.size() - 1]);
+	std::cout << "(" << this->getWorldPos().x << ", " << this->getWorldPos().z << "), (" << roundedpositon.x << ", " << roundedpositon.y << "), (" << _currentPath[_currentPath.size() - 1].x << ", " << _currentPath[_currentPath.size() - 1].y << ")" << std::endl;
+	if (roundedpositon == _currentPath[_currentPath.size() - 1])
 	{
-		returnvalue.z = round(normalvalue.z);
+		_currentPath.erase(_currentPath.begin() + _currentPath.size() - 1);
 	}
-	if (normalvalue.y < round(normalvalue.y) + 0.1f)
+}
+
+glm::ivec2 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
+{
+	glm::ivec2 returnValue = glm::ivec2((int)normalvalue.x, (int)normalvalue.z);
+	if (normalvalue.x < round(normalvalue.x) - 0.01f)
 	{
-		returnvalue.y = round(normalvalue.y);
+		returnValue.x = int(round(normalvalue.x));
 	}
-	return returnvalue;
+	if (normalvalue.z < round(normalvalue.z) - 0.01f)
+	{
+		returnValue.y = int(round(normalvalue.z));
+	}
+	return returnValue;
 }
 Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec3 positonxy[4]) : 
 	GameObject(), _player(player), _eventManager(event)
@@ -187,7 +197,7 @@ Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec
 
 void Guard::WalkingBetweenFourPoints(float dt)
 {
-	glm::vec3 roundedpositon;
+	glm::ivec2 roundedpositon;
 	roundedpositon = roundTheValuefrom0Comma01(this->getPosition());
 
 	switch (_aiChoice)
@@ -195,7 +205,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 		case 1:
 		{
 			goToSquare(dt, _point1z);
-			if (roundedpositon == glm::vec3(_point1z.x, roundedpositon.y, _point1z.z))
+			if (roundedpositon == glm::ivec2(_point1z.x, _point1z.z))
 			{
 				_aiChoice = -1;
 			}
@@ -204,7 +214,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 		case -1:
 		{
 			goToSquare(dt, _guardsstartposition);
-			if (roundedpositon == glm::vec3(_guardsstartposition.x, roundedpositon.y, _guardsstartposition.z))
+			if (roundedpositon == glm::ivec2(_guardsstartposition.x, _guardsstartposition.z))
 			{
 				_aiChoice = randomgenerator(4);
 			}
@@ -213,7 +223,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 		case 2:
 		{
 			goToSquare(dt, _point2z);
-			if (roundedpositon == glm::vec3(_point2z.x, roundedpositon.y, _point2z.z))
+			if (roundedpositon == glm::ivec2(_point2z.x, _point2z.z))
 			{
 				_aiChoice = -1;
 			}
@@ -226,7 +236,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 		case 3:
 		{
 			goToSquare(dt, _point2x);
-			if (roundedpositon == glm::vec3(_point2x.x, roundedpositon.y, _point2x.z))
+			if (roundedpositon == glm::ivec2(_point2x.x, _point2x.z))
 			{
 				_aiChoice = -1;
 			}
@@ -239,7 +249,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 		case 4:
 		{
 			goToSquare(dt, _point1x);
-			if (roundedpositon == glm::vec3(_point1x.x, roundedpositon.y, _point1x.z))
+			if (roundedpositon == glm::ivec2(_point1x.x, _point1x.z))
 			{
 				_aiChoice = -1;
 			}
@@ -309,7 +319,9 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 
 void Guard::update(float dt)
 {
-	WalkingBetweenFourPoints(dt);
+
+	walkingInThePaths(dt);
+//	WalkingBetweenFourPoints(dt);
 
 	if (this->DetectedPlayer())
 	{
@@ -338,7 +350,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	
 	_aiChoice = randomgenerator(4);
 	buildgridarray(gridet, 10, 20);
-	gridWalkingBetweenTwoPoints(glm::ivec2(5, 8));
+	_currentPath = generatingPath(glm::ivec2(10, 5));
 	//	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
@@ -373,6 +385,34 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 	if (distance.x > 0)
 	{
 		this->move(glm::vec3(speed, 0,0) * dt);
+	}
+	if (distance.x < 0)
+	{
+		this->move(glm::vec3(-speed, 0, 0) * dt);
+	}
+}
+
+void Guard::goToSquare(float dt, glm::ivec2 walkTo)
+{
+	//walk up to top point
+	float speed = 0.3f;
+	//float padding = 0.f;
+	glm::vec3 value = this->getWorldPos();
+
+	//glm::vec3 value = glm::vec3(1, 0, 5);
+	glm::ivec2 distance = walkTo - glm::ivec2(value.x, value.z);
+	//	std::cout << distance.x << " " << distance.z << std::endl;
+	if (distance.y > 0)
+	{
+		this->move(glm::vec3(0, 0, speed) * dt);
+	}
+	if (distance.y < 0)
+	{
+		this->move(glm::vec3(0, 0, -speed) * dt);
+	}
+	if (distance.x > 0)
+	{
+		this->move(glm::vec3(speed, 0, 0) * dt);
 	}
 	if (distance.x < 0)
 	{
