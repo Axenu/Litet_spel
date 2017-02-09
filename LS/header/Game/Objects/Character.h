@@ -32,7 +32,6 @@ public:
 
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
-    void collectLoot(const CollectLootEvent& event);
 
 	void setLevel(Grid *level);
 	void setScene(Scene *scene);

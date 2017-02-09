@@ -119,6 +119,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
 			if (event.getAction() == GLFW_PRESS)
 			{
 				CollectLootEvent event(points);
+				_lootValue += points;
 				_eventManager->execute(event);
 			}
 		}
@@ -161,11 +162,6 @@ void Character::moveMouse(const MouseMoveEvent& event)
         }
     }
 }
-void Character::collectLoot(const CollectLootEvent& event)
-{
-    std::cout << "recieved loot of value: " << event.getValue() << std::endl;
-    _lootValue += event.getValue();
-}
 
 #pragma endregion
 
@@ -186,7 +182,6 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 	setPosition(pos);
     _eventManager->listen(this, &Character::moveCharacter);
     _eventManager->listen(this, &Character::moveMouse);
-    _eventManager->listen(this, &Character::collectLoot);
 }
 Character::Character()
 {
