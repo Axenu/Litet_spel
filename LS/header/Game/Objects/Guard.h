@@ -34,7 +34,7 @@ public:
 	Guard();
 	void print();
 	std::vector<glm::ivec2> generatingPath(glm::ivec2 GoalPosition);
-	void walkingInThePaths(float dt);
+	bool walkingInThePaths(float dt);
 	glm::ivec2 roundTheValuefrom0Comma01(glm::vec3);
 	Guard(Character* player, EventManager* event, glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
@@ -44,6 +44,6 @@ public:
 	void buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
-	void goToSquare(float dt, glm::ivec2 walkTo);
+	void goToSquare(float dt, glm::vec2 walkTo);
 };
 

@@ -115,7 +115,7 @@ std::vector<glm::ivec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 			}
 		}
 	}
-	print();
+//	print();
 
 	std::vector<glm::ivec2> path;
 
@@ -157,29 +157,30 @@ std::vector<glm::ivec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 	return path;
 }
 
-void Guard::walkingInThePaths(float dt)
+bool Guard::walkingInThePaths(float dt)
 {
 	if (_currentPath.size() == 0)
 	{
-		return;
+		return true;
 	}
 	glm::ivec2 roundedpositon = roundTheValuefrom0Comma01(this->getWorldPos());
 	goToSquare(dt, _currentPath[_currentPath.size() - 1]);
-	std::cout << "(" << this->getWorldPos().x << ", " << this->getWorldPos().z << "), (" << roundedpositon.x << ", " << roundedpositon.y << "), (" << _currentPath[_currentPath.size() - 1].x << ", " << _currentPath[_currentPath.size() - 1].y << ")" << std::endl;
+//	std::cout << "(" << this->getWorldPos().x << ", " << this->getWorldPos().z << "), (" << roundedpositon.x << ", " << roundedpositon.y << "), (" << _currentPath[_currentPath.size() - 1].x << ", " << _currentPath[_currentPath.size() - 1].y << ")" << std::endl;
 	if (roundedpositon == _currentPath[_currentPath.size() - 1])
 	{
 		_currentPath.erase(_currentPath.begin() + _currentPath.size() - 1);
 	}
+	return false;
 }
 
 glm::ivec2 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 {
 	glm::ivec2 returnValue = glm::ivec2((int)normalvalue.x, (int)normalvalue.z);
-	if (normalvalue.x < round(normalvalue.x) - 0.01f)
+	if (normalvalue.x < round(normalvalue.x) - 0.06f)
 	{
 		returnValue.x = int(round(normalvalue.x));
 	}
-	if (normalvalue.z < round(normalvalue.z) - 0.01f)
+	if (normalvalue.z < round(normalvalue.z) - 0.06f)
 	{
 		returnValue.y = int(round(normalvalue.z));
 	}
@@ -319,9 +320,14 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 
 void Guard::update(float dt)
 {
-
-	walkingInThePaths(dt);
+//	_height _width;
+//	if (walkingInThePaths(dt))
+//	{
+//		_currentPath = generatingPath(glm::ivec2(randomgenerator(_height)-1,randomgenerator(_width)-1));
+//	}
 //	WalkingBetweenFourPoints(dt);
+
+
 
 	if (this->DetectedPlayer())
 	{
@@ -392,31 +398,61 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 	}
 }
 
-void Guard::goToSquare(float dt, glm::ivec2 walkTo)
+void Guard::goToSquare(float dt, glm::vec2 walkTo)
 {
 	//walk up to top point
-	float speed = 0.3f;
+	float frameSpeed = 0.3f * dt;
 	//float padding = 0.f;
-	glm::vec3 value = this->getWorldPos();
+	glm::vec3 value = this->getWorldPos() - glm::vec4(0.5f, 0.f, 0.5f, 0.f);
 
 	//glm::vec3 value = glm::vec3(1, 0, 5);
-	glm::ivec2 distance = walkTo - glm::ivec2(value.x, value.z);
+	glm::vec2 distance = walkTo - glm::vec2(value.x, value.z);
+	float distLength = glm::length(distance);
 	//	std::cout << distance.x << " " << distance.z << std::endl;
 	if (distance.y > 0)
 	{
-		this->move(glm::vec3(0, 0, speed) * dt);
+		if (distLength < frameSpeed)
+		{
+			this->move(glm::vec3(0, 0, distLength));
+		}
+		else
+		{
+			this->move(glm::vec3(0, 0, frameSpeed));
+		}
 	}
 	if (distance.y < 0)
 	{
-		this->move(glm::vec3(0, 0, -speed) * dt);
+		if (distLength < frameSpeed)
+		{
+			this->move(glm::vec3(0, 0, -distLength));
+		}
+		else
+		{
+			this->move(glm::vec3(0, 0, -frameSpeed));
+		}
 	}
 	if (distance.x > 0)
 	{
-		this->move(glm::vec3(speed, 0, 0) * dt);
+		if (distLength < frameSpeed)
+		{
+			this->move(glm::vec3(distLength, 0, 0));
+		}
+		else
+		{
+			this->move(glm::vec3(frameSpeed, 0, 0));
+		}
 	}
 	if (distance.x < 0)
 	{
-		this->move(glm::vec3(-speed, 0, 0) * dt);
+		if (distLength < frameSpeed)
+		{
+			this->move(glm::vec3(-distLength, 0, 0));
+		}
+		else
+		{
+			this->move(glm::vec3(-frameSpeed, 0, 0));
+		}
+
 	}
 }
 

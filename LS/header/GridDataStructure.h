@@ -14,7 +14,7 @@
 #include "Event/Events.h"
 
 struct gridValues {
-	glm::ivec2 xz;
+	glm::vec2 xz;
 	gridType type;
 	int value;
 };

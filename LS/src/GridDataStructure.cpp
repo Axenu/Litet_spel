@@ -100,7 +100,7 @@ glm::vec3 Grid::getData(gridType Data)
 			{
 				if (_twodArray[j][i].type == guard)
 				{
-					return glm::vec3(i, 0, j);
+					return  glm::vec3(i/* + GRIDSPACE * 0.5f*/, GRIDSPACE * 0.5f, j - GRIDSPACE * 0.5f);
 				}
 			}
 		}
@@ -678,6 +678,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	}
 	j = (int)guardposition.z;
 	//thirdwall left
+
 	for (i; i > -1; i--)
 	{
 		if (_twodArray[j][i].type == wall)
