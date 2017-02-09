@@ -1,8 +1,5 @@
 #include "Game/TestGame.h"
 
-
-
-
 TestGame::TestGame(Setting &setting, EventManager &events)
 	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _renderBuffer(events, GLFW_KEY_R),
 	  _material(&_shader), _lootMat(&_shader) {
@@ -29,28 +26,19 @@ void TestGame::initiate() {
 
 	ModelPart guardModelMeshPart(&_cube, _material);
 	Model guardModel(guardModelMeshPart);
+	
 	//Add some more game objects
 	_scene.add(player);
 	_scene.add(new Guard(player, &_event, guardModel, &_level->getGrid()));
+	
 	//Add some lights
 	_scene.add(new PointLightObject(PointLight(glm::vec3(0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f), player));
 	_scene.add(new PointLightObject(PointLight(glm::vec3(4.0f, 1.0f, 5.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 	_scene.add(new PointLightObject(PointLight(glm::vec3(12.0f, 1.0f, 7.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 	_scene.add(new PointLightObject(PointLight(glm::vec3(5.0f, 1.0f, 15.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
 	_scene.add(new PointLightObject(PointLight(glm::vec3(25.0f, 1.0f, 7.0f), glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.0f, 0.0f), 5.0f)));
+	
 	//Add loot
-	//_lootMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	//_lootMat.setColor("spec", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	//MeshPart *meshPart = new MeshPart(&_cube, &_lootMat);
-	//Model *model = new Model(*meshPart);
-	//LootObject *loot1 = new LootObject(*model);
-	//LootObject *loot2 = new LootObject(*model, 100);
-
-	//loot1->setPosition(glm::vec3(5, 0.5, 3));
-	//loot2->setPosition(glm::vec3(5, 0.5, 5));
-
-	//_scene.add(loot1);
-	//_scene.add(loot2);
 	std::vector<glm::vec3>* pLootPosList = _level->getGrid().getLootLocations();
 	Material tmpMat(&_shader);
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
