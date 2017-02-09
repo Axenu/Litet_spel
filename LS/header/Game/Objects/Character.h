@@ -32,12 +32,12 @@ public:
 
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
-    void collectLoot(const CollectLootEvent& event);
 
 	void setLevel(Grid *level);
 	void setScene(Scene *scene);
 
 	void move(float dT);
+	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);
     Character();
@@ -52,7 +52,7 @@ private:
     glm::vec3 _velocity;
     float _speed;
     float _isMoving;
-    float _lootValue;
+    int _lootValue;
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_DISABLED;
 };

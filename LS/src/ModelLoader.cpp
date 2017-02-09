@@ -59,9 +59,11 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
 		return;
 	}
+
 	std::vector<ModelPart> modelParts;
 	ProcessNode(scene->mRootNode, scene, modelName, shader, modelParts);
 	Model* model = new Model(modelParts);
+
 	//Assign modelName
 	model->setName(modelName);
 	_models.push_back(model);

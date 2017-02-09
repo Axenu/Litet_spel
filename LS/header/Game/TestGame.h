@@ -20,4 +20,5 @@ public:
 	virtual ~TestGame();
 	virtual void initiate();
 	virtual void compose(RenderInfo &rI);
+	Character *getCharacter();
 };

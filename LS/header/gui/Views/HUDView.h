@@ -24,6 +24,7 @@ namespace gui
         EventManager* _manager;
         gui::Font *_font;
         Label *_tipDisplay;
+        Label *_scoreLabel;
         // gui::Button* _quitButton;
         // gui::Button* _startButton;
         TestGame *_game = nullptr;
