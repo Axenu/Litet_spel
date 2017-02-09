@@ -60,10 +60,8 @@ class GameOverEvent : public Event
 {
 private:
 	bool _hasWon;
-	int _score;
 public:
-	GameOverEvent(bool hasWon, int score);
+	GameOverEvent(bool hasWon);
 	~GameOverEvent();
 	bool hasWon() const;
-	int getScore() const;
 };

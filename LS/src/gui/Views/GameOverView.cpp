@@ -5,6 +5,7 @@
 namespace gui {
     GameOverView::GameOverView(EventManager* manager, const GameOverEvent &event) : _manager(manager), View()
     {
+        _score = 0;
         _name = "GameOverView";
 
         _font = new gui::Font("Resources/fonts/arial");
@@ -21,7 +22,8 @@ namespace gui {
         addChild(l);
 
         l = new gui::Label(_font);
-        l->addStringComponent(new StringComponentString("Score: " + std::to_string(event.getScore())));
+        l->addStringComponent(new StringComponentString("Score: "));
+        l->addStringComponent(new StringComponentInt(&_score));
         l->setScale(0.5f);
         l->setPosition(-l->getSize().x*0.25f, 0.0f);
         addChild(l);
@@ -57,7 +59,11 @@ namespace gui {
     }
     void GameOverView::initiate()
     {
-        
+
+    }
+    void GameOverView::setScore(int score)
+    {
+        _score = score;
     }
     void GameOverView::QuitGame(int action)
     {

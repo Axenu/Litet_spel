@@ -34,7 +34,7 @@ namespace gui
             _currentView->render();
         }
     }
-    bool Manager::setView(std::string name)
+    View *Manager::setView(std::string name)
     {
         for (View* view : _loadedViews)
         {
@@ -42,10 +42,10 @@ namespace gui
             {
                 _currentView = view;
                 _currentView->initiate();
-                return true;
+                return _currentView;
             }
         }
-        return false;
+        return nullptr;
     }
     void Manager::setView(View* view)
     {
@@ -115,7 +115,6 @@ namespace gui
     {
         return _windowHeight;
     }
-
     void Manager::mouseClick(const MouseClickEvent& event)
     {
         if (_cursorMode == GLFW_CURSOR_NORMAL)

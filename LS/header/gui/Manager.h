@@ -35,7 +35,7 @@ namespace gui
         Manager(EventManager* manager);
         ~Manager();
 
-        bool setView(std::string name);
+        View *setView(std::string name);
         void setView(View* view);
         void setWindowSize(unsigned int width, unsigned int height);
 
