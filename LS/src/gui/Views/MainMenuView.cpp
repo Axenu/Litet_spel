@@ -65,5 +65,7 @@ namespace gui
     }
     void MainMenuView::initiate()
     {
+        cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
+        _manager->execute(cEvent);
     }
 }

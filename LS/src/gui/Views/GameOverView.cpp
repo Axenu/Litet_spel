@@ -42,8 +42,6 @@ namespace gui {
         _mainMenuButton->setScale(0.5,0.5);
         addChild(_mainMenuButton);
 
-        cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
-        _manager->execute(cEvent);
     }
     GameOverView::~GameOverView()
     {
@@ -59,7 +57,8 @@ namespace gui {
     }
     void GameOverView::initiate()
     {
-
+        cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
+        _manager->execute(cEvent);
     }
     void GameOverView::setScore(int score)
     {
@@ -77,14 +76,13 @@ namespace gui {
     {
         if (action == GLFW_RELEASE)
         {
-            if (!_parent->setView("MainMenuView"))
+            MainMenuView *view = dynamic_cast<MainMenuView*>(_parent->setView("MainMenuView"));
+            if (view == nullptr)
             {
-                std::cout << "scene not found \n Creating new... (Should already exist)" << std::endl;
                 float f = 0.0f;
-                _parent->setView(new MainMenuView(_manager, &f));
+                view = new MainMenuView(_manager, &f);
+                _parent->setView(view);
             }
-            ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
-            _manager->execute(event);
         }
     }
 }
