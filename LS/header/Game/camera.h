@@ -9,7 +9,6 @@
 
 class Camera : public Node
 {
-
 private:
 	float _fieldOfView;
 	float _aspectRatio;

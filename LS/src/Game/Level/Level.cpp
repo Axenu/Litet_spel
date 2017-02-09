@@ -2,7 +2,7 @@
 
 
 
-Level::Level(EventManager &events, DeferredMeshShader &shader)
+Level::Level(EventManager &events, MeshShader &shader)
 	: _grid(), _gridMesh(_grid.generateMesh())
 {
 	Material mat(&shader);

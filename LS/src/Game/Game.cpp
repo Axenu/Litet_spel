@@ -3,9 +3,11 @@
 
 
 Game::Game(Setting &setting, EventManager &events)
-	: _setting(setting), _event(events), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()), _camera(setting)
+	: _setting(setting), _event(events), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()), 
+	_factory(_scene, events, "Resources/")
 {
-	_deferred.setWindowSize((float)setting.Width(), (float)setting.Height(), _camera);
+	Camera& cam = _scene.setCamera(setting);
+	_deferred.setWindowSize((float)setting.Width(), (float)setting.Height(), cam);
 }
 
 
@@ -28,7 +30,7 @@ void Game::draw() {
 
 	DrawFrame dF;
 	_scene.fetchDrawables(dF);
-	RenderInfo rI(_resource, _camera, dF.getLightInfo());
+	RenderInfo rI(_resource, _scene.getCamera(), dF.getLightInfo());
 
 	_resource.getDeffered().bindDraw();
 	dF.render(rI);

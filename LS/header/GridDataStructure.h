@@ -51,12 +51,15 @@ public:
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
 	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
+	/* Get the size of a grid square */
 	float getGridSpace();
 	bool isInside(glm::ivec2 vec) const;
 	gridType returnGridType(int width,int height);
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;
 	GridSquare operator[](glm::vec3 vec) const;
 	gridType operator[](const glm::ivec2 &sq) const;
+	/* Get the center position of the specified square */
+	glm::vec3 getCenter(glm::ivec2 vec) const;
 };
 
 #endif

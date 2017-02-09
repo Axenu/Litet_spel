@@ -2,14 +2,6 @@
 #include "StaticVars.h"
 #include "Game/Objects/CharacterEvents.h"
 
-void Character::setCamera(Camera* camera)
-{
-    _camera = camera;
-    _velocity = glm::vec3(0,0,0);
-    _direction = glm::vec3(0,0,0);
-    _speed = 2;
-    _isMoving = 0;
-}
 void Character::onUpdate(float dt)
 {
 	move(dt);
@@ -108,7 +100,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
-		int points = _currentScene->loot(*_camera, 2);
+		int points = _currentScene->loot(2);
 		if (points > 0)
 		{
 			if (event.getAction() == GLFW_PRESS)
@@ -125,7 +117,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
             if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
             {
                 //call endGameEvent
-                GameOverEvent event(true, _lootValue);
+                GameOverEvent event(true, (int)_lootValue);
                 _eventManager->execute(event);
             }
         }
@@ -179,6 +171,10 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 	GameObject(), _eventManager(manager)
 {
 	setPosition(pos);
+	_velocity = glm::vec3(0, 0, 0);
+	_direction = glm::vec3(0, 0, 0);
+	_speed = 2;
+	_isMoving = 0;
     _eventManager->listen(this, &Character::moveCharacter);
     _eventManager->listen(this, &Character::moveMouse);
     _eventManager->listen(this, &Character::collectLoot);

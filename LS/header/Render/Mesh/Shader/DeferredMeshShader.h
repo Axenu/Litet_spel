@@ -27,9 +27,9 @@ public:
 
 	/* Bind shader and assign related uniforms
 	*/
-	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix, MaterialLink *material);
+	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix, MaterialLink *material) const;
 	/* Link the shader to the material
 	*/
-	virtual std::shared_ptr<MaterialLink> linkMaterial(Material &mat);
+	virtual std::shared_ptr<MaterialLink> linkMaterial(Material &mat) const;
 };
 

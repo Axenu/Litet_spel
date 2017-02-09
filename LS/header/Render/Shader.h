@@ -34,7 +34,7 @@ public:
 	*/
 	Shader& operator=(const Shader &copy) = delete;
 
-	void bind();
+	void bind() const ;
 	/* Get a uniform from the shader. The shader needs to be bound to device.
 	*/
 	GLint getUniform(const std::string &varName);

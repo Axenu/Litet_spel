@@ -225,6 +225,9 @@ GridSquare Grid::operator[](glm::vec3 vec) const {
 gridType Grid::operator[](const glm::ivec2 &sq) const {
 	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::nothing;
 }
+glm::vec3 Grid::getCenter(glm::ivec2 sq) const {
+	return glm::vec3((sq.x + 0.5f) * GRIDSPACE, 0.f, (sq.y + 0.5f) * GRIDSPACE);
+}
 
 #pragma endregion
 

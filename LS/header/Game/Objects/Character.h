@@ -26,7 +26,7 @@ private:
 class Character : public GameObject
 {
 public:
-    void setCamera(Camera *camera);
+    void init();
     virtual void onUpdate(float dt);
     void onRender();
 
@@ -46,7 +46,6 @@ private:
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
-	Camera* _camera;
     glm::vec2 _lastCursorPos;
 	GridSquare _gridSquare;
     glm::vec3 _direction;

@@ -31,12 +31,12 @@ AABB AABB::transform(const glm::mat4 &matrix) const {
 }
 
 
-glm::vec3 AABB::getMin()
+glm::vec3 AABB::getMin() const
 {
 	return _min;
 }
 
-glm::vec3 AABB::getMax()
+glm::vec3 AABB::getMax() const
 {
 	return _max;
 }
