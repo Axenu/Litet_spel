@@ -384,7 +384,7 @@ void Guard::setPositionfromMap(glm::vec3 Guarden)
 void Guard::goToSquare(float dt, glm::vec3 walkTo)
 {
 	//walk up to top point
-	float speed = 0.3f;
+	float speed = 1.0f;
 	//float padding = 0.f;
 	glm::vec3 value = this->getPosition();
 

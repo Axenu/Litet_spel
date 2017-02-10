@@ -32,7 +32,9 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
 	return player;
 }
 Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, Character& player) {
-	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
+	Material mat(&_meshShader);
+	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	Model tmpModel = _models.GetModel(_path + model, mat);
 	Guard* guard = new Guard(&player, &_events, tmpModel, &_level->getGrid());
 	_scene.add(guard);
 

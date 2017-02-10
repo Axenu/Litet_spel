@@ -31,7 +31,7 @@ void setupWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_DECORATED, true);
-	unsigned int wWidth = 1920, wHeight = 1080;
+	unsigned int wWidth = 1280, wHeight = 720;
 	GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
     if (!window)
     {
