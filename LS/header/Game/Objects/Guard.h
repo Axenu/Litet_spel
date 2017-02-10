@@ -20,6 +20,8 @@ private:
 	gridValues** _levalues;
 	EventManager*_eventManager;
 	Character* _player;
+	float speed = 0.4f;
+	float distLength;
 	int _aiChoice;
 	int _heightLength;
 	int _widthLength;
