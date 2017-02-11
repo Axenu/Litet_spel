@@ -16,6 +16,15 @@ Guard::Guard()
 
 void Guard::print()
 {
+	for (int m = 0;m < _width;m++)
+	{
+		if (m < 10)
+			std::cout << "W" << m << " ";
+		else
+			std::cout << m << " ";
+	}
+	std::cout <<""<<std::endl;
+	int row = 0;
 	for (int j = 0; j < _height; j++)
 	{
 		for (int i = 0; i < _width; i++)
@@ -32,6 +41,12 @@ void Guard::print()
 			}
 			else
 				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
+
+			if (i == _width - 1)
+			{
+				std::cout <<"R"<< row;
+				row = row + 1;
+			}
 		}
 		std::cout << "" << std::endl;
 	}
@@ -134,8 +149,10 @@ std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 	std::vector<glm::vec2> path;
 
 	glm::ivec2 currentPos = goalPos;
+	if(_levalues[goalPos.y][goalPos.x].value>0)
+	{
 	path.push_back(goalPos);
-
+	}
 	glm::ivec2 startPos = glm::ivec2(_width / 2, _height / 2);
 
 
@@ -352,11 +369,11 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 void Guard::update(float dt)
 {
 //	_height _width;
-//	if (walkingInThePaths(dt))
-//	{
-//		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
-//	}
-	WalkingBetweenFourPoints(dt);
+	if (walkingInThePaths(dt))
+	{
+		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
+	}
+//	WalkingBetweenFourPoints(dt);
 
 
 
