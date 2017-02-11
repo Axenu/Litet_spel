@@ -20,6 +20,8 @@ void Guard::print()
 	{
 		for (int i = 0; i < _width; i++)
 		{
+
+
 			if (_levalues[j][i].value == -1 || _levalues[j][i].value == -2)
 			{
 				std::cout << /*levalues[i][j].xz.x<<","<< levalues[i][j].xz.y<<"."<<*/_levalues[j][i].value << " ";
@@ -36,14 +38,26 @@ void Guard::print()
 	std::cout << "end" << std::endl;
 }
 
-std::vector<glm::ivec2> Guard::generatingPath(glm::ivec2 GoalPosition)
+std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 {
+	_guardsstartposition = this->getPosition();
+	glm::vec3 guardInGrid = _guardsstartposition - displacement;
 	int maxValue = _height * _width - 1;
 	int oldMaxValue = 0;
 	int value = 0;
 	glm::ivec2 goalPos = glm::ivec2((int)GoalPosition.x, (int)GoalPosition.y);
 	//-1 outforskadmark ej gåbart
 	// -2 vägg
+	for (int j = 0; j < _height; j++)
+	{
+		for (int i = 0; i < _width; i++)
+		{
+				_levalues[j][i].value = -1;
+			//std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
+		}
+	}
+	_levalues[(int)guardInGrid.z][(int)guardInGrid.x].value = 0;
+	print();
 	while (maxValue != 0)
 	{
 		oldMaxValue = maxValue;
@@ -115,14 +129,15 @@ std::vector<glm::ivec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 			}
 		}
 	}
-//	print();
+	print();
 
-	std::vector<glm::ivec2> path;
+	std::vector<glm::vec2> path;
 
 	glm::ivec2 currentPos = goalPos;
 	path.push_back(goalPos);
 
 	glm::ivec2 startPos = glm::ivec2(_width / 2, _height / 2);
+
 
 	int currentValue = _levalues[goalPos.y][goalPos.x].value;
 	while (currentValue > 1)
@@ -150,9 +165,11 @@ std::vector<glm::ivec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 		currentValue--;
 	}
 
+	std::vector<glm::vec2> pathdisplacement;
+	glm::vec2 displacementForVecTwo = glm::vec2(displacement.x, displacement.z);
 	for (unsigned int i = 0; i < path.size(); i++)
 	{
-		path[i] = _levalues[path[i].y][path[i].x].xz;
+		path[i] = _levalues[(int)path[i].y][(int)path[i].x].xz+displacementForVecTwo;
 	}
 	return path;
 }
@@ -163,7 +180,8 @@ bool Guard::walkingInThePaths(float dt)
 	{
 		return true;
 	}
-	glm::ivec2 roundedPosition = roundTheValuefrom0Comma01(this->getWorldPos());
+//	glm::ivec2 roundedPosition = roundTheValuefrom0Comma01(this->getWorldPos());¨'
+	glm::vec2 roundedPosition = glm::vec2(this->getWorldPos().x, this->getWorldPos().z);
 	goToSquare(dt, _currentPath[_currentPath.size() - 1]);
 
 	//	std::cout << "(" << this->getWorldPos().x << ", " << this->getWorldPos().z << "), (" << roundedPosition.x << ", " << roundedPosition.y << "), (" << _currentPath[_currentPath.size() - 1].x << ", " << _currentPath[_currentPath.size() - 1].y << ")" << std::endl;
@@ -280,6 +298,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 
 void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY)
 {
+	_guardsstartposition = _guardsstartposition - displacement;
 	_currentGridSpace = gridet->getGridSpace();
 	unsigned int maxsizewidth = sizeX;
 	_height = 1, _width = 1;
@@ -326,17 +345,18 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 			//std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
 		}
 	}
+	
 //	print();
 }
 
 void Guard::update(float dt)
 {
 //	_height _width;
-//	if (walkingInThePaths(dt))
-//	{
-//		_currentPath = generatingPath(glm::ivec2(randomgenerator(_height)-1,randomgenerator(_width)-1));
-//	}
-	WalkingBetweenFourPoints(dt);
+	if (walkingInThePaths(dt))
+	{
+		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
+	}
+//	WalkingBetweenFourPoints(dt);
 
 
 
@@ -367,7 +387,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	
 	_aiChoice = randomgenerator(4);
 	buildgridarray(gridet, 10, 20);
-	_currentPath = generatingPath(glm::ivec2(10, 5));
+	_currentPath = generatingPath(glm::ivec2(9, 1)); //ändra till random efteråt
 	//	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
@@ -445,62 +465,67 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 
 }
 
-void Guard::goToSquare(float dt, glm::vec2 walkTo)
+void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
 {
-	//walk up to top point
-	float frameSpeed = 0.3f * dt;
-	//float padding = 0.f;
-	glm::vec3 value = this->getWorldPos() - glm::vec4(0.5f, 0.f, 0.5f, 0.f);
+	glm::vec3 walkTo = glm::vec3(walkToSquare.x, 0, walkToSquare.y);
+	glm::vec3 value = this->getPosition();
+	glm::vec3 distance = walkTo - value;
+	distance = glm::vec3(distance.x, 0, distance.z);
+	distLength = glm::length(distance);
 
-	//glm::vec3 value = glm::vec3(1, 0, 5);
-	glm::vec2 distance = walkTo - glm::vec2(value.x, value.z);
-	float distLength = glm::length(distance);
-	//	std::cout << distance.x << " " << distance.z << std::endl;
-	if (distance.y > 0)
+	//		std::cout << distance.x << " " << distance.z<<" " <<distLength << std::endl;
+
+
+
+	if (distance.z > 0)
 	{
-		if (distLength < frameSpeed)
+		if (distLength < (speed*dt))
 		{
-			this->move(glm::vec3(0, 0, distLength));
+			this->setPosition(value.x, value.y, walkTo.z);
+
 		}
 		else
 		{
-			this->move(glm::vec3(0, 0, frameSpeed));
+			this->move(glm::vec3(0, 0, speed) * dt);
 		}
 	}
-	if (distance.y < 0)
+	if (distance.z < 0)
 	{
-		if (distLength < frameSpeed)
+		if (distLength < (speed*dt))
 		{
-			this->move(glm::vec3(0, 0, -distLength));
+			this->setPosition(value.x, value.y, walkTo.z);
+
 		}
 		else
 		{
-			this->move(glm::vec3(0, 0, -frameSpeed));
+			this->move(glm::vec3(0, 0, -speed) * dt);
 		}
 	}
 	if (distance.x > 0)
 	{
-		if (distLength < frameSpeed)
+		if (distLength < (speed*dt))
 		{
-			this->move(glm::vec3(distLength, 0, 0));
+			this->setPosition(walkTo.x, value.y, value.z);
+
 		}
 		else
 		{
-			this->move(glm::vec3(frameSpeed, 0, 0));
+			this->move(glm::vec3(speed, 0, 0) * dt);
 		}
 	}
 	if (distance.x < 0)
 	{
-		if (distLength < frameSpeed)
+		if (distLength < (speed*dt))
 		{
-			this->move(glm::vec3(-distLength, 0, 0));
+			this->setPosition(walkTo.x, value.y, value.z);
+
 		}
 		else
 		{
-			this->move(glm::vec3(-frameSpeed, 0, 0));
+			this->move(glm::vec3(-speed, 0, 0) * dt);
 		}
-
 	}
+
 }
 
 bool Guard::DetectedPlayer()

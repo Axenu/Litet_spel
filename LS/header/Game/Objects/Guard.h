@@ -29,14 +29,14 @@ private:
 	int _width;
 	glm::vec3 displacement =glm::vec3(0.5, 0.5, 0.5);
 	float _currentGridSpace;
-	std::vector<glm::ivec2> _currentPath;
+	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();
 
 public:
 	virtual ~Guard();
 	Guard();
 	void print();
-	std::vector<glm::ivec2> generatingPath(glm::ivec2 GoalPosition);
+	std::vector<glm::vec2> generatingPath(glm::ivec2 GoalPosition);
 	bool walkingInThePaths(float dt);
 	glm::vec2 roundTheValuefrom0Comma01(glm::vec3);
 	Guard(Character* player, EventManager* event, glm::vec3 Guarden,glm::vec3 Positonxy[4]);
@@ -47,6 +47,6 @@ public:
 	void buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
-	void goToSquare(float dt, glm::vec2 walkTo);
+	void goToSquare(float dt, glm::vec2 walkToSquare);
 };
 
