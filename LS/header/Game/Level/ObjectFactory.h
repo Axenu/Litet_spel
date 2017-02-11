@@ -36,8 +36,8 @@ public:
 
 	GameObject* createObject(const std::string &model, glm::ivec2 square);
 	LootObject* createLoot(const std::string &model, glm::vec3 pos);
-	PointLightObject* createLight(PointLight &light, glm::ivec2 square);
-	PointLightObject* createLight(PointLight &light, Node *parent = nullptr);
+	PointLightObject* createLight(PointLight light, glm::ivec2 square);
+	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	MeshShader& getShader();
 };
 

@@ -60,14 +60,14 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
 	_scene.add(object);
 	return object;
 }
-PointLightObject* ObjectFactory::createLight(PointLight &light, glm::ivec2 square) {
+PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square) {
 	AABB box;
 	light._pos += calcPos(square, box);
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	_scene.add(object);
 	return object;
 }
-PointLightObject* ObjectFactory::createLight(PointLight &light, Node *parent) {
+PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent) {
 	PointLightObject* object = new PointLightObject(light, parent);
 	_scene.add(object);
 	return object;
