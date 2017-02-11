@@ -352,11 +352,11 @@ void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY
 void Guard::update(float dt)
 {
 //	_height _width;
-	if (walkingInThePaths(dt))
-	{
-		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
-	}
-//	WalkingBetweenFourPoints(dt);
+//	if (walkingInThePaths(dt))
+//	{
+//		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
+//	}
+	WalkingBetweenFourPoints(dt);
 
 
 
