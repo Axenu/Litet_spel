@@ -72,7 +72,7 @@ std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 		}
 	}
 	_levalues[(int)guardInGrid.z][(int)guardInGrid.x].value = 0;
-	print();
+//	print();
 	while (maxValue != 0)
 	{
 		oldMaxValue = maxValue;
@@ -144,7 +144,7 @@ std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 			}
 		}
 	}
-	print();
+//	print();
 
 	std::vector<glm::vec2> path;
 
@@ -404,7 +404,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	
 	_aiChoice = randomgenerator(4);
 	buildgridarray(gridet, 10, 20);
-	_currentPath = generatingPath(glm::ivec2(9, 1)); //ändra till random efteråt
+	_currentPath = generatingPath(glm::ivec2(randomgenerator(_width) - 1, randomgenerator(_height) - 1)); //ändra till random efteråt
 	//	std::cout<< guardsstartposition.x<<" "<< guardsstartposition.y << " "<<guardsstartposition.z<< std::endl;
 }
 
