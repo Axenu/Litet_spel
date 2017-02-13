@@ -3,7 +3,7 @@
 
 
 Scene::Scene()
-	:_quadTreeRoot(3)
+	:_quadTreeRoot(1)
 {
 }
 
@@ -83,12 +83,12 @@ Node* Scene::removeNode(Node *object, bool deleteObj) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF) {
-	//std::vector<int> drawIndices;
-	//_quadTreeRoot.QuadTreeTest(drawIndices, _cam->getViewMatrix());
-	//for (unsigned int i = 0; i < drawIndices.size(); i++)
-	//	_objects[drawIndices[i]]->addToFrame(dF);
-	for (unsigned int i = 0; i < _objects.size(); i++)
-		_objects[i]->addToFrame(dF);
+	std::vector<int> drawIndices;
+	_quadTreeRoot.QuadTreeTest(drawIndices, _cam->VPMatrix);
+	for (unsigned int i = 0; i < drawIndices.size(); i++)
+		_objects[drawIndices[i]]->addToFrame(dF);
+	/*for (unsigned int i = 0; i < _objects.size(); i++)
+		_objects[i]->addToFrame(dF);*/
 }
 
 

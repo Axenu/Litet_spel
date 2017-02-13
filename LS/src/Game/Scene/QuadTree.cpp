@@ -2,6 +2,7 @@
 
 
 QuadTreeNode::QuadTreeNode()
+	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(25.0f, 2.0f, 50.0f))
 {
 	_children[0] = nullptr;
 	_children[1] = nullptr;
@@ -10,7 +11,14 @@ QuadTreeNode::QuadTreeNode()
 }
 
 QuadTreeNode::QuadTreeNode(int depth)
+	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(25.0f, 2.0f, 50.0f))
 {
+	CreateNodes(depth);
+}
+
+QuadTreeNode::QuadTreeNode(int depth, const AABB &aabb)
+{
+	_aabb = aabb;
 	CreateNodes(depth);
 }
 
@@ -51,7 +59,7 @@ void QuadTreeNode::AddObjects(unsigned int indice, GameObject * gameObject)
 
 void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
 {
-	if (depth > maxDepth)
+	if (depth >= maxDepth)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -61,34 +69,60 @@ void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
 	else
 	{
 		glm::vec3 tmp;
-		tmp.x = _BBMax.x - _BBMin.x;
-		tmp.y = _BBMax.y;
-		tmp.z = _BBMax.z - _BBMin.z;
+		tmp.x = _aabb.getMax().x - _aabb.getMin().x;
+		tmp.y = _aabb.getMax().y;
+		tmp.z = _aabb.getMax().z - _aabb.getMin().z;
+		AABB tmpAABB;
+		glm::vec3 tmpMin;
+		glm::vec3 tmpMax;
 
+		//Calc bottomleft AABB
+		_children[0] = new QuadTreeNode;
+		tmpMin = _aabb.getMin();
+		tmpMax.x = _aabb.getMin().x + tmp.x / 2;
+		tmpMax.y = _aabb.getMax().y;
+		tmpMax.z = _aabb.getMin().z + tmp.z / 2;
 
-		_children[0] = new QuadTreeNode; // bottomleft
-		_children[0]->_BBMin = _BBMin;
-		_children[0]->_BBMax.x = _BBMin.x + tmp.x / 2;
-		_children[0]->_BBMax.y = _BBMax.y;
-		_children[0]->_BBMax.z = _BBMin.z + tmp.z / 2;
+		//SetValues to child
+		tmpAABB.setMin(tmpMin);
+		tmpAABB.setMax(tmpMax);
+		_children[0]->SetAABB(tmpAABB);
 
-		_children[1] = new QuadTreeNode; // upperLeft
-		_children[1]->_BBMin = _BBMin;
-		_children[1]->_BBMin.z = _BBMin.z + tmp.z / 2;
-		_children[1]->_BBMax = _BBMax;
-		_children[1]->_BBMax.x = _BBMin.x + tmp.x / 2;
+		//Calc upperLeft AABB
+		_children[1] = new QuadTreeNode;
+		tmpMin = _aabb.getMin();
+		tmpMin.z = _aabb.getMin().z + tmp.z / 2;
+		tmpMax = _aabb.getMax();
+		tmpMax.x = _aabb.getMin().x + tmp.x / 2;
 
-		_children[2] = new QuadTreeNode; // upperRight
-		_children[2]->_BBMin.x = _BBMin.x + tmp.x / 2;
-		_children[2]->_BBMax.y = _BBMax.y;
-		_children[2]->_BBMin.z = _BBMin.z + tmp.z / 2;
-		_children[2]->_BBMax = _BBMax;
+		//SetValues to child
+		tmpAABB.setMin(tmpMin);
+		tmpAABB.setMax(tmpMax);
+		_children[1]->SetAABB(tmpAABB);
 
-		_children[3] = new QuadTreeNode; // bottomRight
-		_children[3]->_BBMin = _BBMin;
-		_children[3]->_BBMin.x = _BBMin.x + tmp.x / 2;
-		_children[3]->_BBMax = _BBMax;
-		_children[3]->_BBMax.z = _BBMin.z + tmp.z / 2;
+		//Calc upperRight AABB
+		_children[2] = new QuadTreeNode;
+		tmpMin.x = _aabb.getMin().x + tmp.x / 2;
+		tmpMax.y = _aabb.getMax().y;
+		tmpMin.z = _aabb.getMin().z + tmp.z / 2;
+		tmpMax = _aabb.getMax();
+
+		//SetValues to child
+		tmpAABB.setMin(tmpMin);
+		tmpAABB.setMax(tmpMax);
+		_children[2]->SetAABB(tmpAABB);
+
+		//Calc bottomRight AABB
+		_children[3] = new QuadTreeNode;
+		tmpMin = _aabb.getMin();
+		tmpMin.x = _aabb.getMin().x + tmp.x / 2;
+		tmpMax = _aabb.getMax();
+		tmpMax.z = _aabb.getMin().z + tmp.z / 2;
+
+		//SetValues to child
+		tmpAABB.setMin(tmpMin);
+		tmpAABB.setMax(tmpMax);
+		_children[3]->SetAABB(tmpAABB);
 		
 		for (int i = 0; i < 4; i++)
 		{
@@ -111,16 +145,17 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 		std::map<int, GameObject*> childList[4];
 
 		glm::vec3 tmp;
-		tmp.x = _BBMax.x - _BBMin.x;
-		tmp.z = _BBMax.z - _BBMin.z;
+		tmp.x = _aabb.getMax().x - _aabb.getMin().x;
+		tmp.y = _aabb.getMax().y;
+		tmp.z = _aabb.getMax().z - _aabb.getMin().z;
 
 		Plane plane1;
-		plane1.distance = -(_BBMin.x + tmp.x / 2);
+		plane1.distance = -(_aabb.getMin().x + tmp.x / 2);
 		plane1.normal = glm::vec3(1.0f, 0.0f, 0.0f);
 		PlaneResult boxStatus1;
 
 		Plane plane2; // X-plane
-		plane2.distance = -(_BBMin.z + tmp.z / 2);
+		plane2.distance = -(_aabb.getMin().z + tmp.z / 2);
 		plane2.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		PlaneResult boxStatus2;
 
@@ -187,7 +222,10 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 		}
 		for (int i = 0; i < 4; i++)
 		{
-			_children[i]->AddObjects(childList[i]);
+			if (childList[i].size() > 0)
+			{
+				_children[i]->AddObjects(childList[i]);
+			}
 		}
 	}
 }
@@ -197,40 +235,40 @@ void QuadTreeNode::QuadTreeTest(std::vector<int>& indices, const glm::mat4 & mat
 	Plane planes[6];
 	
 	//Left
-	planes[0].normal.x = -(mat[0][3] + mat[0][0]);
-	planes[0].normal.y = -(mat[1][3] + mat[1][0]);
-	planes[0].normal.z = -(mat[2][3] + mat[2][0]);
-	planes[0].distance = -(mat[3][3] + mat[3][0]);
+	planes[0].normal.x = -(mat[3][0] + mat[0][0]);
+	planes[0].normal.y = -(mat[3][1] + mat[0][1]);
+	planes[0].normal.z = -(mat[3][2] + mat[0][2]);
+	planes[0].distance = -(mat[3][3] + mat[0][3]);
 
 	//Right
-	planes[1].normal.x = -(mat[0][3] - mat[0][0]);
-	planes[1].normal.y = -(mat[1][3] - mat[1][0]);
-	planes[1].normal.z = -(mat[2][3] - mat[2][0]);
-	planes[1].distance = -(mat[3][3] - mat[3][0]);
+	planes[1].normal.x = -(mat[3][0] - mat[0][0]);
+	planes[1].normal.y = -(mat[3][1] - mat[0][1]);
+	planes[1].normal.z = -(mat[3][2] - mat[0][2]);
+	planes[1].distance = -(mat[3][3] - mat[0][3]);
 
 	//Top
-	planes[2].normal.x = -(mat[0][3] - mat[0][1]);
-	planes[2].normal.y = -(mat[1][3] - mat[1][1]);
-	planes[2].normal.z = -(mat[2][3] - mat[2][1]);
-	planes[2].distance = -(mat[3][3] - mat[3][1]);
+	planes[2].normal.x = -(mat[3][0] - mat[1][0]);
+	planes[2].normal.y = -(mat[3][1] - mat[1][1]);
+	planes[2].normal.z = -(mat[3][2] - mat[1][2]);
+	planes[2].distance = -(mat[3][3] - mat[1][3]);
 
 	//Bottom
-	planes[3].normal.x = -(mat[0][3] + mat[0][1]);
-	planes[3].normal.y = -(mat[1][3] + mat[1][1]);
-	planes[3].normal.z = -(mat[2][3] + mat[2][1]);
-	planes[3].distance = -(mat[3][3] + mat[3][1]);
+	planes[3].normal.x = -(mat[3][0] + mat[1][0]);
+	planes[3].normal.y = -(mat[3][1] + mat[1][1]);
+	planes[3].normal.z = -(mat[3][2] + mat[1][2]);
+	planes[3].distance = -(mat[3][3] + mat[1][3]);
 
 	//Near
-	planes[4].normal.x = -(mat[0][3] + mat[0][2]);
-	planes[4].normal.y = -(mat[1][3] + mat[1][2]);
-	planes[4].normal.z = -(mat[2][3] + mat[2][2]);
-	planes[4].distance = -(mat[3][3] + mat[3][2]);
+	planes[4].normal.x = -(mat[3][0] + mat[2][0]);
+	planes[4].normal.y = -(mat[3][1] + mat[2][1]);
+	planes[4].normal.z = -(mat[3][2] + mat[2][2]);
+	planes[4].distance = -(mat[3][3] + mat[2][3]);
 
 	//Far
-	planes[4].normal.x = -(mat[0][3] - mat[0][2]);
-	planes[4].normal.y = -(mat[1][3] - mat[1][2]);
-	planes[4].normal.z = -(mat[2][3] - mat[2][2]);
-	planes[4].distance = -(mat[3][3] - mat[3][2]);
+	planes[5].normal.x = -(mat[3][0] - mat[2][0]);
+	planes[5].normal.y = -(mat[3][1] - mat[2][1]);
+	planes[5].normal.z = -(mat[3][2] - mat[2][2]);
+	planes[5].distance = -(mat[3][3] - mat[2][3]);
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -244,13 +282,18 @@ void QuadTreeNode::QuadTreeTest(std::vector<int>& indices, const glm::mat4 & mat
 	TraverseTree(indices, planes, 6);
 }
 
+void QuadTreeNode::SetAABB(const AABB & aabb)
+{
+	_aabb = aabb;
+}
+
 void QuadTreeNode::TraverseTree(std::vector<int>& indices, Plane * planes, const int &nrOfPlanes)
 {
 	PlaneResult testResult;
 	for (int i = 0; i < nrOfPlanes; i++)
 	{
-		testResult = BBPlaneTest(_BBMin, _BBMax, planes[i]);
-		if (testResult != PlaneResult::Outside)
+		testResult = BBPlaneTest(_aabb, planes[i]);
+		if (testResult == PlaneResult::Outside)
 		{
 			return;
 		}
@@ -266,7 +309,7 @@ void QuadTreeNode::TraverseTree(std::vector<int>& indices, Plane * planes, const
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			TraverseTree(indices, planes, nrOfPlanes);
+			_children[i]->TraverseTree(indices, planes, nrOfPlanes);
 		}
 	}
 }

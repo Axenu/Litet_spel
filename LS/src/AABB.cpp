@@ -41,6 +41,16 @@ glm::vec3 AABB::getMax() const
 	return _max;
 }
 
+void AABB::setMin(glm::vec3 min)
+{
+	_min = min;
+}
+
+void AABB::setMax(glm::vec3 max)
+{
+	_max = max;
+}
+
 AABB::~AABB()
 {
 

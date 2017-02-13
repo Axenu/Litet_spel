@@ -16,6 +16,8 @@ public:
 	AABB(const AABB &other);
 	glm::vec3 getMin() const;
 	glm::vec3 getMax() const;
+	void setMin(glm::vec3 min);
+	void setMax(glm::vec3 max);
 	~AABB();
 
 	AABB transform(const glm::mat4 &matrix) const;
