@@ -202,6 +202,8 @@ void Grid::loadingBmpPicture(const char* filename)
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
 			{
 				_twodArray[height - 1 - i][realj].type = guard;
+				glm::vec3 tmpVec((realj), 0.0f, (height - 1 - i));
+				this->_guardLocations.push_back(tmpVec);
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
@@ -566,6 +568,24 @@ std::vector<glm::vec3>* Grid::getLootLocations()
 {
 	return &_lootLocations;
 }
+void Grid::buildGridArrayForGuards()
+{
+	
+}
+
+std::vector<glm::vec3>* Grid::getGuardLocations()
+{
+	return &_guardLocations;
+}
+
+glm::vec3 Grid::getLastValueOfGuardLocationsAndremovesit()
+{
+	glm::vec3 temp;
+	temp = _guardLocations[_guardLocations.size() - 1];
+	_guardLocations.pop_back();
+
+	return temp;
+}
 
 bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 {
@@ -668,6 +688,21 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 float Grid::getGridSpace()
 {
 	return GRIDSPACE;
+}
+
+int Grid::getvalue(int height, int width)
+{
+	return _twodArray[height][width].value;
+}
+
+void Grid::setvalue(int height, int width, int value)
+{
+ _twodArray[height][width].value=value;
+}
+
+gridType Grid::gettype(int height, int width)
+{
+	return _twodArray[height][width].type;
 }
 
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)

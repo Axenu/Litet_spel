@@ -17,7 +17,12 @@ void TestGame::initiate() {
 	Level* level = _factory.createLevel("Demo1.bmp");
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
 	_player = player;
+	std::vector<glm::vec3>* pGuardPosList = level->getGrid().getGuardLocations();
+	int sizesaved = pGuardPosList->size();
+	for(unsigned int i = 0;i<sizesaved;i++)
 	_factory.createGuard("cube.obj", glm::ivec2(2, 2), *player);
+
+
 	_factory.createObject("Table.obj", glm::ivec2(3, 1));
 	//Add some lights
 	PointLight l(glm::vec3(0.0f), glm::vec3(0.6f), glm::vec3(0.7f), 5.0f);

@@ -26,6 +26,7 @@ private:
 	int _heightLength;
 	int _widthLength;
 	int _height;
+	Grid *_currentLevel;
 	int _width;
 	glm::vec3 displacement =glm::vec3(0.5, 0.5, 0.5);
 	float _currentGridSpace;
@@ -36,6 +37,8 @@ public:
 	virtual ~Guard();
 	Guard();
 	void print();
+	void StartGridBuild();
+	void setLevel(Grid *level);
 	std::vector<glm::vec2> generatingPath(glm::ivec2 GoalPosition);
 	bool walkingInThePaths(float dt);
 	glm::vec2 roundTheValuefrom0Comma01(glm::vec3);
@@ -44,7 +47,7 @@ public:
 	virtual	void update(float dt);
 	Guard(Character* player, EventManager* event, Model & m, Grid * gridet);
 	int randomgenerator(int randomNumber);
-	void buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY);
+//	void buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
 	void goToSquare(float dt, glm::vec2 walkToSquare);

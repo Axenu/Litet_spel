@@ -34,6 +34,7 @@ private:
 	gridValues** _twodArray; //f�rsta �r heightlength andra �r widthlenght
 	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
+	std::vector<glm::vec3> _guardLocations;
 	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
 	bool removeGridCell(glm::ivec2 pos, std::vector<gridNode> *vector);
 public:
@@ -50,9 +51,15 @@ public:
 	int getHeight();
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
+	std::vector<glm::vec3> *  getGuardLocations();
+	glm::vec3 getLastValueOfGuardLocationsAndremovesit();
+	void buildGridArrayForGuards();
 	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
 	/* Get the size of a grid square */
 	float getGridSpace();
+	int getvalue(int height,int width);
+	void setvalue(int height, int width, int value);
+	gridType gettype(int height, int width);
 	bool isInside(glm::ivec2 vec) const;
 	gridType returnGridType(int width,int height);
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;
