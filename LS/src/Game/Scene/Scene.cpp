@@ -3,6 +3,7 @@
 
 
 Scene::Scene()
+	:_quadTreeRoot(3)
 {
 }
 
@@ -39,6 +40,8 @@ void Scene::add(GameObject *object) {
 	//If object has no parent set the scene as the root.?
 	if(!object->getParent())
 		object->setParent(&_root);
+	//adds the object to the QuadTree
+	_quadTreeRoot.AddObjects(_objects.size(), object);
 	_objects.push_back(std::move(object));
 }
 
@@ -80,6 +83,10 @@ Node* Scene::removeNode(Node *object, bool deleteObj) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF) {
+	//std::vector<int> drawIndices;
+	//_quadTreeRoot.QuadTreeTest(drawIndices, _cam->getViewMatrix());
+	//for (unsigned int i = 0; i < drawIndices.size(); i++)
+	//	_objects[drawIndices[i]]->addToFrame(dF);
 	for (unsigned int i = 0; i < _objects.size(); i++)
 		_objects[i]->addToFrame(dF);
 }

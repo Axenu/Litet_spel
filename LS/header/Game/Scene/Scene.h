@@ -5,6 +5,7 @@
 #include"DrawFrame.h"
 #include"node.h"
 #include "Game/camera.h"
+#include "Game/Scene/QuadTree.h"
 
 /* Scene holding the objects 
 */
@@ -19,6 +20,8 @@ private:
 	std::vector<Node*> _nodes;
 
 	Camera* _cam;
+
+	QuadTreeNode _quadTreeRoot;
 protected:
 	/* The scene tree root.
 	*/
@@ -51,6 +54,8 @@ public:
 	void fetchDrawables(DrawFrame &dF);
 
 	int loot(int pickDist);
+
+	void initQuadTree();
 
 };
 

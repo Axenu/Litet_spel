@@ -3,7 +3,15 @@
 
 QuadTreeNode::QuadTreeNode()
 {
+	_children[0] = nullptr;
+	_children[1] = nullptr;
+	_children[2] = nullptr;
+	_children[3] = nullptr;
+}
 
+QuadTreeNode::QuadTreeNode(int depth)
+{
+	CreateNodes(depth);
 }
 
 
@@ -18,14 +26,33 @@ QuadTreeNode::~QuadTreeNode()
 	}
 }
 
-void QuadTreeNode::CreateNodes(std::map<int, GameObject*>& data, int depth, int & maxDepth)
+void QuadTreeNode::CreateNodes(int & maxDepth)
+{
+	CreateNodes(0, maxDepth);
+}
+
+void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
+{
+	std::map<int, GameObject*> tmpMap;
+	for (unsigned int i = 0; i < data.size(); i++)
+	{
+		tmpMap.insert(std::pair<int, GameObject*>(i, data[i]));
+	}
+
+	AddObjects(tmpMap);
+}
+
+void QuadTreeNode::AddObjects(unsigned int indice, GameObject * gameObject)
+{
+	std::map<int, GameObject*> tmpMap;
+	tmpMap.insert(std::pair<int, GameObject*>(indice, gameObject));
+	AddObjects(tmpMap);
+}
+
+void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
 {
 	if (depth > maxDepth)
 	{
-		for (auto const& tmpData : data)
-		{
-			_indiceData.push_back(tmpData.first);
-		}
 		for (int i = 0; i < 4; i++)
 		{
 			_children[i] = nullptr;
@@ -33,8 +60,6 @@ void QuadTreeNode::CreateNodes(std::map<int, GameObject*>& data, int depth, int 
 	}
 	else
 	{
-		std::map<int, GameObject*> childList[4];
-
 		glm::vec3 tmp;
 		tmp.x = _BBMax.x - _BBMin.x;
 		tmp.y = _BBMax.y;
@@ -64,7 +89,30 @@ void QuadTreeNode::CreateNodes(std::map<int, GameObject*>& data, int depth, int 
 		_children[3]->_BBMin.x = _BBMin.x + tmp.x / 2;
 		_children[3]->_BBMax = _BBMax;
 		_children[3]->_BBMax.z = _BBMin.z + tmp.z / 2;
+		
+		for (int i = 0; i < 4; i++)
+		{
+			_children[i]->CreateNodes(depth + 1, maxDepth);
+		}
+	}
+}
 
+void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
+{
+	if (_children[0] == nullptr)
+	{
+		for (auto const& tmpData : data)
+		{
+			_indiceData.push_back(tmpData.first);
+		}
+	}
+	else
+	{
+		std::map<int, GameObject*> childList[4];
+
+		glm::vec3 tmp;
+		tmp.x = _BBMax.x - _BBMin.x;
+		tmp.z = _BBMax.z - _BBMin.z;
 
 		Plane plane1;
 		plane1.distance = -(_BBMin.x + tmp.x / 2);
@@ -139,7 +187,7 @@ void QuadTreeNode::CreateNodes(std::map<int, GameObject*>& data, int depth, int 
 		}
 		for (int i = 0; i < 4; i++)
 		{
-			_children[i]->CreateNodes(childList[i], depth + 1, maxDepth);
+			_children[i]->AddObjects(childList[i]);
 		}
 	}
 }
