@@ -5,49 +5,38 @@ lIBDIR=lib/OSX/
 IDIR=include/
 HDIR=header/
 
-SOURCESGAME=$(wildcard $(SRCDIR)*.cpp)
-SOURCEGL=$(wildcard $(SRCDIR)gl/*.cpp)
-SOURCERender=$(wildcard $(SRCDIR)Render/*.cpp)
-SOURCEFILESGAME = $(SOURCESGAME:$(SRCDIR)%=%) $(SOURCEGL:$(SRCDIR)gl/%=%) $(SOURCERender:$(SRCDIR)Render/%=%)
+SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Level src/Game/Objects src/Game/Scene src/gui src/gui/Views src/Render src/Render/Mesh src/Render/Mesh/Shader src/Render/Composition
+BUILD_DIR := $(SRC_DIR:src%=build%)
+SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
+OBJ_files := $(SRC:src%=build%)
+OBJ       := $(OBJ_files:.cpp=.o)
 
 # The executable file that will be created
 EXEC = main
 # The c++ flags to use for compilation
-CXXFLAGS = -Wall -Wno-unknown-pragmas -std=c++11 -Wno-c++11-long-long -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual -Wno-reorder
+CXXFLAGS = -Wall -Wextra -std=c++11 -Wno-c++11-long-long -Wdouble-promotion -Wno-sign-conversion -Wno-unused-parameter -Wno-reorder -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-private-field -Wno-return-type -Wno-overloaded-virtual
 # The c++ compiler to use for compilation
 CC = g++
 
-
-GAMEOBJECTS = $(addprefix $(ODIR), $(SOURCEFILESGAME:.cpp=.o))
-
-
-LIB=-lglfw3# -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms
-
+LIB=-lglfw3 -lil -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms -lassimp
 #OSX frameworks
 FRAMEWORKS=-framework IOKit -framework Cocoa -framework OpenGL -framework CoreVideo
 
-
 # This section is called on 'make'
 # Will call compile, and then call clean
-all: $(GAMEOBJECTS)
-	$(CC) -L $(lIBDIR) -o $(EXEC) $^ $(FRAMEWORKS) $(LIB)
+all: checkdirs buildAll
 
-# build/FireArrow.a: $(ENGINEOBJECTS)
-	# ar rvs build/FireArrow.a $^
+buildAll: $(OBJ)
+	$(CC) -L $(lIBDIR) -o $(EXEC) $^ $(FRAMEWORKS) $(LIB)
 
 $(ODIR)%.o: $(SRCDIR)%.cpp
 	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
 
-$(ODIR)%.o: $(SRCDIR)gl/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
+checkdirs: $(BUILD_DIR)
 
-$(ODIR)%.o: $(SRCDIR)Render/%.cpp
-	$(CC) -I $(IDIR) -I$(HDIR) $(CXXFLAGS) -c -o $@ $<
-
-# $(ODIR)/%.o: $(ENGINESDIR)/%.cpp
-# 	$(CC) -I $(IDIR) -I$(HDIR) -std=c++11 -Wno-c++11-long-long -Wall -c -o $@ $<
+$(BUILD_DIR):
+	mkdir -p $@
 
 clean:
-	rm -f $(ODIR)*.o
-	rm -f $(ODIR)*.a
+	rm -rf $(BUILD_DIR)
 	rm $(EXEC)

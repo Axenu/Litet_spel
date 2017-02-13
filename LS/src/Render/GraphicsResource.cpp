@@ -1,7 +1,7 @@
 #include"Render/GraphicsResource.h"
 
 
-GraphicsResource::GraphicsResource(const gl::DefferredSettings &setting)
+GraphicsResource::GraphicsResource(gl::DefferredSettings &setting)
 : _quad(), _deferred(setting){
 
 }

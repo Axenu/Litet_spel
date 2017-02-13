@@ -123,15 +123,22 @@ namespace gl {
 #pragma endregion
 
 #pragma region Generate and load frame buffers
-
+	struct DeferredTextureInfo {
+		/* Data format of the deferred texture. GL_RGB, GL_RGBA, etc. */
+		GLenum _internalFormat;
+		DeferredTextureInfo() 
+		:	_internalFormat(GL_RGB){}
+		DeferredTextureInfo(GLenum format)
+			: _internalFormat(format) {}
+	};
 	/* Generates a frame buffer containing a set of render targets used for deferred rendering.
-		colRenderTargets	<<	How many render targets generated using rgb colour.
+		colRenderTargets	<<	Determines the number of deferred textures generated and the 
 		width				<<	Screen width.
 		height				<<	Screen height.
 		frameBuffer			<<	Generated frame buffer.
 		renderTextures		<<	Generated render target textures. First item is the depth buffer, the following textures are the render targets in order of render slot.
 	*/
-	bool generateDeferredBuffers(unsigned int colRenderTargets, unsigned int width, unsigned int height, FBOData &frameBuffer, std::vector<TexData> &renderTextures);
+	bool generateDeferredBuffers(const std::vector<DeferredTextureInfo> &colRenderTargets, unsigned int width, unsigned int height, FBOData &frameBuffer, std::vector<TexData> &renderTextures);
 
 	/* Generate a depth buffer used for shadow mapping.
 	width		<<	Shadow map width.

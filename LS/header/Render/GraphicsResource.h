@@ -5,7 +5,7 @@
 
 
 	/* Class holding the graphical resources used for rendering.
-	 * Not designed to hold assests.
+	 * Not designed to hold assets?
 	 */
 class GraphicsResource {
 
@@ -16,7 +16,7 @@ class GraphicsResource {
 
 public:
 
-	GraphicsResource(const gl::DefferredSettings &setting);
+	GraphicsResource(gl::DefferredSettings &setting);
 	~GraphicsResource();
 
 	const gl::RenderQuad& getQuad() const;

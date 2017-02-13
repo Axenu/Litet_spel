@@ -10,7 +10,8 @@ struct PointLight {
 	*/
 	float _fadeDist;
 	glm::vec4 _diffuse, _specular;
-	PointLight() {}
+	PointLight()
+		: _pos(0.0f), _fadeDist(5.0f), _diffuse(0.8f), _specular(1.0f) {}
 	PointLight(glm::vec3 pos, glm::vec3 diffuse, glm::vec3 specular, float fadeDist)
 		: _pos(pos), _fadeDist(fadeDist), _diffuse(diffuse, 0.0f), _specular(specular, 0.0f){
 	}

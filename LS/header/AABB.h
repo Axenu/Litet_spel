@@ -5,17 +5,21 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <algorithm>
 
 class AABB
 {
-private:
-    glm::vec3 _position;
-    glm::vec3 _scale;
-    glm::vec3 _min;
-    glm::vec3 _max;
-
 public:
+	AABB();
+	AABB(const glm::vec3& min, const glm::vec3& max);
     AABB(std::vector<glm::vec3> *position);
+	AABB(const AABB &other);
+	glm::vec3 getMin() const;
+	glm::vec3 getMax() const;
+	~AABB();
 
-    ~AABB();
+	AABB transform(const glm::mat4 &matrix) const;
+private:
+	glm::vec3 _min;
+	glm::vec3 _max;
 };

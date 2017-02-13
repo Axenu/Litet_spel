@@ -29,6 +29,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -36,12 +37,14 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -49,6 +52,7 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <LocalDebuggerEnviroment>PATH=%PATH%;$(ProjectDir)\lib\Windows</LocalDebuggerEnviroment>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -69,15 +73,29 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)include;header</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(ProjectDir)lib\Windows</LibraryPath>
-    <SourcePath>$(VC_SourcePath)src</SourcePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
+    <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
+    <SourcePath>src;$(SourcePath)</SourcePath>
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)include;header</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(ProjectDir)lib\Windows</LibraryPath>
-    <SourcePath>$(VC_SourcePath)src</SourcePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
+    <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
+    <SourcePath>src;$(SourcePath)</SourcePath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
+    <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
+    <SourcePath>src;$(SourcePath)</SourcePath>
+    <ExecutablePath>(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include;header;$(IncludePath)</IncludePath>
+    <LibraryPath>lib/Windows;$(LibraryPath)</LibraryPath>
+    <SourcePath>src;$(SourcePath)</SourcePath>
+    <ExecutablePath>(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -88,7 +106,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions) </PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>LIBCMT;MSVCRT</IgnoreSpecificDefaultLibraries>
@@ -99,7 +117,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>header</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -114,7 +136,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
@@ -127,80 +149,142 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>header</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Scene\DrawFrame.cpp" />
+    <ClCompile Include="src\Game\Level\ObjectFactory.cpp" />
+    <ClCompile Include="src\Game\Level\Level.cpp" />
+    <ClCompile Include="src\Factory.cpp" />
+    <ClCompile Include="src\Game\camera.cpp" />
+    <ClCompile Include="src\Game\Game.cpp" />
+    <ClCompile Include="src\Event\Events.cpp" />
+    <ClCompile Include="src\Game\Objects\LootObject.cpp" />
+    <ClCompile Include="src\Game\Setting.cpp" />
+    <ClCompile Include="src\Game\TestGame.cpp" />
+    <ClCompile Include="src\gui\StringComponents.cpp" />
+    <ClCompile Include="src\Event\Input\InputIncrementer.cpp" />
+    <ClCompile Include="src\gui\Button.cpp" />
+    <ClCompile Include="src\gui\Manager.cpp" />
+    <ClCompile Include="src\Event\Input\InputKeyState.cpp" />
+    <ClCompile Include="src\gui\View.cpp" />
+    <ClCompile Include="src\gui\Views\GameOverView.cpp" />
+    <ClCompile Include="src\gui\Views\HUDView.cpp" />
+    <ClCompile Include="src\gui\Views\MainMenuView.cpp" />
+    <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
+    <ClCompile Include="src\ModelLoader.cpp" />
+    <ClCompile Include="src\Render\Composition\RenderDefBuffers.cpp" />
+    <ClCompile Include="src\intersectionFunctions.cpp" />
+    <ClCompile Include="src\Game\Scene\DrawFrame.cpp" />
     <ClCompile Include="src\AABB.cpp" />
-    <ClCompile Include="src\BasicColorMaterial.cpp" />
-    <ClCompile Include="src\Guard.cpp" />
-    <ClCompile Include="src\Scene\Scene.cpp" />
-    <ClCompile Include="src\Material.cpp" />
-    <ClCompile Include="src\EventManager.cpp" />
+    <ClCompile Include="src\gl\Texture.cpp" />
+    <ClCompile Include="src\Game\Objects\Guard.cpp" />
+    <ClCompile Include="src\gui\Element.cpp" />
+    <ClCompile Include="src\gui\Font.cpp" />
+    <ClCompile Include="src\gui\Label.cpp" />
+    <ClCompile Include="src\gui\Rectangle.cpp" />
+    <ClCompile Include="src\gui\TexturedRectangle.cpp" />
+    <ClCompile Include="src\Game\Scene\Scene.cpp" />
+    <ClCompile Include="src\Render\Mesh\Material.cpp" />
+    <ClCompile Include="src\Event\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
-    <ClCompile Include="src\GameObject.cpp" />
-    <ClCompile Include="src\Render\MeshShader.cpp" />
-    <ClCompile Include="src\Render\DeferredMeshShader.cpp" />
-    <ClCompile Include="src\Character.cpp" />
+    <ClCompile Include="src\Game\Objects\GameObject.cpp" />
+    <ClCompile Include="src\Render\Mesh\ModelPart.cpp" />
+    <ClCompile Include="src\Render\Mesh\Shader\MeshShader.cpp" />
+    <ClCompile Include="src\Render\Mesh\Shader\DeferredMeshShader.cpp" />
+    <ClCompile Include="src\Game\Objects\Character.cpp" />
     <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />
-    <ClCompile Include="src\Render\FrameData.cpp" />
+    <ClCompile Include="src\Render\RenderInfo.cpp" />
     <ClCompile Include="src\Render\GraphicsResource.cpp" />
     <ClCompile Include="src\GridDataStructure.cpp" />
-    <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\gl\FBOData.cpp" />
     <ClCompile Include="src\gl\GLFunctions.cpp" />
     <ClCompile Include="src\gl\SamplerObject.cpp" />
     <ClCompile Include="src\gl\TexData.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\InputManager.cpp" />
-    <ClCompile Include="src\Render\RenderDeferred.cpp" />
+    <ClCompile Include="src\Render\Mesh\Mesh.cpp" />
+    <ClCompile Include="src\Event\Input\InputManager.cpp" />
+    <ClCompile Include="src\Render\Composition\RenderDeferred.cpp" />
     <ClCompile Include="src\gl\RenderQuad.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Render\Shader.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Render\Mesh\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Factory.h" />
+    <ClInclude Include="header\Game\camera.h" />
+    <ClInclude Include="header\Game\Game.h" />
+    <ClInclude Include="header\Event\Events.h" />
+    <ClInclude Include="header\Game\Level\GridSquare.h" />
+    <ClInclude Include="header\Game\Objects\CharacterEvents.h" />
+    <ClInclude Include="header\Game\Objects\GameObjectType.h" />
+    <ClInclude Include="header\Game\Objects\LootObject.h" />
+    <ClInclude Include="header\Game\Setting.h" />
+    <ClInclude Include="header\gui\View.h" />
+    <ClInclude Include="header\gui\Views\GameOverView.h" />
+    <ClInclude Include="header\gui\Views\HUDView.h" />
+    <ClInclude Include="header\gui\Views\MainMenuView.h" />
+    <ClInclude Include="header\Render\Mesh\ModelPart.h" />
+    <ClInclude Include="header\StaticVars.h" />
+    <ClInclude Include="header\Game\TestGame.h" />
+    <ClInclude Include="header\gui\StringComponents.h" />
+    <ClInclude Include="header\Event\Input\InputKeyState.h" />
+    <ClInclude Include="header\ModelLoader.h" />
+    <ClInclude Include="header\Render\Composition\RenderDefBuffers.h" />
+    <ClInclude Include="header\gui\Button.h" />
+    <ClInclude Include="header\gui\Manager.h" />
+    <ClInclude Include="header\Render\Mesh\MaterialLink.h" />
     <ClInclude Include="header\Render\PointLight.h" />
-    <ClInclude Include="header\Scene\DrawFrame.h" />
+    <ClInclude Include="header\IntersectionFunctions.h" />
+    <ClInclude Include="header\Game\Scene\DrawFrame.h" />
     <ClInclude Include="header\AABB.h" />
-    <ClInclude Include="header\BasicColorMaterial.h" />
-    <ClInclude Include="header\EventManager.h" />
+    <ClInclude Include="header\Event\EventManager.h" />
+    <ClInclude Include="header\gl\Texture.h" />
     <ClInclude Include="header\gl\VAData.h" />
-    <ClInclude Include="header\Guard.h" />
-    <ClInclude Include="header\Material.h" />
-    <ClInclude Include="header\GameObject.h" />
-    <ClInclude Include="header\Render\DeferredMeshShader.h" />
-    <ClInclude Include="header\Character.h" />
+    <ClInclude Include="header\Game\Objects\Guard.h" />
+    <ClInclude Include="header\gui\Element.h" />
+    <ClInclude Include="header\gui\Font.h" />
+    <ClInclude Include="header\gui\Label.h" />
+    <ClInclude Include="header\gui\Rectangle.h" />
+    <ClInclude Include="header\gui\TexturedRectangle.h" />
+    <ClInclude Include="header\Render\Mesh\Material.h" />
+    <ClInclude Include="header\Game\Objects\GameObject.h" />
+    <ClInclude Include="header\Render\Mesh\Shader\DeferredMeshShader.h" />
+    <ClInclude Include="header\Game\Objects\Character.h" />
     <ClInclude Include="header\gl\DeferredBuffer.h" />
     <ClInclude Include="header\gl\DefferedSettings.h" />
     <ClInclude Include="header\gl\glInclude.h" />
-    <ClInclude Include="header\Render\FrameData.h" />
+    <ClInclude Include="header\Render\RenderInfo.h" />
     <ClInclude Include="header\Render\GraphicsResource.h" />
     <ClInclude Include="header\GridDataStructure.h" />
-    <ClInclude Include="header\camera.h" />
     <ClInclude Include="header\gl\FBOData.h" />
     <ClInclude Include="header\gl\GLFunctions.h" />
     <ClInclude Include="header\gl\SamplerObject.h" />
     <ClInclude Include="header\gl\TexData.h" />
-    <ClInclude Include="header\Mesh.h" />
-    <ClInclude Include="header\InputManager.h" />
-    <ClInclude Include="header\Model.h" />
+    <ClInclude Include="header\Render\Mesh\Mesh.h" />
+    <ClInclude Include="header\Event\Input\InputManager.h" />
+    <ClInclude Include="header\Render\Mesh\Model.h" />
     <ClInclude Include="header\node.h" />
-    <ClInclude Include="header\Shader.h" />
+    <ClInclude Include="header\Render\Shader.h" />
     <ClInclude Include="header\gl\FrameBuffer.h" />
-    <ClInclude Include="header\Render\RenderDeferred.h" />
+    <ClInclude Include="header\Render\Composition\RenderDeferred.h" />
     <ClInclude Include="header\gl\RenderQuad.h" />
     <ClInclude Include="header\Render\QuadShader.h" />
-    <ClInclude Include="header\Render\MeshShader.h" />
+    <ClInclude Include="header\Render\Mesh\Shader\MeshShader.h" />
     <ClInclude Include="header\type_info.h" />
-    <ClInclude Include="header\Scene\Scene.h" />
+    <ClInclude Include="header\Game\Scene\Scene.h" />
+    <ClInclude Include="header\Game\Objects\PointLightObject.h" />
+    <ClInclude Include="header\Event\Input\InputIncrementer.h" />
+    <ClInclude Include="header\Game\Level\Level.h" />
+    <ClInclude Include="header\Game\Level\ObjectFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

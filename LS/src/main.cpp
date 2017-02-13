@@ -1,35 +1,25 @@
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-#define GLEW_STATIC
-#include <GL/glew.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#endif
+#include "gl/glInclude.h"
 #include <iostream>
-#include <GLFW/glfw3.h>
 #define GLM_FORCE_RADIANS
+#include <IL/il.h>
 #include <glm/glm.hpp>
-#include "Shader.h"
-#include "Model.h"
-#include "GridDataStructure.h"
-#include "Render/GraphicsResource.h"
-#include "Render/FrameData.h"
-#include "Render/RenderDeferred.h"
-#include "Render/MeshShader.h"
-#include "Render/DeferredMeshShader.h"
-#include "InputManager.h"
-#include "EventManager.h"
-#include "Camera.h"
-#include "Character.h"
-#include "GameObject.h"
-#include "Guard.h"
-#include"Scene/Scene.h"
-#include"Scene/DrawFrame.h"
-GLFWwindow* window;
-Grid gridtest;
-Camera camera;
-Character* player;
+#include "Event/Input/InputManager.h"
+#include "Event/EventManager.h"
+#include "Game/Setting.h"
+#include "Game/Game.h"
+#include "Game/TestGame.h"
+#include "gui/Button.h"
+#include "gui/Manager.h"
+#include "gui/Views/MainMenuView.h"
+#include "gui/Views/MainMenuView.h"
+#include "StaticVars.h"
+
 void setupWindow()
 {
+#ifndef __APPLE__
+	//Memory leak debug
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
     // Init glfw
 	if (!glfwInit())
 	{
@@ -41,8 +31,8 @@ void setupWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_DECORATED, true);
-	unsigned int wWidth = 640, wHeight = 480;
-    window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
+	unsigned int wWidth = 1280, wHeight = 720;
+	GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -58,69 +48,72 @@ void setupWindow()
 		return;
 	}
 #endif
+
+	//init DevIL
+	ilInit();
+
 	//Set GL vars
 	glEnable(GL_DEPTH_TEST);//Enable depth testinz
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);//Enable face culling
 	glCullFace(GL_BACK);
+	glEnable(GL_BLEND); //Enable alpha on gui elements. Could be done every frame on render?
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	gl::CheckGLErrors("Init stage failed: State");
 
-	EventManager *eventManager = new EventManager();
-	InputManager *iManager = new InputManager(window, eventManager);
-
+	EventManager eventManager;
+	InputManager iManager(window, &eventManager);
+	bool windowalive=false;
 
 	//basic init
-	GraphicsResource resource(gl::DefferredSettings(wWidth, wHeight, 3));
-	Shader *s = new Shader("Basic");
-	DeferredMeshShader meshShader;
-	RenderDeferred deferred(resource.getQuad());
-	Material material;
-	Scene scene;
+	// Setting setting(wWidth, wHeight, 3, 0.1f, 100.f, 70.f);
+	// setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
+	//
+	// TestGame game(setting, eventManager);
+
+	/* Load game
+	*/
+	// game.initiate();
 	gl::CheckGLErrors("Init stage failed: Resource");
 
+	// gui::Font *font = new gui::Font("Resources/fonts/arial");
+	// gui::Label label(font, "Hello World!");
+	// label.setZ(99);
+	// gui::Rectangle rect(0.5, 0.5);
+	// glm::vec4 color(0,0,0,1);
+	// rect.setColor(color);
 
-	Mesh wallMesh = gridtest.generateMesh();
-	Mesh cube;
-	Guard guardenn(Model(&cube, &meshShader, &material), &gridtest);
-	guardenn.update(0.16f);
+	//init dt calculation
+	float lastTime = (float)glfwGetTime();
+	float currentTime;
+	float dT;
+	float FPS;
 
-	scene.add(new GameObject(Model(&wallMesh, &meshShader, &material)));
-	scene.add(&guardenn);
-	
-	
+	gui::MainMenuView* guiScene = new gui::MainMenuView(&eventManager, &FPS);
+	gui::Manager guiManager(&eventManager);
+	guiManager.setWindowSize(wWidth, wHeight);
+	guiManager.setView(guiScene);
 
-    camera = Camera(70.0f, wWidth, wHeight, 0.1f, 100.0f);
-    player = new Character(eventManager);
-	player->setLevel(&gridtest);
-    player->setCamera(&camera);
-	deferred.setWindowSize((float)wWidth, (float)wHeight, camera);
+
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        //update
-		float dT = 0.016f;
-		scene.update(dT);
-        player->update(dT);
-		camera.update(dT);
+		glClearColor(1.0, 0.0, 1.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//Calculate dt
+		currentTime = (float)glfwGetTime();
+		dT = currentTime - lastTime;
+	    lastTime = currentTime;
+		FPS = 1.0f/dT;
+		//Update game logic
+		// game.update(dT);
+		//Draw game drawables
+		// game.draw();
 
-		FrameData fD(resource, camera);
-		DrawFrame dF;
-		scene.fetchDrawables(dF);
+		guiManager.update(dT);
+		guiManager.render();
 
-		resource.getDeffered().bindDraw();
-
-		dF.render(fD);
-		gl::CheckGLErrors("Render stage failed: Mesh");
-
-		/*	Render to backbuffer:
-		*/
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glClearColor(1, 0, 0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //Render
-		deferred.render(fD);
-		gl::CheckGLErrors("Render stage failed: Composition");
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -130,18 +123,11 @@ void setupWindow()
 
     glfwTerminate();
 }
-void Deanstestingruta()
-{
-	gridtest.print2darraydata();
-	
-}
 
 int main()
 {
-	std::cout << "Init window!" << std::endl;
-	Deanstestingruta();
+	// std::cout << "Init window!" << std::endl;
 	setupWindow();
-
 
     return 0;
 }

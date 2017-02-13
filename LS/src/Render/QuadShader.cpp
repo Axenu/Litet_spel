@@ -15,7 +15,7 @@ QuadShader::~QuadShader()
 }
 
 
-void QuadShader::render(FrameData &fD) {
+void QuadShader::render(RenderInfo &fD) {
 	_shader.bind();
 	assignUniforms(fD);
 	_quad.render();
