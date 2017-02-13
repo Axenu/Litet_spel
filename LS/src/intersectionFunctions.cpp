@@ -141,3 +141,43 @@ bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin)
 
 	return true;
 }
+
+
+
+PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBMax, glm::vec3 pNormal, float pDistance)
+{
+	glm::vec3 c;
+	c.x = (BBMax.x + BBMin.x) / 2;
+	c.y = (BBMax.y + BBMin.y) / 2;
+	c.z = (BBMax.z + BBMin.z) / 2;
+
+	glm::vec3 h;
+	h.x = (BBMax.x - BBMin.x) / 2;
+	h.y = (BBMax.y - BBMin.y) / 2;
+	h.z = (BBMax.z - BBMin.z) / 2;
+
+	float e = h.x*abs(pNormal.x) + h.y*abs(pNormal.y) + h.z*abs(pNormal.z);
+
+	float s = c.x*pNormal.x + c.y*pNormal.y + c.z*pNormal.z + pDistance;
+
+	if (s - e > 0)
+	{
+		return PlaneResult::Outside;
+	}
+	else if (s + e < 0)
+	{
+		return PlaneResult::Inside;
+	}
+	return PlaneResult::Intersecting;
+}
+
+PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBmax, const Plane & plane)
+{
+	return BBPlaneTest(BBMin, BBmax, plane.normal, plane.distance);
+}
+
+PlaneResult BBPlaneTest(const AABB & aabb, const Plane & plane)
+{
+	return BBPlaneTest(aabb.getMin(), aabb.getMax(), plane.normal, plane.distance);
+}
+

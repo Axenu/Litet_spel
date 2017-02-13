@@ -165,6 +165,7 @@
     <ClCompile Include="src\Game\Game.cpp" />
     <ClCompile Include="src\Event\Events.cpp" />
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
+    <ClCompile Include="src\Game\Scene\QuadTree.cpp" />
     <ClCompile Include="src\Game\Setting.cpp" />
     <ClCompile Include="src\Game\TestGame.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="header\Game\Objects\CharacterEvents.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />
+    <ClInclude Include="header\Game\Scene\QuadTree.h" />
     <ClInclude Include="header\Game\Setting.h" />
     <ClInclude Include="header\gui\View.h" />
     <ClInclude Include="header\gui\Views\GameOverView.h" />
