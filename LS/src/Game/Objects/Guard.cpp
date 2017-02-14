@@ -412,6 +412,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_displacement = glm::vec3(0.5f, 0.5f, 0.5f);
 
 	_guardsstartposition = guardStartPosition + _displacement;
+	_guardsstartposition.y = 1.3f;
 	_widthLength = gridet->getWidth();
 	_heightLength = gridet->getHeight();
 	
