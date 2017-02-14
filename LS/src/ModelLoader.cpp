@@ -118,16 +118,16 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 	vertexData.push_back(&pos[0]);	//Get position array start pointer
 	vertexData.push_back(&norm[0]);		//Get normal array start pointer
 
+	std::vector<int> _bones;
+	std::vector<glm::vec2> weights[MAX_BONEWEIGHTS];
 	//Proess bones
 	if (mesh->HasBones()) {
-		std::vector<int> _bones;
-		std::vector<glm::vec2> weights[MAX_BONEWEIGHTS];
 		//Init weight buffers
 		for (int i = 0; i < 4; i++)
 			weights[i] = std::vector<glm::vec2>(pos.size());
 		//Get weights for each bone
-		for (unsigned int i = 0; i < mesh->mNumBones; i++) {
-			aiBone *bone = mesh->mBones[i];
+		for (unsigned int bIndex = 0; bIndex < mesh->mNumBones; bIndex++) {
+			aiBone *bone = mesh->mBones[bIndex];
 			_bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
 
 			//Fetch all bone weights
@@ -135,8 +135,8 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 				aiVertexWeight weight = bone->mWeights[w];
 				//Find free slot and insert
 				for (int i = 0; i < MAX_BONEWEIGHTS; i++) {
-					if (weights[i][weight.mVertexId][0] > 0) {
-						weights[i][weight.mVertexId] = glm::vec2(i, weight.mWeight);
+					if (weights[i][weight.mVertexId].y <= 0) { //First slot without assigned weight
+						weights[i][weight.mVertexId] = glm::vec2(bIndex, weight.mWeight);
 						break;
 					}
 				}
