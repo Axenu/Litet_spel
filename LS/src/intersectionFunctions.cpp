@@ -81,6 +81,59 @@ bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::v
 	return false;
 }
 
+bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::vec3 origin, glm::vec3 dir, glm::vec3& point)
+{
+
+
+	glm::vec3 u(0.0f, 0.0f, 0.0f);
+	glm::vec3 v(0.0f, 0.0f, 0.0f);
+	glm::vec3 normal(0.0f, 0.0f, 0.0f);
+
+	u = tri2 - tri1;
+	v = tri3 - tri1;
+
+	normal = glm::cross(u, v);
+
+	normal = glm::normalize(normal);
+
+	float tri1A = normal.x;
+	float tri1B = normal.y;
+	float tri1C = normal.z;
+	float tri1D = (-(tri1A * tri1.x) - (tri1B * tri1.y) - (tri1C * tri1.z));
+
+	float ep1, ep2, t = 0.0f;
+	float planeIntersectX, planeIntersectY, planeIntersectZ = 0.0f;
+
+	ep1 = (origin.x * tri1A) + (origin.y * tri1B) + (origin.z * tri1C);
+	ep2 = (dir.x * tri1A) + (dir.y * tri1B) + (dir.z * tri1C);
+
+	if (ep2 > 0.000001f || -0.000001f > ep2)
+	{
+		t = -(ep1 + tri1D) / ep2;
+	}
+	else
+	{
+		return false;
+	}
+
+	if (t > 0.0f)
+	{
+		planeIntersectX = origin.x + dir.x * t;
+		planeIntersectY = origin.y + dir.y * t;
+		planeIntersectZ = origin.z + dir.z * t;
+
+		glm::vec3 pointInPlane(planeIntersectX, planeIntersectY, planeIntersectZ);
+
+		if (PointInTriangle(tri1, tri2, tri3, pointInPlane))
+		{
+			point = pointInPlane;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin)
 {
 	glm::vec3 min = aabb.getMin();

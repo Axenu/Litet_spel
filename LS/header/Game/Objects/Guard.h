@@ -7,6 +7,7 @@
 #include "Character.h"
 #include <stdlib.h>
 #include <time.h>
+#include "intersectionFunctions.h"
 
 
 class Guard : public GameObject
@@ -17,18 +18,18 @@ private:
 	glm::vec3 _point1z; //h�jden f�rst sen breden. 
 	glm::vec3 _point2z; //h�jden f�rst sen breden. 
 	glm::vec3 _guardsstartposition; //h�jden f�rst sen breden. 
-	gridValues** _levalues;
 	EventManager*_eventManager;
 	Character* _player;
-	float speed = 0.4f;
-	float distLength;
+	glm::vec3 _forward;
+	float _speed;
+	float _distLength;
 	int _aiChoice;
 	int _heightLength;
 	int _widthLength;
 	int _height;
 	Grid *_currentLevel;
 	int _width;
-	glm::vec3 displacement =glm::vec3(0.5, 0.5, 0.5);
+	glm::vec3 _displacement;
 	float _currentGridSpace;
 	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();

@@ -202,7 +202,7 @@ void Grid::loadingBmpPicture(const char* filename)
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
 			{
 				_twodArray[height - 1 - i][realj].type = guard;
-				glm::vec3 tmpVec((realj), 0.0f, (height - 1 - i));
+				glm::vec3 tmpVec((realj), 1.3f, (height - 1 - i));
 				this->_guardLocations.push_back(tmpVec);
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
