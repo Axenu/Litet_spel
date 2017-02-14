@@ -40,6 +40,8 @@ void Scene::add(GameObject *object) {
 	//If object has no parent set the scene as the root.?
 	if(!object->getParent())
 		object->setParent(&_root);
+	//Initiates the modelMatrix
+	object->update(0.0f);
 	//adds the object to the QuadTree
 	_quadTreeRoot.AddObjects(_objects.size(), object);
 	_objects.push_back(std::move(object));

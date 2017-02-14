@@ -24,6 +24,7 @@ public:
 	virtual void update(float dt);
 	void setModel(Model &m);
 	const Model& getModel();
+	AABB getAABB();
 	const glm::mat4& getModelMatrix();
 	bool pick(glm::vec4 origin, glm::vec4 dir);
 	bool pick(Camera &cam);

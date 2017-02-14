@@ -33,6 +33,11 @@ const Model& GameObject::getModel() {
 	return _model;
 }
 
+AABB GameObject::getAABB()
+{
+	return _model.getBox().transform(_modelMatrix);
+}
+
 
 const glm::mat4& GameObject::getModelMatrix()
 {

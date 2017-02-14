@@ -2,7 +2,7 @@
 
 
 QuadTreeNode::QuadTreeNode()
-	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(25.0f, 2.0f, 50.0f))
+	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(22.0f, 2.0f, 30.0f))
 {
 	_children[0] = nullptr;
 	_children[1] = nullptr;
@@ -11,7 +11,7 @@ QuadTreeNode::QuadTreeNode()
 }
 
 QuadTreeNode::QuadTreeNode(int depth)
-	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(25.0f, 2.0f, 50.0f))
+	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(30.0f, 2.0f, 22.0f))
 {
 	CreateNodes(depth);
 }
@@ -161,10 +161,10 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 
 		for (auto const& tmpData : data)
 		{
+			AABB tmpAABB = tmpData.second->getAABB();
+			boxStatus1 = BBPlaneTest(tmpAABB, plane1);
 
-			boxStatus1 = BBPlaneTest(tmpData.second->getModel().getBox(), plane1);
-
-			boxStatus2 = BBPlaneTest(tmpData.second->getModel().getBox(), plane2);
+			boxStatus2 = BBPlaneTest(tmpAABB, plane2);
 
 			if (boxStatus1 == PlaneResult::Outside)//Right half
 			{
@@ -235,40 +235,40 @@ void QuadTreeNode::QuadTreeTest(std::vector<int>& indices, const glm::mat4 & mat
 	Plane planes[6];
 	
 	//Left
-	planes[0].normal.x = -(mat[3][0] + mat[0][0]);
-	planes[0].normal.y = -(mat[3][1] + mat[0][1]);
-	planes[0].normal.z = -(mat[3][2] + mat[0][2]);
-	planes[0].distance = -(mat[3][3] + mat[0][3]);
+	planes[0].normal.x = -(mat[0][3] + mat[0][0]);
+	planes[0].normal.y = -(mat[1][3] + mat[1][0]);
+	planes[0].normal.z = -(mat[2][3] + mat[2][0]);
+	planes[0].distance = -(mat[3][3] + mat[3][0]);
 
 	//Right
-	planes[1].normal.x = -(mat[3][0] - mat[0][0]);
-	planes[1].normal.y = -(mat[3][1] - mat[0][1]);
-	planes[1].normal.z = -(mat[3][2] - mat[0][2]);
-	planes[1].distance = -(mat[3][3] - mat[0][3]);
+	planes[1].normal.x = -(mat[0][3] - mat[0][0]);
+	planes[1].normal.y = -(mat[1][3] - mat[1][0]);
+	planes[1].normal.z = -(mat[2][3] - mat[2][0]);
+	planes[1].distance = -(mat[3][3] - mat[3][0]);
 
 	//Top
-	planes[2].normal.x = -(mat[3][0] - mat[1][0]);
-	planes[2].normal.y = -(mat[3][1] - mat[1][1]);
-	planes[2].normal.z = -(mat[3][2] - mat[1][2]);
-	planes[2].distance = -(mat[3][3] - mat[1][3]);
+	planes[2].normal.x = -(mat[0][3] - mat[0][1]);
+	planes[2].normal.y = -(mat[1][3] - mat[1][1]);
+	planes[2].normal.z = -(mat[2][3] - mat[2][1]);
+	planes[2].distance = -(mat[3][3] - mat[3][1]);
 
 	//Bottom
-	planes[3].normal.x = -(mat[3][0] + mat[1][0]);
-	planes[3].normal.y = -(mat[3][1] + mat[1][1]);
-	planes[3].normal.z = -(mat[3][2] + mat[1][2]);
-	planes[3].distance = -(mat[3][3] + mat[1][3]);
+	planes[3].normal.x = -(mat[0][3] + mat[0][1]);
+	planes[3].normal.y = -(mat[1][3] + mat[1][1]);
+	planes[3].normal.z = -(mat[2][3] + mat[2][1]);
+	planes[3].distance = -(mat[3][3] + mat[3][1]);
 
 	//Near
-	planes[4].normal.x = -(mat[3][0] + mat[2][0]);
-	planes[4].normal.y = -(mat[3][1] + mat[2][1]);
-	planes[4].normal.z = -(mat[3][2] + mat[2][2]);
-	planes[4].distance = -(mat[3][3] + mat[2][3]);
+	planes[4].normal.x = -(mat[0][3] + mat[0][2]);
+	planes[4].normal.y = -(mat[1][3] + mat[1][2]);
+	planes[4].normal.z = -(mat[2][3] + mat[2][2]);
+	planes[4].distance = -(mat[3][3] + mat[3][2]);
 
 	//Far
-	planes[5].normal.x = -(mat[3][0] - mat[2][0]);
-	planes[5].normal.y = -(mat[3][1] - mat[2][1]);
-	planes[5].normal.z = -(mat[3][2] - mat[2][2]);
-	planes[5].distance = -(mat[3][3] - mat[2][3]);
+	planes[5].normal.x = -(mat[0][3] - mat[0][2]);
+	planes[5].normal.y = -(mat[1][3] - mat[1][2]);
+	planes[5].normal.z = -(mat[2][3] - mat[2][2]);
+	planes[5].distance = -(mat[3][3] - mat[3][2]);
 
 	for (int i = 0; i < 6; i++)
 	{
