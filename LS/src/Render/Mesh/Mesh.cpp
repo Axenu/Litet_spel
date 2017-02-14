@@ -3,7 +3,7 @@
 #include "intersectionFunctions.h"
 
 //Private
-void Mesh::setUpMesh()
+void Mesh::setUpMesh(const std::vector<glm::vec3> &normals)
 {
 	_aabb = AABB(&_position);
 	std::vector<gl::VertexAttribute> attri;
@@ -11,8 +11,8 @@ void Mesh::setUpMesh()
 	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Norm attribute
 	std::vector<const void*> vertexData;
 
-	vertexData.push_back(&_position[0]);   //Get position array start pointer
-	vertexData.push_back(&_normal[0]);		//Get normal array start pointer
+	vertexData.push_back(&_position[0]);	//Get position array start pointer
+	vertexData.push_back(&normals[0]);		//Get normal array start pointer
 	_VA = gl::generateVAO_SoA(vertexData, attri, _position.size(), &_indices[0], sizeof(_indices[0]), _indices.size()); // Create VAO
 	
 	gl::CheckGLErrors();
@@ -30,10 +30,11 @@ Mesh::Mesh()
 	_position.push_back(glm::vec3(1, 0, 0));
 	_position.push_back(glm::vec3(0, 0, 0));
 
-	_normal.push_back(glm::vec3(0, 0, -1));
-	_normal.push_back(glm::vec3(0, 0, -1));
-	_normal.push_back(glm::vec3(0, 0, -1));
-	_normal.push_back(glm::vec3(0, 0, -1));
+	std::vector<glm::vec3> normal;
+	normal.push_back(glm::vec3(0, 0, -1));
+	normal.push_back(glm::vec3(0, 0, -1));
+	normal.push_back(glm::vec3(0, 0, -1));
+	normal.push_back(glm::vec3(0, 0, -1));
 
 	_indices.push_back(GLuint(1));
 	_indices.push_back(GLuint(0));
@@ -48,10 +49,10 @@ Mesh::Mesh()
 	_position.push_back(glm::vec3(0, 0, 1));
 	_position.push_back(glm::vec3(1, 0, 1));
 
-	_normal.push_back(glm::vec3(0, 0, 1));
-	_normal.push_back(glm::vec3(0, 0, 1));
-	_normal.push_back(glm::vec3(0, 0, 1));
-	_normal.push_back(glm::vec3(0, 0, 1));
+	normal.push_back(glm::vec3(0, 0, 1));
+	normal.push_back(glm::vec3(0, 0, 1));
+	normal.push_back(glm::vec3(0, 0, 1));
+	normal.push_back(glm::vec3(0, 0, 1));
 
 	_indices.push_back(GLuint(5));
 	_indices.push_back(GLuint(4));
@@ -66,10 +67,10 @@ Mesh::Mesh()
 	_position.push_back(glm::vec3(0, 0, 0));
 	_position.push_back(glm::vec3(0, 0, 1));
 
-	_normal.push_back(glm::vec3(-1, 0, 0));
-	_normal.push_back(glm::vec3(-1, 0, 0));
-	_normal.push_back(glm::vec3(-1, 0, 0));
-	_normal.push_back(glm::vec3(-1, 0, 0));
+	normal.push_back(glm::vec3(-1, 0, 0));
+	normal.push_back(glm::vec3(-1, 0, 0));
+	normal.push_back(glm::vec3(-1, 0, 0));
+	normal.push_back(glm::vec3(-1, 0, 0));
 
 	_indices.push_back(GLuint(9));
 	_indices.push_back(GLuint(8));
@@ -84,10 +85,10 @@ Mesh::Mesh()
 	_position.push_back(glm::vec3(1, 0, 1));
 	_position.push_back(glm::vec3(1, 0, 0));
 
-	_normal.push_back(glm::vec3(1, 0, 0));
-	_normal.push_back(glm::vec3(1, 0, 0));
-	_normal.push_back(glm::vec3(1, 0, 0));
-	_normal.push_back(glm::vec3(1, 0, 0));
+	normal.push_back(glm::vec3(1, 0, 0));
+	normal.push_back(glm::vec3(1, 0, 0));
+	normal.push_back(glm::vec3(1, 0, 0));
+	normal.push_back(glm::vec3(1, 0, 0));
 
 	_indices.push_back(GLuint(13));
 	_indices.push_back(GLuint(12));
@@ -101,10 +102,10 @@ Mesh::Mesh()
 	_position.push_back(glm::vec3(1, 1, 0));
 	_position.push_back(glm::vec3(0, 1, 0));
 
-	_normal.push_back(glm::vec3(0, 1, 0));
-	_normal.push_back(glm::vec3(0, 1, 0));
-	_normal.push_back(glm::vec3(0, 1, 0));
-	_normal.push_back(glm::vec3(0, 1, 0));
+	normal.push_back(glm::vec3(0, 1, 0));
+	normal.push_back(glm::vec3(0, 1, 0));
+	normal.push_back(glm::vec3(0, 1, 0));
+	normal.push_back(glm::vec3(0, 1, 0));
 
 	_indices.push_back(GLuint(17));
 	_indices.push_back(GLuint(16));
@@ -118,10 +119,10 @@ Mesh::Mesh()
 	_position.push_back(glm::vec3(1, 0, 1));
 	_position.push_back(glm::vec3(0, 0, 1));
 
-	_normal.push_back(glm::vec3(0, -1, 0));
-	_normal.push_back(glm::vec3(0, -1, 0));
-	_normal.push_back(glm::vec3(0, -1, 0));
-	_normal.push_back(glm::vec3(0, -1, 0));
+	normal.push_back(glm::vec3(0, -1, 0));
+	normal.push_back(glm::vec3(0, -1, 0));
+	normal.push_back(glm::vec3(0, -1, 0));
+	normal.push_back(glm::vec3(0, -1, 0));
 
 	_indices.push_back(GLuint(21));
 	_indices.push_back(GLuint(20));
@@ -130,12 +131,16 @@ Mesh::Mesh()
 	_indices.push_back(GLuint(22));
 	_indices.push_back(GLuint(23));
 
-	this->setUpMesh();
+	this->setUpMesh(normal);
 }
 
 Mesh::Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices)
 {
 	this->setMesh(position, normal, indices);
+}
+Mesh::Mesh(std::vector<glm::vec3> &position, std::vector<GLuint> &indices, gl::VAData &vaData)
+	: _position(std::move(position)), _indices(std::move(indices)), _VA(std::move(vaData)), _aabb(&_position)
+{
 }
 Mesh::~Mesh()
 {
@@ -143,7 +148,7 @@ Mesh::~Mesh()
 /* Move the data
 */
 Mesh::Mesh(Mesh &&move)
-	: _position(std::move(move._position)), _normal(std::move(move._normal)), _indices(std::move(move._indices)), _VA(std::move( move._VA))
+	: _position(std::move(move._position)), _indices(std::move(move._indices)), _VA(std::move( move._VA))
 {
 	move._VA = 0;
 }
@@ -153,7 +158,6 @@ Mesh& Mesh::operator=(Mesh &&move) {
 	if (this == &move)
 		return *this;
 	_position = std::move(move._position);
-	_normal = std::move(move._normal);
 	_indices = std::move(move._indices);
 	_VA = std::move(move._VA);
 	return *this;
@@ -163,10 +167,9 @@ Mesh& Mesh::operator=(Mesh &&move) {
 void Mesh::setMesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices)
 {
 	_position = position;
-	_normal = normal;
 	_indices = indices;
 
-	this->setUpMesh();
+	this->setUpMesh(normal);
 }
 
 void Mesh::render()

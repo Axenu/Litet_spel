@@ -1,5 +1,6 @@
 #include "../header/ModelLoader.h"
 #include "Render/Mesh/ModelConstruct.h"
+#include "Render/Mesh/Animation/Skeleton.h"
 
 ModelLoader::ModelLoader()
 {
@@ -90,6 +91,8 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 {
 	Mesh *outMesh;
 
+	std::vector<const void*> vertexData;
+	std::vector<gl::VertexAttribute> attri;
 	std::vector<glm::vec3> pos;
 	std::vector<glm::vec3> norm;
 	std::vector<GLuint> indice;
@@ -110,17 +113,48 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 			indice.push_back(face.mIndices[j]);
 		}
 	}
+	attri.push_back(gl::VertexAttribute(0, GL_FLOAT, 3, sizeof(float))); //Pos attribute
+	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Norm attribute
+	vertexData.push_back(&pos[0]);	//Get position array start pointer
+	vertexData.push_back(&norm[0]);		//Get normal array start pointer
 
 	//Proess bones
 	if (mesh->HasBones()) {
 		std::vector<int> _bones;
+		std::vector<glm::vec2> weights[MAX_BONEWEIGHTS];
+		//Init weight buffers
+		for (int i = 0; i < 4; i++)
+			weights[i] = std::vector<glm::vec2>(pos.size());
+		//Get weights for each bone
 		for (unsigned int i = 0; i < mesh->mNumBones; i++) {
 			aiBone *bone = mesh->mBones[i];
 			_bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
-		}
-	}
 
-	outMesh = new Mesh(pos, norm, indice);
+			//Fetch all bone weights
+			for (unsigned int w = 0; w < bone->mNumWeights; w++) {
+				aiVertexWeight weight = bone->mWeights[w];
+				//Find free slot and insert
+				for (int i = 0; i < MAX_BONEWEIGHTS; i++) {
+					if (weights[i][weight.mVertexId][0] > 0) {
+						weights[i][weight.mVertexId] = glm::vec2(i, weight.mWeight);
+						break;
+					}
+				}
+			}
+		}
+
+		//Weight attris
+		attri.push_back(gl::VertexAttribute(2, GL_FLOAT, 2, sizeof(float)));
+		attri.push_back(gl::VertexAttribute(3, GL_FLOAT, 2, sizeof(float)));
+		attri.push_back(gl::VertexAttribute(4, GL_FLOAT, 2, sizeof(float)));
+		attri.push_back(gl::VertexAttribute(5, GL_FLOAT, 2, sizeof(float)));
+		vertexData.push_back(&weights[0][0]);
+		vertexData.push_back(&weights[1][0]);
+		vertexData.push_back(&weights[2][0]);
+		vertexData.push_back(&weights[3][0]);
+	}
+	gl::VAData va = gl::generateVAO_SoA(vertexData, attri, pos.size(), &indice[0], sizeof(indice[0]), indice.size()); // Create VAO
+	outMesh = new Mesh(pos, indice, va);
 	_mesh.push_back(outMesh);
 
 	//Get Models material

@@ -16,6 +16,10 @@
 */
 struct ModelConstruct;
 
+/* Maximum number of weights per vertex
+*/
+const static int MAX_BONEWEIGHTS = 4;
+
 class ModelLoader
 {
 public:
