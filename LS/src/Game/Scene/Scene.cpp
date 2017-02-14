@@ -57,6 +57,7 @@ GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
 	for (unsigned int i = 0; i < _objects.size(); i++) {
 		if (_objects[i] == gameObj) {
 			_objects.erase(_objects.begin() + i);
+			_quadTreeRoot.removeObject(gameObj);
 			gameObj->removeNode(); //Clear the node from the tree
 			if (deleteObj) {
 				delete gameObj;
