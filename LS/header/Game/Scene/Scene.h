@@ -55,7 +55,7 @@ public:
 
 	int loot(int pickDist);
 
-	void initQuadTree();
+	void initQuadTree(AABB &aabb, int depth);
 
 };
 

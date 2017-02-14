@@ -9,7 +9,7 @@ class QuadTreeNode
 public:
 	QuadTreeNode();
 	QuadTreeNode(int depth);
-	QuadTreeNode(int depth, const AABB &aabb);
+	QuadTreeNode(const AABB &aabb, int depth);
 	virtual ~QuadTreeNode();
 	void CreateNodes(int &maxDepth);
 	void AddObjects(std::vector<GameObject*> &data);
@@ -25,4 +25,5 @@ private:
 	QuadTreeNode* _children[4];
 	void CreateNodes(int depth, int &maxDepth);
 	void TraverseTree(std::vector<GameObject*> &gameObjects, Plane *planes, const int &nrOfPlanes);
+	void deleteTree();
 };

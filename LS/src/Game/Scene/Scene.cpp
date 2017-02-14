@@ -3,7 +3,7 @@
 
 
 Scene::Scene()
-	:_quadTreeRoot(1)
+	:_quadTreeRoot()
 {
 }
 
@@ -152,4 +152,10 @@ int Scene::loot(int pickDist)
 	}
 
 	return value;
+}
+
+void Scene::initQuadTree(AABB & aabb, int depth)
+{
+	_quadTreeRoot.SetAABB(aabb);
+	_quadTreeRoot.CreateNodes(depth);
 }

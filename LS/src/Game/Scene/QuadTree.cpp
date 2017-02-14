@@ -2,7 +2,7 @@
 
 
 QuadTreeNode::QuadTreeNode()
-	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(22.0f, 2.0f, 30.0f))
+	:_aabb() 
 {
 	_children[0] = nullptr;
 	_children[1] = nullptr;
@@ -11,13 +11,21 @@ QuadTreeNode::QuadTreeNode()
 }
 
 QuadTreeNode::QuadTreeNode(int depth)
-	:_aabb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(30.0f, 2.0f, 22.0f))
+	:_aabb()
 {
+	_children[0] = nullptr;
+	_children[1] = nullptr;
+	_children[2] = nullptr;
+	_children[3] = nullptr;
 	CreateNodes(depth);
 }
 
-QuadTreeNode::QuadTreeNode(int depth, const AABB &aabb)
+QuadTreeNode::QuadTreeNode(const AABB &aabb, int depth)
 {
+	_children[0] = nullptr;
+	_children[1] = nullptr;
+	_children[2] = nullptr;
+	_children[3] = nullptr;
 	_aabb = aabb;
 	CreateNodes(depth);
 }
@@ -25,17 +33,12 @@ QuadTreeNode::QuadTreeNode(int depth, const AABB &aabb)
 
 QuadTreeNode::~QuadTreeNode()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (_children[i] != nullptr)
-		{
-			delete _children[i];
-		}
-	}
+	deleteTree();
 }
 
 void QuadTreeNode::CreateNodes(int & maxDepth)
 {
+	deleteTree();
 	CreateNodes(0, maxDepth);
 }
 
@@ -363,5 +366,16 @@ void QuadTreeNode::TraverseTree(std::vector<GameObject*>& gameObjects, Plane * p
 		}
 	}
 	
+}
+
+void QuadTreeNode::deleteTree()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (_children[i] != nullptr)
+		{
+			delete _children[i];
+		}
+	}
 }
 

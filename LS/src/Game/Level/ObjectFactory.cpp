@@ -19,6 +19,7 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box) {
 
 Level* ObjectFactory::createLevel(const std::string &level) {
 	_level = new Level(_path + level, _events, _meshShader);
+	_scene.initQuadTree(_level->getAABB(), 1);
 	_scene.add(_level);
 	return _level;
 }
