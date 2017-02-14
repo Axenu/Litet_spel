@@ -40,7 +40,6 @@ void Camera::update(float dT) {
 	glm::mat4 viewTransform(glm::normalize(_modelMatrix[0]), glm::normalize(_modelMatrix[1]), glm::normalize(_modelMatrix[2]), _modelMatrix[3]);
 	_viewMatrix = glm::inverse(viewTransform);
 
-	std::cout << getLookAt().x << ", " << getLookAt().y << ", " << getLookAt().z << ", " << std::endl;
 	//_viewMatrix = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0, 0, 1));
     VPMatrix = _projectionMatrix * _viewMatrix;
 }

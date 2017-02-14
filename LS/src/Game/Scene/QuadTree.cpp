@@ -178,8 +178,7 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 				}
 				else//Intersecting
 				{
-					childList[2].insert(tmpData);
-					childList[3].insert(tmpData);
+					_indiceData.push_back(tmpData.first);
 				}
 			}
 			else if (boxStatus1 == PlaneResult::Inside)//Left half
@@ -194,29 +193,12 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 				}
 				else//Intersecting
 				{
-					childList[0].insert(tmpData);
-					childList[1].insert(tmpData);
+					_indiceData.push_back(tmpData.first);
 				}
 			}
 			else//Intersecting
 			{
-				if (boxStatus2 == PlaneResult::Outside)//Upper
-				{
-					childList[1].insert(tmpData);
-					childList[2].insert(tmpData);
-				}
-				else if (boxStatus2 == PlaneResult::Inside)//Lower
-				{
-					childList[0].insert(tmpData);
-					childList[3].insert(tmpData);
-				}
-				else//Intersecting
-				{
-					childList[0].insert(tmpData);
-					childList[1].insert(tmpData);
-					childList[2].insert(tmpData);
-					childList[3].insert(tmpData);
-				}
+				_indiceData.push_back(tmpData.first);
 			}
 
 		}
@@ -298,19 +280,17 @@ void QuadTreeNode::TraverseTree(std::vector<int>& indices, Plane * planes, const
 			return;
 		}
 	}
-	if (_children[0] == nullptr)
+	for (int i = 0; i < _indiceData.size(); i++)
 	{
-		for (int i = 0; i < _indiceData.size(); i++)
-		{
-			indices.push_back(_indiceData[i]);
-		}
+		indices.push_back(_indiceData[i]);
 	}
-	else
+	if (_children[0] != nullptr)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			_children[i]->TraverseTree(indices, planes, nrOfPlanes);
-		}
+for (int i = 0; i < 4; i++)
+	{
+		_children[i]->TraverseTree(indices, planes, nrOfPlanes);
 	}
+	}
+	
 }
 
