@@ -1,4 +1,5 @@
 #include "../header/ModelLoader.h"
+#include "Render/Mesh/ModelConstruct.h"
 
 ModelLoader::ModelLoader()
 {
@@ -23,7 +24,6 @@ ModelLoader::~ModelLoader()
 		_mesh[i] = nullptr;
 	}
 }
-
 Model ModelLoader::GetModel(std::string modelName, Material &material)
 {
 	Model tmpModel = GetModel(modelName, material.getpShader());
@@ -60,16 +60,24 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 		return;
 	}
 
-	std::vector<ModelPart> modelParts;
-	ProcessNode(scene->mRootNode, scene, modelName, shader, modelParts);
-	Model* model = new Model(modelParts);
+	ModelConstruct construct(shader);
+	ProcessNode(scene->mRootNode, scene, modelName, construct);
+	Model* model = new Model(construct._parts);
 
 	//Assign modelName
 	model->setName(modelName);
 	_models.push_back(model);
 }
 
-ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &modelName, MeshShader *shader)
+int push_bone(aiNode *node, aiNode* root, ModelConstruct &construct) {
+	int ind = construct.getBoneIndex(node->mName.C_Str());
+	if (ind == -1) {
+		ind = push_bone(node->mParent, root, construct);
+		construct._bones.push_back(Bone(node->mName, )
+	}
+	return ind;
+}
+void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &modelName, ModelConstruct &construct)
 {
 	Mesh *outMesh;
 
@@ -93,11 +101,20 @@ ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::stri
 			indice.push_back(face.mIndices[j]);
 		}
 	}
+
+	//Proess bones
+	if (mesh->HasBones()) {
+		for (unsigned int i = 0; i < mesh->mNumBones; i++) {
+			aiNode *bone = 
+			construct.getBoneIndex()
+		}
+	}
+
 	outMesh = new Mesh(pos, norm, indice);
 	_mesh.push_back(outMesh);
 
 	//Get Models material
-	Material mat(shader);
+	Material mat(construct._shader);
 	aiMaterial* tmpMat = scene->mMaterials[mesh->mMaterialIndex];
 
 	//Get Diffuse color
@@ -116,20 +133,22 @@ ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::stri
 	tmpMat->Get(AI_MATKEY_SHININESS, shine);
 	mat.setFloat("shine", shine);
 
-	return ModelPart(outMesh, mat);
+	construct._parts.push_back( ModelPart(outMesh, mat));
 }
 
-void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string &modelName, MeshShader *shader, std::vector<ModelPart> &modelParts)
+void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string &modelName, ModelConstruct& construct)
 {
+	//Process children first gen
+	for (GLuint i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene, modelName, construct);
+	}
+
+	int boneParent = construct.getBoneIndex(node->mParent->mName.C_Str());
 	//Process all node's meshes
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		modelParts.push_back(ProcessMesh(mesh, scene, modelName, shader));
-	}
-	//Do the same for each of its children
-	for (GLuint i = 0; i < node->mNumChildren; i++)
-	{
-		ProcessNode(node->mChildren[i], scene, modelName, shader, modelParts);
+		ProcessMesh(mesh, scene, modelName, construct);
 	}
 }

@@ -27,7 +27,7 @@ private:
 	int _widthLength;
 	int _height;
 	int _width;
-	glm::vec3 displacement =glm::vec3(0.5, 0.5, 0.5);
+	glm::vec3 displacement;
 	float _currentGridSpace;
 	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();

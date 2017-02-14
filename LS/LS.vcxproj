@@ -158,6 +158,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\Mesh\Animation\Skeleton.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\BoneNode.cpp" />
     <ClCompile Include="src\Game\Level\ObjectFactory.cpp" />
     <ClCompile Include="src\Game\Level\Level.cpp" />
     <ClCompile Include="src\Factory.cpp" />
@@ -219,6 +221,8 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Render\Mesh\Animation\Bone.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\BoneNode.h" />
     <ClInclude Include="header\Factory.h" />
     <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\Game\Game.h" />
@@ -285,6 +289,7 @@
     <ClInclude Include="header\Event\Input\InputIncrementer.h" />
     <ClInclude Include="header\Game\Level\Level.h" />
     <ClInclude Include="header\Game\Level\ObjectFactory.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\Skeleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

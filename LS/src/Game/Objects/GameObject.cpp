@@ -33,12 +33,6 @@ const Model& GameObject::getModel() {
 	return _model;
 }
 
-
-const glm::mat4& GameObject::getModelMatrix()
-{
-	return _modelMatrix;
-}
-
 bool GameObject::pick(glm::vec4 origin, glm::vec4 dir)
 {
 	glm::mat4 modelMatInverse = glm::inverse(_modelMatrix);

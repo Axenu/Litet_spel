@@ -24,7 +24,6 @@ public:
 	virtual void update(float dt);
 	void setModel(Model &m);
 	const Model& getModel();
-	const glm::mat4& getModelMatrix();
 	bool pick(glm::vec4 origin, glm::vec4 dir);
 	bool pick(Camera &cam);
 	/* Add the object to the frame
