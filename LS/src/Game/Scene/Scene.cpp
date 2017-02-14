@@ -43,7 +43,7 @@ void Scene::add(GameObject *object) {
 	//Initiates the modelMatrix
 	object->update(0.0f);
 	//adds the object to the QuadTree
-	_quadTreeRoot.AddObjects(_objects.size(), object);
+	_quadTreeRoot.AddObjects(object);
 	_objects.push_back(std::move(object));
 }
 
@@ -85,10 +85,10 @@ Node* Scene::removeNode(Node *object, bool deleteObj) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF) {
-	std::vector<int> drawIndices;
-	_quadTreeRoot.QuadTreeTest(drawIndices, _cam->VPMatrix);
-	for (unsigned int i = 0; i < drawIndices.size(); i++)
-		_objects[drawIndices[i]]->addToFrame(dF);
+	std::vector<GameObject*> drawList;
+	_quadTreeRoot.QuadTreeTest(drawList, _cam->VPMatrix);
+	for (unsigned int i = 0; i < drawList.size(); i++)
+		drawList[i]->addToFrame(dF);
 	/*for (unsigned int i = 0; i < _objects.size(); i++)
 		_objects[i]->addToFrame(dF);*/
 }

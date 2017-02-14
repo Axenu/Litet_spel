@@ -39,22 +39,12 @@ void QuadTreeNode::CreateNodes(int & maxDepth)
 	CreateNodes(0, maxDepth);
 }
 
-void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
-{
-	std::map<int, GameObject*> tmpMap;
-	for (unsigned int i = 0; i < data.size(); i++)
-	{
-		tmpMap.insert(std::pair<int, GameObject*>(i, data[i]));
-	}
 
-	AddObjects(tmpMap);
-}
-
-void QuadTreeNode::AddObjects(unsigned int indice, GameObject * gameObject)
+void QuadTreeNode::AddObjects(GameObject * gameObject)
 {
-	std::map<int, GameObject*> tmpMap;
-	tmpMap.insert(std::pair<int, GameObject*>(indice, gameObject));
-	AddObjects(tmpMap);
+	std::vector<GameObject*> tmpList;
+	tmpList.push_back(gameObject);
+	AddObjects(tmpList);
 }
 
 void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
@@ -131,18 +121,18 @@ void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
 	}
 }
 
-void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
+void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 {
 	if (_children[0] == nullptr)
 	{
-		for (auto const& tmpData : data)
+		for (unsigned int i = 0; i < data.size(); i++)
 		{
-			_indiceData.push_back(tmpData.first);
+			_indiceData.push_back(data[i]);
 		}
 	}
 	else
 	{
-		std::map<int, GameObject*> childList[4];
+		std::vector<GameObject*> childList[4];
 
 		glm::vec3 tmp;
 		tmp.x = _aabb.getMax().x - _aabb.getMin().x;
@@ -159,9 +149,9 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 		plane2.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		PlaneResult boxStatus2;
 
-		for (auto const& tmpData : data)
+		for (unsigned int i = 0; i < data.size(); i++)
 		{
-			AABB tmpAABB = tmpData.second->getAABB();
+			AABB tmpAABB = data[i]->getAABB();
 			boxStatus1 = BBPlaneTest(tmpAABB, plane1);
 
 			boxStatus2 = BBPlaneTest(tmpAABB, plane2);
@@ -170,35 +160,35 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 			{
 				if (boxStatus2 == PlaneResult::Outside) //Upper
 				{
-					childList[2].insert(tmpData);
+					childList[2].push_back(data[i]);
 				}
 				else if (boxStatus2 == 1) //Lower
 				{
-					childList[3].insert(tmpData);
+					childList[3].push_back(data[i]);
 				}
 				else//Intersecting
 				{
-					_indiceData.push_back(tmpData.first);
+					_indiceData.push_back(data[i]);
 				}
 			}
 			else if (boxStatus1 == PlaneResult::Inside)//Left half
 			{
 				if (boxStatus2 == PlaneResult::Outside)//Upper
 				{
-					childList[1].insert(tmpData);
+					childList[1].push_back(data[i]);
 				}
 				else if (boxStatus2 == PlaneResult::Inside)//Lower
 				{
-					childList[0].insert(tmpData);
+					childList[0].push_back(data[i]);
 				}
 				else//Intersecting
 				{
-					_indiceData.push_back(tmpData.first);
+					_indiceData.push_back(data[i]);
 				}
 			}
 			else//Intersecting
 			{
-				_indiceData.push_back(tmpData.first);
+				_indiceData.push_back(data[i]);
 			}
 
 		}
@@ -212,7 +202,7 @@ void QuadTreeNode::AddObjects(std::map<int, GameObject*>& data)
 	}
 }
 
-void QuadTreeNode::QuadTreeTest(std::vector<int>& indices, const glm::mat4 & mat)
+void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, const glm::mat4 & mat)
 {
 	Plane planes[6];
 	
@@ -261,7 +251,11 @@ void QuadTreeNode::QuadTreeTest(std::vector<int>& indices, const glm::mat4 & mat
 		planes[i].distance *= denom;
 	}
 
-	TraverseTree(indices, planes, 6);
+	TraverseTree(gameObjects, planes, 6);
+}
+
+void QuadTreeNode::removeObject(GameObject * gameObject)
+{
 }
 
 void QuadTreeNode::SetAABB(const AABB & aabb)
@@ -269,7 +263,7 @@ void QuadTreeNode::SetAABB(const AABB & aabb)
 	_aabb = aabb;
 }
 
-void QuadTreeNode::TraverseTree(std::vector<int>& indices, Plane * planes, const int &nrOfPlanes)
+void QuadTreeNode::TraverseTree(std::vector<GameObject*>& gameObjects, Plane * planes, const int &nrOfPlanes)
 {
 	PlaneResult testResult;
 	for (int i = 0; i < nrOfPlanes; i++)
@@ -282,14 +276,14 @@ void QuadTreeNode::TraverseTree(std::vector<int>& indices, Plane * planes, const
 	}
 	for (int i = 0; i < _indiceData.size(); i++)
 	{
-		indices.push_back(_indiceData[i]);
+		gameObjects.push_back(_indiceData[i]);
 	}
 	if (_children[0] != nullptr)
 	{
-for (int i = 0; i < 4; i++)
-	{
-		_children[i]->TraverseTree(indices, planes, nrOfPlanes);
-	}
+		for (int i = 0; i < 4; i++)
+		{
+			_children[i]->TraverseTree(gameObjects, planes, nrOfPlanes);
+		}
 	}
 	
 }
