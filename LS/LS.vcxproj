@@ -159,7 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Render\Mesh\Animation\Skeleton.cpp" />
-    <ClCompile Include="src\Render\Mesh\Animation\BoneNode.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\SkeletonPart.cpp" />
     <ClCompile Include="src\Game\Level\ObjectFactory.cpp" />
     <ClCompile Include="src\Game\Level\Level.cpp" />
     <ClCompile Include="src\Factory.cpp" />
@@ -196,6 +196,7 @@
     <ClCompile Include="src\Event\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
     <ClCompile Include="src\Game\Objects\GameObject.cpp" />
+    <ClCompile Include="src\Render\Mesh\ModelConstruct.cpp" />
     <ClCompile Include="src\Render\Mesh\ModelPart.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\MeshShader.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\DeferredMeshShader.cpp" />
@@ -222,7 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Render\Mesh\Animation\Bone.h" />
-    <ClInclude Include="header\Render\Mesh\Animation\BoneNode.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\SkeletonPart.h" />
     <ClInclude Include="header\Factory.h" />
     <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\Game\Game.h" />
@@ -290,6 +291,7 @@
     <ClInclude Include="header\Game\Level\Level.h" />
     <ClInclude Include="header\Game\Level\ObjectFactory.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Skeleton.h" />
+    <ClInclude Include="src\Render\Mesh\ModelConstruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

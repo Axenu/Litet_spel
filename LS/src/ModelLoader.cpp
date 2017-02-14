@@ -24,6 +24,22 @@ ModelLoader::~ModelLoader()
 		_mesh[i] = nullptr;
 	}
 }
+
+#pragma region AssimpConversion methods
+
+/* Converts assimp 4x4 matrix to glm::mat4x4
+*/
+glm::mat4 convertAssimpMatrix(aiMatrix4x4 matrix) {
+	glm::mat4 m;
+	m[0] = glm::vec4(matrix.a1, matrix.b1, matrix.c1, matrix.d1);
+	m[1] = glm::vec4(matrix.a2, matrix.b2, matrix.c2, matrix.d2);
+	m[2] = glm::vec4(matrix.a3, matrix.b3, matrix.c3, matrix.d3);
+	m[3] = glm::vec4(matrix.a4, matrix.b4, matrix.c4, matrix.d4);
+	return m;
+}
+
+#pragma endregion
+
 Model ModelLoader::GetModel(std::string modelName, Material &material)
 {
 	Model tmpModel = GetModel(modelName, material.getpShader());
@@ -61,6 +77,7 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 	}
 
 	ModelConstruct construct(shader);
+	ProcessBones(scene->mRootNode, scene, construct); //Find bones
 	ProcessNode(scene->mRootNode, scene, modelName, construct);
 	Model* model = new Model(construct._parts);
 
@@ -69,14 +86,6 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 	_models.push_back(model);
 }
 
-int push_bone(aiNode *node, aiNode* root, ModelConstruct &construct) {
-	int ind = construct.getBoneIndex(node->mName.C_Str());
-	if (ind == -1) {
-		ind = push_bone(node->mParent, root, construct);
-		construct._bones.push_back(Bone(node->mName, )
-	}
-	return ind;
-}
 void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &modelName, ModelConstruct &construct)
 {
 	Mesh *outMesh;
@@ -104,9 +113,10 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 
 	//Proess bones
 	if (mesh->HasBones()) {
+		std::vector<int> _bones;
 		for (unsigned int i = 0; i < mesh->mNumBones; i++) {
-			aiNode *bone = 
-			construct.getBoneIndex()
+			aiBone *bone = mesh->mBones[i];
+			_bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
 		}
 	}
 
@@ -138,17 +148,53 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 
 void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string &modelName, ModelConstruct& construct)
 {
-	//Process children first gen
-	for (GLuint i = 0; i < node->mNumChildren; i++)
-	{
-		ProcessNode(node->mChildren[i], scene, modelName, construct);
-	}
 
-	int boneParent = construct.getBoneIndex(node->mParent->mName.C_Str());
 	//Process all node's meshes
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		ProcessMesh(mesh, scene, modelName, construct);
+	}
+	//Process children first gen
+	for (GLuint i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene, modelName, construct);
+	}
+}
+
+int push_bone(aiNode *node, aiNode* root, ModelConstruct &construct) {
+	if (node == root || node == root->mParent) 
+		return -1;
+	//Find if bone is generated
+	int ind = construct.getBoneIndex(node->mName.C_Str());
+	if (ind == -1) {
+		//Not found generate parent as bone
+		ind = push_bone(node->mParent, root, construct);
+		construct._bones.push_back(Bone(node->mName.C_Str(), glm::mat4(), -1, ind));
+		//Return bone index
+		return construct._bones.size() - 1;
+	}
+	//Return bone index
+	return ind;
+}
+void ModelLoader::ProcessBones(aiNode* node, const aiScene* scene, ModelConstruct& construct) {
+
+	for (GLuint i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		for (GLuint b = 0; b < mesh->mNumBones; b++)
+		{
+			aiBone *bone = mesh->mBones[b];
+			aiNode *boneNode = scene->mRootNode->FindNode(bone->mName);
+			int index = push_bone(boneNode, node, construct);
+			construct._bones[index]._invBindPose = convertAssimpMatrix(bone->mOffsetMatrix);
+		}
+	}
+	
+
+	//Process children
+	for (GLuint i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessBones(node->mChildren[i], scene, construct);
 	}
 }
