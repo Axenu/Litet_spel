@@ -202,12 +202,19 @@ void Grid::loadingBmpPicture(const char* filename)
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
 			{
 				_twodArray[height - 1 - i][realj].type = guard;
+				glm::vec3 tmpVec((realj), 1.3f, (height - 1 - i));
+				this->_guardLocations.push_back(tmpVec);
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
 				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
 				this->_lootLocations.push_back(tmpVec);
 				_twodArray[height - 1 - i][realj].type = loot;
+			}
+			else if (data[j] == 100 && data[j + 1] == 100 && data[j + 2] == 100)
+			{
+				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
+				_twodArray[height - 1 - i][realj].type = object;
 			}
 			else
 			{
@@ -245,6 +252,42 @@ gridType Grid::operator[](const glm::ivec2 &sq) const {
 
 glm::vec3 Grid::getCenter(glm::ivec2 sq) const {
 	return glm::vec3((sq.x + 0.5f) * GRIDSPACE, 0.f, (sq.y + 0.5f) * GRIDSPACE);
+}
+void Grid::getRightQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{	
+	triangle[0] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[1] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
+	triangle[2] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
+	triangle[3] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
+	triangle[4] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[5] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+}
+void Grid::getLeftQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{
+	triangle[0] = glm::vec3(xOffset * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
+	triangle[1] = glm::vec3(xOffset * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[2] = glm::vec3(xOffset * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[3] = glm::vec3(xOffset * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[4] = glm::vec3(xOffset * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
+	triangle[5] = glm::vec3(xOffset * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
+}
+void Grid::getFrontQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{
+	triangle[0] = glm::vec3( xOffset      * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[1] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[2] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[3] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[4] = glm::vec3( xOffset      * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[5] = glm::vec3( xOffset      * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+}
+void Grid::getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{
+	triangle[0] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
+	triangle[1] = glm::vec3( xOffset      * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
+	triangle[2] = glm::vec3( xOffset      * GRIDSPACE, 0.f       , zOffset * GRIDSPACE);
+	triangle[3] = glm::vec3( xOffset      * GRIDSPACE, 0.f       , zOffset * GRIDSPACE);
+	triangle[4] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , zOffset * GRIDSPACE);
+	triangle[5] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
 }
 #pragma endregion
 
@@ -445,7 +488,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
 	if (signbit(velocity.x) == false)
 	{
-		if (_twodArray[currentZ][currentX + 1].type != wall)
+		if (_twodArray[currentZ][currentX + 1].type != wall && _twodArray[currentZ][currentX + 1].type != object)
 		{
 			position->x += velocity.x;
 		}
@@ -456,7 +499,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (_twodArray[currentZ][currentX - 1].type != wall)
+		if (_twodArray[currentZ][currentX - 1].type != wall && _twodArray[currentZ][currentX - 1].type != object)
 		{
 			position->x += velocity.x;
 		}
@@ -469,7 +512,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
 	if (signbit(velocity.y) == false)
 	{
-		if (_twodArray[currentZ + 1][currentX].type != wall)
+		if (_twodArray[currentZ + 1][currentX].type != wall && _twodArray[currentZ + 1][currentX].type != object)
 		{
 			position->z += velocity.y;
 		}
@@ -480,7 +523,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (_twodArray[currentZ - 1][currentX].type != wall)
+		if (_twodArray[currentZ - 1][currentX].type != wall && _twodArray[currentZ - 1][currentX].type != object)
 		{
 			position->z += velocity.y;
 		}
@@ -490,7 +533,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		}
 	}
 	//Check if there's a wall in the north east square, if true, move the player 0.3 units away from the corner in the direction he was moving
-	if (_twodArray[currentZ - 1][currentX - 1].type == wall)
+	if (_twodArray[currentZ - 1][currentX - 1].type == wall && _twodArray[currentZ - 1][currentX - 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
 		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -504,7 +547,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		}
 	}
 	//north west square
-	if (_twodArray[currentZ - 1][currentX + 1].type == wall)
+	if (_twodArray[currentZ - 1][currentX + 1].type == wall && _twodArray[currentZ - 1][currentX + 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ - position->z);
 		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -518,7 +561,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		}
 	}
 	//south east square
-	if (_twodArray[currentZ + 1][currentX - 1].type == wall)
+	if (_twodArray[currentZ + 1][currentX - 1].type == wall && _twodArray[currentZ + 1][currentX - 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ + 1 - position->z);
 		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -532,7 +575,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		}
 	}
 	//south west square
-	if (_twodArray[currentZ + 1][currentX + 1].type == wall)
+	if (_twodArray[currentZ + 1][currentX + 1].type == wall && _twodArray[currentZ + 1][currentX + 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ + 1 - position->z);
 		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -565,6 +608,24 @@ int Grid::getWidth()
 std::vector<glm::vec3>* Grid::getLootLocations()
 {
 	return &_lootLocations;
+}
+void Grid::buildGridArrayForGuards()
+{
+	
+}
+
+std::vector<glm::vec3>* Grid::getGuardLocations()
+{
+	return &_guardLocations;
+}
+
+glm::vec3 Grid::getLastValueOfGuardLocationsAndremovesit()
+{
+	glm::vec3 temp;
+	temp = _guardLocations[_guardLocations.size() - 1];
+	_guardLocations.pop_back();
+
+	return temp;
 }
 
 bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
@@ -668,6 +729,21 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 float Grid::getGridSpace()
 {
 	return GRIDSPACE;
+}
+
+int Grid::getvalue(int height, int width)
+{
+	return _twodArray[height][width].value;
+}
+
+void Grid::setvalue(int height, int width, int value)
+{
+ _twodArray[height][width].value=value;
+}
+
+gridType Grid::gettype(int height, int width)
+{
+	return _twodArray[height][width].type;
 }
 
 void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)

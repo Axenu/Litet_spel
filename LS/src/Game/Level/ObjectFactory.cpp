@@ -36,6 +36,8 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	Guard* guard = new Guard(&player, &_events, tmpModel, &_level->getGrid());
+	guard->setLevel(&_level->getGrid());
+	guard->StartGridBuild();
 	_scene.add(guard);
 
 	return guard;
