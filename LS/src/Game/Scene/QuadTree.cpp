@@ -174,7 +174,7 @@ void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 				{
 					childList[2].push_back(data[i]);
 				}
-				else if (boxStatus2 == 1) //Upper
+				else if (boxStatus2 == PlaneResult::Inside) //Upper
 				{
 					childList[3].push_back(data[i]);
 				}
@@ -303,7 +303,7 @@ void QuadTreeNode::removeObject(GameObject * data)
 				{
 					_children[2]->removeObject(data);
 				}
-				else if (boxStatus2 == 1) //Upper
+				else if (boxStatus2 == PlaneResult::Inside) //Upper
 				{
 					_children[3]->removeObject(data);
 				}
