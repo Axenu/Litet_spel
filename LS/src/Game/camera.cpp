@@ -54,7 +54,7 @@ const glm::mat4 &Camera::getViewMatrix() const
 
 float Camera::getFieldOfView() const
 {
-    return _fieldOfView;
+    return degreesToRadians(_fieldOfView);
 }
 
 float Camera::getAspectRatio() const
@@ -82,7 +82,7 @@ Camera::~Camera()
 
 }
 
-float Camera::degreesToRadians(float degrees)
+float Camera::degreesToRadians(float degrees) const
 {
 	return (float)(degrees * (M_PI / 180.0));
 }
