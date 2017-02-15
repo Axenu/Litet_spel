@@ -1,25 +1,20 @@
 #pragma once
-#include<vector>
+#include <vector>
+#include <map>
 #include "node.h"
 #include "Bone.h"
+#include "Animation.h"
 
 class Skeleton
 {
-	Node *_root;
 	std::vector<Bone> _bones;
-	std::vector<glm::mat4> _animation;
-	/* Bone transform in model space
-	*/
-	std::vector<glm::mat4> _pose;
-	/* Transformation from rest pose -> world space.
-	*/
-	std::vector<glm::mat4> _skinTransform;
+	std::map<std::string, Animation> _animation;
 
 public:
 	Skeleton(std::vector<Bone> &bones);
 	~Skeleton();
 
-	void update(float dT);
-	const std::vector<glm::mat4>& getSkin() const;
+	Animation* getAnimation(const std::string &name);
+	std::vector<Bone> getBones();
 };
 

@@ -158,6 +158,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\Mesh\Animation\AnimatedSkeleton.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\KeyFrame.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\Animation.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\Skeleton.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\SkeletonPart.cpp" />
     <ClCompile Include="src\Game\Level\ObjectFactory.cpp" />
@@ -222,6 +225,8 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Render\Mesh\Animation\AnimatedSkeleton.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\Animation.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Bone.h" />
     <ClInclude Include="header\Render\Mesh\Animation\SkeletonPart.h" />
     <ClInclude Include="header\Factory.h" />
@@ -291,6 +296,7 @@
     <ClInclude Include="header\Game\Level\Level.h" />
     <ClInclude Include="header\Game\Level\ObjectFactory.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Skeleton.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\KeyFrame.h" />
     <ClInclude Include="src\Render\Mesh\ModelConstruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

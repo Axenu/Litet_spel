@@ -12,14 +12,12 @@ Skeleton::~Skeleton()
 {
 }
 
-
-void Skeleton::update(float dT) {
-	_pose[0] = _animation[0];
-	for (unsigned int i = 1; i < _bones.size(); i++) {
-		_pose[i] = _animation[i] * _pose[_bones[i]._parentIndex];
-		_skinTransform[i] = _root->getModelMatrix() * _pose[i] * _bones[i]._invBindPose;
-	}
+Animation* Skeleton::getAnimation(const std::string &name) {
+	std::map<std::string, Animation>::iterator it = _animation.find(name);
+	if (it != _animation.end()) //Check that value existed
+		return &it->second;
+	return nullptr;
 }
-const std::vector<glm::mat4>& Skeleton::getSkin() const {
-	return _skinTransform;
+std::vector<Bone> Skeleton::getBones() {
+	return _bones;
 }

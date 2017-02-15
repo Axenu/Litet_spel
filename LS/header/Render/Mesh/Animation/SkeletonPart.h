@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Skeleton.h"
+#include "AnimatedSkeleton.h"
 
 const int MAX_BONE_COUNT = 48;
 
@@ -17,7 +17,7 @@ public:
 	~SkeletonPart();
 	/* Assemble the mat4 uniform array from the specific skeleton parent
 	*/
-	void assemble(const Skeleton &parent, glm::mat4* array);
+	void assemble(const AnimatedSkeleton &parent, glm::mat4* array);
 	bool hasSkeleton();
 };
 
