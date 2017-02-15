@@ -74,7 +74,7 @@
 		glUniform2f(_screenInv, 1.0f / wWidth, 1.0f / wHeight);
 		glUniform1f(_near, camera.getNearPlane());
 		glUniform1f(_far, camera.getFarPlane());
-		float halfTanFowy = std::tan(camera.getFieldOfView() * 0.5);
+		float halfTanFowy = (float)std::tan(camera.getFieldOfView() * 0.5);
 		glUniform1f(_top, halfTanFowy);
 		glUniform1f(_right, halfTanFowy * camera.getAspectRatio());
 	}
