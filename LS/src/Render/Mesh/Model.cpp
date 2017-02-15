@@ -60,6 +60,11 @@ void Model::setMaterial(Material & mat)
 	}
 }
 
+void Model::setAABB(const AABB & aabb)
+{
+	_aabb = aabb;
+}
+
 std::string Model::getName()
 {
 	return _name;

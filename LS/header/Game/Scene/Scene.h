@@ -5,6 +5,8 @@
 #include"DrawFrame.h"
 #include"node.h"
 #include "Game/camera.h"
+#include "Game/Scene/QuadTree.h"
+#include "Game/Objects/PointLightObject.h"
 
 /* Scene holding the objects 
 */
@@ -13,12 +15,15 @@ class Scene
 private:
 	/* Data ownership of objects in the scene.
 	*/
-	std::vector<GameObject*> _objects;
+	std::vector<GameObject*> _staticObjects;
+	std::vector<GameObject*> _dynamicObjects;
 	/* Scene node objects.
 	*/
 	std::vector<Node*> _nodes;
 
 	Camera* _cam;
+
+	QuadTreeNode _quadTree;
 protected:
 	/* The scene tree root.
 	*/
@@ -35,7 +40,7 @@ public:
 	void update(float dT);
 	/* Adds a game object to the scene.
 	*/
-	void add(GameObject *object);
+	void add(GameObject *object, bool dynamic);
 	
 	/* Add a node object to the scene
 	*/
@@ -51,6 +56,8 @@ public:
 	void fetchDrawables(DrawFrame &dF);
 
 	int loot(int pickDist);
+
+	void initQuadTree(AABB &aabb);
 
 };
 

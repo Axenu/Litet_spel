@@ -1,4 +1,6 @@
 #include"Game/Camera.h"
+//test
+#include <iostream>
 
 Camera::Camera() {
 
