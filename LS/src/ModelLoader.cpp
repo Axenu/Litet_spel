@@ -1,4 +1,6 @@
 #include "../header/ModelLoader.h"
+#include "Render/Mesh/ModelConstruct.h"
+#include "Render/Mesh/Animation/Skeleton.h"
 
 ModelLoader::ModelLoader()
 {
@@ -23,6 +25,21 @@ ModelLoader::~ModelLoader()
 		_mesh[i] = nullptr;
 	}
 }
+
+#pragma region AssimpConversion methods
+
+/* Converts assimp 4x4 matrix to glm::mat4x4
+*/
+glm::mat4 convertAssimpMatrix(aiMatrix4x4 matrix) {
+	glm::mat4 m;
+	m[0] = glm::vec4(matrix.a1, matrix.b1, matrix.c1, matrix.d1);
+	m[1] = glm::vec4(matrix.a2, matrix.b2, matrix.c2, matrix.d2);
+	m[2] = glm::vec4(matrix.a3, matrix.b3, matrix.c3, matrix.d3);
+	m[3] = glm::vec4(matrix.a4, matrix.b4, matrix.c4, matrix.d4);
+	return m;
+}
+
+#pragma endregion
 
 Model ModelLoader::GetModel(std::string modelName, Material &material)
 {
@@ -60,19 +77,22 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 		return;
 	}
 
-	std::vector<ModelPart> modelParts;
-	ProcessNode(scene->mRootNode, scene, modelName, shader, modelParts);
-	Model* model = new Model(modelParts);
+	ModelConstruct construct(shader);
+	ProcessBones(scene->mRootNode, scene, construct); //Find bones
+	ProcessNode(scene->mRootNode, scene, modelName, construct);
+	Model* model = new Model(construct._parts);
 
 	//Assign modelName
 	model->setName(modelName);
 	_models.push_back(model);
 }
 
-ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &modelName, MeshShader *shader)
+void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &modelName, ModelConstruct &construct)
 {
 	Mesh *outMesh;
 
+	std::vector<const void*> vertexData;
+	std::vector<gl::VertexAttribute> attri;
 	std::vector<glm::vec3> pos;
 	std::vector<glm::vec3> norm;
 	std::vector<GLuint> indice;
@@ -93,11 +113,52 @@ ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::stri
 			indice.push_back(face.mIndices[j]);
 		}
 	}
-	outMesh = new Mesh(pos, norm, indice);
+	attri.push_back(gl::VertexAttribute(0, GL_FLOAT, 3, sizeof(float))); //Pos attribute
+	attri.push_back(gl::VertexAttribute(1, GL_FLOAT, 3, sizeof(float))); //Norm attribute
+	vertexData.push_back(&pos[0]);	//Get position array start pointer
+	vertexData.push_back(&norm[0]);		//Get normal array start pointer
+
+	std::vector<int> _bones;
+	std::vector<glm::vec2> weights[MAX_BONEWEIGHTS];
+	//Proess bones
+	if (mesh->HasBones()) {
+		//Init weight buffers
+		for (int i = 0; i < 4; i++)
+			weights[i] = std::vector<glm::vec2>(pos.size());
+		//Get weights for each bone
+		for (unsigned int bIndex = 0; bIndex < mesh->mNumBones; bIndex++) {
+			aiBone *bone = mesh->mBones[bIndex];
+			_bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
+
+			//Fetch all bone weights
+			for (unsigned int w = 0; w < bone->mNumWeights; w++) {
+				aiVertexWeight weight = bone->mWeights[w];
+				//Find free slot and insert
+				for (int i = 0; i < MAX_BONEWEIGHTS; i++) {
+					if (weights[i][weight.mVertexId].y <= 0) { //First slot without assigned weight
+						weights[i][weight.mVertexId] = glm::vec2(bIndex, weight.mWeight);
+						break;
+					}
+				}
+			}
+		}
+
+		//Weight attris
+		attri.push_back(gl::VertexAttribute(2, GL_FLOAT, 2, sizeof(float)));
+		attri.push_back(gl::VertexAttribute(3, GL_FLOAT, 2, sizeof(float)));
+		attri.push_back(gl::VertexAttribute(4, GL_FLOAT, 2, sizeof(float)));
+		attri.push_back(gl::VertexAttribute(5, GL_FLOAT, 2, sizeof(float)));
+		vertexData.push_back(&weights[0][0]);
+		vertexData.push_back(&weights[1][0]);
+		vertexData.push_back(&weights[2][0]);
+		vertexData.push_back(&weights[3][0]);
+	}
+	gl::VAData va = gl::generateVAO_SoA(vertexData, attri, pos.size(), &indice[0], sizeof(indice[0]), indice.size()); // Create VAO
+	outMesh = new Mesh(pos, indice, va);
 	_mesh.push_back(outMesh);
 
 	//Get Models material
-	Material mat(shader);
+	Material mat(construct._shader);
 	aiMaterial* tmpMat = scene->mMaterials[mesh->mMaterialIndex];
 
 	//Get Diffuse color
@@ -116,20 +177,58 @@ ModelPart ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::stri
 	tmpMat->Get(AI_MATKEY_SHININESS, shine);
 	mat.setFloat("shine", shine);
 
-	return ModelPart(outMesh, mat);
+	construct._parts.push_back( ModelPart(outMesh, mat));
 }
 
-void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string &modelName, MeshShader *shader, std::vector<ModelPart> &modelParts)
+void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string &modelName, ModelConstruct& construct)
 {
+
 	//Process all node's meshes
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		modelParts.push_back(ProcessMesh(mesh, scene, modelName, shader));
+		ProcessMesh(mesh, scene, modelName, construct);
 	}
-	//Do the same for each of its children
+	//Process children first gen
 	for (GLuint i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene, modelName, shader, modelParts);
+		ProcessNode(node->mChildren[i], scene, modelName, construct);
+	}
+}
+
+int push_bone(aiNode *node, aiNode* root, ModelConstruct &construct) {
+	if (node == root || node == root->mParent) 
+		return -1;
+	//Find if bone is generated
+	int ind = construct.getBoneIndex(node->mName.C_Str());
+	if (ind == -1) {
+		//Not found generate parent as bone
+		ind = push_bone(node->mParent, root, construct);
+		construct._bones.push_back(Bone(node->mName.C_Str(), glm::mat4(), -1, ind));
+		//Return bone index
+		return construct._bones.size() - 1;
+	}
+	//Return bone index
+	return ind;
+}
+void ModelLoader::ProcessBones(aiNode* node, const aiScene* scene, ModelConstruct& construct) {
+
+	for (GLuint i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		for (GLuint b = 0; b < mesh->mNumBones; b++)
+		{
+			aiBone *bone = mesh->mBones[b];
+			aiNode *boneNode = scene->mRootNode->FindNode(bone->mName);
+			int index = push_bone(boneNode, node, construct);
+			construct._bones[index]._invBindPose = convertAssimpMatrix(bone->mOffsetMatrix);
+		}
+	}
+	
+
+	//Process children
+	for (GLuint i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessBones(node->mChildren[i], scene, construct);
 	}
 }

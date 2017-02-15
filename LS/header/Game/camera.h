@@ -42,7 +42,7 @@ public:
 
 	virtual ~Camera();
 
-	float degreesToRadians(float degrees);
+	float degreesToRadians(float degrees) const;
 };
 
 #endif

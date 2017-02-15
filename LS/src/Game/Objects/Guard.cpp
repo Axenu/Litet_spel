@@ -398,7 +398,7 @@ void Guard::update(float dt)
 }
 
 Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
-	GameObject(m), _player(player), _eventManager(event)
+	GameObject(m), _player(player), _eventManager(event),  displacement(0.5f, 0.f, 0.5f)
 {
 	_forward = glm::vec3(0.f, 0.f, -1.f);
 	glm::vec3 guardStartPosition=gridet->getLastValueOfGuardLocationsAndremovesit();

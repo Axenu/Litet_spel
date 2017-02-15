@@ -158,6 +158,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\Mesh\Animation\AnimatedSkeleton.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\KeyFrame.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\Animation.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\Skeleton.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\SkeletonPart.cpp" />
     <ClCompile Include="src\Game\Level\ObjectFactory.cpp" />
     <ClCompile Include="src\Game\Level\Level.cpp" />
     <ClCompile Include="src\Factory.cpp" />
@@ -165,7 +170,6 @@
     <ClCompile Include="src\Game\Game.cpp" />
     <ClCompile Include="src\Event\Events.cpp" />
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
-    <ClCompile Include="src\Game\Scene\QuadTree.cpp" />
     <ClCompile Include="src\Game\Setting.cpp" />
     <ClCompile Include="src\Game\TestGame.cpp" />
     <ClCompile Include="src\gui\StringComponents.cpp" />
@@ -195,6 +199,7 @@
     <ClCompile Include="src\Event\EventManager.cpp" />
     <ClCompile Include="src\gl\VAData.cpp" />
     <ClCompile Include="src\Game\Objects\GameObject.cpp" />
+    <ClCompile Include="src\Render\Mesh\ModelConstruct.cpp" />
     <ClCompile Include="src\Render\Mesh\ModelPart.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\MeshShader.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\DeferredMeshShader.cpp" />
@@ -220,6 +225,10 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Render\Mesh\Animation\AnimatedSkeleton.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\Animation.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\Bone.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\SkeletonPart.h" />
     <ClInclude Include="header\Factory.h" />
     <ClInclude Include="header\Game\camera.h" />
     <ClInclude Include="header\Game\Game.h" />
@@ -228,7 +237,6 @@
     <ClInclude Include="header\Game\Objects\CharacterEvents.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />
-    <ClInclude Include="header\Game\Scene\QuadTree.h" />
     <ClInclude Include="header\Game\Setting.h" />
     <ClInclude Include="header\gui\View.h" />
     <ClInclude Include="header\gui\Views\GameOverView.h" />
@@ -287,6 +295,9 @@
     <ClInclude Include="header\Event\Input\InputIncrementer.h" />
     <ClInclude Include="header\Game\Level\Level.h" />
     <ClInclude Include="header\Game\Level\ObjectFactory.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\Skeleton.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\KeyFrame.h" />
+    <ClInclude Include="src\Render\Mesh\ModelConstruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

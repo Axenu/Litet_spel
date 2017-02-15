@@ -60,12 +60,14 @@ void main () {
 	else if (bufferID == 4)
 		ColorOut.xyz = vec3(depth);
 	else if (bufferID == 5)
-		ColorOut.xyz = vec3(mod1(pos.x));
+		ColorOut.xyz = vec3(mod1(-pos.z / (far - near)));
 	else if (bufferID == 6)
-		ColorOut.xyz = vec3(mod1(pos.y));
+		ColorOut.xyz = vec3(mod1(pos.x));
 	else if (bufferID == 7)
-		ColorOut.xyz = vec3(mod1(pos.z));
+		ColorOut.xyz = vec3(mod1(pos.y));
 	else if (bufferID == 8)
+		ColorOut.xyz = vec3(mod1(pos.z));
+	else if (bufferID == 9)
 		ColorOut.xyz = vec3(mod1(pos.x), mod1(pos.y), mod1(pos.z));
 }
 

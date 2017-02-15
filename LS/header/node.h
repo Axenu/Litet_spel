@@ -73,6 +73,8 @@ public:
     glm::vec3 getPosition() const;
     glm::vec3 getRotation() const;
 
+	/* Get the transformation matrix */
+	const glm::mat4& getModelMatrix();
 
 	glm::vec4 getWorldPos() const;
 	float getDistance(Node const &other) const;
