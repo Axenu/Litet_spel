@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <math.h>
 #include "Game/Objects/GameObject.h"
 #include "IntersectionFunctions.h"
 
