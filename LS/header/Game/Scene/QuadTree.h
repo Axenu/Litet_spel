@@ -15,15 +15,18 @@ public:
 	void AddObjects(std::vector<GameObject*> &data);
 	void AddObjects(GameObject* gameObject);
 	void QuadTreeTest(std::vector<GameObject*> &gameObjects, const glm::mat4 &mat);
+	void QuadTreeTest(std::vector<GameObject*> &gameObjects, glm::vec3 &dir, glm::vec3 &origin);
+	void QuadTreeTest(std::vector<GameObject*> &gameObjects, glm::vec3 &dir, glm::vec3 &origin, float distance);
 	void removeObject(GameObject* data);
 	void SetAABB(const AABB &aabb);
 
+
 private:
-	AABB _aabb;
 	static const int _maxDepth = 4;
+	AABB _aabb;
 	std::vector<GameObject*> _objectData;
-	void removeObjectData(GameObject* data);
 	QuadTreeNode* _children[4];
+	void removeObjectData(GameObject* data);
 	void CreateNodes(int depth);
 	void TraverseTree(std::vector<GameObject*> &gameObjects, Plane *planes, const int &nrOfPlanes);
 	void deleteTree();

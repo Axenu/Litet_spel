@@ -275,8 +275,6 @@ void QuadTreeNode::removeObject(GameObject * data)
 	}
 	else
 	{
-		std::vector<GameObject*> childList[4];
-
 		glm::vec3 tmp;
 		tmp.x = _aabb.getMax().x - _aabb.getMin().x;
 		tmp.y = _aabb.getMax().y;
@@ -366,6 +364,42 @@ void QuadTreeNode::TraverseTree(std::vector<GameObject*>& gameObjects, Plane * p
 		}
 	}
 	
+}
+
+void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, glm::vec3 & dir, glm::vec3 & origin)
+{
+	if (AABBIntersection(_aabb, dir, origin))
+	{
+		for (int i = 0; i < _objectData.size(); i++)
+		{
+			gameObjects.push_back(_objectData[i]);
+		}
+		if (_children[0] != nullptr)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_children[i]->QuadTreeTest(gameObjects, dir, origin);
+			}
+		}
+	}
+}
+
+void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, glm::vec3 & dir, glm::vec3 & origin, float distance)
+{
+	if (AABBIntersection(_aabb, dir, origin, distance) || PointInsideAABB(_aabb, origin))
+	{
+		for (int i = 0; i < _objectData.size(); i++)
+		{
+			gameObjects.push_back(_objectData[i]);
+		}
+		if (_children[0] != nullptr)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_children[i]->QuadTreeTest(gameObjects, dir, origin);
+			}
+		}
+	}
 }
 
 void QuadTreeNode::deleteTree()
