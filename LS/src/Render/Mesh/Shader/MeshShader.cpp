@@ -1,7 +1,8 @@
 #include "Render/Mesh/Shader/MeshShader.h"
 
 MeshShader::MeshShader(const std::string &shader)
-	: _shader(shader){
+	: _shader(shader)
+{
 
 }
 

@@ -18,6 +18,10 @@ void ModelPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const {
 	_mesh->render();
 }
 
+void ModelPart::renderMeshOnly() const {
+	_mesh->render();
+}
+
 Mesh& ModelPart::getMesh() {
 	return *_mesh;
 }

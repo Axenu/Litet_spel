@@ -19,6 +19,7 @@ public:
 	ModelPart(Mesh *mesh, Material &mat);
 	virtual ~ModelPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
+	void renderMeshOnly() const;
 	Mesh& getMesh();
 	void setMaterial(Material &mat);
 	const AABB& getBox();

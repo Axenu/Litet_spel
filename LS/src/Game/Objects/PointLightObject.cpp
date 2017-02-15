@@ -21,6 +21,7 @@ PointLightObject::~PointLightObject() {
 void PointLightObject::update(float dT) {
 	Node::update(dT);
 	_lightInfo._pos = _modelMatrix[3];
+	_lightInfo.updateMatrices();
 }
 
 /* Add the object to the frame

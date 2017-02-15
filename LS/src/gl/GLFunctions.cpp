@@ -57,7 +57,7 @@ namespace gl {
 		int vertexSize = 12;
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO) 
+		// Vertex Array Object (VAO)
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
@@ -82,7 +82,7 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 		//Unbind VOA
 		glBindVertexArray(0);
-		CheckGLErrors("Error generating and buffering VAO");
+		CheckGLErrors("Error generating and buffering VAO generateVAO_Simple");
 		return VAData(gVAO, gBuffer);
 	}
 
@@ -106,7 +106,7 @@ namespace gl {
 
 
 		GLuint gVAO;
-		// Vertex Array Object (VAO) 
+		// Vertex Array Object (VAO)
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
@@ -140,7 +140,7 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 		//Unbind VOA
 		glBindVertexArray(0);
-		CheckGLErrors("Error generating and buffering VAO");
+		CheckGLErrors("Error generating and buffering VAO generateVAO_AoS");
 		return VAData(gVAO, gBuffer);
 	}
 
@@ -148,9 +148,8 @@ namespace gl {
 	VAData generateVAO_SoA(const std::vector<const void*> &vertexData, std::vector<VertexAttribute> &vertexAttri, int vertexCount, const void* indices, int indexByteSize, int indexCount) {
 		//http://ogldev.atspace.co.uk/www/tutorial32/tutorial32.html
 
-
 		GLuint gVAO;
-		// Vertex Array Object (VAO) 
+		// Vertex Array Object (VAO)
 		glGenVertexArrays(1, &gVAO);
 		// bind == enable
 		glBindVertexArray(gVAO);
@@ -170,7 +169,7 @@ namespace gl {
 
 			//Enables the attribute "slot" in the VAO for each attribute
 			glEnableVertexAttribArray(vertexAttri[i].attributeIndex);
-			// Specify the data array attribute. Describing what the data represents and layout identifier for opengl code 
+			// Specify the data array attribute. Describing what the data represents and layout identifier for opengl code
 			glVertexAttribPointer(vertexAttri[i].attributeIndex, vertexAttri[i].elementCount, vertexAttri[i].elementType, vertexAttri[i].noormalize, 0, 0);
 		}
 
@@ -180,7 +179,7 @@ namespace gl {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexByteSize * indexCount, indices, GL_STATIC_DRAW);
 
 		glBindVertexArray(0);
-		CheckGLErrors("Error generating and buffering VAO");
+		CheckGLErrors("Error generating and buffering VAO generateVAO_SoA");
 		return VAData(gVAO, gBuffers);
 	}
 
@@ -209,6 +208,25 @@ namespace gl {
 
 		GLint success = 0;
 		glGetProgramiv(shaderProgram, GL_COMPILE_STATUS, &success);
+		if (success == GL_FALSE) // the last compilation failed!
+		{
+			GLint msgLength = 0; // length of error message
+			glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &msgLength);
+			GLchar* msg = new GLchar[msgLength];
+			glGetProgramInfoLog(shaderProgram, msgLength, NULL, msg);
+			// print the error msg into the VS debug window,
+			std::cout << "Shader program failed to link" << std::endl;//We print this since it can return empty string
+			std::cout << msg << std::endl;
+			glDeleteShader(shaderProgram); // remove the shader as it has failed....
+			delete[] msg;
+			return false;
+		}
+		return true;
+	}
+	bool debugShaderLinking(GLuint shaderProgram) {
+
+		GLint success = 0;
+		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 		if (success == GL_FALSE) // the last compilation failed!
 		{
 			GLint msgLength = 0; // length of error message
@@ -285,10 +303,40 @@ namespace gl {
 		glAttachShader(shaderProgramID, fs);
 		glAttachShader(shaderProgramID, vs);
 		glLinkProgram(shaderProgramID);
+		//test if linking failed
+		debugShaderLinking(shaderProgramID);
 
 		return true;
 		//return debugShaderProgram(shaderProgramID);
 	}
+
+	/*Load a shader program with vertex and fragment shader
+		vertexShader	<<		Directory to the vertex shader
+		geometryShader	<<		Directory to the geometryShader
+		fragmentShader	<<		Directory to the fragmentShader
+		shaderProgramID	>>		Reference for the shader program id
+		return			>>		If the shader program loaded successfully, errors will be logged */
+	bool loadShaderProgram(const std::string &vertexShader, const std::string &geometryShader, const std::string &fragmentShader, GLuint &shaderProgramID)
+	{
+
+		GLuint vs, gs, fs;
+		if (!loadShader(vertexShader, GL_VERTEX_SHADER, vs))
+			return false;
+		if (!loadShader(geometryShader, GL_GEOMETRY_SHADER, gs))
+			return false;
+		if (!loadShader(fragmentShader, GL_FRAGMENT_SHADER, fs))
+			return false;
+
+		shaderProgramID = glCreateProgram();
+		glAttachShader(shaderProgramID, fs);
+		glAttachShader(shaderProgramID, gs);
+		glAttachShader(shaderProgramID, vs);
+		glLinkProgram(shaderProgramID);
+
+		return true;
+		//return debugShaderProgram(shaderProgramID);
+	}
+
 	/*Load a shader program from a specified vertex and fragment shader code strings
 	vertexShader	<<		Vertex shader code
 	fragmentShader	<<		Fragment shader code

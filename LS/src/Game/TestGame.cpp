@@ -4,15 +4,17 @@
 
 
 TestGame::TestGame(Setting &setting, EventManager &events)
-	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _renderBuffer(events, GLFW_KEY_R) {
-
+	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _cubeMapRenderer(_resource.getQuad(), events), _renderBufferKey(events, GLFW_KEY_R), _cubeMapBufferKey(events, GLFW_KEY_C)
+{
 	_bufferRenderer.setWindowSize((float)setting.Width(), (float)setting.Height(), _scene.getCamera());
 }
-TestGame::~TestGame() {
+TestGame::~TestGame()
+{
 
 }
 
-void TestGame::initiate() {
+void TestGame::initiate()
+{
 
 	Level* level = _factory.createLevel("Demo1.bmp");
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
@@ -39,14 +41,24 @@ void TestGame::initiate() {
 }
 
 
-void TestGame::compose(RenderInfo &rI) {
-	if (_renderBuffer._active)
+void TestGame::compose(RenderInfo &rI)
+{
+	if (_renderBufferKey._active)
+	{
 		_bufferRenderer.render(rI);
+	}
+	else if (_cubeMapBufferKey._active)
+	{
+		_cubeMapRenderer.render(rI);
+	}
 	else
+	{
 		Game::compose(rI);
+	}
 }
 
 
-Character* TestGame::getCharacter() {
+Character* TestGame::getCharacter()
+{
 	return _player;
 }

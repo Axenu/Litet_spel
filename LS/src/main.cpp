@@ -29,7 +29,7 @@ void setupWindow()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_SAMPLES, 0);
     glfwWindowHint(GLFW_DECORATED, true);
 	unsigned int wWidth = 1280, wHeight = 720;
 	GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
@@ -116,6 +116,8 @@ void setupWindow()
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
+		//unlock fps
+		// glfwSwapInterval(0);
 
         /* Poll for and process events */
         glfwPollEvents();

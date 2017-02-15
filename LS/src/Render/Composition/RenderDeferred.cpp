@@ -11,7 +11,8 @@
 	RenderDeferred::~RenderDeferred()
 	{
 	}
-	bool RenderDeferred::acquireUniforms(){
+	bool RenderDeferred::acquireUniforms()
+	{
 
 		_shader.bind();
 		/*Function params
@@ -41,7 +42,8 @@
 
 	/* Assign frame uniforms
 	*/
-	void RenderDeferred::assignUniforms(RenderInfo &fD){
+	void RenderDeferred::assignUniforms(RenderInfo &fD)
+	{
 		std::vector<PointLight>& lights = fD._pLightInfo;
 		//Clamp light count
 		unsigned int numLights = lights.size() < MAXLIGHTCOUNT ? lights.size() : MAXLIGHTCOUNT;
@@ -49,7 +51,8 @@
 		*/
 		glm::vec3 POS[MAXLIGHTCOUNT], DIF[MAXLIGHTCOUNT], SPEC[MAXLIGHTCOUNT];
 		float FADE[MAXLIGHTCOUNT];
-		for (unsigned int i = 0; i < numLights; i++) {
+		for (unsigned int i = 0; i < numLights; i++)
+		{
 			//Transform positions in to viewspace
 			POS[i] = fD._V * glm::vec4(lights[i]._pos, 1.0f);
 			DIF[i] = lights[i]._diffuse;
@@ -69,7 +72,8 @@
 
 	/* Call on window size change
 	*/
-	void RenderDeferred::setWindowSize(float wWidth, float wHeight, const Camera &camera){
+	void RenderDeferred::setWindowSize(float wWidth, float wHeight, const Camera &camera)
+	{
 		_shader.bind();
 		glUniform2f(_screenInv, 1.0f / wWidth, 1.0f / wHeight);
 		glUniform1f(_near, camera.getNearPlane());
