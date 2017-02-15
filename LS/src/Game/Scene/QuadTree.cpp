@@ -36,10 +36,10 @@ QuadTreeNode::~QuadTreeNode()
 	deleteTree();
 }
 
-void QuadTreeNode::CreateNodes(int & maxDepth)
+void QuadTreeNode::CreateNodes()
 {
 	deleteTree();
-	CreateNodes(0, maxDepth);
+	CreateNodes(0);
 }
 
 
@@ -59,9 +59,9 @@ void QuadTreeNode::removeObjectData(GameObject * data)
 	}
 }
 
-void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
+void QuadTreeNode::CreateNodes(int depth)
 {
-	if (depth >= maxDepth)
+	if (depth >= _maxDepth)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -128,7 +128,7 @@ void QuadTreeNode::CreateNodes(int depth, int & maxDepth)
 		
 		for (int i = 0; i < 4; i++)
 		{
-			_children[i]->CreateNodes(depth + 1, maxDepth);
+			_children[i]->CreateNodes(depth + 1);
 		}
 	}
 }
@@ -170,11 +170,11 @@ void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 
 			if (boxStatus1 == PlaneResult::Outside)//Right half
 			{
-				if (boxStatus2 == PlaneResult::Outside) //Upper
+				if (boxStatus2 == PlaneResult::Outside) //Lower
 				{
 					childList[2].push_back(data[i]);
 				}
-				else if (boxStatus2 == 1) //Lower
+				else if (boxStatus2 == 1) //Upper
 				{
 					childList[3].push_back(data[i]);
 				}
@@ -185,11 +185,11 @@ void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 			}
 			else if (boxStatus1 == PlaneResult::Inside)//Left half
 			{
-				if (boxStatus2 == PlaneResult::Outside)//Upper
+				if (boxStatus2 == PlaneResult::Outside)//Lower
 				{
 					childList[1].push_back(data[i]);
 				}
-				else if (boxStatus2 == PlaneResult::Inside)//Lower
+				else if (boxStatus2 == PlaneResult::Inside)//Upper
 				{
 					childList[0].push_back(data[i]);
 				}
@@ -299,11 +299,11 @@ void QuadTreeNode::removeObject(GameObject * data)
 
 			if (boxStatus1 == PlaneResult::Outside)//Right half
 			{
-				if (boxStatus2 == PlaneResult::Outside) //Upper
+				if (boxStatus2 == PlaneResult::Outside) //Lower
 				{
 					_children[2]->removeObject(data);
 				}
-				else if (boxStatus2 == 1) //Lower
+				else if (boxStatus2 == 1) //Upper
 				{
 					_children[3]->removeObject(data);
 				}
@@ -315,11 +315,11 @@ void QuadTreeNode::removeObject(GameObject * data)
 			}
 			else if (boxStatus1 == PlaneResult::Inside)//Left half
 			{
-				if (boxStatus2 == PlaneResult::Outside)//Upper
+				if (boxStatus2 == PlaneResult::Outside)//Lower
 				{
 					_children[1]->removeObject(data);
 				}
-				else if (boxStatus2 == PlaneResult::Inside)//Lower
+				else if (boxStatus2 == PlaneResult::Inside)//Upper
 				{
 					_children[0]->removeObject(data);
 				}

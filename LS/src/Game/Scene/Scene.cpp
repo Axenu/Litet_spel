@@ -3,15 +3,17 @@
 
 
 Scene::Scene()
-	:_quadTreeRoot()
+	:_quadTree()
 {
 }
 
 
 Scene::~Scene()
 {
-	for (unsigned int i = 0; i < _objects.size(); i++)
-	 	delete _objects[i];
+	for (unsigned int i = 0; i < _staticObjects.size(); i++)
+		delete _staticObjects[i];
+	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
+		delete _dynamicObjects[i];
 	for (unsigned int i = 0; i < _nodes.size(); i++)
 		delete _nodes[i];
 }
@@ -36,15 +38,26 @@ Camera& Scene::getCamera() {
 }
 /* Adds a game object to the scene.
 */
-void Scene::add(GameObject *object) {
+void Scene::add(GameObject *object, bool dynamic) {
 	//If object has no parent set the scene as the root.?
-	if(!object->getParent())
-		object->setParent(&_root);
-	//Initiates the modelMatrix
-	object->update(0.0f);
-	//adds the object to the QuadTree
-	_quadTreeRoot.AddObjects(object);
-	_objects.push_back(std::move(object));
+	if (dynamic)
+	{
+		if (!object->getParent())
+			object->setParent(&_root);
+		object->update(0.0f);
+		_dynamicObjects.push_back(std::move(object));
+	}
+	else
+	{
+		if (!object->getParent())
+			object->setParent(&_root);
+		//Initiates the modelMatrix
+		object->update(0.0f);
+		//adds the object to the QuadTree
+		_quadTree.AddObjects(object);
+		_staticObjects.push_back(std::move(object));
+	}
+
 }
 
 void Scene::addNode(Node *object) {
@@ -54,10 +67,24 @@ void Scene::addNode(Node *object) {
 
 }
 GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
-	for (unsigned int i = 0; i < _objects.size(); i++) {
-		if (_objects[i] == gameObj) {
-			_objects.erase(_objects.begin() + i);
-			_quadTreeRoot.removeObject(gameObj);
+	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
+	{
+		if (_dynamicObjects[i] == gameObj)
+		{
+			_dynamicObjects.erase(_dynamicObjects.begin() + i);
+			gameObj->removeNode();
+			if (deleteObj)
+			{
+				delete gameObj;
+				return nullptr;
+			}
+			return gameObj;
+		}
+	}
+	for (unsigned int i = 0; i < _staticObjects.size(); i++) {
+		if (_staticObjects[i] == gameObj) {
+			_staticObjects.erase(_staticObjects.begin() + i);
+			_quadTree.removeObject(gameObj); //Clear object from the quadTree
 			gameObj->removeNode(); //Clear the node from the tree
 			if (deleteObj) {
 				delete gameObj;
@@ -71,9 +98,9 @@ GameObject* Scene::remove(GameObject *gameObj, bool deleteObj) {
 /* Remove the node object returns the pointer to any leftover data
 */
 Node* Scene::removeNode(Node *object, bool deleteObj) {
-	for (unsigned int i = 0; i < _objects.size(); i++) {
-		if (_objects[i] == object) {
-			_objects.erase(_objects.begin() + i);
+	for (unsigned int i = 0; i < _staticObjects.size(); i++) {
+		if (_staticObjects[i] == object) {
+			_staticObjects.erase(_staticObjects.begin() + i);
 			object->removeNode(); //Clear the node from the tree
 			if (deleteObj) {
 				delete object;
@@ -86,8 +113,8 @@ Node* Scene::removeNode(Node *object, bool deleteObj) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF) {
-	std::vector<GameObject*> drawList;
-	_quadTreeRoot.QuadTreeTest(drawList, _cam->VPMatrix);
+	std::vector<GameObject*> drawList = _dynamicObjects;
+	_quadTree.QuadTreeTest(drawList, _cam->VPMatrix);
 	for (unsigned int i = 0; i < drawList.size(); i++)
 		drawList[i]->addToFrame(dF);
 	/*for (unsigned int i = 0; i < _objects.size(); i++)
@@ -101,9 +128,9 @@ int Scene::loot(int pickDist)
 	std::vector<int> indices;
 	std::vector<float> distance;
 	//Sorting out objects close enough to cam
-	for (unsigned int i = 0; i < _objects.size(); i++)
+	for (unsigned int i = 0; i < _staticObjects.size(); i++)
 	{
-		testDist = _cam->getDistance(*_objects[i]);
+		testDist = _cam->getDistance(*_staticObjects[i]);
 		if (testDist < pickDist)
 		{
 			indices.push_back(i);
@@ -134,10 +161,15 @@ int Scene::loot(int pickDist)
 	int value = 0;
 	for (unsigned int i = 0; i < indices.size(); i++)
 	{
-		picked = _objects[indices[i]]->pick(*_cam);
+		if (nullptr != dynamic_cast<PointLightObject*> (_staticObjects[indices[i]]))
+		{
+			//If it is a pointlight dont regard it as a hit and continue with the next object in the list
+			continue;
+		}
+		picked = _staticObjects[indices[i]]->pick(*_cam);
 		if (picked)
 		{
-			LootObject* tmpObj = dynamic_cast<LootObject*> (_objects[indices[i]]);
+			LootObject* tmpObj = dynamic_cast<LootObject*> (_staticObjects[indices[i]]);
 			if (tmpObj == nullptr)
 			{
 				break;
@@ -154,8 +186,8 @@ int Scene::loot(int pickDist)
 	return value;
 }
 
-void Scene::initQuadTree(AABB & aabb, int depth)
+void Scene::initQuadTree(AABB & aabb)
 {
-	_quadTreeRoot.SetAABB(aabb);
-	_quadTreeRoot.CreateNodes(depth);
+	_quadTree.SetAABB(aabb);
+	_quadTree.CreateNodes();
 }

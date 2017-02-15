@@ -23,6 +23,7 @@ public:
 	virtual ~GameObject();
 	virtual void update(float dt);
 	void setModel(Model &m);
+	void setModelAABB(const AABB &aabb);
 	const Model& getModel();
 	AABB getAABB();
 	const glm::mat4& getModelMatrix();
