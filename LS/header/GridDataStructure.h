@@ -67,6 +67,10 @@ public:
 	gridType operator[](const glm::ivec2 &sq) const;
 	/* Get the center position of the specified square */
 	glm::vec3 getCenter(glm::ivec2 vec) const;
+	void getRightQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
+	void getLeftQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
+	void getFrontQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
+	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 };
 
 #endif

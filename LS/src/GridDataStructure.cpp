@@ -253,6 +253,42 @@ gridType Grid::operator[](const glm::ivec2 &sq) const {
 glm::vec3 Grid::getCenter(glm::ivec2 sq) const {
 	return glm::vec3((sq.x + 0.5f) * GRIDSPACE, 0.f, (sq.y + 0.5f) * GRIDSPACE);
 }
+void Grid::getRightQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{	
+	triangle[0] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[1] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
+	triangle[2] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
+	triangle[3] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
+	triangle[4] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[5] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+}
+void Grid::getLeftQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{
+	triangle[0] = glm::vec3(xOffset * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
+	triangle[1] = glm::vec3(xOffset * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[2] = glm::vec3(xOffset * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[3] = glm::vec3(xOffset * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[4] = glm::vec3(xOffset * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
+	triangle[5] = glm::vec3(xOffset * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
+}
+void Grid::getFrontQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{
+	triangle[0] = glm::vec3( xOffset      * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[1] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+	triangle[2] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[3] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[4] = glm::vec3( xOffset      * GRIDSPACE, 0.f       , (zOffset + 1) * GRIDSPACE);
+	triangle[5] = glm::vec3( xOffset      * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
+}
+void Grid::getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
+{
+	triangle[0] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
+	triangle[1] = glm::vec3( xOffset      * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
+	triangle[2] = glm::vec3( xOffset      * GRIDSPACE, 0.f       , zOffset * GRIDSPACE);
+	triangle[3] = glm::vec3( xOffset      * GRIDSPACE, 0.f       , zOffset * GRIDSPACE);
+	triangle[4] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       , zOffset * GRIDSPACE);
+	triangle[5] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
+}
 #pragma endregion
 
 Mesh Grid::generateMesh()

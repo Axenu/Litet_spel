@@ -9,6 +9,7 @@
 #include <time.h>
 #include "intersectionFunctions.h"
 
+#define GUARDVIEWDISTANCE 5.f
 
 class Guard : public GameObject
 {
