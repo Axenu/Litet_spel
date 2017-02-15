@@ -164,6 +164,7 @@
     <ClCompile Include="src\Game\camera.cpp" />
     <ClCompile Include="src\Game\Game.cpp" />
     <ClCompile Include="src\Event\Events.cpp" />
+    <ClCompile Include="src\Game\Objects\AntiLightGrenade.cpp" />
     <ClCompile Include="src\Game\Objects\LootObject.cpp" />
     <ClCompile Include="src\Game\Setting.cpp" />
     <ClCompile Include="src\Game\TestGame.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="header\Game\Game.h" />
     <ClInclude Include="header\Event\Events.h" />
     <ClInclude Include="header\Game\Level\GridSquare.h" />
+    <ClInclude Include="header\Game\Objects\AntiLightGrenade.h" />
     <ClInclude Include="header\Game\Objects\CharacterEvents.h" />
     <ClInclude Include="header\Game\Objects\GameObjectType.h" />
     <ClInclude Include="header\Game\Objects\LootObject.h" />

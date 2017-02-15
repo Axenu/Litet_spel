@@ -9,7 +9,7 @@
 #include "Event/EventManager.h"
 #include "GridDataStructure.h"
 #include "Game/Scene/Scene.h"
-
+#include "AntiLightGrenade.h" 
 #define RotationSpeed 0.005f
 
 
@@ -50,6 +50,7 @@ private:
 	GridSquare _gridSquare;
     glm::vec3 _direction;
     glm::vec3 _velocity;
+	AntiLightGrenade _antiLightGrenade;
     float _speed;
     float _isMoving;
     int _lootValue;

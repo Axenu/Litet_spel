@@ -128,6 +128,13 @@ void Character::moveCharacter(const KeyboardEvent& event)
             }
         }
 	}
+	else if (event.getKey() == GLFW_KEY_Q)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			_antiLightGrenade.Activationsucess();
+		}
+	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
 {
