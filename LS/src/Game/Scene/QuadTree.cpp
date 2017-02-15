@@ -2,7 +2,7 @@
 
 
 QuadTreeNode::QuadTreeNode()
-	:_aabb() 
+	:_aabb()
 {
 	_children[0] = nullptr;
 	_children[1] = nullptr;
@@ -125,7 +125,7 @@ void QuadTreeNode::CreateNodes(int depth)
 		tmpAABB.setMin(tmpMin);
 		tmpAABB.setMax(tmpMax);
 		_children[3]->SetAABB(tmpAABB);
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			_children[i]->CreateNodes(depth + 1);
@@ -163,46 +163,59 @@ void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 
 		for (unsigned int i = 0; i < data.size(); i++)
 		{
-			AABB tmpAABB = data[i]->getAABB();
-			boxStatus1 = BBPlaneTest(tmpAABB, plane1);
-
-			boxStatus2 = BBPlaneTest(tmpAABB, plane2);
-
-			if (boxStatus1 == PlaneResult::Outside)//Right half
-			{
-				if (boxStatus2 == PlaneResult::Outside) //Lower
-				{
-					childList[2].push_back(data[i]);
-				}
-				else if (boxStatus2 == PlaneResult::Inside) //Upper
-				{
-					childList[3].push_back(data[i]);
-				}
-				else//Intersecting
-				{
-					_objectData.push_back(data[i]);
-				}
-			}
-			else if (boxStatus1 == PlaneResult::Inside)//Left half
-			{
-				if (boxStatus2 == PlaneResult::Outside)//Lower
-				{
-					childList[1].push_back(data[i]);
-				}
-				else if (boxStatus2 == PlaneResult::Inside)//Upper
-				{
-					childList[0].push_back(data[i]);
-				}
-				else//Intersecting
-				{
-					_objectData.push_back(data[i]);
-				}
-			}
-			else//Intersecting
+			//First check if the object is in any of the planes.
+			glm::vec4 objectPos = data[i]->getWorldPos();
+			if (abs(plane1.distance + objectPos.x) < 0.00001f)
 			{
 				_objectData.push_back(data[i]);
 			}
+			else if (abs(plane2.distance + objectPos.z) < 0.00001f)
+			{
+				_objectData.push_back(data[i]);
+			}
+			else
+			{
+				AABB tmpAABB = data[i]->getAABB();
+				boxStatus1 = BBPlaneTest(tmpAABB, plane1);
 
+				boxStatus2 = BBPlaneTest(tmpAABB, plane2);
+
+				if (boxStatus1 == PlaneResult::Outside)//Right half
+				{
+					if (boxStatus2 == PlaneResult::Outside) //Lower
+					{
+						childList[2].push_back(data[i]);
+					}
+					else if (boxStatus2 == PlaneResult::Inside) //Upper
+					{
+						childList[3].push_back(data[i]);
+					}
+					else//Intersecting
+					{
+						_objectData.push_back(data[i]);
+					}
+				}
+				else if (boxStatus1 == PlaneResult::Inside)//Left half
+				{
+					if (boxStatus2 == PlaneResult::Outside)//Lower
+					{
+						childList[1].push_back(data[i]);
+					}
+					else if (boxStatus2 == PlaneResult::Inside)//Upper
+					{
+						childList[0].push_back(data[i]);
+					}
+					else//Intersecting
+					{
+						_objectData.push_back(data[i]);
+					}
+				}
+				else//Intersecting
+				{
+					_objectData.push_back(data[i]);
+				}
+
+			}
 		}
 		for (int i = 0; i < 4; i++)
 		{
@@ -211,13 +224,14 @@ void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 				_children[i]->AddObjects(childList[i]);
 			}
 		}
+
 	}
 }
 
 void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, const glm::mat4 & mat)
 {
 	Plane planes[6];
-	
+
 	//Left
 	planes[0].normal.x = -(mat[0][3] + mat[0][0]);
 	planes[0].normal.y = -(mat[1][3] + mat[1][0]);
@@ -275,8 +289,6 @@ void QuadTreeNode::removeObject(GameObject * data)
 	}
 	else
 	{
-		std::vector<GameObject*> childList[4];
-
 		glm::vec3 tmp;
 		tmp.x = _aabb.getMax().x - _aabb.getMin().x;
 		tmp.y = _aabb.getMax().y;
@@ -291,7 +303,19 @@ void QuadTreeNode::removeObject(GameObject * data)
 		plane2.distance = -(_aabb.getMin().z + tmp.z / 2);
 		plane2.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		PlaneResult boxStatus2;
-	
+
+		//First check if the object is in any of the planes.
+		glm::vec4 objectPos = data->getWorldPos();
+		if (abs(plane1.distance + objectPos.x) < 0.00001f)
+		{
+			removeObjectData(data);
+		}
+		else if (abs(plane2.distance + objectPos.z) < 0.00001f)
+		{
+			removeObjectData(data);
+		}
+		else
+		{
 			AABB tmpAABB = data->getAABB();
 			boxStatus1 = BBPlaneTest(tmpAABB, plane1);
 
@@ -334,7 +358,7 @@ void QuadTreeNode::removeObject(GameObject * data)
 				//Remove object pointer
 				removeObjectData(data);
 			}
-
+		}
 	}
 }
 
@@ -365,7 +389,43 @@ void QuadTreeNode::TraverseTree(std::vector<GameObject*>& gameObjects, Plane * p
 			_children[i]->TraverseTree(gameObjects, planes, nrOfPlanes);
 		}
 	}
-	
+
+}
+
+void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, glm::vec3 & dir, glm::vec3 & origin)
+{
+	if (AABBIntersection(_aabb, dir, origin))
+	{
+		for (int i = 0; i < _objectData.size(); i++)
+		{
+			gameObjects.push_back(_objectData[i]);
+		}
+		if (_children[0] != nullptr)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_children[i]->QuadTreeTest(gameObjects, dir, origin);
+			}
+		}
+	}
+}
+
+void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, glm::vec3 & dir, glm::vec3 & origin, float distance)
+{
+	if (AABBIntersection(_aabb, dir, origin, distance) || PointInsideAABB(_aabb, origin))
+	{
+		for (int i = 0; i < _objectData.size(); i++)
+		{
+			gameObjects.push_back(_objectData[i]);
+		}
+		if (_children[0] != nullptr)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_children[i]->QuadTreeTest(gameObjects, dir, origin);
+			}
+		}
+	}
 }
 
 void QuadTreeNode::deleteTree()

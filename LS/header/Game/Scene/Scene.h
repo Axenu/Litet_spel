@@ -55,7 +55,7 @@ public:
 	*/
 	void fetchDrawables(DrawFrame &dF);
 
-	int loot(int pickDist);
+	int loot(float pickDist);
 
 	void initQuadTree(AABB &aabb);
 

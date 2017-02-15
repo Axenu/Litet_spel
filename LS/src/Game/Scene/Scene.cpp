@@ -122,15 +122,18 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 }
 
 
-int Scene::loot(int pickDist)
+int Scene::loot(float pickDist)
 {
 	float testDist;
 	std::vector<int> indices;
 	std::vector<float> distance;
+	std::vector<GameObject*> pickList;
+	_quadTree.QuadTreeTest(pickList, glm::vec3(_cam->getLookAt()), glm::vec3(_cam->getWorldPos()), pickDist);
+
 	//Sorting out objects close enough to cam
-	for (unsigned int i = 0; i < _staticObjects.size(); i++)
+	for (unsigned int i = 0; i < pickList.size(); i++)
 	{
-		testDist = _cam->getDistance(*_staticObjects[i]);
+		testDist = _cam->getDistance(*pickList[i]);
 		if (testDist < pickDist)
 		{
 			indices.push_back(i);
@@ -161,15 +164,15 @@ int Scene::loot(int pickDist)
 	int value = 0;
 	for (unsigned int i = 0; i < indices.size(); i++)
 	{
-		if (nullptr != dynamic_cast<PointLightObject*> (_staticObjects[indices[i]]))
+		if (nullptr != dynamic_cast<PointLightObject*> (pickList[indices[i]]))
 		{
 			//If it is a pointlight dont regard it as a hit and continue with the next object in the list
 			continue;
 		}
-		picked = _staticObjects[indices[i]]->pick(*_cam);
+		picked = pickList[indices[i]]->pick(*_cam);
 		if (picked)
 		{
-			LootObject* tmpObj = dynamic_cast<LootObject*> (_staticObjects[indices[i]]);
+			LootObject* tmpObj = dynamic_cast<LootObject*> (pickList[indices[i]]);
 			if (tmpObj == nullptr)
 			{
 				break;

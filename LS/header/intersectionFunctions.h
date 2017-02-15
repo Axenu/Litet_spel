@@ -25,7 +25,13 @@ bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::v
 
 bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::vec3 origin, glm::vec3 dir, glm::vec3& point);
 
-bool AABBIntersection(AABB &aabb, glm::vec3, glm::vec3);
+bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin);
+
+bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin, float distance); 
+
+float AABBIntersectionDistance(AABB &aabb, glm::vec3 dir, glm::vec3 origin);
+
+bool PointInsideAABB(AABB &aabb, glm::vec3 point);
 
 PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBmax, glm::vec3 pNormal, float pDistance);
 
