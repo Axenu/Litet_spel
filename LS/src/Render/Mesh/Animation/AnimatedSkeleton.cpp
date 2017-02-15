@@ -20,7 +20,7 @@ void AnimatedSkeleton::update(float dT) {
 			loopRefit(); //Loop
 
 		//Update keys if necessary
-		for (int i = 0; i < boneCount(); i++) {
+		for (unsigned int i = 0; i < boneCount(); i++) {
 			if (_toKeys[i]._time < _elapAnimTime)
 				nextKey(i);
 		}
