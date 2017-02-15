@@ -158,6 +158,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\Objects\AntiLightGrenade.cpp" />
+    <ClCompile Include="src\Game\Scene\QuadTree.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\AnimatedSkeleton.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\KeyFrame.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\Animation.cpp" />
@@ -225,6 +227,8 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Game\Objects\AntiLightGrenade.h" />
+    <ClInclude Include="header\Game\Scene\QuadTree.h" />
     <ClInclude Include="header\Render\Mesh\Animation\AnimatedSkeleton.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Animation.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Bone.h" />
