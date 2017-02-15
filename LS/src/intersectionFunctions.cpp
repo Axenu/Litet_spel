@@ -194,3 +194,138 @@ bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin)
 
 	return true;
 }
+
+bool AABBIntersection(AABB & aabb, glm::vec3 dir, glm::vec3 origin, float distance)
+{
+	float test = AABBIntersectionDistance(aabb, dir, origin);
+	if (test < 0)
+	{
+		return false;
+	}
+	else if (test >= distance)
+	{
+		return false;
+	}
+	return false;
+}
+
+float AABBIntersectionDistance(AABB & aabb, glm::vec3 dir, glm::vec3 origin)
+{
+	glm::vec3 min = aabb.getMin();
+	glm::vec3 max = aabb.getMax();
+
+	float tx1 = (min.x - origin.x) / dir.x;
+	float tx2 = (max.x - origin.x) / dir.x;
+
+	float tmin = glm::min(tx1, tx2);
+	float tmax = glm::max(tx1, tx2);
+
+	if (tmax < 0)
+	{
+		return -1;
+	}
+
+	float ty1 = (min.y - origin.y) / dir.y;
+	float ty2 = (max.y - origin.y) / dir.y;
+
+	float tymin = glm::min(ty1, ty2);
+	float tymax = glm::max(ty1, ty2);
+
+	if ((tmin > tymax) || (tymin > tmax))
+	{
+		return -1;
+	}
+
+	tmin = glm::max(tmin, tymin);
+	tmax = glm::min(tmax, tymax);
+	if (tmax < 0)
+	{
+		return -1;
+	}
+
+	float tz1 = (min.z - origin.z) / dir.z;
+	float tz2 = (max.z - origin.z) / dir.z;
+
+	float tzmin = glm::min(tz1, tz2);
+	float tzmax = glm::max(tz1, tz2);
+
+	if ((tmin > tymax) || (tymin > tmax))
+	{
+		return -1;
+	}
+
+	tmin = glm::max(tmin, tzmin);
+	tmax = glm::min(tmax, tzmax);
+
+	if (tmax < 0)
+	{
+		return -1;
+	}
+
+	if (tmax < tmin)
+	{
+		return -1;
+	}
+
+	if (tmin > 0)
+	{
+		return tmin;
+	}
+
+	return tmax;
+}
+
+bool PointInsideAABB(AABB & aabb, glm::vec3 point)
+{
+	glm::vec3 max = aabb.getMax();
+	glm::vec3 min = aabb.getMin();
+
+	if (min.x < point.x && min.y < point.y && min.z < point.z)
+	{
+		if (point.x < max.x && point.y < max.y && point.z < max.z)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBMax, glm::vec3 pNormal, float pDistance)
+{
+	glm::vec3 c;
+	c.x = (BBMax.x + BBMin.x) / 2;
+	c.y = (BBMax.y + BBMin.y) / 2;
+	c.z = (BBMax.z + BBMin.z) / 2;
+
+	glm::vec3 h;
+	h.x = (BBMax.x - BBMin.x) / 2;
+	h.y = (BBMax.y - BBMin.y) / 2;
+	h.z = (BBMax.z - BBMin.z) / 2;
+
+	float e = h.x*abs(pNormal.x) + h.y*abs(pNormal.y) + h.z*abs(pNormal.z);
+
+	float s = c.x*pNormal.x + c.y*pNormal.y + c.z*pNormal.z + pDistance;
+
+	if (s - e > 0)
+	{
+		return PlaneResult::Outside;
+	}
+	else if (s + e < 0)
+	{
+		return PlaneResult::Inside;
+	}
+	return PlaneResult::Intersecting;
+}
+
+PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBmax, const Plane & plane)
+{
+	return BBPlaneTest(BBMin, BBmax, plane.normal, plane.distance);
+}
+
+PlaneResult BBPlaneTest(const AABB & aabb, const Plane & plane)
+{
+	return BBPlaneTest(aabb.getMin(), aabb.getMax(), plane.normal, plane.distance);
+}
+

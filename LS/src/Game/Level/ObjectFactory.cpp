@@ -19,7 +19,8 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box) {
 
 Level* ObjectFactory::createLevel(const std::string &level) {
 	_level = new Level(_path + level, _events, _meshShader);
-	_scene.add(_level);
+	_scene.initQuadTree(_level->getAABB());
+	_scene.add(_level, false);
 	return _level;
 }
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
@@ -28,7 +29,7 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
 	player->setLevel(&_level->getGrid());
 	player->setScene(&_scene);
 	_scene.getCamera().setParent(player);
-	_scene.add(player);
+	_scene.add(player, true);
 	return player;
 }
 Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, Character& player) {
@@ -38,7 +39,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	Guard* guard = new Guard(&player, &_events, tmpModel, &_level->getGrid());
 	guard->setLevel(&_level->getGrid());
 	guard->StartGridBuild();
-	_scene.add(guard);
+	_scene.add(guard, true);
 
 	return guard;
 }
@@ -48,7 +49,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
-	_scene.add(object);
+	_scene.add(object, false);
 	return object;
 }
 LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
@@ -59,19 +60,19 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 	object->setPosition(pos);
-	_scene.add(object);
+	_scene.add(object, false);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square) {
 	AABB box;
 	light._pos += calcPos(square, box);
 	PointLightObject* object = new PointLightObject(light, nullptr);
-	_scene.add(object);
+	_scene.add(object, false);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent) {
 	PointLightObject* object = new PointLightObject(light, parent);
-	_scene.add(object);
+	_scene.add(object, true);
 	return object;
 }
 

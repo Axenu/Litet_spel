@@ -151,6 +151,7 @@ Mesh::Mesh(Mesh &&move)
 	: _position(std::move(move._position)), _indices(std::move(move._indices)), _VA(std::move( move._VA))
 {
 	move._VA = 0;
+	_aabb = move._aabb;
 }
 /* Move the data
 */
