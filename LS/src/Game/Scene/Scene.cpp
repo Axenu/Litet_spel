@@ -40,7 +40,7 @@ Camera& Scene::getCamera() {
 */
 void Scene::add(GameObject *object, bool dynamic) {
 	//If object has no parent set the scene as the root.?
-	if (object->_type == type::GameObjectType::Static)
+	if (!dynamic)
 	{
 		if (!object->getParent())
 			object->setParent(&_root);
