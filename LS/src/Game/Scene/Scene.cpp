@@ -40,14 +40,7 @@ Camera& Scene::getCamera() {
 */
 void Scene::add(GameObject *object, bool dynamic) {
 	//If object has no parent set the scene as the root.?
-	if (dynamic)
-	{
-		if (!object->getParent())
-			object->setParent(&_root);
-		object->update(0.0f);
-		_dynamicObjects.push_back(std::move(object));
-	}
-	else
+	if (object->_type == type::GameObjectType::Static)
 	{
 		if (!object->getParent())
 			object->setParent(&_root);
@@ -56,6 +49,13 @@ void Scene::add(GameObject *object, bool dynamic) {
 		//adds the object to the QuadTree
 		_quadTree.AddObjects(object);
 		_staticObjects.push_back(std::move(object));
+	}
+	else
+	{
+		if (!object->getParent())
+			object->setParent(&_root);
+		object->update(0.0f);
+		_dynamicObjects.push_back(std::move(object));
 	}
 
 }

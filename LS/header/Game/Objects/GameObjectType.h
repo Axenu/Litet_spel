@@ -7,6 +7,7 @@ namespace type {
 	enum GameObjectType {
 		Empty = 0,
 		Doodad = 1,
+		Static = 2,
 		PointLight = 5
 	};
 }

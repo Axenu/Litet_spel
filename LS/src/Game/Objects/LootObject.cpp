@@ -6,13 +6,13 @@ LootObject::LootObject()
 }
 
 LootObject::LootObject(Model & m)
-	:GameObject(m)
+	:StaticGameObject(m)
 {
 	_value = 50;
 }
 
 LootObject::LootObject(Model & m, int val)
-	: GameObject(m)
+	:StaticGameObject(m)
 {
 	_value = val;
 }
@@ -46,5 +46,5 @@ int LootObject::getValue()
 
 void LootObject::update(float dt)
 {
-	GameObject::update(dt);
+	StaticGameObject::update(dt);
 }

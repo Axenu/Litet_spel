@@ -4,6 +4,11 @@ GameObject::GameObject()
 	: Node(), _model(), _type(type::Empty)
 {
 }
+GameObject::GameObject(type::GameObjectType type)
+	:Node(), _model(), _type(type)
+{
+	
+}
 GameObject::GameObject(Model &m)
 	: GameObject(m, type::Doodad) {
 }

@@ -15,6 +15,7 @@ public:
 	const type::GameObjectType _type;
 
 	GameObject();
+	GameObject(type::GameObjectType type);
 	GameObject(Node* parent, const glm::vec3 &pos, type::GameObjectType type);
 	/* Create a doodad object
 	*/

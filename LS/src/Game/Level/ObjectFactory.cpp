@@ -63,6 +63,7 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 	object->setPosition(pos);
+	object->init();
 	_scene.add(object, false);
 	return object;
 }
