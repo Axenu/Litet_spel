@@ -4,10 +4,6 @@
 GraphicsResource::GraphicsResource(gl::DefferredSettings &setting)
 : _quad(), _deferred(setting)
 {
-	// for (int i = 0; i < 8; i++)
-	// {
-	// 	_shadowMap[i].resize(SHADOW_WIDTH, SHADOW_HEIGHT);
-	// }
 }
 GraphicsResource::~GraphicsResource()
 {

@@ -2,6 +2,7 @@
 #include "../QuadShader.h"
 #include "gl/GLFunctions.h"
 #include "Game/camera.h"
+#include <glm/gtx/string_cast.hpp>
 
 
 	/* The shader implementation rendering the pre-generated
@@ -16,14 +17,14 @@ class RenderDeferred :
 	const static unsigned int MAXLIGHTCOUNT = 8;
 
 	//Calculation uniforms:
-	GLint _screenInv, _near, _far, _right, _top;
+	GLint _screenInv, _near, _far, _right, _top, _viewMatrixLocation, _camPosLocation;
 	//Light uniforms
 	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
 
 protected:
 
 	virtual bool acquireUniforms();
-	virtual void assignUniforms(RenderInfo &fD);
+	virtual void assignUniforms(RenderInfo &rI);
 
 public:
 	RenderDeferred(const gl::RenderQuad& quad);

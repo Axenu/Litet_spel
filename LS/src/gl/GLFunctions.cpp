@@ -332,6 +332,8 @@ namespace gl {
 		glAttachShader(shaderProgramID, gs);
 		glAttachShader(shaderProgramID, vs);
 		glLinkProgram(shaderProgramID);
+		//test if linking failed
+		debugShaderLinking(shaderProgramID);
 
 		return true;
 		//return debugShaderProgram(shaderProgramID);
@@ -354,6 +356,8 @@ namespace gl {
 		glAttachShader(shaderProgramID, fs);
 		glAttachShader(shaderProgramID, vs);
 		glLinkProgram(shaderProgramID);
+		//test if linking failed
+		debugShaderLinking(shaderProgramID);
 
 		return true;
 		//return debugShaderProgram(shaderProgramID);

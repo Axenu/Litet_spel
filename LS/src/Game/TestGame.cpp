@@ -30,7 +30,7 @@ void TestGame::initiate()
 	PointLight l(glm::vec3(0.0f), glm::vec3(0.6f), glm::vec3(0.7f), 5.0f);
 	_factory.createLight(l, player);
 	l = PointLight(glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.8f, 0.5f, 0.5f), glm::vec3(1.0f), 3.0f);
-	_factory.createLight(l, glm::ivec2(4, 5));
+	_factory.createLight(l, glm::ivec2(1, 1));
 	_factory.createLight(l, glm::ivec2(12, 7));
 	_factory.createLight(l, glm::ivec2(5, 15));
 	_factory.createLight(l, glm::ivec2(25, 7));

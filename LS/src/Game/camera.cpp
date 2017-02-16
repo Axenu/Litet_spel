@@ -5,7 +5,7 @@ Camera::Camera() {
 }
 
 Camera::Camera(float fov, float aspect, float near, float far) {
-    _fieldOfView = fov;
+    _fieldOfView = glm::radians(fov);
     _aspectRatio = aspect;
     _nearPlane = near;
     _farPlane = far;
@@ -21,7 +21,7 @@ Camera::Camera(float fov, int width, int height, float near, float far) {
     _height = (float)height;
     _nearPlane = near;
     _farPlane = far;
-    _fieldOfView = fov;
+    _fieldOfView = glm::radians(fov);
     _aspectRatio = _width/_height;
 	_position = glm::vec3(0.0f, 0.0f, 0.0f);
 	_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -44,7 +44,7 @@ void Camera::update(float dT) {
 
 void Camera::initProjection()
 {
-	_projectionMatrix = glm::perspective(degreesToRadians(_fieldOfView), _aspectRatio, _nearPlane, _farPlane);
+	_projectionMatrix = glm::perspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane);
 }
 
 const glm::mat4 &Camera::getViewMatrix() const

@@ -11,7 +11,6 @@ struct PointLight {
 	float _fadeDist;
 	glm::vec4 _diffuse, _specular;
 	glm::mat4 _shadowMatrices[6];
-	float _shadowDepth;
 	GLfloat _shadowAspect;
 	glm::mat4 _shadowProj;
 	PointLight()
@@ -20,9 +19,9 @@ struct PointLight {
 
 	}
 	PointLight(glm::vec3 pos, glm::vec3 diffuse, glm::vec3 specular, float fadeDist)
-		: _pos(pos), _fadeDist(fadeDist), _diffuse(diffuse, 0.0f), _specular(specular, 0.0f), _shadowDepth(10.0f), _shadowAspect(1.0f)
+		: _pos(pos), _fadeDist(fadeDist), _diffuse(diffuse, 0.0f), _specular(specular, 0.0f), _shadowAspect(1.0f)
 	{
-		_shadowProj = glm::perspective(glm::radians(90.0f), _shadowAspect, 0.0f, _shadowDepth);
+		_shadowProj = glm::perspective(glm::radians(90.0f), _shadowAspect, 0.0f, _fadeDist);
 		updateMatrices();
 	}
 	void updateMatrices()
