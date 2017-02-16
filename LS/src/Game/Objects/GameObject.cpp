@@ -29,14 +29,17 @@ void GameObject::update(float dt)
 void GameObject::setModel(Model &m) {
 	_model = m;
 }
+void GameObject::setModelAABB(const AABB & aabb)
+{
+	_model.setAABB(aabb);
+}
 const Model& GameObject::getModel() {
 	return _model;
 }
 
-
-const glm::mat4& GameObject::getModelMatrix()
+AABB GameObject::getAABB()
 {
-	return _modelMatrix;
+	return _model.getBox().transform(_modelMatrix);
 }
 
 bool GameObject::pick(glm::vec4 origin, glm::vec4 dir)

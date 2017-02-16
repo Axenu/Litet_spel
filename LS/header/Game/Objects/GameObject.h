@@ -23,8 +23,9 @@ public:
 	virtual ~GameObject();
 	virtual void update(float dt);
 	void setModel(Model &m);
+	void setModelAABB(const AABB &aabb);
 	const Model& getModel();
-	const glm::mat4& getModelMatrix();
+	AABB getAABB();
 	bool pick(glm::vec4 origin, glm::vec4 dir);
 	bool pick(Camera &cam);
 	/* Add the object to the frame

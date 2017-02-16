@@ -19,8 +19,8 @@ void TestGame::initiate() {
 	_player = player;
 	std::vector<glm::vec3>* pGuardPosList = level->getGrid().getGuardLocations();
 	int sizesaved = pGuardPosList->size();
-	for(unsigned int i = 0;i<sizesaved;i++)
-	_factory.createGuard("goombamask.obj", glm::ivec2(2, 2), *player);
+	for(int i = 0;i<sizesaved;i++)
+	_factory.createGuard("cube.obj", glm::ivec2(2, 2), *player);
 
 
 	_factory.createObject("Table.obj", glm::ivec2(3, 1));

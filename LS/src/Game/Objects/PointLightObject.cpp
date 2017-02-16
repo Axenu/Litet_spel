@@ -12,7 +12,9 @@ PointLightObject::PointLightObject(const PointLight &light)
 }
 PointLightObject::PointLightObject(const PointLight &light, Node *parent)
 	: GameObject(parent, light._pos, type::PointLight), _lightInfo(light) {
-
+	//Creates the point light aabb
+	AABB aabb(glm::vec3(-light._fadeDist), glm::vec3(light._fadeDist));
+	GameObject::setModelAABB(aabb);
 }
 
 PointLightObject::~PointLightObject() {

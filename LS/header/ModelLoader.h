@@ -12,15 +12,16 @@
 #include "Render/Mesh/Mesh.h"
 #include "Render/Mesh/Material.h"
 
+/* Forward declare
+*/
+struct ModelConstruct;
+
+/* Maximum number of weights per vertex
+*/
+const static int MAX_BONEWEIGHTS = 4;
+
 class ModelLoader
 {
-private:
-	void LoadModel(std::string&, MeshShader *shader);
-	ModelPart ProcessMesh(aiMesh*, const aiScene*, std::string&, MeshShader *shader);
-	void ProcessNode(aiNode*, const aiScene*, std::string&, MeshShader *shader, std::vector<ModelPart> &);
-
-	std::vector<Model*> _models;
-	std::vector<Mesh*> _mesh;
 public:
 	ModelLoader();
 	ModelLoader(const ModelLoader&);
@@ -28,4 +29,13 @@ public:
 	Model GetModel(std::string, Material &material);
 	Model GetModel(std::string, MeshShader *shader);
 
+private:
+
+	void LoadModel(std::string&, MeshShader *shader);
+	void ProcessMesh(aiMesh*, const aiScene*, std::string&, ModelConstruct& construct);
+	void ProcessNode(aiNode*, const aiScene*, std::string&, ModelConstruct& construct);
+	void ProcessBones(aiNode* node, const aiScene* scene, ModelConstruct& construct);
+
+	std::vector<Model*> _models;
+	std::vector<Mesh*> _mesh;
 };

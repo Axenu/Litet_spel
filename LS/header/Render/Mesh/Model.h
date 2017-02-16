@@ -28,6 +28,7 @@ public:
 	bool pick(glm::vec3 origin, glm::vec3 dir);
 	void setName(std::string &name);
 	void setMaterial(Material &mat);
+	void setAABB(const AABB &aabb);
 	std::string getName();
 	/* Update model boxes from model space
 	*/

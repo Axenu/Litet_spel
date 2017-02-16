@@ -13,14 +13,14 @@ class Mesh
 {
 private:
 	std::vector<glm::vec3> _position;
-	std::vector<glm::vec3> _normal;
 	std::vector<GLuint> _indices;
 	gl::VAData _VA;
 	AABB _aabb;
-	void setUpMesh();
+	void setUpMesh(const std::vector<glm::vec3> &normals);
 public:
 	Mesh();
 	Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> &normal, const std::vector<GLuint> &indices);
+	Mesh(std::vector<glm::vec3> &position, std::vector<GLuint> &indices, gl::VAData &vaData);
 	~Mesh();
 	/* Move the data
 	*/

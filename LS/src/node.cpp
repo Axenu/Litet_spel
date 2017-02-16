@@ -216,10 +216,13 @@ glm::vec3 Node::getRotation() const {
     return _rotation;
 }
 
+const glm::mat4& Node::getModelMatrix()
+{
+	return _modelMatrix;
+}
 glm::vec4 Node::getWorldPos() const
 {
 	return _modelMatrix[3];
-
 }
 
 float Node::getDistance(Node const & other) const
