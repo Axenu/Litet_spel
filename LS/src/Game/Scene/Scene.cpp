@@ -164,7 +164,7 @@ int Scene::loot(float pickDist)
 	int value = 0;
 	for (unsigned int i = 0; i < indices.size(); i++)
 	{
-		if (nullptr != dynamic_cast<PointLightObject*> (pickList[indices[i]]))
+		if (pickList[indices[i]]->_type == type::GameObjectType::PointLight)
 		{
 			//If it is a pointlight dont regard it as a hit and continue with the next object in the list
 			continue;
