@@ -220,20 +220,22 @@ bool Guard::walkingInThePaths(float dt)
 
 			//float angle = acos(glm::dot(_forward, glm::vec3(difference.x, 0.0f, difference.y)));
 
+			//std::cout << "(" << _forward.x << ", " << _forward.y << ")" << std::endl;
+
+			_forward = glm::vec3(difference.x, 0.0f, difference.y);
+
 			float angle = acos(_forward.z);
 
-			if (signbit(_forward.x))
+			if ( _forward.x < 0.f)
 			{
-				angle *= -1.f;
+				angle = M_2PIf - angle;
 			}
 
-			_currentRot += angle;
+			_currentRot = angle;
 
 			//std::cout << _currentRot << std::endl;
 
 			setRX(_currentRot);
-
-			_forward = glm::vec3(difference.x, 0.0f, difference.y);
 		}
 		_currentPath.erase(_currentPath.begin() + _currentPath.size() - 1);
 	}
