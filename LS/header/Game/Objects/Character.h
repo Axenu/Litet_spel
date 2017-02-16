@@ -35,11 +35,12 @@ public:
 
 	void setLevel(Grid *level);
 	void setScene(Scene *scene);
-
 	void move(float dT);
 	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);
+	Character(glm::vec3 pos, EventManager *manager,Model &m);
+
     Character();
     virtual ~Character();
 private:
@@ -50,7 +51,7 @@ private:
 	GridSquare _gridSquare;
     glm::vec3 _direction;
     glm::vec3 _velocity;
-	AntiLightGrenade _antiLightGrenade;
+	AntiLightGrenade* _antiLightGrenade;
     float _speed;
     float _isMoving;
     int _lootValue;

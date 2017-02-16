@@ -31,6 +31,7 @@ public:
 
 	Level* createLevel(const std::string &level);
 	Character* createCharacter(glm::ivec2 square, float height);
+	Character* createCharacter(glm::ivec2 square, float height, const std::string &model);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player);
 
 

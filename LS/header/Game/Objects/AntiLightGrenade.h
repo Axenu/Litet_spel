@@ -8,12 +8,17 @@
 class AntiLightGrenade : GameObject
 {
 private:
-	float fallspeed;
-	float velocity;
-	bool QBeenPressed = false;
+
+float _fallspeed= 0.1f;
+float _velocity=0.4f;
+glm::vec3 _direction;
+bool QBeenPressed = true;
+bool QbeenActivated = false;
+glm::vec3 movement;
 public:
+
 virtual	void update(float dt);
-AntiLightGrenade();
+AntiLightGrenade(Model & m);
 ~AntiLightGrenade();
-void ThrowTheLightgrenade(glm::vec2 CharacterPositions);
+void ThrowTheLightgrenade(glm::vec3 CharacterPositions,glm::vec3 Direction);
 };
