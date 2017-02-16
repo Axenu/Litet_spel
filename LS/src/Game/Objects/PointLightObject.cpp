@@ -21,7 +21,7 @@ PointLightObject::~PointLightObject() {
 }
 
 void PointLightObject::update(float dT) {
-	Node::update(dT);
+	GameObject::update(dT);
 	_lightInfo._pos = _modelMatrix[3];
 }
 

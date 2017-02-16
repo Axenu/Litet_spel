@@ -33,6 +33,8 @@ public:
 	virtual void addToFrame(DrawFrame &dF);
 private:
 	Model _model;
+protected:
+	AABB _worldAABB;
 };
 
 

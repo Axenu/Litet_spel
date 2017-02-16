@@ -17,7 +17,5 @@ public:
 	virtual void update(float);
 private:
 	int _value;
-	float _rotX;
-	float _totRotX;
 
 };
