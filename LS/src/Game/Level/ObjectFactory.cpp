@@ -41,6 +41,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	Guard* guard = new Guard(&player, &_events, tmpModel, &_level->getGrid());
 	guard->setLevel(&_level->getGrid());
 	guard->StartGridBuild();
+	guard->setScale(0.00625f);
 	_scene.add(guard, true);
 
 	return guard;
