@@ -9,7 +9,7 @@
 #include <time.h>
 #include "intersectionFunctions.h"
 
-#define GUARDVIEWDISTANCE 5.f
+#define GUARDVIEWDISTANCE 3.f
 
 class Guard : public GameObject
 {
@@ -34,6 +34,7 @@ private:
 	float _currentGridSpace;
 	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();
+	float _currentRot = 0.f; //deans kod
 
 public:
 	virtual ~Guard();

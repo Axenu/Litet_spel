@@ -202,6 +202,7 @@ bool Guard::walkingInThePaths(float dt)
 		return true;
 	}
 //	glm::ivec2 roundedPosition = roundTheValuefrom0Comma01(this->getWorldPos());¨'
+	
 	glm::vec2 roundedPosition = glm::vec2(this->getWorldPos().x, this->getWorldPos().z);
 	goToSquare(dt, _currentPath[_currentPath.size() - 1]);
 
@@ -209,6 +210,31 @@ bool Guard::walkingInThePaths(float dt)
 	
 	if (roundedPosition == _currentPath[_currentPath.size() - 1])
 	{
+		if (_currentPath.size() > 1)
+		{
+			glm::vec2 currentSquare = _currentPath[_currentPath.size() - 1];
+			glm::vec2 nextSquare = _currentPath[_currentPath.size() - 2];
+
+			glm::vec2 difference = (currentSquare - nextSquare) * -1.f;
+			difference = glm::normalize(difference);
+
+			//float angle = acos(glm::dot(_forward, glm::vec3(difference.x, 0.0f, difference.y)));
+
+			float angle = acos(_forward.z);
+
+			if (signbit(_forward.x))
+			{
+				angle *= -1.f;
+			}
+
+			_currentRot += angle;
+
+			//std::cout << _currentRot << std::endl;
+
+			setRX(_currentRot);
+
+			_forward = glm::vec3(difference.x, 0.0f, difference.y);
+		}
 		_currentPath.erase(_currentPath.begin() + _currentPath.size() - 1);
 	}
 	return false;
@@ -238,6 +264,7 @@ glm::vec2 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
 
 	return returnValue;
 }
+
 Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec3 positonxy[4]) :
 	GameObject(), _player(player), _eventManager(event)
 {
@@ -376,6 +403,7 @@ void Guard::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
 }
+
 void Guard::update(float dt)
 {
 //	_height _width;
@@ -413,7 +441,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_displacement = glm::vec3(0.5f, 0.5f, 0.5f);
 
 	_guardsstartposition = guardStartPosition + _displacement;
-	_guardsstartposition.y = 1.3f;
+	_guardsstartposition.y = 0.8f;
 	_widthLength = gridet->getWidth();
 	_heightLength = gridet->getHeight();
 	
@@ -446,7 +474,6 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 	glm::vec3 distance = walkTo - value;
 	distance = glm::vec3(distance.x, 0, distance.z);
 	_distLength = glm::length(distance);
-	_forward = distance;
 
 //		std::cout << distance.x << " " << distance.z<<" " <<distLength << std::endl;
 
@@ -511,10 +538,8 @@ void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
 	glm::vec3 distance = walkTo - value;
 	distance = glm::vec3(distance.x, 0, distance.z);
 	_distLength = glm::length(distance);
-	_forward = distance;
-
-
-	//		std::cout << distance.x << " " << distance.z<<" " <<distLength << std::endl;
+	//_forward = distance;
+	//std::cout << distance.x << " " << distance.z<<" " <<distLength << std::endl;
 
 
 
