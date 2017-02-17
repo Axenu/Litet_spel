@@ -21,7 +21,7 @@ void AntiLightGrenade::update(float dt)
 		if (this->getPosition().y > 0.15)
 		{
 			glm::vec3 swag = this->getPosition();
-			std::cout << swag.x << "," << swag.y << "," << swag.z << std::endl;
+		//	std::cout << swag.x << "," << swag.y << "," << swag.z << std::endl;
 			this->move(movement*dt);
 		}
 		else

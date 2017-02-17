@@ -132,7 +132,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
+		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
 			_antiLightGrenade->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
 		}
 	}
