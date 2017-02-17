@@ -27,6 +27,7 @@ void Model::render(RenderInfo &fD, glm::mat4 &modelMatrix) const
 void Model::transform(const glm::mat4 &mat) {
 	for (unsigned int i = 0; i < _meshParts.size(); i++)
 		_meshParts[i]._box = _meshParts[i].getMesh().getBox().transform(mat);
+	initAABB();
 }
 const AABB& Model::getBox() const {
 	return _aabb;

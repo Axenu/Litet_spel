@@ -1,5 +1,5 @@
 #pragma once
-#include "../Objects/GameObject.h"
+#include "Game/Objects/StaticGameObject.h"
 #include "GridDataStructure.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "Event/EventManager.h"
@@ -7,7 +7,7 @@
 /* Level struct holding 'all' information about a specific level loaded for a game instance.
 */
 class Level
-	: public GameObject
+	: public StaticGameObject
 {
 private:
 

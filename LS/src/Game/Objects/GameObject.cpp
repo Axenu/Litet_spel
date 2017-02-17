@@ -4,6 +4,11 @@ GameObject::GameObject()
 	: Node(), _model(), _type(type::Empty)
 {
 }
+GameObject::GameObject(type::GameObjectType type)
+	:Node(), _model(), _type(type)
+{
+	
+}
 GameObject::GameObject(Model &m)
 	: GameObject(m, type::Doodad) {
 }
@@ -21,9 +26,14 @@ GameObject::~GameObject()
 
 void GameObject::update(float dt)
 {
-	//_model.transform(_modelMatrix);
 	Node::update(dt);
-	_worldAABB = _model.getBox().transform(_modelMatrix);
+	_model.transform(_modelMatrix);
+}
+
+void GameObject::init()
+{
+	Node::init();
+	_model.transform(_modelMatrix);
 }
 
 
@@ -40,7 +50,7 @@ const Model& GameObject::getModel() {
 
 AABB GameObject::getAABB()
 {
-	return _worldAABB;
+	return _model.getBox();
 }
 
 bool GameObject::pick(glm::vec4 origin, glm::vec4 dir)

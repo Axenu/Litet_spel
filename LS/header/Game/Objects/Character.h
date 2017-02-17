@@ -26,7 +26,6 @@ private:
 class Character : public GameObject
 {
 public:
-    void init();
     virtual void onUpdate(float dt);
     void onRender();
 
