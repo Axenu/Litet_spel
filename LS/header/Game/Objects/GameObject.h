@@ -15,6 +15,7 @@ public:
 	const type::GameObjectType _type;
 
 	GameObject();
+	GameObject(type::GameObjectType type);
 	GameObject(Node* parent, const glm::vec3 &pos, type::GameObjectType type);
 	/* Create a doodad object
 	*/
@@ -22,6 +23,7 @@ public:
 	GameObject(Model &m, type::GameObjectType type);
 	virtual ~GameObject();
 	virtual void update(float dt);
+	virtual void init();
 	void setModel(Model &m);
 	void setModelAABB(const AABB &aabb);
 	const Model& getModel();
