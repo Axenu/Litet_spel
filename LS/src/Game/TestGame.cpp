@@ -15,7 +15,9 @@ TestGame::~TestGame() {
 void TestGame::initiate() {
 
 	Level* level = _factory.createLevel("Demo1.bmp");
-	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
+	AntiLightGrenade* grenade =_factory.createAntiLightGrenade("cube.obj", glm::ivec2(2, 2));
+//	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
+	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f,*grenade);
 	_player = player;
 	std::vector<glm::vec3>* pGuardPosList = level->getGrid().getGuardLocations();
 	int sizesaved = pGuardPosList->size();

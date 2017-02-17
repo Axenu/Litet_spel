@@ -34,6 +34,18 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
 	_scene.add(player, true);
 	return player;
 }
+
+Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade) {
+	
+	Character* player = new Character(_level->getGrid().getCenter(square) + glm::vec3(0.f, height, 0.f), &_events,&grenade);
+	player->setLevel(&_level->getGrid());
+	player->setScene(&_scene);
+	_scene.getCamera().setParent(player);
+	_scene.add(player);
+	return player;
+}
+
+
 Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, Character& player) {
 	Material mat(&_meshShader);
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
@@ -46,6 +58,17 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	_scene.add(guard, true);
 
 	return guard;
+}
+
+AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & model, glm::ivec2 square)
+{
+	Material mat(&_meshShader);
+	mat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	Model tmpModel = _models.GetModel(_path + model, mat);
+	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
+	grenade->setScale(0.25);
+	_scene.add(grenade);
+	return grenade;
 }
 
 
