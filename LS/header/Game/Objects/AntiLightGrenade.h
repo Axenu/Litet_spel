@@ -5,11 +5,11 @@
 #include <time.h>
 #include <iostream>
 #include "GameObject.h"
-class AntiLightGrenade : GameObject
+class AntiLightGrenade : public GameObject
 {
 private:
 
-float _fallspeed= 0.1f;
+float _fallspeed= -0.5f;
 float _velocity=0.4f;
 glm::vec3 _direction;
 bool QBeenPressed = true;

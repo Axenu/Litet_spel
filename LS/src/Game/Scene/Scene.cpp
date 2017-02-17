@@ -39,7 +39,7 @@ void Scene::add(GameObject *object) {
 	//If object has no parent set the scene as the root.?
 	if(!object->getParent())
 		object->setParent(&_root);
-	_objects.push_back(std::move(object));
+	_objects.push_back(object);
 }
 
 void Scene::addNode(Node *object) {

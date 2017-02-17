@@ -39,7 +39,7 @@ public:
 	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);
-	Character(glm::vec3 pos, EventManager *manager,Model &m);
+	Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * grenade);
 
     Character();
     virtual ~Character();

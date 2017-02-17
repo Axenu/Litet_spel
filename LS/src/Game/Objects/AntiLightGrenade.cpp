@@ -16,6 +16,7 @@ void AntiLightGrenade::update(float dt)
 	{
 		movement = (_direction*_velocity);
 		movement = glm::vec3(movement.x, movement.y + _fallspeed, movement.z);
+		glm::vec3 swag = this->getPosition();
 		if(this->getPosition().y>0)
 		{
 		this->move(movement*dt);
