@@ -33,7 +33,7 @@ public:
 	/* Add the object to the frame
 	*/
 	virtual void addToFrame(DrawFrame &dF);
-protected:
+private:
 	Model _model;
 };
 
