@@ -76,7 +76,7 @@ std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 		}
 	}
 	_currentLevel->setvalue((int)guardInGrid.z, (int)guardInGrid.x, 0);
-//	print();
+
 	while (maxValue != 0)
 	{
 		oldMaxValue = maxValue;
@@ -117,8 +117,7 @@ std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 							_currentLevel->setvalue(j, i-1, value + 1); //_levalues[j][i - 1].value = value + 1;
 							maxValue--;
 						}
-//						int mkey = _currentLevel->getvalue(j, i + 1);
-//						_currentLevel->getvalue(j, i + 1);
+
 						if (i == _width - 1)
 						{
 
@@ -148,7 +147,6 @@ std::vector<glm::vec2> Guard::generatingPath(glm::ivec2 GoalPosition)
 			}
 		}
 	}
-//	print();
 
 	std::vector<glm::vec2> path;
 
@@ -201,12 +199,9 @@ bool Guard::walkingInThePaths(float dt)
 	{
 		return true;
 	}
-//	glm::ivec2 roundedPosition = roundTheValuefrom0Comma01(this->getWorldPos());¨'
 	
 	glm::vec2 roundedPosition = glm::vec2(this->getWorldPos().x, this->getWorldPos().z);
 	goToSquare(dt, _currentPath[_currentPath.size() - 1]);
-
-	//	std::cout << "(" << this->getWorldPos().x << ", " << this->getWorldPos().z << "), (" << roundedPosition.x << ", " << roundedPosition.y << "), (" << _currentPath[_currentPath.size() - 1].x << ", " << _currentPath[_currentPath.size() - 1].y << ")" << std::endl;
 	
 	if (roundedPosition == _currentPath[_currentPath.size() - 1])
 	{
@@ -217,10 +212,6 @@ bool Guard::walkingInThePaths(float dt)
 
 			glm::vec2 difference = (currentSquare - nextSquare) * -1.f;
 			difference = glm::normalize(difference);
-
-			//float angle = acos(glm::dot(_forward, glm::vec3(difference.x, 0.0f, difference.y)));
-
-			//std::cout << "(" << _forward.x << ", " << _forward.y << ")" << std::endl;
 
 			_forward = glm::vec3(difference.x, 0.0f, difference.y);
 
@@ -233,51 +224,11 @@ bool Guard::walkingInThePaths(float dt)
 
 			_currentRot = angle;
 
-			//std::cout << _currentRot << std::endl;
-
 			setRX(_currentRot);
 		}
 		_currentPath.erase(_currentPath.begin() + _currentPath.size() - 1);
 	}
 	return false;
-}
-
-glm::vec2 Guard::roundTheValuefrom0Comma01(glm::vec3 normalvalue)
-{
-	glm::vec2 returnValue = glm::vec2(normalvalue.x, normalvalue.z);
-	if (normalvalue.x < (roundf(normalvalue.x*100)/100) - 0.0001f)
-	{
-		returnValue.x = (roundf(normalvalue.x*10)/10);
-	}
-	if (normalvalue.z < (roundf(normalvalue.z * 100) / 100) - 0.0001f)
-	{
-		returnValue.y = (roundf(normalvalue.z*10)/10);
-	}
-	/*
-	if ((-0.01<normalvalue.x && normalvalue.x<-0.001)|| (0.01>normalvalue.x && normalvalue.x > 0.009999999999))
-	{
-		returnValue.x = 0;
-	}
-	if ((-0.01<normalvalue.z && normalvalue.z<-0.001) || (0.01>normalvalue.z && normalvalue.z > 0.0099999999999))
-	{
-		returnValue.y = 0;
-	}
-	*/
-
-	return returnValue;
-}
-
-Guard::Guard(Character* player, EventManager* event, glm::vec3 Guarden, glm::vec3 positonxy[4]) :
-	GameObject(), _player(player), _eventManager(event)
-{
-	_forward = glm::vec3(0.f, 0.f, -1.f);
-	_speed = 0.4f;
-	_displacement = glm::vec3(0.5f, 0.5f, 0.5f);
-	this->setPosition(Guarden);
-	_point1x = positonxy[0];
-	_point2x = positonxy[1];
-	_point1z = positonxy[2];
-	_point2z = positonxy[3];
 }
 
 void Guard::WalkingBetweenFourPoints(float dt)
@@ -349,58 +300,6 @@ void Guard::WalkingBetweenFourPoints(float dt)
 	}
 }
 
-//void Guard::buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY)
-//{
-//	_guardsstartposition = _guardsstartposition - displacement;
-//	_currentGridSpace = gridet->getGridSpace();
-//	unsigned int maxsizewidth = sizeX;
-//	_height = 1, _width = 1;
-//
-//	for (unsigned int i = maxsizewidth; i > 0; i--)
-//	{
-//		if (_guardsstartposition.x >= i && _guardsstartposition.x + i <= _widthLength)
-//		{
-//			_width = i * 2;
-//			break;
-//		}
-//	}
-//	int maxsizeheight = sizeY;
-//	for (unsigned int j = maxsizeheight; j > 0; j--)
-//	{
-//		if (_guardsstartposition.z >= j && _guardsstartposition.z + j <= _heightLength)
-//		{
-//			_height = j * 2;
-//			break;
-//		}
-//	}
-//
-//	//building the 2D array
-//	_levalues = new gridValues*[_height];
-//	for (int j = 0; j < _height; j++)
-//	{
-//		_levalues[j] = new gridValues[_width];
-//	}
-//
-///*	for (int j = 0; j < _height; j++)
-//	{
-//		for (int i = 0; i < _width; i++)
-//		{
-//			_levalues[j][i].type = gridet->returnGridType((int)_guardsstartposition.x + i - (_width / 2), (int)_guardsstartposition.z + j - (_height / 2));
-//			_levalues[j][i].xz = glm::vec2((int)_guardsstartposition.x + i - (_width / 2), (int)_guardsstartposition.z + j - (_height / 2));
-//			if (_levalues[j][i].type == guard)
-//			{
-//				_levalues[j][i].value = 0;
-//			}
-//			else
-//			{
-//				_levalues[j][i].value = -1;
-//			}
-//			//std::cout << levalues[i][j].xz.x << levalues[i][j].xz.y << std::endl;
-//		}
-//	}
-//	*/
-////	print();
-//}
 void Guard::setLevel(Grid *level)
 {
 	this->_currentLevel = level;
@@ -408,13 +307,10 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-//	_height _width;
 	if (walkingInThePaths(dt))
 	{
 		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
 	}
-//	WalkingBetweenFourPoints(dt);
-
 
 	glm::vec3 pos = this->getWorldPos();
 
@@ -443,7 +339,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_displacement = glm::vec3(0.5f, 0.5f, 0.5f);
 
 	_guardsstartposition = guardStartPosition + _displacement;
-	_guardsstartposition.y = 0.8f;
+	_guardsstartposition.y = 1.0f;
 	_widthLength = gridet->getWidth();
 	_heightLength = gridet->getHeight();
 	
@@ -476,10 +372,6 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 	glm::vec3 distance = walkTo - value;
 	distance = glm::vec3(distance.x, 0, distance.z);
 	_distLength = glm::length(distance);
-
-//		std::cout << distance.x << " " << distance.z<<" " <<distLength << std::endl;
-
-
 
 	if (distance.z > 0)
 	{
@@ -529,8 +421,6 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 		this->move(glm::vec3(-_speed, 0, 0) * dt);
 		}
 	}
-
-
 }
 
 void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
@@ -540,11 +430,7 @@ void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
 	glm::vec3 distance = walkTo - value;
 	distance = glm::vec3(distance.x, 0, distance.z);
 	_distLength = glm::length(distance);
-	//_forward = distance;
-	//std::cout << distance.x << " " << distance.z<<" " <<distLength << std::endl;
-
-
-
+	
 	if (distance.z > 0)
 	{
 		if (_distLength < (_speed*dt))
@@ -599,119 +485,92 @@ void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
 bool Guard::DetectedPlayer()
 {
 	glm::vec3 pos = this->getWorldPos();
+	glm::vec3 playerPos = _player->getWorldPos();
+
+	glm::vec3 guardToPlayer = playerPos - pos;
+
+	float playerDist = glm::length(guardToPlayer);
+
+	glm::vec3 upVector(0.f, 1.f, 0.f);
+	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.1f;
 	
-	glm::ivec2 gridPos = _currentLevel->getSquare(pos);
+	glm::vec3 upperLeft = playerPos - rightVector;
+	glm::vec3 upperRight = playerPos + rightVector;
+	glm::vec3 lowerLeft = playerPos - upVector - rightVector;
+	glm::vec3 lowerRight = playerPos - upVector + rightVector;
 
 	bool result = false;
+	unsigned int hitCounter = 0;
+	
+	glm::vec3 rayUpperLeft = glm::normalize(upperLeft - pos);
+	glm::vec3 rayUpperRight = glm::normalize(upperRight - pos);
+	glm::vec3 rayLowerLeft = glm::normalize(lowerLeft - pos);
+	glm::vec3 rayLowerRight = glm::normalize(lowerRight - pos);
 
-	float viewingRange = 0.f;
-	float wallDist = 0.0f;
-	float playerDist = INFINITY;
-
-	glm::vec3 point;
-
-	bool signX = signbit(_forward.x);
-	bool signZ = signbit(_forward.z);
-
-	while (viewingRange < GUARDVIEWDISTANCE)
+	if (acos(glm::dot(rayUpperLeft, _forward)) < GUARDFOV)
 	{
-		if (signX == false)
-		{
-			if (_currentLevel->gettype(gridPos.y, gridPos.x + 1) == wall)
-			{
-				glm::vec3 triangles[6];
-				_currentLevel->getRightQuad(triangles, gridPos.y, gridPos.x);
-
-				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-
-				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-			}
-		}
-		else
-		{
-			if (_currentLevel->gettype(gridPos.y, gridPos.x - 1) == wall)
-			{
-				glm::vec3 triangles[6];
-				_currentLevel->getLeftQuad(triangles, gridPos.y, gridPos.x);
-
-				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-
-				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-			}
-		}
-
-		if (signZ == false)
-		{
-			if (_currentLevel->gettype(gridPos.y + 1, gridPos.x) == wall)
-			{
-				glm::vec3 triangles[6];
-				_currentLevel->getFrontQuad(triangles, gridPos.y, gridPos.x);
-
-				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-
-				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-			}
-		}
-
-		else
-		{
-			if (_currentLevel->gettype(gridPos.y - 1, gridPos.x) == wall)
-			{
-				glm::vec3 triangles[6];
-				_currentLevel->getBackQuad(triangles, gridPos.y, gridPos.x);
-
-				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-
-				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], pos, _forward, point))
-				{
-					wallDist = glm::length(pos - point);
-				}
-			}
-		}
-
-		if (AABBIntersection(AABB(_player->getWorldPos()), _forward, pos))
-		{
-			playerDist = getDistance(*_player);
-		}
-
-		viewingRange += GRIDSPACE;
-		gridPos = _currentLevel->getSquare(pos + glm::normalize(_forward) * viewingRange);
-
-		if (gridPos.x < 1.f || gridPos.x > _width - 1 || gridPos.y < 1.f || gridPos.y > _height - 1)
-		{
-			break;
-		}
+		hitCounter++;
+	}
+	if (acos(glm::dot(rayLowerRight, _forward)) < GUARDFOV)
+	{
+		hitCounter++;
+	}
+	if (acos(glm::dot(rayUpperRight, _forward)) < GUARDFOV)
+	{
+		hitCounter++;
+	}
+	if (acos(glm::dot(rayLowerLeft, _forward)) < GUARDFOV)
+	{
+		hitCounter++;
 	}
 
-	if (wallDist == 0.0f && playerDist < GUARDVIEWDISTANCE)
+
+	if (hitCounter > 2)
 	{
-		result = true;
-	}
-	else if (playerDist < wallDist)
-	{
-		result = true;
+		float wallDist = getWallDist(pos, rayUpperLeft);
+
+		if (playerDist < wallDist)
+		{
+			result = true;
+		}
+
+		else if (wallDist == 0.0f && playerDist < GUARDVIEWDISTANCE)
+		{
+			result = true;
+		}
+
+		wallDist = getWallDist(pos, rayUpperRight);
+
+		if (playerDist < wallDist)
+		{
+			result = true;
+		}
+
+		else if (wallDist == 0.0f && playerDist < GUARDVIEWDISTANCE)
+		{
+			result = true;
+		}
 	}
 
 	return result;
+}
+
+float Guard::getWallDist(glm::vec3 pos, glm::vec3 ray)
+{
+	glm::vec2 rayPos(pos.x, pos.z);
+
+	float viewingRange = 0.f;
+	float wallDist = 0.0f;
+
+	while (viewingRange < 5.f * GRIDSPACE)
+	{
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
+		if (_currentLevel->gettype((int)(floor(rayPos.y)), (int)(floor(rayPos.x))) == wall)
+		{
+			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
+			break;
+		}
+		viewingRange += GRIDSPACE;
+	}
+	return wallDist;
 }
