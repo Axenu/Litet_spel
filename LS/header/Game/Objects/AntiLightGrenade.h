@@ -9,8 +9,8 @@ class AntiLightGrenade : public GameObject
 {
 private:
 
-float _fallspeed= -0.5f;
-float _velocity=0.4f;
+float _fallspeed;
+float _velocity;
 glm::vec3 _direction;
 bool QBeenPressed = true;
 bool QbeenActivated = false;

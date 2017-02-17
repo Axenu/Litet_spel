@@ -1,6 +1,6 @@
 #include "Game/Objects/AntiLightGrenade.h"
 
-AntiLightGrenade::AntiLightGrenade(Model &m) : 
+AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
 
@@ -12,31 +12,38 @@ AntiLightGrenade::~AntiLightGrenade()
 }
 void AntiLightGrenade::update(float dt)
 {
-	if (QBeenPressed == false && QbeenActivated==true)
+	_fallspeed = -0.01f;
+	_velocity = 1.5f;
+	if (QBeenPressed == false && QbeenActivated == true)
 	{
-		movement = (_direction*_velocity);
 		movement = glm::vec3(movement.x, movement.y + _fallspeed, movement.z);
-		glm::vec3 swag = this->getPosition();
-		if(this->getPosition().y>0)
+
+		if (this->getPosition().y > 0.15)
 		{
-		this->move(movement*dt);
+			glm::vec3 swag = this->getPosition();
+			std::cout << swag.x << "," << swag.y << "," << swag.z << std::endl;
+			this->move(movement*dt);
 		}
 		else
 		{
 			QBeenPressed = true;
 			QbeenActivated = false;
 		}
+
 	}
 	GameObject::update(dt);
 }
 void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::vec3 Direction)
 {
-	if(QBeenPressed == true)
+
+	if (QBeenPressed == true)
 	{
-		this->setPosition(CharacterPositions.x,0.5,CharacterPositions.z);
 		_direction = Direction;
-	std::cout << "You pressed Q    "<<CharacterPositions.x<<","<<CharacterPositions.y<<","<<CharacterPositions.z<<" "<< std::endl;
+		this->setPosition(CharacterPositions.x, 1, CharacterPositions.z);
+
+		movement = (_direction*_velocity);
+		//	std::cout << "You pressed Q    "<<CharacterPositions.x<<","<<CharacterPositions.y<<","<<CharacterPositions.z<<" "<< std::endl;
 		QbeenActivated = true;
-	QBeenPressed = false;
+		QBeenPressed = false;
 	}
 }
