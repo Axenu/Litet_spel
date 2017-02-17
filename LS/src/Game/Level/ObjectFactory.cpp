@@ -41,7 +41,7 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiL
 	player->setLevel(&_level->getGrid());
 	player->setScene(&_scene);
 	_scene.getCamera().setParent(player);
-	_scene.add(player);
+	_scene.add(player,true);
 	return player;
 }
 
@@ -67,7 +67,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setScale(0.25);
-	_scene.add(grenade);
+	_scene.add(grenade,true);
 	return grenade;
 }
 
