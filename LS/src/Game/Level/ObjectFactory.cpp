@@ -29,6 +29,7 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
 	Character* player = new Character(_level->getGrid().getCenter(square) + glm::vec3 (0.f, height, 0.f), &_events);
 	player->setLevel(&_level->getGrid());
 	player->setScene(&_scene);
+	player->init();
 	_scene.getCamera().setParent(player);
 	_scene.add(player, true);
 	return player;
