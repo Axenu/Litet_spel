@@ -23,6 +23,7 @@ public:
 	GameObject(Model &m, type::GameObjectType type);
 	virtual ~GameObject();
 	virtual void update(float dt);
+	virtual void init();
 	void setModel(Model &m);
 	void setModelAABB(const AABB &aabb);
 	const Model& getModel();
@@ -32,10 +33,8 @@ public:
 	/* Add the object to the frame
 	*/
 	virtual void addToFrame(DrawFrame &dF);
-private:
-	Model _model;
 protected:
-	AABB _worldAABB;
+	Model _model;
 };
 
 

@@ -8,6 +8,11 @@ AABB::AABB(const glm::vec3& min, const glm::vec3& max)
 }
 AABB::AABB(std::vector<glm::vec3> *position)
 {
+	if ((*position).size() > 0)
+	{
+		_min = (*position)[0];
+		_max = (*position)[0];
+	}
     for (std::vector<glm::vec3>::iterator it = position->begin(); it != position->end(); ++it) {
         _min.x = std::min(_min.x, it->x);
         _min.y = std::min(_min.y, it->y);

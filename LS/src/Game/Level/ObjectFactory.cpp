@@ -19,6 +19,7 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box) {
 
 Level* ObjectFactory::createLevel(const std::string &level) {
 	_level = new Level(_path + level, _events, _meshShader);
+	_level->init();
 	_scene.initQuadTree(_level->getAABB());
 	_scene.add(_level, false);
 	return _level;
@@ -40,6 +41,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	guard->setLevel(&_level->getGrid());
 	guard->StartGridBuild();
 	guard->setScale(0.00625f);
+	guard->init();
 	_scene.add(guard, true);
 
 	return guard;
@@ -50,6 +52,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
+	object->init();
 	_scene.add(object, false);
 	return object;
 }
@@ -69,12 +72,13 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	AABB box;
 	light._pos += calcPos(square, box);
 	PointLightObject* object = new PointLightObject(light, nullptr);
-	object->update(0.0f);
+	object->init();
 	_scene.add(object, false);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent) {
 	PointLightObject* object = new PointLightObject(light, parent);
+	object->init();
 	_scene.add(object, true);
 	return object;
 }

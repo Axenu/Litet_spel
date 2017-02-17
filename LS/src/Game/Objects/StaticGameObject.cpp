@@ -21,8 +21,3 @@ void StaticGameObject::update(float dT)
 {
 
 }
-
-void StaticGameObject::init()
-{
-	GameObject::update(0.0f);
-}

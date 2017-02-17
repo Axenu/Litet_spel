@@ -9,5 +9,4 @@ public:
 	StaticGameObject(Model &m);
 	virtual ~StaticGameObject();
 	virtual void update(float dT);
-	void init();
 };

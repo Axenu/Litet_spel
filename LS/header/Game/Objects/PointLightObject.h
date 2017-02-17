@@ -16,6 +16,8 @@ public:
 
 	virtual void update(float dT);
 
+	virtual void init();
+
 	/* Add the object to the frame
 	*/
 	virtual void addToFrame(DrawFrame &dF);
