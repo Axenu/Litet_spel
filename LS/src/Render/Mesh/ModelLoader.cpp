@@ -121,7 +121,7 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 	vertexData.push_back(&norm[0]);		//Get normal array start pointer
 
 	//Proess bones & weights
-	std::vector<int> _bones;
+	std::vector<int> bones;
 	std::vector<glm::vec2> weights[MAX_BONEWEIGHTS];
 	if (mesh->HasBones()) {
 		//Init weight buffers
@@ -130,7 +130,7 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 		//Get weights for each bone
 		for (unsigned int bIndex = 0; bIndex < mesh->mNumBones; bIndex++) {
 			aiBone *bone = mesh->mBones[bIndex];
-			_bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
+			bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
 
 			//Fetch all bone weights
 			for (unsigned int w = 0; w < bone->mNumWeights; w++) {
@@ -156,7 +156,12 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 		vertexData.push_back(&weights[3][0]);
 	}
 	gl::VAData va = gl::generateVAO_SoA(vertexData, attri, pos.size(), &indice[0], sizeof(indice[0]), indice.size()); // Create VAO
-	outMesh = new Mesh(pos, indice, va);
+	if (mesh->HasBones()) {
+		SkeletonPart skel(bones);
+		outMesh = new Mesh(pos, indice, va, skel);
+	}
+	else
+		outMesh = new Mesh(pos, indice, va);
 	_mesh.push_back(outMesh);
 
 	//Get Models material

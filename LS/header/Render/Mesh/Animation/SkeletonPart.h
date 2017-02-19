@@ -14,6 +14,7 @@ private:
 	std::vector<int> _bones;
 public:
 	SkeletonPart();
+	SkeletonPart(std::vector<int> &bones);
 	~SkeletonPart();
 	/* Assemble the mat4 uniform array from the specific skeleton parent
 	*/

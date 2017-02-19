@@ -14,3 +14,10 @@ int ModelConstruct::getBoneIndex(const std::string &name) {
 	}
 	return -1;
 }
+
+
+Skeleton* ModelConstruct::getSkeleton() {
+	Skeleton* skel = new Skeleton(_bones);
+	for (unsigned int i = 0; i < _animations.size(); i++)
+		skel->addAnimation(_animations[i]);
+}

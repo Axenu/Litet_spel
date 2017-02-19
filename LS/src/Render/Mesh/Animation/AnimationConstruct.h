@@ -20,7 +20,7 @@ public:
 	AnimationConstruct(AnimSize size);
 	~AnimationConstruct();
 
-	Animation* generateAnim(const char* name, float duration);
+	std::shared_ptr<Animation> generateAnim(const char* name, float duration);
 
 	void insert(int ch, int nodeCh, float time, const glm::quat &frame);
 	void insert(int ch, int nodeCh, float time, const glm::vec3 &frame);

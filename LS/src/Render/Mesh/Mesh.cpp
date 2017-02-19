@@ -139,7 +139,11 @@ Mesh::Mesh(const std::vector<glm::vec3> &position, const std::vector<glm::vec3> 
 	this->setMesh(position, normal, indices);
 }
 Mesh::Mesh(std::vector<glm::vec3> &position, std::vector<GLuint> &indices, gl::VAData &vaData)
-	: _position(std::move(position)), _indices(std::move(indices)), _VA(std::move(vaData)), _aabb(&_position)
+	: _position(std::move(position)), _indices(std::move(indices)), _VA(std::move(vaData)), _aabb(&_position), _skeleton()
+{
+}
+Mesh::Mesh(std::vector<glm::vec3> &position, std::vector<GLuint> &indices, gl::VAData &vaData, SkeletonPart &skeleton)
+	: _position(std::move(position)), _indices(std::move(indices)), _VA(std::move(vaData)), _aabb(&_position), _skeleton(std::move(skeleton))
 {
 }
 Mesh::~Mesh()

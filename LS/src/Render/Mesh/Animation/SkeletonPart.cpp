@@ -3,6 +3,11 @@
 
 
 SkeletonPart::SkeletonPart()
+	: _bones()
+{
+}
+SkeletonPart::SkeletonPart(std::vector<int> &bones) 
+	: _bones(bones) 
 {
 }
 

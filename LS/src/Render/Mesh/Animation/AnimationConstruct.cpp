@@ -14,14 +14,13 @@ AnimationConstruct::~AnimationConstruct()
 	delete[] _data;
 }
 
-
-Animation* AnimationConstruct::generateAnim(const char* name, float duration) {
+std::shared_ptr<Animation> AnimationConstruct::generateAnim(const char* name, float duration) {
 	std::unique_ptr<float> ptr(_data);
 	_data = nullptr;
 	std::vector<Channel> channels(_keys.size());
 	for (unsigned int i = 0; i < _keys.size(); i++)
 		channels[i] = Channel(_keys[i]);
-	return new Animation(name, duration, channels, ptr);
+	return std::shared_ptr<Animation>(new Animation(name, duration, channels, ptr));
 }
 
 void AnimationConstruct::insert(int ch, int nodeCh, float time, const glm::quat &value) {
