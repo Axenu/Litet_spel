@@ -35,6 +35,7 @@ private:
 	void ProcessMesh(aiMesh*, const aiScene*, std::string&, ModelConstruct& construct);
 	void ProcessNode(aiNode*, const aiScene*, std::string&, ModelConstruct& construct);
 	void ProcessBones(aiNode* node, const aiScene* scene, ModelConstruct& construct);
+	void ProcessAnimations(const aiScene* scene, ModelConstruct& construct);
 
 	std::vector<Model*> _models;
 	std::vector<Mesh*> _mesh;

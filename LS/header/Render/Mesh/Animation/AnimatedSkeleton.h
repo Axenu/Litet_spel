@@ -3,6 +3,7 @@
 #include "node.h"
 #include "Bone.h"
 #include "Skeleton.h"
+#include "BoneFrame.h"
 
 class AnimatedSkeleton
 {
@@ -10,11 +11,9 @@ private:
 	Skeleton& _ref;
 	Node *_root;
 	Animation *_animation;
-	/* From and to keys determine the currently lerped animations executed on each bone.
-	 * To create a  
+	/* Current keys active in the animation for each channel
 	 */
-	std::vector<KeyFrame> _fromKeys;
-	std::vector<KeyFrame> _toKeys;
+	std::vector<BoneFrame> _channel;
 	/* Time elapsed time of the running animation */
 	float _elapAnimTime;
 	/* Bone transform in model space
@@ -26,10 +25,6 @@ private:
 	
 	/* Recalculates the end time when animation is looped */
 	void loopRefit();
-	/* Update a bone with a new key from the current animation */
-	void nextKey(int bone);
-	/* Loop animation for the keys related to the bone */
-	void loopKey(int bone);
 public:
 	AnimatedSkeleton(Skeleton& ref);
 	~AnimatedSkeleton();

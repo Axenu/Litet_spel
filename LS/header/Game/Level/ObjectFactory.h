@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/Scene/Scene.h"
-#include "ModelLoader.h"
+#include "Render/Mesh/ModelLoader.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "Game/Level/Level.h"
 #include "Game/Objects/LootObject.h"
