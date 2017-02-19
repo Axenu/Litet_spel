@@ -1,10 +1,10 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "GameObject.h"
+#include "Game/Objects/StaticGameObject.h"
 #include "Game/camera.h"
 
-class LootObject : public GameObject
+class LootObject : public StaticGameObject
 {
 public:
 	LootObject();
@@ -17,7 +17,5 @@ public:
 	virtual void update(float);
 private:
 	int _value;
-	float _rotX;
-	float _totRotX;
 
 };

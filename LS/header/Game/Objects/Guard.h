@@ -10,6 +10,7 @@
 #include "intersectionFunctions.h"
 
 #define GUARDVIEWDISTANCE 5.f
+#define GUARDFOV M_PIf / 2.f
 
 class Guard : public GameObject
 {
@@ -34,7 +35,8 @@ private:
 	float _currentGridSpace;
 	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();
-
+	float _currentRot = 0.f; //deans kod
+	float getWallDist(glm::vec3 pos, glm::vec3 ray);
 public:
 	virtual ~Guard();
 	Guard();
@@ -43,13 +45,10 @@ public:
 	void setLevel(Grid *level);
 	std::vector<glm::vec2> generatingPath(glm::ivec2 GoalPosition);
 	bool walkingInThePaths(float dt);
-	glm::vec2 roundTheValuefrom0Comma01(glm::vec3);
-	Guard(Character* player, EventManager* event, glm::vec3 Guarden,glm::vec3 Positonxy[4]);
 	void WalkingBetweenFourPoints(float dt);
 	virtual	void update(float dt);
 	Guard(Character* player, EventManager* event, Model & m, Grid * gridet);
 	int randomgenerator(int randomNumber);
-//	void buildgridarray(Grid * gridet, unsigned int sizeX, unsigned int sizeY);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
 	void goToSquare(float dt, glm::vec2 walkToSquare);

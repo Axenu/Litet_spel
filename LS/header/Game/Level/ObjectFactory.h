@@ -7,6 +7,8 @@
 #include "Game/Objects/PointLightObject.h"
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"
+#include "Game/Objects/AntiLightGrenade.h"
+
 
 /* Factory creating game objects
 */
@@ -31,9 +33,9 @@ public:
 
 	Level* createLevel(const std::string &level);
 	Character* createCharacter(glm::ivec2 square, float height);
+	Character* createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player);
-
-
+	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
 	GameObject* createObject(const std::string &model, glm::ivec2 square);
 	LootObject* createLoot(const std::string &model, glm::vec3 pos);
 	PointLightObject* createLight(PointLight light, glm::ivec2 square);

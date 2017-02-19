@@ -23,6 +23,16 @@ Node::~Node() {
 
 }
 
+void Node::calcModelMatrix()
+{
+	this->_modelMatrix = glm::scale(glm::mat4(), this->_scale);
+	this->_modelMatrix = glm::yawPitchRoll(_rotation.x, _rotation.y, _rotation.z) * this->_modelMatrix;
+	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); 
+	if (this->_parent != nullptr) {
+		this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
+	}
+}
+
 
 void Node::addChild(Node *child) {
 	//Use set child to update child
@@ -80,17 +90,14 @@ void Node::removeChild(Node *node) {
 void Node::update(float dt) {
     if (!_isActive) return;
 	onUpdate(dt);
-	this->_modelMatrix = glm::scale(glm::mat4(), this->_scale);
-	this->_modelMatrix = glm::yawPitchRoll(_rotation.x, _rotation.y, _rotation.z) * this->_modelMatrix;
-	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); //Translate / Move
-	 /*Translate using matrix:
-	  *this->_modelMatrix = glm::translate(glm::mat4(), _position) * this->_modelMatrix;
-	*/
-    if (this->_parent != nullptr) {
-        this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
-    }
+	calcModelMatrix();
     for (Node *Node : _children)
         Node->update(dt);
+}
+
+void Node::init()
+{
+	calcModelMatrix();
 }
 
 void Node::setX(float x) {

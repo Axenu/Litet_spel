@@ -42,6 +42,7 @@ public:
 
     virtual void update(float dt);
     virtual void render(){}
+	virtual void init();
 
 	void setX(float x);
     void setY(float y);
@@ -86,6 +87,7 @@ public:
 
 private:
 	bool _isActive;
+	void calcModelMatrix();
 protected:
 	glm::vec3 _position;
 	glm::vec3 _rotation;

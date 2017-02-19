@@ -40,14 +40,7 @@ Camera& Scene::getCamera() {
 */
 void Scene::add(GameObject *object, bool dynamic) {
 	//If object has no parent set the scene as the root.?
-	if (dynamic)
-	{
-		if (!object->getParent())
-			object->setParent(&_root);
-		object->update(0.0f);
-		_dynamicObjects.push_back(std::move(object));
-	}
-	else
+	if (!dynamic)
 	{
 		if (!object->getParent())
 			object->setParent(&_root);
@@ -56,6 +49,13 @@ void Scene::add(GameObject *object, bool dynamic) {
 		//adds the object to the QuadTree
 		_quadTree.AddObjects(object);
 		_staticObjects.push_back(std::move(object));
+	}
+	else
+	{
+		if (!object->getParent())
+			object->setParent(&_root);
+		object->update(0.0f);
+		_dynamicObjects.push_back(std::move(object));
 	}
 
 }
@@ -164,7 +164,7 @@ int Scene::loot(float pickDist)
 	int value = 0;
 	for (unsigned int i = 0; i < indices.size(); i++)
 	{
-		if (nullptr != dynamic_cast<PointLightObject*> (pickList[indices[i]]))
+		if (pickList[indices[i]]->_type == type::GameObjectType::PointLight)
 		{
 			//If it is a pointlight dont regard it as a hit and continue with the next object in the list
 			continue;

@@ -32,7 +32,7 @@ public:
 	std::string getName();
 	/* Update model boxes from model space
 	*/
-	void transform(const glm::mat4 &mat);
+	void transform(const glm::mat4 &mat); //Transforms the meshparts AABB and then updates Models world AABB
 	const AABB& getBox() const;
 	~Model();
 private:

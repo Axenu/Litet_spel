@@ -31,5 +31,5 @@ void ModelPart::setMaterial(Material & mat)
 
 const AABB & ModelPart::getBox()
 {
-	return _mesh->getBox();
+	return _box;
 }

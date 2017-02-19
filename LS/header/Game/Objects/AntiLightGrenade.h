@@ -1,21 +1,24 @@
 #pragma once
 
 #include "gl/glInclude.h"
-#include "GameObject.h"
-#include "GridDataStructure.h"
-#include "Event/Input/InputManager.h"
-#include "Event/EventManager.h"
-#include "Character.h"
 #include <stdlib.h>
 #include <time.h>
-#include "intersectionFunctions.h"
-
+#include <iostream>
+#include "GameObject.h"
 class AntiLightGrenade : public GameObject
 {
 private:
 
-
+float _fallspeed;
+float _velocity;
+glm::vec3 _direction;
+bool QBeenPressed = true;
+bool QbeenActivated = false;
+glm::vec3 movement;
 public:
-AntiLightGrenade();
+
+virtual	void update(float dt);
+AntiLightGrenade(Model & m);
 ~AntiLightGrenade();
+void ThrowTheLightgrenade(glm::vec3 CharacterPositions,glm::vec3 Direction);
 };
