@@ -30,8 +30,8 @@ void GameObject::init()
 
 void GameObject::update(float dt)
 {
-	_model.transform(_modelMatrix);
 	Node::update(dt);
+	_model.transform(_modelMatrix);
 }
 
 
@@ -48,7 +48,7 @@ const Model& GameObject::getModel() {
 
 AABB GameObject::getAABB()
 {
-	return _model.getBox().transform(_modelMatrix);
+	return _model.getBox();
 }
 
 bool GameObject::pick(glm::vec4 origin, glm::vec4 dir)
