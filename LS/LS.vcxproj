@@ -158,10 +158,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\Mesh\Animation\BoneFrame.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\Channel.cpp" />
     <ClCompile Include="src\Game\Objects\AntiLightGrenade.cpp" />
     <ClCompile Include="src\Game\Objects\StaticGameObject.cpp" />
     <ClCompile Include="src\Game\Scene\QuadTree.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\AnimatedSkeleton.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\AnimationConstruct.cpp" />
+    <ClCompile Include="src\Render\Mesh\Animation\ChannelKeys.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\KeyFrame.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\Animation.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\Skeleton.cpp" />
@@ -185,7 +189,7 @@
     <ClCompile Include="src\gui\Views\HUDView.cpp" />
     <ClCompile Include="src\gui\Views\MainMenuView.cpp" />
     <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
-    <ClCompile Include="src\ModelLoader.cpp" />
+    <ClCompile Include="src\Render\Mesh\ModelLoader.cpp" />
     <ClCompile Include="src\Render\Composition\RenderDefBuffers.cpp" />
     <ClCompile Include="src\intersectionFunctions.cpp" />
     <ClCompile Include="src\Game\Scene\DrawFrame.cpp" />
@@ -228,12 +232,15 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Render\Mesh\Animation\BoneFrame.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\Channel.h" />
     <ClInclude Include="header\Game\Objects\AntiLightGrenade.h" />
     <ClInclude Include="header\Game\Objects\StaticGameObject.h" />
     <ClInclude Include="header\Game\Scene\QuadTree.h" />
     <ClInclude Include="header\Render\Mesh\Animation\AnimatedSkeleton.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Animation.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Bone.h" />
+    <ClInclude Include="header\Render\Mesh\Animation\ChannelKeys.h" />
     <ClInclude Include="header\Render\Mesh\Animation\SkeletonPart.h" />
     <ClInclude Include="header\Factory.h" />
     <ClInclude Include="header\Game\camera.h" />
@@ -253,7 +260,7 @@
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
     <ClInclude Include="header\Event\Input\InputKeyState.h" />
-    <ClInclude Include="header\ModelLoader.h" />
+    <ClInclude Include="header\Render\Mesh\ModelLoader.h" />
     <ClInclude Include="header\Render\Composition\RenderDefBuffers.h" />
     <ClInclude Include="header\gui\Button.h" />
     <ClInclude Include="header\gui\Manager.h" />
@@ -303,6 +310,7 @@
     <ClInclude Include="header\Game\Level\ObjectFactory.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Skeleton.h" />
     <ClInclude Include="header\Render\Mesh\Animation\KeyFrame.h" />
+    <ClInclude Include="src\Render\Mesh\Animation\AnimationConstruct.h" />
     <ClInclude Include="src\Render\Mesh\ModelConstruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

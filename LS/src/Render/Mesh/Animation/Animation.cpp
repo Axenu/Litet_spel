@@ -2,8 +2,8 @@
 
 
 
-Animation::Animation(const std::string &name, float duration, std::vector<std::vector<KeyFrame>> &keys)
-	: _name(name), _duration(duration), _keys(std::move(keys))
+Animation::Animation(const std::string &name, float duration, std::vector<Channel> &channels, std::unique_ptr<float>& data)
+	:  _channels(std::move(channels)), _data(std::move(data)), _name(name), _duration(duration)
 {
 }
 
@@ -12,10 +12,7 @@ Animation::~Animation()
 {
 }
 
-int Animation::goToFrame(int bone, float elapsedTime) {
-	for (unsigned int i = 0; i < _keys[bone].size(); i++) {
-		if (elapsedTime < _keys[bone][i]._time)
-			return i;
-	}
-	return -1;
+
+const Channel& Animation::operator[](unsigned int bone) {
+	return _channels[bone];
 }

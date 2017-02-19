@@ -1,6 +1,7 @@
-#include "../header/ModelLoader.h"
-#include "Render/Mesh/ModelConstruct.h"
+#include "Render/Mesh/ModelLoader.h"
 #include "Render/Mesh/Animation/Skeleton.h"
+#include "ModelConstruct.h"
+#include "Animation/AnimationConstruct.h"
 
 ModelLoader::ModelLoader()
 {
@@ -80,6 +81,7 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 	ModelConstruct construct(shader);
 	ProcessBones(scene->mRootNode, scene, construct); //Find bones
 	ProcessNode(scene->mRootNode, scene, modelName, construct);
+	ProcessAnimations(scene, construct);
 	Model* model = new Model(construct._parts);
 
 	//Assign modelName
@@ -118,9 +120,9 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 	vertexData.push_back(&pos[0]);	//Get position array start pointer
 	vertexData.push_back(&norm[0]);		//Get normal array start pointer
 
-	std::vector<int> _bones;
+	//Proess bones & weights
+	std::vector<int> bones;
 	std::vector<glm::vec2> weights[MAX_BONEWEIGHTS];
-	//Proess bones
 	if (mesh->HasBones()) {
 		//Init weight buffers
 		for (int i = 0; i < 4; i++)
@@ -128,7 +130,7 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 		//Get weights for each bone
 		for (unsigned int bIndex = 0; bIndex < mesh->mNumBones; bIndex++) {
 			aiBone *bone = mesh->mBones[bIndex];
-			_bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
+			bones.push_back(construct.getBoneIndex(bone->mName.C_Str()));
 
 			//Fetch all bone weights
 			for (unsigned int w = 0; w < bone->mNumWeights; w++) {
@@ -154,7 +156,12 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string &m
 		vertexData.push_back(&weights[3][0]);
 	}
 	gl::VAData va = gl::generateVAO_SoA(vertexData, attri, pos.size(), &indice[0], sizeof(indice[0]), indice.size()); // Create VAO
-	outMesh = new Mesh(pos, indice, va);
+	if (mesh->HasBones()) {
+		SkeletonPart skel(bones);
+		outMesh = new Mesh(pos, indice, va, skel);
+	}
+	else
+		outMesh = new Mesh(pos, indice, va);
 	_mesh.push_back(outMesh);
 
 	//Get Models material
@@ -230,5 +237,60 @@ void ModelLoader::ProcessBones(aiNode* node, const aiScene* scene, ModelConstruc
 	for (GLuint i = 0; i < node->mNumChildren; i++)
 	{
 		ProcessBones(node->mChildren[i], scene, construct);
+	}
+}
+
+
+AnimSize ReadAnimData(aiAnimation *anim, ModelConstruct& construct) {
+	AnimSize size;
+	size._numChannels = 0;
+	size._numFloats = 0;
+	size._numNodeChannels = 3;
+	size._numBones = construct._bones.size();
+	for (GLuint ch = 0; ch < anim->mNumChannels; ch++) {
+		aiNodeAnim *channel = anim->mChannels[ch];
+		int bone = construct.getBoneIndex(channel->mNodeName.C_Str());
+		if (bone < 0)
+			return size; //This channel does not animate a bone.
+		size._numChannels++;
+		size._numFloats += 3 * channel->mNumPositionKeys;
+		size._numFloats += 3 * channel->mNumScalingKeys;
+		size._numFloats += 4 * channel->mNumRotationKeys;
+	}
+	return size;
+}
+void ProcessChannel(aiNodeAnim *channel, ModelConstruct& construct, AnimationConstruct& anim) {
+
+	int bone = construct.getBoneIndex(channel->mNodeName.C_Str());
+	if (bone < 0)
+		return; //This channel does not animate a bone.
+
+	for (GLuint i = 0; i < channel->mNumPositionKeys; i++) {
+		aiVectorKey key = channel->mPositionKeys[i];
+		anim.insert(bone, 0, (float)key.mTime, glm::vec3(key.mValue.x, key.mValue.y, key.mValue.z));
+	}
+	for (GLuint i = 0; i < channel->mNumScalingKeys; i++) {
+		aiVectorKey key = channel->mScalingKeys[i];
+		anim.insert(bone, 1, (float)key.mTime, glm::vec3(key.mValue.x, key.mValue.y, key.mValue.z));
+	}
+	for (GLuint i = 0; i < channel->mNumRotationKeys; i++) {
+		aiQuatKey key = channel->mRotationKeys[i];
+		anim.insert(bone, 2, (float)key.mTime, glm::quat(key.mValue.x, key.mValue.y, key.mValue.z, key.mValue.w));
+	}
+}
+
+void ModelLoader::ProcessAnimations(const aiScene* scene, ModelConstruct& construct) {
+	
+	for (GLuint i = 0; i < scene->mNumAnimations; i++) {
+		aiAnimation *anim = scene->mAnimations[i];
+		AnimSize size = ReadAnimData(anim, construct);
+		AnimationConstruct animConst(size);
+
+		float duration = (float)(anim->mDuration * anim->mTicksPerSecond);
+		for (GLuint ch = 0; ch < anim->mNumChannels; ch++) {
+			aiNodeAnim *channel = anim->mChannels[ch];
+			ProcessChannel(channel, construct, animConst);
+		}
+		construct._animations.push_back(animConst.generateAnim(anim->mName.C_Str(), duration));
 	}
 }

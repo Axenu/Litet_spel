@@ -15,14 +15,12 @@ TestGame::~TestGame() {
 void TestGame::initiate() {
 
 	Level* level = _factory.createLevel("Demo1.bmp");
-	AntiLightGrenade* grenade =_factory.createAntiLightGrenade("cube.obj", glm::ivec2(2, 2));
-//	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
-	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f,*grenade);
+	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f);
 	_player = player;
 	std::vector<glm::vec3>* pGuardPosList = level->getGrid().getGuardLocations();
 	int sizesaved = pGuardPosList->size();
 	for(int i = 0;i<sizesaved;i++)
-	_factory.createGuard("goombamask.obj", glm::ivec2(2, 2), *player);
+	_factory.createGuard("Character.dae", glm::ivec2(2, 2), *player);
 
 
 	_factory.createObject("Table.obj", glm::ivec2(3, 1));

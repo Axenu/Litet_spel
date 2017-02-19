@@ -1,21 +1,11 @@
 #include "Render/Mesh/Animation/KeyFrame.h"
 
 
-
-KeyFrame::KeyFrame(float time, glm::vec3 pos, glm::vec3 scale, glm::quat rotation)
-	: _time(time), _transform(), _custom(false)
-{
+/* Lerp the keys as vec3 with the specific amount */
+glm::vec3 lerpVec3(const ChannelKey& from, const ChannelKey& to, float amount) {
+	return from.asVec3() * (1.f - amount) + to.asVec3() * amount;
 }
-KeyFrame::KeyFrame(float time, const glm::mat4 &transform, bool custom)
-	: _time(time), _transform(transform), _custom(custom) 
-{
-}
-
-glm::mat4 KeyFrame::lerpTo(const KeyFrame &to, float eT) {
-	float lerpAmount = (_time - eT) / (to._time - eT);
-	return glm::mat4();
-}
-
-KeyFrame::~KeyFrame()
-{
+/* Slerp the keys as quaternions with the specific amount */
+glm::quat slerp(const ChannelKey& from, const ChannelKey& to, float amount) {
+	return glm::slerp(from.asQuat(), to.asQuat(), amount);
 }
