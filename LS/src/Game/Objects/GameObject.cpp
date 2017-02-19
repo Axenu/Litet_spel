@@ -13,10 +13,19 @@ GameObject::GameObject(Node* parent, const glm::vec3 &pos, type::GameObjectType 
 GameObject::GameObject(Model &m, type::GameObjectType type)
 	: _model(m), _type(type) {
 }
+GameObject::GameObject(type::GameObjectType type)
+ : Node(), _model(), _type(type)
+{
+}
 
 GameObject::~GameObject()
 {
 
+}
+void GameObject::init()
+{
+	Node::init();
+	_model.transform(_modelMatrix);
 }
 
 void GameObject::update(float dt)
