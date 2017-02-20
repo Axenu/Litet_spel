@@ -19,11 +19,14 @@ void ModelPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const
 	_mesh->render();
 }
 
+void ModelPart::renderMeshOnly() const {
+	_mesh->render();
+}
+
 const Mesh& ModelPart::getMesh() const
 {
 	return *_mesh;
 }
-
 void ModelPart::setMaterial(Material & mat)
 {
 	_material = mat;

@@ -24,4 +24,3 @@ public:
 	*/
 	virtual std::shared_ptr<MaterialLink> linkMaterial(Material &mat) const = 0;
 };
-

@@ -1,7 +1,7 @@
 #include "Render/Composition/RenderDefBuffers.h"
 
 RenderDefBuffers::RenderDefBuffers(const gl::RenderQuad& quad, EventManager &manager)
-	: QuadShader(quad, "Quad", "Deferred_Buffer"), _curBuffer(manager, GLFW_KEY_KP_ADD, GLFW_KEY_KP_SUBTRACT, 0, 8)
+	: QuadShader(quad, "Quad", "Deferred_Buffer"), _curBuffer(manager, GLFW_KEY_7, GLFW_KEY_8, 0, 8)
 {
 	acquireUniforms();
 }
@@ -10,7 +10,8 @@ RenderDefBuffers::RenderDefBuffers(const gl::RenderQuad& quad, EventManager &man
 RenderDefBuffers::~RenderDefBuffers()
 {
 }
-bool RenderDefBuffers::acquireUniforms() {
+bool RenderDefBuffers::acquireUniforms()
+{
 
 	_shader.bind();
 	/*Function params
@@ -36,7 +37,8 @@ bool RenderDefBuffers::acquireUniforms() {
 
 /* Assign frame uniforms
 */
-void RenderDefBuffers::assignUniforms(RenderInfo &fD) {
+void RenderDefBuffers::assignUniforms(RenderInfo &fD)
+{
 	/*	Bind resources
 	*/
 	fD._resource.getDeffered().bindTextures();
@@ -45,7 +47,8 @@ void RenderDefBuffers::assignUniforms(RenderInfo &fD) {
 
 /* Call on window size change
 */
-void RenderDefBuffers::setWindowSize(float wWidth, float wHeight, const Camera &camera) {
+void RenderDefBuffers::setWindowSize(float wWidth, float wHeight, const Camera &camera)
+{
 	_shader.bind();
 	glUniform2f(_screenInv, 1.0f / wWidth, 1.0f / wHeight);
 	glUniform1f(_near, camera.getNearPlane());

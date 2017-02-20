@@ -316,8 +316,9 @@ void Guard::update(float dt)
 
 	if (pos != glm::vec3(0.f, 0.f, 0.f) && this->DetectedPlayer())
 	{
-		GameOverEvent event(false);
-		_eventManager->execute(event);
+		std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+		//GameOverEvent event(false);
+		//_eventManager->execute(event);
 	}
 
 	GameObject::update(dt);
@@ -425,6 +426,7 @@ void Guard::goToSquare(float dt, glm::vec3 walkTo)
 
 void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
 {
+	return;
 	glm::vec3 walkTo = glm::vec3(walkToSquare.x, 0, walkToSquare.y);
 	glm::vec3 value = this->getPosition();
 	glm::vec3 distance = walkTo - value;
@@ -492,7 +494,7 @@ bool Guard::DetectedPlayer()
 	float playerDist = glm::length(guardToPlayer);
 
 	glm::vec3 upVector(0.f, 1.f, 0.f);
-	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.1f;
+	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.4f;
 	
 	glm::vec3 upperLeft = playerPos - rightVector;
 	glm::vec3 upperRight = playerPos + rightVector;
@@ -525,7 +527,7 @@ bool Guard::DetectedPlayer()
 	}
 
 
-	if (hitCounter > 2)
+	if (hitCounter >= 2)
 	{
 		float wallDist = getWallDist(pos, rayUpperLeft);
 
@@ -559,17 +561,87 @@ float Guard::getWallDist(glm::vec3 pos, glm::vec3 ray)
 {
 	glm::vec2 rayPos(pos.x, pos.z);
 
+	glm::vec3 point(0.0f);
+
+	bool signX = signbit(ray.x);
+	bool signZ = signbit(ray.z);
+
 	float viewingRange = 0.f;
 	float wallDist = 0.0f;
 
 	while (viewingRange < 5.f * GRIDSPACE)
 	{
-		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
-		if (_currentLevel->gettype((int)(floor(rayPos.y)), (int)(floor(rayPos.x))) == wall)
+		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
+		if (_currentLevel->gettype(gridPos.y, gridPos.x) == wall)
 		{
 			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
 			break;
 		}
+		else
+		{
+			if (signX)
+			{
+				glm::vec3 triangles[6];
+				_currentLevel->getLeftQuad(triangles, gridPos.x, gridPos.y);
+				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+							
+			}
+			else
+			{
+				glm::vec3 triangles[6];
+				_currentLevel->getRightQuad(triangles, gridPos.x, gridPos.y);
+				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+			}
+			if (signZ)
+			{
+				glm::vec3 triangles[6];
+				_currentLevel->getFrontQuad(triangles, gridPos.x, gridPos.y);
+				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+			}
+			else
+			{
+				glm::vec3 triangles[6];
+				_currentLevel->getBackQuad(triangles, gridPos.x, gridPos.y);
+				if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+				if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+				{
+					wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+					break;
+				}
+			}
+		}
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
 		viewingRange += GRIDSPACE;
 	}
 	return wallDist;
