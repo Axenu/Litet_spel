@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include <sstream>
+#include <string>
 #include "Game/Scene/Scene.h"
 #include "Render/Mesh/ModelLoader.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
@@ -42,6 +45,6 @@ public:
 	LootObject* createLoot(const std::string &model, glm::vec3 pos);
 	PointLightObject* createLight(PointLight light, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
+	void loadSceneFromFile(std::string path);
 	MeshShader& getShader();
 };
-
