@@ -6,7 +6,7 @@
 #include"camera.h"
 #include "Level/ObjectFactory.h"
 
-/* The game 
+/* The game
 */
 class Game
 {
@@ -17,6 +17,14 @@ protected:
 	GraphicsResource _resource;
 	RenderDeferred _deferred;
 	ObjectFactory _factory;
+	Shader _shadowMapShader;
+
+	//TODO move?
+	GLint _modelMatrixLocation;
+	GLint _shadowMatricesLocation;
+	GLint _lightPosLocation;
+	GLint _farPlaneLocation;
+	glm::mat4 _shadowProj;
 
 	virtual void compose(RenderInfo &rI);
 public:
@@ -27,4 +35,3 @@ public:
 	void update(float dT);
 	void draw();
 };
-
