@@ -11,6 +11,7 @@ uniform sampler2D colBuffer;
 uniform sampler2D norBuffer;
 uniform sampler2D specBuffer;
 uniform sampler2D depthBuffer;
+uniform samplerCube shadowMap[8];
 
 //X: 1 / width  Y : 1 / height
 uniform vec2 screenInv;
@@ -18,6 +19,10 @@ uniform vec2 screenInv;
 uniform float near, far;
 //Right X coord on nearplane, Top Y coord on nearplane
 uniform float right, top;
+
+uniform vec3 camPos;
+
+uniform mat4 VM;
 
 //Light components
 uniform uint pNumLight;
@@ -52,6 +57,7 @@ void main () {
 
 	//Calc light
 	ColorOut = vec4(color * 0.2f, 1.0f); //Add ambient
+
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += pointLightCalc(i, position, normal, color, specular.xyz, specular.w);
 }
@@ -77,9 +83,20 @@ vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in 
 	//Light fades of in the distance:
 	float fade_factor = max(1 - (distance(pos, pLightPos[i]) / pLightFade[i]), 0);
 
-	return (diffuseCol * pLightDif[i] * lambertian +		//Diffuse calculation
-	 pLightSpec[i] * specularCol * specular)	//Specular calculation
-	 * fade_factor;											//Light fade off
+
+	//shadow
+	vec4 lightPosView = VM * vec4(pLightPos[i], 1.0); //world position
+	vec4 wPos = VM * (vec4(pos.xyz, 1.0));
+	vec3 lightDirShadow = wPos.xyz - lightPosView.xyz;
+	float f = texture(shadowMap[i], lightDirShadow).r;
+	float currentDepth = length(lightDirShadow)/pLightFade[i];
+	if (f + 0.005 > currentDepth)
+	{
+		return (diffuseCol * pLightDif[i] * lambertian +	//Diffuse calculation
+		 pLightSpec[i] * specularCol * specular)			//Specular calculation
+		 * fade_factor;										//Light fade off
+	}
+	return vec3(0,0,0);
 }
 /*	BlinnPhong specular calculation:
 */
@@ -100,6 +117,7 @@ float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, 
 		//float specAngle = max(dot(reflectDir, viewDir), 0.0f);
 		//return pow(specAngle, shininess * 0.25f);
 	}
+
 	return 0.0f;
 }
 /* Decode normal
@@ -120,7 +138,7 @@ vec3 positionFromDepth(in float depth, in vec2 frameCoord)
 	vec3 eye;             // Reconstructed EYE-space position
 
 	ndc.x = (frameCoord.x * 2.0 - 1.0);
-	ndc.y = (frameCoord.y * 2.0 - 1.0);
+	ndc.y = ((frameCoord.y) * 2.0 - 1.0);
 
 
 	/* Z_eye is calculated by separating it from the calculation from view->ndc space:
@@ -136,6 +154,6 @@ vec3 positionFromDepth(in float depth, in vec2 frameCoord)
 	*/
 	eye.x = (ndc.x * -eye.z) * right;
 	eye.y = (ndc.y * -eye.z) * top;
-
+	// return vec3(ndc, 1.0);
   return eye;
 }

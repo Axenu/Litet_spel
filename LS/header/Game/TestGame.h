@@ -1,6 +1,7 @@
 #pragma once
 #include "Game/Game.h"
 #include "Render/Composition/RenderDefBuffers.h"
+#include "Render/Composition/RenderCubeMap.h"
 #include "Event/Input/InputKeyState.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "Game/Level/Level.h"
@@ -12,7 +13,9 @@ class TestGame
 	: public Game {
 protected:
 	RenderDefBuffers _bufferRenderer;
-	InputKeyState _renderBuffer;
+	RenderCubeMap _cubeMapRenderer;
+	InputKeyState _renderBufferKey;
+	InputKeyState _cubeMapBufferKey;
 	Character *_player;
 
 public:
