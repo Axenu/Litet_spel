@@ -26,7 +26,7 @@ void TestGame::initiate() {
 	std::vector<glm::vec3>* pGuardPosList = level->getGrid().getGuardLocations();
 	int sizesaved = pGuardPosList->size();
 	for (int i = 0; i < sizesaved; i++)
-		_factory.createGuard("models/goombamask.obj", glm::ivec2(2, 2), *player);
+		_factory.createGuard("models/Character.dae", glm::ivec2(2, 2), *player);
 
 	_factory.loadSceneFromFile("level.txt");
 
