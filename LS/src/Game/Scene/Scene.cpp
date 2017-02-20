@@ -113,7 +113,9 @@ Node* Scene::removeNode(Node *object, bool deleteObj) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF) {
-	std::vector<GameObject*> drawList = _dynamicObjects;
+	std::vector<GameObject*> drawList;
+	getDynObjects(drawList, _cam->VPMatrix);
+	std::cout << drawList.size() << std::endl;
 	_quadTree.QuadTreeTest(drawList, _cam->VPMatrix);
 	for (unsigned int i = 0; i < drawList.size(); i++)
 		drawList[i]->addToFrame(dF);
@@ -193,4 +195,74 @@ void Scene::initQuadTree(AABB & aabb)
 {
 	_quadTree.SetAABB(aabb);
 	_quadTree.CreateNodes();
+}
+
+void Scene::getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat)
+{
+	//Create planes from projview matrix
+	Plane planes[6];
+
+	//Left
+	planes[0].normal.x = -(mat[0][3] + mat[0][0]);
+	planes[0].normal.y = -(mat[1][3] + mat[1][0]);
+	planes[0].normal.z = -(mat[2][3] + mat[2][0]);
+	planes[0].distance = -(mat[3][3] + mat[3][0]);
+
+	//Right
+	planes[1].normal.x = -(mat[0][3] - mat[0][0]);
+	planes[1].normal.y = -(mat[1][3] - mat[1][0]);
+	planes[1].normal.z = -(mat[2][3] - mat[2][0]);
+	planes[1].distance = -(mat[3][3] - mat[3][0]);
+
+	//Top
+	planes[2].normal.x = -(mat[0][3] - mat[0][1]);
+	planes[2].normal.y = -(mat[1][3] - mat[1][1]);
+	planes[2].normal.z = -(mat[2][3] - mat[2][1]);
+	planes[2].distance = -(mat[3][3] - mat[3][1]);
+
+	//Bottom
+	planes[3].normal.x = -(mat[0][3] + mat[0][1]);
+	planes[3].normal.y = -(mat[1][3] + mat[1][1]);
+	planes[3].normal.z = -(mat[2][3] + mat[2][1]);
+	planes[3].distance = -(mat[3][3] + mat[3][1]);
+
+	//Near
+	planes[4].normal.x = -(mat[0][3] + mat[0][2]);
+	planes[4].normal.y = -(mat[1][3] + mat[1][2]);
+	planes[4].normal.z = -(mat[2][3] + mat[2][2]);
+	planes[4].distance = -(mat[3][3] + mat[3][2]);
+
+	//Far
+	planes[5].normal.x = -(mat[0][3] - mat[0][2]);
+	planes[5].normal.y = -(mat[1][3] - mat[1][2]);
+	planes[5].normal.z = -(mat[2][3] - mat[2][2]);
+	planes[5].distance = -(mat[3][3] - mat[3][2]);
+
+	for (int i = 0; i < 6; i++)
+	{
+		float denom = 1.0f / glm::length(planes[i].normal);
+		planes[i].normal.x *= denom;
+		planes[i].normal.y *= denom;
+		planes[i].normal.z *= denom;
+		planes[i].distance *= denom;
+	}
+
+	//Test planes against Objects
+	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
+	{
+		AABB aabb = _dynamicObjects[i]->getAABB();
+		bool accepted = true;
+		for (int j = 0; j < 6; j++)
+		{
+			if (BBPlaneTest(aabb, planes[j]) == PlaneResult::Outside)
+			{
+				accepted = false;
+				break;
+			}
+		}
+		if (accepted)
+		{
+			list.push_back(_dynamicObjects[i]);
+		}
+	}
 }

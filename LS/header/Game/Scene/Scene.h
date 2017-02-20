@@ -59,5 +59,7 @@ public:
 
 	void initQuadTree(AABB &aabb);
 
+	void getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat);
+
 };
 
