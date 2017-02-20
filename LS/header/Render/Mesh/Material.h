@@ -8,6 +8,7 @@
 /* Forward declare
 */
 class MeshShader;
+class ModelPart;
 
 class Material
 {
@@ -21,7 +22,7 @@ public:
 
 	/* Bind shader and assign related uniforms
 	*/
-	virtual void assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
+	void assignUniforms(RenderInfo &fD, const ModelPart &part, const glm::mat4 &modelMatrix) const;
 
 	bool tryGet(const std::string &id, float &value);
 	bool tryGet(const std::string &id, glm::vec2 &vec);

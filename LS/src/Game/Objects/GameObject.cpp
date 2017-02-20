@@ -25,12 +25,21 @@ GameObject::~GameObject()
 void GameObject::init()
 {
 	Node::init();
+	//Generate a animation controller if necessary
+	Skeleton* skel = _model.getSkeleton();
+	if (skel) {
+		_animatedSkel = std::unique_ptr<AnimatedSkeleton>(new AnimatedSkeleton(*skel, *this));
+		_model.setAnimController(_animatedSkel.get());
+		bool success = _animatedSkel->setAnim("");
+	}
 	_model.transform(_modelMatrix);
 }
 
 void GameObject::update(float dt)
 {
 	Node::update(dt);
+	if (_animatedSkel) //Update anim controller if it exist.
+		_animatedSkel->update(dt);
 	_model.transform(_modelMatrix);
 }
 

@@ -9,7 +9,7 @@ class AnimatedSkeleton
 {
 private:
 	Skeleton& _ref;
-	Node *_root;
+	Node& _root;
 	Animation *_animation;
 	/* Current keys active in the animation for each channel
 	 */
@@ -26,10 +26,12 @@ private:
 	/* Recalculates the end time when animation is looped */
 	void loopRefit();
 public:
-	AnimatedSkeleton(Skeleton& ref);
+	AnimatedSkeleton(Skeleton& ref, Node& root);
 	~AnimatedSkeleton();
 
 	void update(float dT);
+	/* Set the animation from the name, returns true if animation found */
+	bool setAnim(const std::string& name);
 	const std::vector<glm::mat4>& getSkin() const;
 	unsigned int boneCount() const;
 };

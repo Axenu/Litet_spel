@@ -2,13 +2,10 @@
 #include <glm/geometric.hpp>
 #include <glm/gtx/transform.hpp>
 
-
-
 BoneFrame::BoneFrame()
-	: KeyFrame<3>(&SIZE_BONE_CHANNEL[0])
+	: KeyFrame<3>(SIZE_BONE_CHANNEL)
 {
 }
-
 
 BoneFrame::~BoneFrame()
 {
@@ -19,10 +16,11 @@ void BoneFrame::storeState(unsigned int type, float eT) {
 	if (type == 0)
 		_from[type].set(lerpVec3(_from[type], _to[type], lerpAmount(type, eT)));
 	else if(type == 1)
-		_from[type].set(slerp(_from[type], _to[type], lerpAmount(type, eT)));
-	else
 		_from[type].set(lerpVec3(_from[type], _to[type], lerpAmount(type, eT)));
+	else
+		_from[type].set(slerp(_from[type], _to[type], lerpAmount(type, eT)));
 }
+
 glm::mat4 BoneFrame::lerp(float eT) {
 	//Calc lerp amount
 	float amount[3];

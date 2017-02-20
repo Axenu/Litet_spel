@@ -18,7 +18,8 @@ public:
 	~SkeletonPart();
 	/* Assemble the mat4 uniform array from the specific skeleton parent
 	*/
-	void assemble(const AnimatedSkeleton &parent, glm::mat4* array);
-	bool hasSkeleton();
+	void assemble(const AnimatedSkeleton &parent, glm::mat4* array) const;
+	bool hasSkeleton() const;
+	unsigned int numBones() const;
 };
 

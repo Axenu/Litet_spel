@@ -20,7 +20,7 @@
 class Model{
 public:
 	Model();
-	Model(std::vector<ModelPart> &parts);
+	Model(std::vector<ModelPart> &parts, Skeleton *skeleton = nullptr);
 	Model(ModelPart &part);
 
 	void render(RenderInfo &fD, glm::mat4 &modelMatrix) const;
@@ -29,6 +29,9 @@ public:
 	void setName(std::string &name);
 	void setMaterial(Material &mat);
 	void setAABB(const AABB &aabb);
+	/* Set the skeleton parent of this model, can be null */
+	void setAnimController(AnimatedSkeleton *skeleton);
+	Skeleton* getSkeleton();
 	std::string getName();
 	/* Update model boxes from model space
 	*/
@@ -40,4 +43,5 @@ private:
 	AABB _aabb;
 	std::string _name;
 	std::vector<ModelPart> _meshParts;
+	Skeleton *_skeleton;
 };

@@ -1,11 +1,12 @@
 #pragma once
 #include "KeyFrame.h"
 
+	const unsigned int NUM_BONE_CHANNEL = 3;
+	const unsigned int SIZE_BONE_CHANNEL[3] = { 3, 3, 4 };
+
 class BoneFrame
 	: public KeyFrame<3>
 {
-	const unsigned int NUM_BONE_CHANNEL = 3;
-	const unsigned int SIZE_BONE_CHANNEL[3] = { 3, 3, 4 };
 public:
 	BoneFrame();
 	~BoneFrame();

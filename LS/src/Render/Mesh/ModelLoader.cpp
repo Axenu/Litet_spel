@@ -81,8 +81,13 @@ void ModelLoader::LoadModel(std::string &modelName, MeshShader *shader)
 	ModelConstruct construct(shader);
 	ProcessBones(scene->mRootNode, scene, construct); //Find bones
 	ProcessNode(scene->mRootNode, scene, modelName, construct);
-	ProcessAnimations(scene, construct);
-	Model* model = new Model(construct._parts);
+	Skeleton *skeleton = nullptr;
+	if (construct.hasSkeleton()) {
+		ProcessAnimations(scene, construct);
+		skeleton = construct.getSkeleton();
+		_skeletons.push_back(std::unique_ptr<Skeleton>(skeleton));
+	}
+	Model* model = new Model(construct._parts, skeleton);
 
 	//Assign modelName
 	model->setName(modelName);
@@ -211,7 +216,8 @@ int push_bone(aiNode *node, aiNode* root, ModelConstruct &construct) {
 	if (ind == -1) {
 		//Not found generate parent as bone
 		ind = push_bone(node->mParent, root, construct);
-		construct._bones.push_back(Bone(node->mName.C_Str(), glm::mat4(), -1, ind));
+		glm::mat4 empty; //Bind mats will be set later
+		construct._bones.push_back(Bone(node->mName.C_Str(), empty, empty, -1, ind));
 		//Return bone index
 		return construct._bones.size() - 1;
 	}
@@ -229,6 +235,7 @@ void ModelLoader::ProcessBones(aiNode* node, const aiScene* scene, ModelConstruc
 			aiNode *boneNode = scene->mRootNode->FindNode(bone->mName);
 			int index = push_bone(boneNode, node, construct);
 			construct._bones[index]._invBindPose = convertAssimpMatrix(bone->mOffsetMatrix);
+			construct._bones[index]._bindPose = convertAssimpMatrix(boneNode->mTransformation);
 		}
 	}
 	

@@ -18,4 +18,5 @@ public:
 	int getBoneIndex(const std::string &name);
 	/* Generate the skeleton from the gathered data. Null if no skeleton data is avaiable */
 	Skeleton* getSkeleton();
+	bool hasSkeleton();
 };

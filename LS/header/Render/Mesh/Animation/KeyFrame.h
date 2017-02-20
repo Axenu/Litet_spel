@@ -1,4 +1,5 @@
 #pragma once
+/* Mattias F 2017*/
 #include <vector>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -58,11 +59,16 @@ public:
 };
 
 
-template<unsigned N>
+template<unsigned int N>
 KeyFrame<N>::KeyFrame()
 {
+	for (int i = 0; i < N; i++)
+	{
+		_to[i] = ChannelMemoryKey(nodeChannelSize[i]);
+		_from[i] = ChannelMemoryKey(nodeChannelSize[i]);
+	}
 }
-template<unsigned N>
+template<unsigned int N>
 KeyFrame<N>::KeyFrame(const unsigned int* nodeChannelSize)
 	: _to(), _from()
 {
@@ -73,24 +79,24 @@ KeyFrame<N>::KeyFrame(const unsigned int* nodeChannelSize)
 	}
 }
 
-template<unsigned N>
+template<unsigned int N>
 KeyFrame<N>::~KeyFrame()
 {
 }
 
-template<unsigned N>
+template<unsigned int N>
 float KeyFrame<N>::lerpAmount(unsigned int type, float eT) {
 	return (eT - _from[type]._time) / (_to[type]._time - _from[type]._time);
 }
-template<unsigned N>
+template<unsigned int N>
 void KeyFrame<N>::deactivate() {
 	_channel = nullptr;
 }
-template<unsigned N>
+template<unsigned int N>
 bool  KeyFrame<N>::isActive() {
 	return _channel;
 }
-template<unsigned N>
+template<unsigned int N>
 void KeyFrame<N>::newAnimation(float oldET, const Channel *channel, float animDuration) {
 	_channel = channel;
 	if (_channel) {
@@ -105,14 +111,14 @@ void KeyFrame<N>::newAnimation(float oldET, const Channel *channel, float animDu
 	}
 }
 
-template<unsigned N>
+template<unsigned int N>
 void  KeyFrame<N>::checkUpdate(float eT) {
 	//Update keys if necesary
 	if (_nextUpdate < eT)
 		updateFrame(eT);
 }
 
-template<unsigned N>
+template<unsigned int N>
 void  KeyFrame<N>::updateFrame(float eT) {
 	float time = FLT_MAX;
 	for (unsigned int i = 0; i < N; i++) {
@@ -125,7 +131,7 @@ void  KeyFrame<N>::updateFrame(float eT) {
 		time = std::fmin(time, _to[i]._time);
 	}
 }
-template<unsigned N>
+template<unsigned int N>
 void  KeyFrame<N>::nextKey(unsigned int type, float eT) {
 	int key = _channel->getNext(eT, type);
 	if (key != -1) //If key is found, set it
@@ -135,8 +141,9 @@ void  KeyFrame<N>::nextKey(unsigned int type, float eT) {
 		_custom[type] = false; //This is not a custom key.
 	}
 }
-template<unsigned N>
+template<unsigned int N>
 void  KeyFrame<N>::loop(float eT, float animDuration) {
+	int n = N;
 	for (unsigned int i = 0; i < N; i++)
 	{
 		if (_custom[i]) {

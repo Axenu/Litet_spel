@@ -22,7 +22,9 @@ public:
 	~Skeleton();
 
 	Animation* getAnimation(const std::string &name);
-	std::vector<Bone> getBones();
+	const std::vector<Bone>& getBones() const;
+	/* Get the number of bones in the skeleton */
+	unsigned int getNumBones() const;
 	/* Add an animation to the skeleton */
 	void addAnimation(std::shared_ptr<Animation> &anim);
 };

@@ -25,11 +25,11 @@ bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::v
 
 bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::vec3 origin, glm::vec3 dir, glm::vec3& point);
 
-bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin);
+bool AABBIntersection(const AABB &aabb, glm::vec3 dir, glm::vec3 origin);
 
-bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin, float distance); 
+bool AABBIntersection(const AABB &aabb, glm::vec3 dir, glm::vec3 origin, float distance);
 
-float AABBIntersectionDistance(AABB &aabb, glm::vec3 dir, glm::vec3 origin);
+float AABBIntersectionDistance(const AABB &aabb, glm::vec3 dir, glm::vec3 origin);
 
 bool PointInsideAABB(AABB &aabb, glm::vec3 point);
 

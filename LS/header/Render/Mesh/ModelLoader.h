@@ -39,4 +39,5 @@ private:
 
 	std::vector<Model*> _models;
 	std::vector<Mesh*> _mesh;
+	std::vector<std::unique_ptr<Skeleton>> _skeletons;
 };

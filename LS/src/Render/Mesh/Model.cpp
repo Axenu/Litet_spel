@@ -6,8 +6,8 @@ Model::Model() {
 }
 
 
-Model::Model(std::vector<ModelPart> &pMeshes)
-	: _meshParts(pMeshes)
+Model::Model(std::vector<ModelPart> &pMeshes, Skeleton *skeleton)
+	: _meshParts(pMeshes), _skeleton(skeleton)
 {
 	initAABB();
 }
@@ -17,6 +17,14 @@ Model::Model(ModelPart &part)
 {
 	_meshParts[0] = part;
 	initAABB();
+}
+
+void Model::setAnimController(AnimatedSkeleton *skeleton) {
+	for (unsigned int i = 0; i < _meshParts.size(); i++)
+		_meshParts[i].setSkeleton(skeleton);
+}
+Skeleton* Model::getSkeleton() {
+	return _skeleton;
 }
 
 void Model::render(RenderInfo &fD, glm::mat4 &modelMatrix) const
