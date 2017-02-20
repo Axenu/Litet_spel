@@ -78,6 +78,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	object->setPosition(calcPos(square, tmpModel.getBox()));
 	object->init();
 	_scene.add(object, false);
+	_level->getGrid().addObject(object, gridType::object);
 	return object;
 }
 LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos) {
