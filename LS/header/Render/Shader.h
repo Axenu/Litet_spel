@@ -10,14 +10,15 @@
 class Shader {
 
 private:
-	std::string name;
+	std::string _name;
 public:
 
-	GLuint shaderProgram;
+	GLuint _shaderProgram;
 
 	Shader();
 	Shader(const std::string &file);
 	Shader(const std::string &vert, const std::string &frag);
+	Shader(const std::string &vert, const std::string &geom, const std::string &frag);
 	Shader(std::string *vertexShader, std::string *fragmentShader);
 	virtual ~Shader();
 	/* Move the Shader data

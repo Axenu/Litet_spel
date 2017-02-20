@@ -46,16 +46,6 @@ AABB::AABB(std::vector<glm::vec4> *position)
 	//std::cout<<glm::to_string(_max)<<std::endl;
 }
 
-AABB::AABB(glm::vec3 position)
-{
-	_min.x = position.x - 0.5f;
-	_min.y = position.y - 0.5f;
-	_min.z = position.z - 0.5f;
-	_max.x = position.x + 0.5f;
-	_max.y = position.y + 0.5f;
-	_max.z = position.z + 0.5f;
-}
-
 AABB::AABB(const AABB & other)
 {
 	_min = other._min;

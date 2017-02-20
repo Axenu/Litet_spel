@@ -37,8 +37,8 @@ public:
 	/* Render the frame
 	*/
 	void render(RenderInfo &fD);
+	void renderMeshOnly(RenderInfo &fD, GLint matrixLocation);
 	/* Get batched light info for the frame
 	*/
 	std::vector<PointLight>& getLightInfo();
 };
-

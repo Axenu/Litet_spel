@@ -35,6 +35,6 @@ namespace gui
     }
     std::string StringComponentVec3::getString()
     {
-        return glm::to_string(*_value);
+        return "vec3(x: " + std::to_string(_value->x) + ", y: " + std::to_string(_value->y) + ", z: " + std::to_string(_value->z) + ")";
     }
 }

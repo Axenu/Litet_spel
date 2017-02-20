@@ -113,6 +113,15 @@ namespace gl {
 	shaderProgramID	>>		Reference for the shader program id
 	return			>>		If the shader program loaded successfully, errors will be logged */
 	bool loadShaderProgram(const std::string &vertexShader, const std::string &fragmentShader, GLuint &shaderProgramID);
+
+	/*Load a shader program with vertex and fragment shader
+	vertexShader	<<		Directory to the vertex shader
+	geometryShader	<<		Directory to the geometryShader
+	fragmentShader	<<		Directory to the fragmentShader
+	shaderProgramID	>>		Reference for the shader program id
+	return			>>		If the shader program loaded successfully, errors will be logged */
+	bool loadShaderProgram(const std::string &vertexShader, const std::string &geometryShader, const std::string &fragmentShader, GLuint &shaderProgramID);
+
 	/*Load a shader program from a specified vertex and fragment shader code strings
 	vertexShader	<<		Vertex shader code
 	fragmentShader	<<		Fragment shader code
@@ -126,13 +135,13 @@ namespace gl {
 	struct DeferredTextureInfo {
 		/* Data format of the deferred texture. GL_RGB, GL_RGBA, etc. */
 		GLenum _internalFormat;
-		DeferredTextureInfo() 
+		DeferredTextureInfo()
 		:	_internalFormat(GL_RGB){}
 		DeferredTextureInfo(GLenum format)
 			: _internalFormat(format) {}
 	};
 	/* Generates a frame buffer containing a set of render targets used for deferred rendering.
-		colRenderTargets	<<	Determines the number of deferred textures generated and the 
+		colRenderTargets	<<	Determines the number of deferred textures generated and the
 		width				<<	Screen width.
 		height				<<	Screen height.
 		frameBuffer			<<	Generated frame buffer.
