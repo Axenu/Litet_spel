@@ -26,7 +26,7 @@ void ModelPart::renderMeshOnly() const {
 const Mesh& ModelPart::getMesh() const
 {
 	return *_mesh;
-
+}
 void ModelPart::setMaterial(Material & mat)
 {
 	_material = mat;
