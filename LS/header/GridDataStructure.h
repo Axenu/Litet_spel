@@ -12,10 +12,12 @@
 #include "Game/Level/GridSquare.h"
 #include "Render/Mesh/Mesh.h"
 #include "Event/Events.h"
+#include "Game/Objects/GameObject.h"
 
 struct gridValues {
 	glm::vec2 xz;
 	gridType type;
+	float height;
 	int value;
 };
 
@@ -71,6 +73,8 @@ public:
 	void getLeftQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 	void getFrontQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
+	/* Adding object to grid*/
+	void addObject(GameObject* object, gridType gridType);
 };
 
 #endif

@@ -22,6 +22,7 @@ public:
 	ModelPart(Mesh *mesh, Material &mat);
 	virtual ~ModelPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
+	void renderMeshOnly() const;
 	const Mesh& getMesh() const;
 	void setMaterial(Material &mat);
 	const AnimatedSkeleton* getSkeleton() const;

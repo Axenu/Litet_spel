@@ -32,7 +32,7 @@ public:
 
 	void initProjection();
 	virtual void update(float dT);
-
+	const glm::mat4 &getProjectionMatrix() const;
 	const glm::mat4 &getViewMatrix() const;
 	float getFieldOfView() const;
 	float getAspectRatio() const;

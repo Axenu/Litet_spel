@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#define GLM_FORCE_RADIANS
 #include<glm/mat4x4.hpp>
 #include"Render/Mesh/Model.h"
 #include"Render/RenderInfo.h"
@@ -37,8 +38,8 @@ public:
 	/* Render the frame
 	*/
 	void render(RenderInfo &fD);
+	void renderMeshOnly(GLint matrixLocation);
 	/* Get batched light info for the frame
 	*/
 	std::vector<PointLight>& getLightInfo();
 };
-

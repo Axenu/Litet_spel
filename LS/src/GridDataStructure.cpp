@@ -32,7 +32,7 @@ int Grid::IsInVector(glm::ivec2 pos, std::vector<gridNode>* vector)
 
 bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 {
-	//checks surrounding grid cells  
+	//checks surrounding grid cells
 	int test = IsInVector(glm::ivec2(pos.x, pos.y), vector);
 	if (test >= 0)
 	{
@@ -42,7 +42,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x, pos.y - 1), vector);
-	if (test >= 0)    // ^  
+	if (test >= 0)    // ^
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -50,7 +50,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x + 1, pos.y), vector);
-	if (test >= 0)    // >  
+	if (test >= 0)    // >
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -58,7 +58,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x, pos.y + 1), vector);
-	if (test >= 0)    // v  
+	if (test >= 0)    // v
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -66,7 +66,7 @@ bool Grid::removeGridCell(glm::ivec2 pos, std::vector<gridNode>* vector)
 		}
 	}
 	test = IsInVector(glm::ivec2(pos.x - 1, pos.y), vector);
-	if (test >= 0)    // <  
+	if (test >= 0)    // <
 	{
 		if (vector->at(test).needsCheck == true)
 		{
@@ -254,7 +254,7 @@ glm::vec3 Grid::getCenter(glm::ivec2 sq) const {
 	return glm::vec3((sq.x + 0.5f) * GRIDSPACE, 0.f, (sq.y + 0.5f) * GRIDSPACE);
 }
 void Grid::getRightQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset)
-{	
+{
 	triangle[0] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, (zOffset + 1) * GRIDSPACE);
 	triangle[1] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT,  zOffset      * GRIDSPACE);
 	triangle[2] = glm::vec3((xOffset + 1) * GRIDSPACE, 0.f       ,  zOffset      * GRIDSPACE);
@@ -290,6 +290,30 @@ void Grid::getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned
 	triangle[5] = glm::vec3((xOffset + 1) * GRIDSPACE, ROOFHEIGHT, zOffset * GRIDSPACE);
 }
 #pragma endregion
+
+void Grid::addObject(GameObject * object, gridType gridType)
+{
+
+	AABB oAABB = object->getAABB();
+	glm::vec3 min = oAABB.getMin();
+	glm::vec3 max = oAABB.getMax();
+	//get aabb height
+	float height = max.y;
+	//Round edges
+	min += 0.5f;
+	max -= 0.5f;
+	glm::ivec2 start = getSquare(min);
+	glm::ivec2 end = getSquare(max);
+
+	for (int i = start.y; i <= end.y; i++)
+	{
+		for (int j = start.x; j <= end.x; j++)
+		{
+			_twodArray[i][j].type = gridType;
+			_twodArray[i][j].height = height;
+		}
+	}
+}
 
 Mesh Grid::generateMesh()
 {
@@ -536,7 +560,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	if (_twodArray[currentZ - 1][currentX - 1].type == wall && _twodArray[currentZ - 1][currentX - 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
-		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
@@ -550,7 +574,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	if (_twodArray[currentZ - 1][currentX + 1].type == wall && _twodArray[currentZ - 1][currentX + 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ - position->z);
-		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
@@ -564,7 +588,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	if (_twodArray[currentZ + 1][currentX - 1].type == wall && _twodArray[currentZ + 1][currentX - 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ + 1 - position->z);
-		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
@@ -578,7 +602,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	if (_twodArray[currentZ + 1][currentX + 1].type == wall && _twodArray[currentZ + 1][currentX + 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ + 1 - position->z);
-		float len = sqrt(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
+		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
@@ -611,7 +635,7 @@ std::vector<glm::vec3>* Grid::getLootLocations()
 }
 void Grid::buildGridArrayForGuards()
 {
-	
+
 }
 
 std::vector<glm::vec3>* Grid::getGuardLocations()
@@ -641,8 +665,8 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 	{
 		int currentIndex = IsInVector(glm::ivec2(currentPos.x, currentPos.y), &nodes);
 		nodes[currentIndex].needsCheck = false;
-		//checks surrounding grid cells  
-		if (_twodArray[currentPos.y - 1][currentPos.x].type != wall && _twodArray[currentPos.y - 1][currentPos.x].type != exiting)    // ^  
+		//checks surrounding grid cells
+		if (_twodArray[currentPos.y - 1][currentPos.x].type != wall && _twodArray[currentPos.y - 1][currentPos.x].type != exiting)    // ^
 		{
 			index = IsInVector(glm::ivec2(currentPos.x, currentPos.y - 1), &nodes);
 			if (index == -1)
@@ -660,7 +684,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 				}
 			}
 		}
-		if (_twodArray[currentPos.y][currentPos.x + 1].type != wall && _twodArray[currentPos.y][currentPos.x + 1].type != exiting)    // >  
+		if (_twodArray[currentPos.y][currentPos.x + 1].type != wall && _twodArray[currentPos.y][currentPos.x + 1].type != exiting)    // >
 		{
 			index = IsInVector(glm::ivec2(currentPos.x + 1, currentPos.y), &nodes);
 			if (index == -1)
@@ -678,7 +702,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 				}
 			}
 		}
-		if (_twodArray[currentPos.y + 1][currentPos.x].type != wall && _twodArray[currentPos.y + 1][currentPos.x].type != exiting)    // v  
+		if (_twodArray[currentPos.y + 1][currentPos.x].type != wall && _twodArray[currentPos.y + 1][currentPos.x].type != exiting)    // v
 		{
 			index = IsInVector(glm::ivec2(currentPos.x, currentPos.y + 1), &nodes);
 			if (index == -1)
@@ -696,7 +720,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 				}
 			}
 		}
-		if (_twodArray[currentPos.y][currentPos.x - 1].type != wall && _twodArray[currentPos.y][currentPos.x - 1].type != exiting)    // <  
+		if (_twodArray[currentPos.y][currentPos.x - 1].type != wall && _twodArray[currentPos.y][currentPos.x - 1].type != exiting)    // <
 		{
 			index = IsInVector(glm::ivec2(currentPos.x - 1, currentPos.y), &nodes);
 			if (index == -1)
@@ -715,7 +739,7 @@ bool Grid::isAccessible(glm::ivec2 start, glm::ivec2 end)
 			}
 		}
 		currentIndex = IsInVector(glm::ivec2(currentPos.x, currentPos.y), &nodes);
-		if (nodes.size() == 0 || nodes.size() == currentIndex + 1)
+		if (nodes.size() == 0 || nodes.size() == (size_t)currentIndex + 1)
 		{
 			return false;
 		}
@@ -753,7 +777,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	int i = (int)guardposition.x; //width
 	int j = (int)guardposition.z; //height
 	//first wall upwards
-	for (j; j > -1; j--)
+	for (; j > -1; j--)
 	{
 		if (_twodArray[j][i].type == wall)
 		{
@@ -764,7 +788,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	j = (int)guardposition.z;
 
 	//second point downwards
-	for (j; j < _heightLength; j++)
+	for (; j < _heightLength; j++)
 	{
 		if (_twodArray[j][i].type == wall)
 		{
@@ -775,7 +799,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	j = (int)guardposition.z;
 	//thirdwall left
 
-	for (i; i > -1; i--)
+	for (; i > -1; i--)
 	{
 		if (_twodArray[j][i].type == wall)
 		{
@@ -786,7 +810,7 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	i = (int)guardposition.x;
 
 	//fourthwall right
-	for (i; i < _widthLength; i++)
+	for (; i < _widthLength; i++)
 	{
 		if (_twodArray[j][i].type == wall)
 		{
@@ -800,4 +824,3 @@ gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[height][width].type;
 }
-

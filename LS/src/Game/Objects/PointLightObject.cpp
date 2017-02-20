@@ -31,6 +31,7 @@ void PointLightObject::init()
 	AABB aabb = AABB(glm::vec3(-_lightInfo._fadeDist), glm::vec3(_lightInfo._fadeDist));
 	GameObject::setModelAABB(aabb.transform(_modelMatrix));
 	_lightInfo._pos = _modelMatrix[3];
+	_lightInfo.updateMatrices();
 }
 
 /* Add the object to the frame

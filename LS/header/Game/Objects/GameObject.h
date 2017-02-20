@@ -1,6 +1,6 @@
-#pragma once 
-#ifndef GAMEOBJECT_H 
-#define GAMEOBJECT_H 
+#pragma once
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
 #include "node.h"
 #include "Render/Mesh/Model.h"
 #include "gl/glInclude.h"
@@ -43,4 +43,4 @@ private:
 
 
 
-#endif 
+#endif

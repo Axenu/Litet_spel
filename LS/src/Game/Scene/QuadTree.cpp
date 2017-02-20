@@ -392,6 +392,24 @@ void QuadTreeNode::TraverseTree(std::vector<GameObject*>& gameObjects, Plane * p
 
 }
 
+void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, AABB &aabb)
+{
+	if (AABBvAABB(_aabb, aabb))
+	{
+		for (unsigned int i = 0; i < _objectData.size(); i++)
+		{
+			gameObjects.push_back(_objectData[i]);
+		}
+		if (_children[0] != nullptr)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_children[i]->QuadTreeTest(gameObjects, aabb);
+			}
+		}
+	}
+}
+
 void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, glm::vec3 & dir, glm::vec3 & origin)
 {
 	if (AABBIntersection(_aabb, dir, origin))
@@ -438,4 +456,3 @@ void QuadTreeNode::deleteTree()
 		}
 	}
 }
-

@@ -1,0 +1,12 @@
+light 1 1
+light 1 9
+light 9 1
+light 9 9
+light 5 5
+light 12 2
+light 12 7
+light 16 9
+light 16 4
+light 5 16
+light 25 7
+model 3 1 models/Table.obj
