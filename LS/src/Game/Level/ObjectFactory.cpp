@@ -3,7 +3,7 @@
 
 
 ObjectFactory::ObjectFactory(Scene &scene, EventManager &events, const std::string &resourcePath)
-	: _path(resourcePath), _meshShader(), _models(), _scene(scene), _events(events)
+	: _path(resourcePath), _meshShader(), _skinnedShader(), _models(), _scene(scene), _events(events)
 {
 }
 
@@ -53,7 +53,6 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	Guard* guard = new Guard(&player, &_events, tmpModel, &_level->getGrid());
 	guard->setLevel(&_level->getGrid());
 	guard->StartGridBuild();
-	guard->setScale(0.00625f);
 	guard->init();
 	_scene.add(guard, true);
 
