@@ -12,6 +12,9 @@ TestGame::~TestGame() {
 
 }
 
+void TestGame::setupRI(RenderInfo &rI) {
+	rI._lightGrenadePos = _player->getGrenadePosition();
+}
 void TestGame::initiate() {
 
 	Level* level = _factory.createLevel("Demo1.bmp");

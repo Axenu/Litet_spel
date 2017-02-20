@@ -19,6 +19,8 @@ class RenderDeferred :
 	GLint _screenInv, _near, _far, _right, _top;
 	//Light uniforms
 	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
+	//Other
+	GLint _lightNade;
 
 protected:
 

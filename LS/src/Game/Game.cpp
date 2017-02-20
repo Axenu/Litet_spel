@@ -31,6 +31,7 @@ void Game::draw() {
 	DrawFrame dF;
 	_scene.fetchDrawables(dF);
 	RenderInfo rI(_resource, _scene.getCamera(), dF.getLightInfo());
+	setupRI(rI);
 
 	_resource.getDeffered().bindDraw();
 	dF.render(rI);

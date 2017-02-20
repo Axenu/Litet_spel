@@ -19,6 +19,7 @@ protected:
 	ObjectFactory _factory;
 
 	virtual void compose(RenderInfo &rI);
+	virtual void setupRI(RenderInfo &rI) {};
 public:
 	Game(Setting &setting, EventManager &events);
 	virtual ~Game();

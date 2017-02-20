@@ -15,6 +15,7 @@ protected:
 	InputKeyState _renderBuffer;
 	Character *_player;
 
+	virtual void setupRI(RenderInfo &rI);
 public:
 
 	TestGame(Setting &setting, EventManager &events);

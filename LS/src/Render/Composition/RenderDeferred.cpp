@@ -31,6 +31,9 @@
 		_pLightSpecCol = _shader.getUniform("pLightSpec");
 		_pLightFade = _shader.getUniform("pLightFade");
 
+		//Other
+		_lightNade = _shader.getUniform("viewGrenadePosition");
+
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
 		if (!_shader.bindSampler("norBuffer", 1))	return false;
@@ -41,8 +44,8 @@
 
 	/* Assign frame uniforms
 	*/
-	void RenderDeferred::assignUniforms(RenderInfo &fD){
-		std::vector<PointLight>& lights = fD._pLightInfo;
+	void RenderDeferred::assignUniforms(RenderInfo &rI){
+		std::vector<PointLight>& lights = rI._pLightInfo;
 		//Clamp light count
 		unsigned int numLights = lights.size() < MAXLIGHTCOUNT ? lights.size() : MAXLIGHTCOUNT;
 		/* Prepare uniform data by arranging light data into arrays.
@@ -51,20 +54,25 @@
 		float FADE[MAXLIGHTCOUNT];
 		for (unsigned int i = 0; i < numLights; i++) {
 			//Transform positions in to viewspace
-			POS[i] = fD._V * glm::vec4(lights[i]._pos, 1.0f);
+			POS[i] = rI._V * glm::vec4(lights[i]._pos, 1.0f);
 			DIF[i] = lights[i]._diffuse;
 			SPEC[i] = lights[i]._specular;
 			FADE[i] = lights[i]._fadeDist;
 		}
 		/*	Bind resources
 		*/
-		fD._resource.getDeffered().bindTextures();
+		rI._resource.getDeffered().bindTextures();
 		//	Light uniforms
 		glUniform1ui(_pNumLights, numLights);
 		glUniform3fv(_pLightPos, numLights, (const GLfloat*)&POS[0]);
 		glUniform3fv(_pLightDiffCol, numLights, (const GLfloat*)&DIF[0]);
 		glUniform3fv(_pLightSpecCol, numLights, (const GLfloat*)&SPEC[0]);
 		glUniform1fv(_pLightFade, numLights, (const GLfloat*)&FADE[0]);
+
+
+		//Other
+		glm::vec3 antiLightPos = rI._V *  glm::vec4(rI._lightGrenadePos, 1.f);
+		glUniform3f(_lightNade, antiLightPos.x, antiLightPos.y, antiLightPos.z);
 	}
 
 	/* Call on window size change

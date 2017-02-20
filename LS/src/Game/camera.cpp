@@ -44,6 +44,11 @@ void Camera::update(float dT) {
     VPMatrix = _projectionMatrix * _viewMatrix;
 }
 
+const glm::mat4 & Camera::getProjectionMatrix() const
+{
+	return _projectionMatrix;
+}
+
 void Camera::initProjection()
 {
 	_projectionMatrix = glm::perspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane);

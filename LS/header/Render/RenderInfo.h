@@ -15,11 +15,18 @@ class RenderInfo {
 private:
 
 public:
+	/* Major vars
+	*/
 
 	const GraphicsResource& _resource;
 	glm::mat4 _V, _VP;
 	glm::vec3 _eye;
 	std::vector<PointLight> _pLightInfo;
+
+	/* Minor
+	*/
+
+	glm::vec3 _lightGrenadePos;
 
 	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);
 	~RenderInfo();

@@ -11,6 +11,7 @@ uniform sampler2D colBuffer;
 uniform sampler2D norBuffer;
 uniform sampler2D specBuffer;
 uniform sampler2D depthBuffer;
+uniform vec3 viewGrenadePosition;
 
 //X: 1 / width  Y : 1 / height
 uniform vec2 screenInv;
@@ -34,6 +35,7 @@ vec3 positionFromDepth(in float depth, in vec2 frameCoord);
 vec3 decodeNormal(in vec3 normal);
 vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess);
 float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, out float lambertian);
+vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,in vec3 color);
 
 /* Composition main function
 */
@@ -54,6 +56,8 @@ void main () {
 	ColorOut = vec4(color * 0.2f, 1.0f); //Add ambient
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += pointLightCalc(i, position, normal, color, specular.xyz, specular.w);
+
+	ColorOut.xyz=antiLightGrenadeCal(viewGrenadePosition,position,color,ColorOut.xyz);
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
@@ -64,6 +68,22 @@ vec2 calcFrameCoord(){
 	return vec2(gl_FragCoord.x * screenInv.x,
 				gl_FragCoord.y * screenInv.y);
 }
+
+/*
+AntiLightgrenade Setting the color to diffured in a set space
+*/
+vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,in vec3 color)
+{
+float Distance = length(GrenadePosition - pos);
+if(2>Distance)
+{
+return color * 0.2;
+}
+return color;
+
+}
+
+
 /*	Point light specular calculation:
 */
 vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess){
