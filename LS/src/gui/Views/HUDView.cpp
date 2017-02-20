@@ -63,7 +63,7 @@ namespace gui {
             delete _game;
         }
         //init game
-        Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 50.f, 70.f);
+        Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
     	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
     	_game = new TestGame(setting, *_manager);
