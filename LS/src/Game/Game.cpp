@@ -12,11 +12,6 @@ Game::Game(Setting &setting, EventManager &events)
 	_shadowMatricesLocation = _shadowMapShader.getUniform("shadowMatrices");
 	_lightPosLocation = _shadowMapShader.getUniform("lightPos");
 	_farPlaneLocation = _shadowMapShader.getUniform("far_plane");
-
-	GLfloat aspect = 1.0f;
-	GLfloat near = 0.0f;
-	GLfloat far = 10.0f;
-	_shadowProj = glm::perspective(glm::radians(90.0f), aspect, near, far);
 }
 
 
@@ -41,7 +36,7 @@ void Game::draw() {
 	_scene.fetchDrawables(dF);
 	RenderInfo rI(_resource, _scene.getCamera(), dF.getLightInfo());
 	setupRI(rI);
-
+	// std::cout << rI._pLightInfo.size() << std::endl;
 	for (size_t i = 0; i < rI._pLightInfo.size(); i++)
 	{
 		DrawFrame tempDF;
