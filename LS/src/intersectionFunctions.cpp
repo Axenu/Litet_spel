@@ -295,14 +295,14 @@ bool PointInsideAABB(AABB & aabb, glm::vec3 point)
 PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBMax, glm::vec3 pNormal, float pDistance)
 {
 	glm::vec3 c;
-	c.x = (BBMax.x + BBMin.x) / 2;
-	c.y = (BBMax.y + BBMin.y) / 2;
-	c.z = (BBMax.z + BBMin.z) / 2;
+	c.x = (BBMax.x + BBMin.x) / 2.0f;
+	c.y = (BBMax.y + BBMin.y) / 2.0f;
+	c.z = (BBMax.z + BBMin.z) / 2.0f;
 
 	glm::vec3 h;
-	h.x = (BBMax.x - BBMin.x) / 2;
-	h.y = (BBMax.y - BBMin.y) / 2;
-	h.z = (BBMax.z - BBMin.z) / 2;
+	h.x = (BBMax.x - BBMin.x) / 2.0f;
+	h.y = (BBMax.y - BBMin.y) / 2.0f;
+	h.z = (BBMax.z - BBMin.z) / 2.0f;
 
 	float e = h.x*fabs(pNormal.x) + h.y*fabs(pNormal.y) + h.z*fabs(pNormal.z);
 
