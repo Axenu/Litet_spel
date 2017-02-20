@@ -486,12 +486,20 @@ void Guard::goToSquare(float dt, glm::vec2 walkToSquare)
 
 bool Guard::DetectedPlayer()
 {
+	bool result = false;
+	unsigned int hitCounter = 0;
+
 	glm::vec3 pos = this->getWorldPos();
 	glm::vec3 playerPos = _player->getWorldPos();
 
 	glm::vec3 guardToPlayer = playerPos - pos;
 
 	float playerDist = glm::length(guardToPlayer);
+
+	if (playerDist < 0.8f)
+	{
+		return true;
+	}
 
 	glm::vec3 upVector(0.f, 1.f, 0.f);
 	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.2f;
@@ -500,9 +508,6 @@ bool Guard::DetectedPlayer()
 	glm::vec3 upperRight = playerPos + rightVector;
 	glm::vec3 lowerLeft = playerPos - upVector - rightVector;
 	glm::vec3 lowerRight = playerPos - upVector + rightVector;
-
-	bool result = false;
-	unsigned int hitCounter = 0;
 	
 	glm::vec3 rayUpperLeft = glm::normalize(upperLeft - pos);
 	glm::vec3 rayUpperRight = glm::normalize(upperRight - pos);
@@ -526,8 +531,7 @@ bool Guard::DetectedPlayer()
 		hitCounter++;
 	}
 
-
-	if (hitCounter >= 2)
+	if (hitCounter > 1)
 	{
 		float wallDist = getWallDist(pos, rayUpperLeft);
 
