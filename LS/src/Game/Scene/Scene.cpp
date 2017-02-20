@@ -115,7 +115,6 @@ Node* Scene::removeNode(Node *object, bool deleteObj) {
 void Scene::fetchDrawables(DrawFrame &dF) {
 	std::vector<GameObject*> drawList;
 	getDynObjects(drawList, _cam->VPMatrix);
-	std::cout << drawList.size() << std::endl;
 	_quadTree.QuadTreeTest(drawList, _cam->VPMatrix);
 	for (unsigned int i = 0; i < drawList.size(); i++)
 		drawList[i]->addToFrame(dF);
