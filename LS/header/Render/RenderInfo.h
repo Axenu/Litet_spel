@@ -2,6 +2,7 @@
 
 #include "GraphicsResource.h"
 #include "Game/camera.h"
+#define GLM_FORCE_RADIANS
 #include <glm/mat4x4.hpp>
 #include "Render/PointLight.h"
 

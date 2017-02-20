@@ -1,4 +1,5 @@
 #pragma once
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "MeshShader.h"
 
@@ -21,7 +22,7 @@ private:
 	GLint _mvpUniform, _mvUniform, _difColUniform, _specColUniform;
 	void acquireUniforms();
 
-public:	
+public:
 	DeferredMeshShader();
 	virtual ~DeferredMeshShader();
 
@@ -32,4 +33,3 @@ public:
 	*/
 	virtual std::shared_ptr<MaterialLink> linkMaterial(Material &mat) const;
 };
-

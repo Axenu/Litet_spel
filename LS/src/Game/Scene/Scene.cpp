@@ -128,7 +128,9 @@ int Scene::loot(float pickDist)
 	std::vector<int> indices;
 	std::vector<float> distance;
 	std::vector<GameObject*> pickList;
-	_quadTree.QuadTreeTest(pickList, glm::vec3(_cam->getLookAt()), glm::vec3(_cam->getWorldPos()), pickDist);
+	glm::vec3 lookat = _cam->getLookAt();
+	glm::vec3 wpos = _cam->getWorldPos();
+	_quadTree.QuadTreeTest(pickList, lookat, wpos, pickDist);
 
 	//Sorting out objects close enough to cam
 	for (unsigned int i = 0; i < pickList.size(); i++)
