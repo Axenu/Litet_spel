@@ -210,10 +210,10 @@ bool Guard::walkingInThePaths(float dt)
 			glm::vec2 currentSquare = _currentPath[_currentPath.size() - 1];
 			glm::vec2 nextSquare = _currentPath[_currentPath.size() - 2];
 
-			glm::vec2 difference = (currentSquare - nextSquare) * -1.f;
-			difference = glm::normalize(difference);
-
-			_forward = glm::vec3(difference.x, 0.0f, difference.y);
+			glm::vec2 diff = (nextSquare - currentSquare);
+			diff = glm::normalize(diff);
+			//face(glm::vec3(diff.x, 0.0f, diff.y));
+			_forward = glm::vec3(diff.x, 0.0f, diff.y);
 
 			float angle = acos(_forward.z);
 
@@ -317,7 +317,8 @@ void Guard::update(float dt)
 	if (pos != glm::vec3(0.f, 0.f, 0.f) && this->DetectedPlayer())
 	{
 		GameOverEvent event(false);
-		_eventManager->execute(event);
+		//_eventManager->execute(event);
+		std::cout << "Detected";
 	}
 
 	GameObject::update(dt);
@@ -336,10 +337,10 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_point1x = gridet->getheightandwidthpoint12(2)+ _displacement;
 	_point2x = gridet->getheightandwidthpoint12(3)+ _displacement;
 
-	_displacement = glm::vec3(0.5f, 0.5f, 0.5f);
+	_displacement = glm::vec3(0.5f, 0.f, 0.5f);
 
 	_guardsstartposition = guardStartPosition + _displacement;
-	_guardsstartposition.y = 1.0f;
+	_guardsstartposition.y = 0.0f;
 	_widthLength = gridet->getWidth();
 	_heightLength = gridet->getHeight();
 	

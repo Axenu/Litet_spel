@@ -20,6 +20,9 @@ public:
 	int getNext(float elapsedTime, unsigned int chType) const;
 	/* Get a specific key from a channel */
 	ChannelKey getKey(unsigned int index, unsigned int chType) const;
-
+	/* Get the number of keys in a specific node channel */
+	unsigned int numKeys(unsigned int chType) const;
+	/* Get the number of animated channels in the channel node */
+	unsigned int numNodeChannels() const;
 };
 

@@ -100,6 +100,14 @@ void Node::init()
 	calcModelMatrix();
 }
 
+void Node::face(glm::vec3 point) 
+{
+
+}
+void Node::setForward(glm::vec3 axis) 
+{
+
+}
 void Node::setX(float x) {
     _position.x = x;
 }

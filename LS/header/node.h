@@ -63,6 +63,8 @@ public:
     void rotateY(float f);
     void rotateZ(float f);
     void rotate(glm::vec3 r);
+	void face(glm::vec3 point);
+	void setForward(glm::vec3 axis);
 
 	float getX();
 	float getY();
