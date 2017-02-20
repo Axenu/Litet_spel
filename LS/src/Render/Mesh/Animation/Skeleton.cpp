@@ -18,6 +18,9 @@ Animation* Skeleton::getAnimation(const std::string &name) {
 		return it->second.get();
 	return nullptr;
 }
+const Bone& Skeleton::getBone(unsigned int i) const {
+	return _bones[i];
+}
 const std::vector<Bone>& Skeleton::getBones() const {
 	return _bones;
 }

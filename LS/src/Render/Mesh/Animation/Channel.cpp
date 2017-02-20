@@ -27,3 +27,11 @@ int Channel::getNext(float elapsedTime, unsigned int chType) const
 ChannelKey Channel::getKey(unsigned int index, unsigned int chType) const {
 	return _channelKeys[chType][index];
 }
+
+
+unsigned int Channel::numKeys(unsigned int chType) const {
+	return _channelKeys.size();
+}
+unsigned int Channel::numNodeChannels() const {
+	return _channelKeys.size();
+}

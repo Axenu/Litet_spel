@@ -19,7 +19,7 @@ private:
 		virtual ~DeferredMaterial(){}
 	};
 
-	GLint _vpUniform, _vUniform, _boneUniform, _difColUniform, _specColUniform;
+	GLint _mvpUniform, _mvUniform, _boneUniform, _difColUniform, _specColUniform;
 	void acquireUniforms();
 
 public:

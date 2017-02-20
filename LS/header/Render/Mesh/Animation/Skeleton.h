@@ -23,6 +23,7 @@ public:
 
 	Animation* getAnimation(const std::string &name);
 	const std::vector<Bone>& getBones() const;
+	const Bone& getBone(unsigned int i) const;
 	/* Get the number of bones in the skeleton */
 	unsigned int getNumBones() const;
 	/* Add an animation to the skeleton */

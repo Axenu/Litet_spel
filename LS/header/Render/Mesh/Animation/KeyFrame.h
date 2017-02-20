@@ -101,10 +101,17 @@ void KeyFrame<N>::newAnimation(float oldET, const Channel *channel, float animDu
 		for (unsigned int i = 0; i < N; i++) {
 			storeState(i, oldET);
 			_from[i]._time = 0.f;
-			nextKey(i, 0.f);
-			//Update
+			if (_channel && _channel->numKeys(i) > 0)
+				nextKey(i, 0.f);
+			else 
+			{	//If there is no values in the node's channel type keep current state 
+				_to[i] = _from[i];
+				_to[i]._time = FLT_MAX;
+			}
+			//Update 
 			time = std::fmin(time, _to[i]._time);
 		}
+		_nextUpdate = time;
 	}
 }
 

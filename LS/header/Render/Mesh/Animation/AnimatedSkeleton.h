@@ -30,6 +30,7 @@ public:
 	~AnimatedSkeleton();
 
 	void update(float dT);
+	void updateSkeleton();
 	/* Set the animation from the name, returns true if animation found */
 	bool setAnim(const std::string& name);
 	const std::vector<glm::mat4>& getSkin() const;
