@@ -189,6 +189,7 @@
     <ClCompile Include="src\gui\Views\HUDView.cpp" />
     <ClCompile Include="src\gui\Views\MainMenuView.cpp" />
     <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
+    <ClCompile Include="src\Render\Mesh\Shader\DefSkinnedMeshShader.cpp" />
     <ClCompile Include="src\Render\Mesh\ModelLoader.cpp" />
     <ClCompile Include="src\Render\Composition\RenderDefBuffers.cpp" />
     <ClCompile Include="src\intersectionFunctions.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="header\gui\Views\GameOverView.h" />
     <ClInclude Include="header\gui\Views\HUDView.h" />
     <ClInclude Include="header\gui\Views\MainMenuView.h" />
+    <ClInclude Include="header\Render\Mesh\Shader\DefSkinnedMeshShader.h" />
     <ClInclude Include="header\Render\Mesh\ModelPart.h" />
     <ClInclude Include="header\StaticVars.h" />
     <ClInclude Include="header\Game\TestGame.h" />

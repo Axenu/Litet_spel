@@ -1,6 +1,5 @@
+/* Mattias F 2017*/
 #include "Render/Mesh/Animation/Channel.h"
-
-
 
 Channel::Channel()
 {

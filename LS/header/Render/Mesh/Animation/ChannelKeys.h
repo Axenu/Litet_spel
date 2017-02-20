@@ -1,4 +1,5 @@
 #pragma once
+/* Mattias F 2017*/
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -44,8 +45,8 @@ public:
 	ChannelMemoryKey(float time, glm::vec3 data);
 	~ChannelMemoryKey();
 
-	void operator= (const ChannelKey &key);
-	void operator= (const ChannelMemoryKey &key);
+	ChannelMemoryKey& operator= (const ChannelKey &key);
+	ChannelMemoryKey& operator= (const ChannelMemoryKey &key);
 
 	/* Overwrite a number of values from the specific key.
 	*/

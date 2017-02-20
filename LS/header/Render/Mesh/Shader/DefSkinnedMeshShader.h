@@ -3,7 +3,7 @@
 #include "MeshShader.h"
 
 
-class DeferredMeshShader
+class DefSkinnedMeshShader
 	: public MeshShader
 {
 private:
@@ -18,12 +18,12 @@ private:
 		virtual ~DeferredMaterial(){}
 	};
 
-	GLint _mvpUniform, _mvUniform, _difColUniform, _specColUniform;
+	GLint _vpUniform, _vUniform, _boneUniform, _difColUniform, _specColUniform;
 	void acquireUniforms();
 
 public:	
-	DeferredMeshShader();
-	virtual ~DeferredMeshShader();
+	DefSkinnedMeshShader();
+	virtual ~DefSkinnedMeshShader();
 
 	/* Bind shader and assign related uniforms
 	*/

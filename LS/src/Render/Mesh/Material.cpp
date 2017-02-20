@@ -15,8 +15,8 @@ Material::~Material()
 
 /* Bind shader and assign related uniforms
 */
-void Material::assignUniforms(RenderInfo &fD, const glm::mat4 &modelMatrix) const {
-	_shader->assignUniforms(fD, modelMatrix, _shaderLink.get());
+void Material::assignUniforms(RenderInfo &fD, const ModelPart &part, const glm::mat4 &modelMatrix) const {
+	_shader->assignUniforms(fD, part, modelMatrix, _shaderLink.get());
 }
 
 void Material::link() {

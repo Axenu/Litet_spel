@@ -182,11 +182,14 @@ void Mesh::render()
 	_VA.bindVAO();
 	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, gl::bufferOffset(0));
 }
-const AABB& Mesh::getBox() {
+const AABB& Mesh::getBox() const {
 	return _aabb;
 }
+const SkeletonPart& Mesh::getSkeletonPart() const {
+	return _skeleton;
+}
 
-bool Mesh::pick(glm::vec3 origin, glm::vec3 dir)
+bool Mesh::pick(glm::vec3 origin, glm::vec3 dir) const
 {
 	//picking in modelspace
 	if (AABBIntersection(_aabb, dir, origin))

@@ -1,14 +1,17 @@
 #pragma once
-#include"Mesh.h"
-#include"Render/RenderInfo.h"
-#include"Material.h"
-#include"AABB.h"
+#include "Mesh.h"
+#include "Render/RenderInfo.h"
+#include "Animation/AnimatedSkeleton.h"
+#include "Material.h"
+#include "AABB.h"
 
 
 class ModelPart
 {
 private:
 	Mesh *_mesh;
+	/* Reference to a linked skeleton parent, can be null */
+	AnimatedSkeleton *_skeleton;
 	Material _material;
 public:
 	/* Mesh box in local space
@@ -19,7 +22,9 @@ public:
 	ModelPart(Mesh *mesh, Material &mat);
 	virtual ~ModelPart();
 	void render(RenderInfo &fD, const glm::mat4 &modelMatrix) const;
-	Mesh& getMesh();
+	const Mesh& getMesh() const;
 	void setMaterial(Material &mat);
+	const AnimatedSkeleton* getSkeleton() const;
+	void setSkeleton(AnimatedSkeleton *skel);
 	const AABB& getBox();
 };

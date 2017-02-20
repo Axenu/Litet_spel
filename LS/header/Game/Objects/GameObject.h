@@ -7,6 +7,7 @@
 #include "AABB.h"
 #include "Game/Scene/DrawFrame.h"
 #include "GameObjectType.h"
+#include "Render/Mesh/Animation/AnimatedSkeleton.h"
 
 class GameObject : public Node
 {
@@ -35,6 +36,8 @@ public:
 	virtual void addToFrame(DrawFrame &dF);
 private:
 	Model _model;
+	/* The gameobjects animated skeleton controller */
+	std::unique_ptr<AnimatedSkeleton> _animatedSkel;
 };
 
 

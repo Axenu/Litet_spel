@@ -134,7 +134,7 @@ bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::v
 	return false;
 }
 
-bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin)
+bool AABBIntersection(const AABB &aabb, glm::vec3 dir, glm::vec3 origin)
 {
 	glm::vec3 min = aabb.getMin();
 	glm::vec3 max = aabb.getMax();
@@ -195,7 +195,7 @@ bool AABBIntersection(AABB &aabb, glm::vec3 dir, glm::vec3 origin)
 	return true;
 }
 
-bool AABBIntersection(AABB & aabb, glm::vec3 dir, glm::vec3 origin, float distance)
+bool AABBIntersection(const AABB & aabb, glm::vec3 dir, glm::vec3 origin, float distance)
 {
 	float test = AABBIntersectionDistance(aabb, dir, origin);
 	if (test < 0)
@@ -209,7 +209,7 @@ bool AABBIntersection(AABB & aabb, glm::vec3 dir, glm::vec3 origin, float distan
 	return false;
 }
 
-float AABBIntersectionDistance(AABB & aabb, glm::vec3 dir, glm::vec3 origin)
+float AABBIntersectionDistance(const AABB & aabb, glm::vec3 dir, glm::vec3 origin)
 {
 	glm::vec3 min = aabb.getMin();
 	glm::vec3 max = aabb.getMax();

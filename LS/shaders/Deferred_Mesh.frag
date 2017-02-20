@@ -1,6 +1,5 @@
 #version 400
 
-in vec3 Position0;
 in vec3 Normal0;
 //layout(location = 2) in vec2 TexCoord0;
 

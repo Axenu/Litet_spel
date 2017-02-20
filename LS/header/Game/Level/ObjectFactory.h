@@ -2,6 +2,7 @@
 #include "Game/Scene/Scene.h"
 #include "Render/Mesh/ModelLoader.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
+#include "Render/Mesh/Shader/DefSkinnedMeshShader.h"
 #include "Game/Level/Level.h"
 #include "Game/Objects/LootObject.h"
 #include "Game/Objects/PointLightObject.h"
@@ -20,6 +21,7 @@ private:
 	/* The mesh shader of the game.
 	*/
 	DeferredMeshShader _meshShader;
+	DefSkinnedMeshShader _skinnedShader;
 	ModelLoader _models;
 	Scene& _scene;
 	EventManager& _events;
