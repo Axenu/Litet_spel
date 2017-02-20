@@ -8,7 +8,7 @@
 #include "Game/Scene/QuadTree.h"
 #include "Game/Objects/PointLightObject.h"
 
-/* Scene holding the objects 
+/* Scene holding the objects
 */
 class Scene
 {
@@ -41,7 +41,7 @@ public:
 	/* Adds a game object to the scene.
 	*/
 	void add(GameObject *object, bool dynamic);
-	
+
 	/* Add a node object to the scene
 	*/
 	void addNode(Node *object);
@@ -55,9 +55,10 @@ public:
 	*/
 	void fetchDrawables(DrawFrame &dF);
 
+	void fetchDrawables(DrawFrame &dF, AABB &aabb);
+
 	int loot(float pickDist);
 
 	void initQuadTree(AABB &aabb);
 
 };
-

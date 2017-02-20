@@ -304,7 +304,7 @@ PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBMax, glm::vec3 pNormal, flo
 	h.y = (BBMax.y - BBMin.y) / 2;
 	h.z = (BBMax.z - BBMin.z) / 2;
 
-	float e = h.x*abs(pNormal.x) + h.y*abs(pNormal.y) + h.z*abs(pNormal.z);
+	float e = h.x*fabs(pNormal.x) + h.y*fabs(pNormal.y) + h.z*fabs(pNormal.z);
 
 	float s = c.x*pNormal.x + c.y*pNormal.y + c.z*pNormal.z + pDistance;
 
@@ -329,3 +329,17 @@ PlaneResult BBPlaneTest(const AABB & aabb, const Plane & plane)
 	return BBPlaneTest(aabb.getMin(), aabb.getMax(), plane.normal, plane.distance);
 }
 
+bool AABBvAABB(const AABB &first, const AABB &second)
+{
+	if (first.getMax().x > second.getMin().x && first.getMin().x < second.getMax().x)
+	{
+		if (first.getMax().y > second.getMin().y && first.getMin().y < second.getMax().y)
+		{
+			if (first.getMax().z > second.getMin().z && first.getMin().z < second.getMax().z)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}

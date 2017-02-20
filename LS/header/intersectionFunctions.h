@@ -39,3 +39,5 @@ PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBmax, glm::vec3 pNormal, flo
 PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBmax, const Plane &plane);
 
 PlaneResult BBPlaneTest(const AABB &aabb, const Plane &plane);
+
+bool AABBvAABB(const AABB &first, const AABB &second);

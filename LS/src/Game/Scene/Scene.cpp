@@ -121,6 +121,15 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 		_objects[i]->addToFrame(dF);*/
 }
 
+void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
+	std::vector<GameObject*> drawList = _dynamicObjects;
+	_quadTree.QuadTreeTest(drawList, aabb);
+	for (unsigned int i = 0; i < drawList.size(); i++)
+		drawList[i]->addToFrame(dF);
+	/*for (unsigned int i = 0; i < _objects.size(); i++)
+		_objects[i]->addToFrame(dF);*/
+}
+
 
 int Scene::loot(float pickDist)
 {

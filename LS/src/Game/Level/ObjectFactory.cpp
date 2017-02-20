@@ -22,7 +22,7 @@ Level* ObjectFactory::createLevel(const std::string &level) {
 	_level->init();
 	AABB aabb = _level->getAABB();
 	_scene.initQuadTree(aabb);
-	_scene.add(_level, false);
+	_scene.add(_level, true);
 	return _level;
 }
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
