@@ -5,7 +5,7 @@
 #include <time.h>
 #include <iostream>
 #include "GameObject.h"
-#include"Game\camera.h"
+#include "Game/Camera.h"
 class AntiLightGrenade : public GameObject
 {
 private:
