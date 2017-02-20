@@ -291,6 +291,23 @@ void Grid::getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned
 }
 #pragma endregion
 
+void Grid::addObject(GameObject * object, gridType gridType)
+{
+	AABB oAABB = object->getAABB();
+	glm::vec3 min = oAABB.getMin();
+	glm::vec3 max = oAABB.getMax();
+	glm::ivec2 start = getSquare(min);
+	glm::ivec2 end = getSquare(max);
+
+	for (int i = start.y; i <= end.y; i++)
+	{
+		for (int j = start.x; j <= end.x; j++)
+		{
+			_twodArray[i][j].type = gridType;
+		}
+	}
+}
+
 Mesh Grid::generateMesh()
 {
 	std::vector<glm::vec3> position;

@@ -5,7 +5,14 @@
 enum gridType
 {
 	// color values (0, 0, 0) = nothing, (255, 255, 255) = wall, (0, 255, 0) = loot, (0, 0, 255) = door (255, 0,0) = exiting
-	nothing = 0, wall = 1, tresure = 2, loot = 3, door = 4, exiting = 5, guard = 6, object = 7
+	nothing = 0, 
+	wall = 1, 
+	tresure = 2, 
+	loot = 3, 
+	door = 4, 
+	exiting = 5, 
+	guard = 6, 
+	object = 7
 };
 
 /* Simple struct holding information of a grid square
