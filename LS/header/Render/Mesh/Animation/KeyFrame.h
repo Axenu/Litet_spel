@@ -1,6 +1,8 @@
 #pragma once
 /* Mattias F 2017*/
 #include <vector>
+#include <cfloat>
+#define GLM_FORCE_RADIANS
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "ChannelKeys.h"
@@ -13,7 +15,7 @@ glm::vec3 lerpVec3(const ChannelKey& from, const ChannelKey& to, float amount);
 glm::quat slerp(const ChannelKey& from, const ChannelKey& to, float amount);
 
 /* Contains the node's currently active keys for a node.
- * Allowing each node to maintain an individual 
+ * Allowing each node to maintain an individual
 */
 template<unsigned int N>
 class KeyFrame
@@ -62,11 +64,6 @@ public:
 template<unsigned int N>
 KeyFrame<N>::KeyFrame()
 {
-	for (int i = 0; i < N; i++)
-	{
-		_to[i] = ChannelMemoryKey(nodeChannelSize[i]);
-		_from[i] = ChannelMemoryKey(nodeChannelSize[i]);
-	}
 }
 template<unsigned int N>
 KeyFrame<N>::KeyFrame(const unsigned int* nodeChannelSize)
@@ -105,7 +102,7 @@ void KeyFrame<N>::newAnimation(float oldET, const Channel *channel, float animDu
 			storeState(i, oldET);
 			_from[i]._time = 0.f;
 			nextKey(i, 0.f);
-			//Update 
+			//Update
 			time = std::fmin(time, _to[i]._time);
 		}
 	}
@@ -127,7 +124,7 @@ void  KeyFrame<N>::updateFrame(float eT) {
 			_from[i] = _to[i]; //Copy next -> last
 			nextKey(i, eT);
 		}
-		//Update 
+		//Update
 		time = std::fmin(time, _to[i]._time);
 	}
 }
@@ -159,4 +156,3 @@ void  KeyFrame<N>::loop(float eT, float animDuration) {
 		}
 	}
 }
-

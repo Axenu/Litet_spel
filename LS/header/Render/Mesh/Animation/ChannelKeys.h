@@ -1,5 +1,6 @@
 #pragma once
 /* Mattias F 2017*/
+#define GLM_FORCE_RADIANS
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>

@@ -1,5 +1,6 @@
 #pragma once
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <vector>
 #include <gl/GLFunctions.h>
@@ -39,3 +40,4 @@ PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBmax, const Plane &plane);
 
 PlaneResult BBPlaneTest(const AABB &aabb, const Plane &plane);
 
+bool AABBvAABB(const AABB &first, const AABB &second);

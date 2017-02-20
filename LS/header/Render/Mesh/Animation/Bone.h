@@ -1,5 +1,6 @@
 #pragma once
 #include<string>
+#define GLM_FORCE_RADIANS
 #include<glm/mat4x4.hpp>
 
 
@@ -15,7 +16,7 @@ struct Bone {
 		: _boneName(), _invBindPose(), _bindPose(), _boneIndex(-1), _parentIndex(-1)
 	{
 	}
-	Bone(const std::string &boneName, const glm::mat4 &invBindPose, glm::mat4 &bindPose, int boneIndex, int parentIndex) 
+	Bone(const std::string &boneName, const glm::mat4 &invBindPose, glm::mat4 &bindPose, int boneIndex, int parentIndex)
 		: _boneName(boneName), _invBindPose(invBindPose), _bindPose(bindPose), _boneIndex(boneIndex), _parentIndex(parentIndex)
 	{
 	}

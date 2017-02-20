@@ -122,6 +122,15 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 		_objects[i]->addToFrame(dF);*/
 }
 
+void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
+	std::vector<GameObject*> drawList = _dynamicObjects;
+	_quadTree.QuadTreeTest(drawList, aabb);
+	for (unsigned int i = 0; i < drawList.size(); i++)
+		drawList[i]->addToFrame(dF);
+	/*for (unsigned int i = 0; i < _objects.size(); i++)
+		_objects[i]->addToFrame(dF);*/
+}
+
 
 int Scene::loot(float pickDist)
 {
@@ -129,7 +138,9 @@ int Scene::loot(float pickDist)
 	std::vector<int> indices;
 	std::vector<float> distance;
 	std::vector<GameObject*> pickList;
-	_quadTree.QuadTreeTest(pickList, glm::vec3(_cam->getLookAt()), glm::vec3(_cam->getWorldPos()), pickDist);
+	glm::vec3 lookat = _cam->getLookAt();
+	glm::vec3 wpos = _cam->getWorldPos();
+	_quadTree.QuadTreeTest(pickList, lookat, wpos, pickDist);
 
 	//Sorting out objects close enough to cam
 	for (unsigned int i = 0; i < pickList.size(); i++)

@@ -20,8 +20,9 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box) {
 Level* ObjectFactory::createLevel(const std::string &level) {
 	_level = new Level(_path + level, _events, _meshShader);
 	_level->init();
-	_scene.initQuadTree(_level->getAABB());
-	_scene.add(_level, false);
+	AABB aabb = _level->getAABB();
+	_scene.initQuadTree(aabb);
+	_scene.add(_level, true);
 	return _level;
 }
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
@@ -36,7 +37,7 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height) {
 }
 
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade) {
-	
+
 	Character* player = new Character(_level->getGrid().getCenter(square) + glm::vec3(0.f, height, 0.f), &_events,&grenade);
 	player->setLevel(&_level->getGrid());
 	player->setScene(&_scene);

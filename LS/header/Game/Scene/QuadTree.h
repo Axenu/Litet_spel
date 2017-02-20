@@ -15,6 +15,7 @@ public:
 	void CreateNodes();
 	void AddObjects(std::vector<GameObject*> &data);
 	void AddObjects(GameObject* gameObject);
+	void QuadTreeTest(std::vector<GameObject*>& gameObjects, AABB &aabb);
 	void QuadTreeTest(std::vector<GameObject*> &gameObjects, const glm::mat4 &mat);
 	void QuadTreeTest(std::vector<GameObject*> &gameObjects, glm::vec3 &dir, glm::vec3 &origin);
 	void QuadTreeTest(std::vector<GameObject*> &gameObjects, glm::vec3 &dir, glm::vec3 &origin, float distance);

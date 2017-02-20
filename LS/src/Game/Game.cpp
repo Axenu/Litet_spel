@@ -42,15 +42,18 @@ void Game::draw() {
 	RenderInfo rI(_resource, _scene.getCamera(), dF.getLightInfo());
 	setupRI(rI);
 
-
 	for (size_t i = 0; i < rI._pLightInfo.size(); i++)
 	{
+		DrawFrame tempDF;
+		float fadeDist = rI._pLightInfo[i]._fadeDist;
+		AABB lightAABB(glm::vec3(-fadeDist) + rI._pLightInfo[i]._pos, glm::vec3(fadeDist) + rI._pLightInfo[i]._pos);
+		_scene.fetchDrawables(tempDF, lightAABB);
 		_resource.getCubeMap(i).bindDraw();
 		_shadowMapShader.bind();
 		glUniformMatrix4fv(_shadowMatricesLocation, 6, GL_FALSE, &rI._pLightInfo[i]._shadowMatrices[0][0][0]);
 		glUniform3fv(_lightPosLocation, 1, &rI._pLightInfo[i]._pos[0]);
 		glUniform1f(_farPlaneLocation, rI._pLightInfo[i]._fadeDist);
-		dF.renderMeshOnly(rI, _modelMatrixLocation);
+		tempDF.renderMeshOnly(_modelMatrixLocation);
 		gl::CheckGLErrors("Render stage failed: CubeMap");
 	}
 

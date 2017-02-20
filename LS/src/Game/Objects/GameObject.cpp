@@ -1,4 +1,4 @@
-#include "Game/Objects/GameObject.h" 
+#include "Game/Objects/GameObject.h"
 
 GameObject::GameObject()
 	: Node(), _model(), _type(type::Empty)
@@ -26,12 +26,12 @@ void GameObject::init()
 {
 	Node::init();
 	//Generate a animation controller if necessary
-	Skeleton* skel = _model.getSkeleton();
-	if (skel) {
-		_animatedSkel = std::unique_ptr<AnimatedSkeleton>(new AnimatedSkeleton(*skel, *this));
-		_model.setAnimController(_animatedSkel.get());
-		bool success = _animatedSkel->setAnim("");
-	}
+	// Skeleton* skel = _model.getSkeleton();
+	// if (skel) {
+	// 	_animatedSkel = std::unique_ptr<AnimatedSkeleton>(new AnimatedSkeleton(*skel, *this));
+	// 	_model.setAnimController(_animatedSkel.get());
+	// 	bool success = _animatedSkel->setAnim("");
+	// }
 	_model.transform(_modelMatrix);
 }
 
@@ -78,5 +78,3 @@ bool GameObject::pick(Camera & cam)
 void GameObject::addToFrame(DrawFrame &dF) {
 	dF.add(_model, _modelMatrix);
 }
-
-

@@ -5,4 +5,5 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #endif
+#define GLM_FORCE_RADIANS
 #include <GLFW/glfw3.h>
