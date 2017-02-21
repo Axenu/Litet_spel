@@ -116,7 +116,7 @@ void Guard::update(float dt)
 		path->createPath(_currentLevel->getSquare(this->getWorldPos()), glm::ivec2(randomgenerator(_width) - 1, randomgenerator(_height) - 1));
 	}
 
-	setRX(_currentRot + 180.f * M_PI / 180.f); // silvertejp här
+	setRX(_currentRot + 180.f * M_PIf / 180.f); // silvertejp här
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
 		if (DetectedPlayer())
