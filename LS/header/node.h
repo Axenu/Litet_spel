@@ -56,25 +56,25 @@ public:
     void setScale(float p);
     void setScale(glm::vec3 p);
     void setScale(float x, float y);
-    void setRX(float rx);
-    void setRY(float ry);
-    void setRZ(float rz);
     void rotateX(float f);
     void rotateY(float f);
     void rotateZ(float f);
     void rotate(glm::vec3 r);
+	/* Faces the point, assumes (0, 1, 0) is up*/
 	void face(glm::vec3 point);
+	/* Sets forward axis, assumes (0, 1, 0) is up*/
 	void setForward(glm::vec3 axis);
 
 	float getX();
 	float getY();
 	float getZ();
-    float getRX();
-    float getRY();
-    float getRZ();
 	glm::vec3 getScale() const;
     glm::vec3 getPosition() const;
-    glm::vec3 getRotation() const;
+	glm::vec3 getForward() const;
+	glm::vec3 getUp() const;
+	glm::vec3 getRight() const;
+
+	void reOrthogonalize();
 
 	/* Get the transformation matrix */
 	const glm::mat4& getModelMatrix();
@@ -91,8 +91,7 @@ private:
 	bool _isActive;
 	void calcModelMatrix();
 protected:
-	glm::vec3 _position;
-	glm::vec3 _rotation;
+	glm::vec3 _position, _forward, _up;
 	glm::vec3 _scale;
     glm::mat4 _modelMatrix;
     std::vector<Node *> _children;

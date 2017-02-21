@@ -2,21 +2,20 @@
 #include <iostream>
 #define GLM_FORCE_RADIANS
 #include<glm/gtx/euler_angles.hpp>
+#include<glm/mat3x3.hpp>
 
 
-Node::Node() {
-	_scale = glm::vec3(1,1,1);
-    _position = glm::vec3(0,0,0);
-    _rotation = glm::vec3(0,0,0);
+Node::Node()
+	: _position(0.f), _forward(0.f, 0.f, -1.f), _up(0.f, 1.f, 0.f), _scale(1.0f) {
     this->_isActive = true;
     this->_modelMatrix = glm::mat4();
 }
 
 Node::Node(const glm::vec3 &position)
-	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	: _isActive(true), _position(position), _forward(0.f, 0.f, -1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
 }
 Node::Node(const glm::vec3 &position, Node *parent)
-	: _isActive(true), _position(position), _rotation(0.0f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	: _isActive(true), _position(position), _forward(0.f, 0.f, -1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
 	setParent(parent);
 }
 Node::~Node() {
@@ -25,8 +24,9 @@ Node::~Node() {
 
 void Node::calcModelMatrix()
 {
-	this->_modelMatrix = glm::scale(glm::mat4(), this->_scale);
-	this->_modelMatrix = glm::yawPitchRoll(_rotation.x, _rotation.y, _rotation.z) * this->_modelMatrix;
+	glm::mat3 mat = glm::mat3(glm::vec3(_scale.x, 0.f, 0.f), glm::vec3(0.f, _scale.y, 0.f), glm::vec3(0.f, 0.f, _scale.z));
+	glm::vec3 right = getRight();
+	this->_modelMatrix = glm::mat3(getRight(), _up, _forward) * mat;
 	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); 
 	if (this->_parent != nullptr) {
 		this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
@@ -99,14 +99,22 @@ void Node::init()
 {
 	calcModelMatrix();
 }
-
+void Node::reOrthogonalize()
+{
+	//Orthogonalize forward against up: (Gram-Schmidt):
+	glm::vec3 forw = _forward - _up * glm::dot(_up, _forward);
+	_forward = glm::normalize(forw);
+}
 void Node::face(glm::vec3 point) 
 {
-
+	setForward(point - _position);
 }
 void Node::setForward(glm::vec3 axis) 
 {
-
+	glm::vec3 forw = glm::normalize(axis);
+	glm::vec3 right = -glm::cross(glm::vec3(0.f, 1.f, 0.f), forw);
+	_up = glm::cross(right, forw);
+	_forward = forw;
 }
 void Node::setX(float x) {
     _position.x = x;
@@ -157,42 +165,35 @@ void Node::setScale(float x, float y) {
 	_scale.y = y;
 }
 
-void Node::setRX(float rx) {
-	_rotation.x = rx;
-}
-
-void Node::setRY(float ry) {
-	_rotation.y = ry;
-}
-
-void Node::setRZ(float rz) {
-	_rotation.z = rz;
-}
-
 void Node::rotateX(float f) {
-	_rotation.x += f;
+	glm::quat q = glm::angleAxis(f, getRight());
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
 }
 
 void Node::rotateY(float f) {
-	_rotation.y += f;
+	glm::quat q = glm::angleAxis(f, glm::vec3(0, 1.f, 0.f));
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
 }
 
 void Node::rotateZ(float f) {
-    _rotation.z += f;
+	glm::quat q = glm::angleAxis(f, _forward);
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
 }
 
 void Node::rotate(glm::vec3 r) {
-    _rotation.x += r.x;
-	_rotation.y += r.y;
-	_rotation.z += r.z;
 
-    while (_rotation.x > M_2PI) _rotation.x -= M_2PIf;
-    while (_rotation.y > M_2PI) _rotation.y -= M_2PIf;
-    while (_rotation.z > M_2PI) _rotation.z -= M_2PIf;
-
-    while (_rotation.x < 0) _rotation.x += M_2PIf;
-    while (_rotation.y < 0) _rotation.y += M_2PIf;
-    while (_rotation.z < 0) _rotation.z += M_2PIf;
+	glm::quat q = glm::angleAxis(r.y, _up);
+	q *= glm::angleAxis(r.x, getRight());
+	q *= glm::angleAxis(r.z, _forward);
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
 }
 
 float Node::getX()  {
@@ -207,17 +208,6 @@ float Node::getZ()  {
     return _position.z;
 }
 
-float Node::getRX()  {
-    return _rotation.x;
-}
-
-float Node::getRY()  {
-    return _rotation.y;
-}
-
-float Node::getRZ()  {
-    return _rotation.z;
-}
 
 glm::vec3 Node::getScale() const {
     return _scale;
@@ -227,8 +217,17 @@ glm::vec3 Node::getPosition() const {
     return _position;
 }
 
-glm::vec3 Node::getRotation() const {
-    return _rotation;
+glm::vec3 Node::getForward() const
+{
+	return _forward;
+}
+glm::vec3 Node::getUp() const
+{
+	return _up;
+}
+glm::vec3 Node::getRight() const
+{
+	return glm::cross(_forward, _up);
 }
 
 const glm::mat4& Node::getModelMatrix()

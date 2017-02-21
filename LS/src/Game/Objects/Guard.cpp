@@ -210,21 +210,7 @@ bool Guard::walkingInThePaths(float dt)
 			glm::vec2 currentSquare = _currentPath[_currentPath.size() - 1];
 			glm::vec2 nextSquare = _currentPath[_currentPath.size() - 2];
 
-			glm::vec2 difference = (currentSquare - nextSquare) * -1.f;
-			difference = glm::normalize(difference);
-
-			_forward = glm::vec3(difference.x, 0.0f, difference.y);
-
-			float angle = acos(_forward.z);
-
-			if ( _forward.x < 0.f)
-			{
-				angle = M_2PIf - angle;
-			}
-
-			_currentRot = angle;
-
-			setRX(_currentRot);
+			face(glm::vec3(nextSquare.x, 0.0f, nextSquare.y));
 		}
 		_currentPath.erase(_currentPath.begin() + _currentPath.size() - 1);
 	}

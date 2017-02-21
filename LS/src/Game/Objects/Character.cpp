@@ -27,7 +27,7 @@ void Character::move(float dt) {
 				_isMoving = 1;
 			}
 		}
-		_velocity = glm::normalize(_direction) * _isMoving * _speed;
+		_velocity = _direction * _isMoving * _speed;
 	}
 	else
 	{
@@ -36,10 +36,12 @@ void Character::move(float dt) {
 	}
 	glm::vec3 actualVelocity;
 	//Calculate the velocity
-	actualVelocity.x = _velocity.y * dt * sinf(_rotation.x);
-	actualVelocity.x += _velocity.x * dt * cosf(_rotation.x);
-	actualVelocity.y = _velocity.y * dt * cosf(_rotation.x);
-	actualVelocity.y += _velocity.x * dt * -sinf(_rotation.x);
+	glm::vec3 forw = glm::normalize(glm::vec3(_forward.x, 0.f, _forward.z));
+	glm::vec3 right = getRight();
+	right.y = 0;
+	right = glm::normalize(right);
+	actualVelocity = -_velocity.y * dt * forw;
+	actualVelocity += _velocity.x * dt * right;
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
@@ -157,16 +159,15 @@ void Character::moveMouse(const MouseMoveEvent& event)
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
     {
-        rotateY(deltaPos.y * -RotationSpeed);
-        rotateX(deltaPos.x * -RotationSpeed);
-        if (getRY() > glm::pi<float>()*0.5f)
-        {
-            setRY(glm::pi<float>()*0.5f);
-        }
-        if (getRY() < glm::pi<float>()*-0.5f)
-        {
-            setRY(glm::pi<float>()*-0.5f);
-        }
+		float rotY = deltaPos.y * -RotationSpeed;
+		_yRotation = +rotY;
+        rotateY(deltaPos.x * -RotationSpeed);
+        if (_yRotation > glm::pi<float>()*0.5f)
+			_yRotation = glm::pi<float>()*0.5f;
+        else if (_yRotation < glm::pi<float>()*-0.5f)
+			_yRotation = glm::pi<float>()*-0.5f;
+		else //Rotate
+			rotateX(rotY);
     }
 }
 
@@ -190,7 +191,7 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
     _lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
-	_direction = glm::vec3(0, 0, 0);
+	_yRotation = 0;
 	_speed = 2;
 	_isMoving = 0;
     _eventManager->listen(this, &Character::moveCharacter);
@@ -203,7 +204,7 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
-	_direction = glm::vec3(0, 0, 0);
+	_yRotation = 0;
 	_speed = 2;
 	_isMoving = 0;
 	_eventManager->listen(this, &Character::moveCharacter);

@@ -26,7 +26,6 @@ Camera::Camera(float fovDegree, int width, int height, float near, float far) {
     _fieldOfView = glm::radians(fovDegree);
     _aspectRatio = _width/_height;
 	_position = glm::vec3(0.0f, 0.0f, 0.0f);
-	_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     // _rotation.x = 1.0;
     initProjection();
 }

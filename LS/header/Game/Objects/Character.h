@@ -48,8 +48,8 @@ private:
     EventManager *_eventManager;
     glm::vec2 _lastCursorPos;
 	GridSquare _gridSquare;
-    glm::vec3 _direction;
-    glm::vec3 _velocity;
+    glm::vec3 _velocity, _direction;
+	float _yRotation;
 	AntiLightGrenade* _antiLightGrenade;
     float _speed;
     float _isMoving;

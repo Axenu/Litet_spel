@@ -22,7 +22,6 @@ private:
 	glm::vec3 _guardsstartposition; //h�jden f�rst sen breden. 
 	EventManager*_eventManager;
 	Character* _player;
-	glm::vec3 _forward;
 	float _speed;
 	float _distLength;
 	int _aiChoice;
@@ -35,7 +34,6 @@ private:
 	float _currentGridSpace;
 	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();
-	float _currentRot = 0.f; //deans kod
 	float getWallDist(glm::vec3 pos, glm::vec3 ray);
 public:
 	virtual ~Guard();
