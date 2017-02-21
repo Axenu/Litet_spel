@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "intersectionFunctions.h"
+#include "Game/Level/Path.h"
 
 #define GUARDVIEWDISTANCE 5.f
 #define GUARDFOV M_PIf / 4.f
@@ -15,40 +16,34 @@
 class Guard : public GameObject
 {
 private:
-	glm::vec3 _point1x; //h�jden f�rst sen breden. 
-	glm::vec3 _point2x; //h�jden f�rst sen breden. 
-	glm::vec3 _point1z; //h�jden f�rst sen breden. 
-	glm::vec3 _point2z; //h�jden f�rst sen breden. 
-	glm::vec3 _guardsstartposition; //h�jden f�rst sen breden. 
+	glm::vec3 _point1x; 
+	glm::vec3 _point2x;
+	glm::vec3 _point1z;
+	glm::vec3 _point2z;
+	glm::vec3 _guardsstartposition;
 	EventManager*_eventManager;
 	Character* _player;
+	glm::vec3 _forward;
+	Path *path;
 	float _speed;
 	float _distLength;
 	int _aiChoice;
-	int _heightLength;
-	int _widthLength;
 	int _height;
-	Grid *_currentLevel;
 	int _width;
-	glm::vec3 _displacement;
+	Grid *_currentLevel;
 	float _currentGridSpace;
-	std::vector<glm::vec2> _currentPath;
 	bool DetectedPlayer();
-	float getWallDist(glm::vec3 pos, glm::vec3 ray);
+	float _currentRot;
 public:
 	virtual ~Guard();
 	Guard();
 	void print();
-	void StartGridBuild();
 	void setLevel(Grid *level);
-	std::vector<glm::vec2> generatingPath(glm::ivec2 GoalPosition);
-	bool walkingInThePaths(float dt);
 	void WalkingBetweenFourPoints(float dt);
 	virtual	void update(float dt);
 	Guard(Character* player, EventManager* event, Model & m, Grid * gridet);
 	int randomgenerator(int randomNumber);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
-	void goToSquare(float dt, glm::vec2 walkToSquare);
 };
 

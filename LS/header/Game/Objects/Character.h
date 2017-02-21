@@ -9,7 +9,8 @@
 #include "Event/EventManager.h"
 #include "GridDataStructure.h"
 #include "Game/Scene/Scene.h"
-#include "AntiLightGrenade.h" 
+#include "AntiLightGrenade.h"
+
 #define RotationSpeed 0.005f
 
 
@@ -28,7 +29,7 @@ class Character : public GameObject
 public:
     virtual void onUpdate(float dt);
     void onRender();
-	glm::vec3 getGrenadePosition();
+	GrenadeValues getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
 

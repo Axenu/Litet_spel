@@ -52,11 +52,11 @@ void Character::onRender()
 	
 }
 
-glm::vec3 Character::getGrenadePosition()
+GrenadeValues Character::getGrenadeData()
 {
 //	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
 
-	return _antiLightGrenade->getgrenadePositionWhenlanded();
+	return _antiLightGrenade->getgrenadeData();
 }
 
 int* Character::getLootValuePointer()
@@ -145,6 +145,21 @@ void Character::moveCharacter(const KeyboardEvent& event)
 			_antiLightGrenade->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
 		}
 	}
+	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
+	{
+
+		if (event.getAction() == GLFW_PRESS)
+		{
+			this->setPosition(this->getWorldPos().x, this->getWorldPos().y - 0.5, this->getWorldPos().z);
+			_speed = _speed - 1;
+		}
+		if (event.getAction() == GLFW_RELEASE)
+		{
+			this->setPosition(this->getWorldPos().x, this->getWorldPos().y + 0.5, this->getWorldPos().z);
+			_speed = _speed + 1;
+		}
+
+	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
 {
@@ -211,7 +226,6 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_eventManager->listen(this, &Character::moveMouse);
 	_antiLightGrenade = grenade;
 }
-
 
 Character::Character()
 {
