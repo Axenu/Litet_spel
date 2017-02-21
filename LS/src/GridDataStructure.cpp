@@ -293,9 +293,15 @@ void Grid::getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned
 
 void Grid::addObject(GameObject * object, gridType gridType)
 {
+
 	AABB oAABB = object->getAABB();
 	glm::vec3 min = oAABB.getMin();
 	glm::vec3 max = oAABB.getMax();
+	//get aabb height
+	float height = max.y;
+	//Round edges
+	min += 0.5f;
+	max -= 0.5f;
 	glm::ivec2 start = getSquare(min);
 	glm::ivec2 end = getSquare(max);
 
@@ -304,6 +310,7 @@ void Grid::addObject(GameObject * object, gridType gridType)
 		for (int j = start.x; j <= end.x; j++)
 		{
 			_twodArray[i][j].type = gridType;
+			_twodArray[i][j].height = height;
 		}
 	}
 }

@@ -33,10 +33,21 @@ ModelLoader::~ModelLoader()
 */
 glm::mat4 convertAssimpMatrix(aiMatrix4x4 matrix) {
 	glm::mat4 m;
+	
 	m[0] = glm::vec4(matrix.a1, matrix.b1, matrix.c1, matrix.d1);
 	m[1] = glm::vec4(matrix.a2, matrix.b2, matrix.c2, matrix.d2);
 	m[2] = glm::vec4(matrix.a3, matrix.b3, matrix.c3, matrix.d3);
 	m[3] = glm::vec4(matrix.a4, matrix.b4, matrix.c4, matrix.d4);
+	return m;
+}
+/* Converts assimp 4x4 matrix to glm::mat4x4
+*/
+glm::mat3 convertAssimpMatrix(aiMatrix3x3 matrix) {
+	glm::mat3 m;
+
+	m[0] = glm::vec3(matrix.a1, matrix.b1, matrix.c1);
+	m[1] = glm::vec3(matrix.a2, matrix.b2, matrix.c2);
+	m[2] = glm::vec3(matrix.a3, matrix.b3, matrix.c3);
 	return m;
 }
 
@@ -282,7 +293,8 @@ void ProcessChannel(aiNodeAnim *channel, ModelConstruct& construct, AnimationCon
 	}
 	for (GLuint i = 0; i < channel->mNumRotationKeys; i++) {
 		aiQuatKey key = channel->mRotationKeys[i];
-		anim.insert(bone, 2, (float)key.mTime, glm::quat(key.mValue.x, key.mValue.y, key.mValue.z, key.mValue.w));
+		glm::quat q(key.mValue.w, key.mValue.x, key.mValue.y, key.mValue.z);
+		anim.insert(bone, 2, (float)key.mTime, q);
 	}
 }
 

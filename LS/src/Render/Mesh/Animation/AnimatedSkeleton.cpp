@@ -5,6 +5,10 @@
 AnimatedSkeleton::AnimatedSkeleton(Skeleton& ref, Node& root)
 	: _ref(ref), _root(root), _channel(ref.getNumBones()), _pose(ref.getNumBones()), _skinTransform(ref.getNumBones())
 {
+	//Each channel needs to be initiated so it can generate it's own frames.
+	for (unsigned int i = 0; i < ref.getNumBones(); i++)
+		_channel[i].init(ref.getBone(i)._bindPose);
+	updateSkeleton();
 }
 
 
@@ -19,20 +23,19 @@ void AnimatedSkeleton::update(float dT) {
 		//Check if animation is complete, currently it will only loop
 		if (_elapAnimTime > _animation->_duration)
 			loopRefit(); //Loop
-		
-		//Calculate skin transforms.
-		const glm::mat4 &root = _root.getModelMatrix();
-		const Bone &bone_0 = _ref.getBones()[0];
-		//_pose[0] = _channel[0].lerp(_elapAnimTime);
-		_pose[0] = bone_0._bindPose;
-		_skinTransform[0] = root * _pose[0] * bone_0._invBindPose;
-		for (unsigned int i = 1; i < boneCount(); i++) 
-		{
-			const Bone &bone = _ref.getBones()[i];
-			_pose[i] = bone._bindPose * _pose[bone._parentIndex];
-			//_pose[i] = _channel[i].lerp(_elapAnimTime) * _pose[bone._parentIndex];
-			_skinTransform[i] = root * _pose[i] * bone._invBindPose;
-		}
+		updateSkeleton();
+	}
+}
+void AnimatedSkeleton::updateSkeleton() 
+{
+	//Update skeleton
+	_pose[0] = _channel[0].lerp(_elapAnimTime);
+	_skinTransform[0] = _pose[0] * _ref.getBone(0)._invBindPose;
+	for (unsigned int i = 1; i < boneCount(); i++)
+	{
+		const Bone& bone = _ref.getBone(i);
+		_pose[i] = _pose[bone._parentIndex] * _channel[i].lerp(_elapAnimTime);
+		_skinTransform[i] =  _pose[i] * bone._invBindPose;
 	}
 }
 

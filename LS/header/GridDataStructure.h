@@ -17,6 +17,7 @@
 struct gridValues {
 	glm::vec2 xz;
 	gridType type;
+	float height;
 	int value;
 };
 

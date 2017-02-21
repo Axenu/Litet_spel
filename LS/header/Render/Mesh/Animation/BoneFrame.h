@@ -10,6 +10,8 @@ class BoneFrame
 public:
 	BoneFrame();
 	~BoneFrame();
+	/* Set an initial pose for each bone */
+	void init(const glm::mat4& pose);
 	/* Lerps from the keyframe to the next one. Updating the active keys.
 	*/
 	glm::mat4 lerp(float eT);
