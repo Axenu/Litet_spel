@@ -60,7 +60,6 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	Guard* guard = new Guard(&player, &_events, tmpModel, &_level->getGrid());
 	guard->setLevel(&_level->getGrid());
-	guard->StartGridBuild();
 	guard->init();
 	_scene.add(guard, true);
 

@@ -33,19 +33,18 @@ private:
 	float _roofHeight;
 	int _heightLength;
 	int _widthLength;
-	gridValues** _twodArray; //f�rsta �r heightlength andra �r widthlenght
+	gridValues** _twodArray;
 	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
 	std::vector<glm::vec3> _guardLocations;
-	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
-	bool removeGridCell(glm::ivec2 pos, std::vector<gridNode> *vector);
-public:
-	Grid(const std::string& level);
+
 	void buildgridarray();
-	glm::vec3 getData(gridType Data);
-	~Grid();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
+public:
+	Grid(const std::string& level);
+	~Grid();
+	glm::vec3 getData(gridType Data);
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
@@ -55,8 +54,6 @@ public:
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
 	glm::vec3 getLastValueOfGuardLocationsAndremovesit();
-	void buildGridArrayForGuards();
-	bool isAccessible(glm::ivec2 start, glm::ivec2 end);
 	/* Get the size of a grid square */
 	float getGridSpace();
 	int getvalue(int height,int width);
@@ -75,6 +72,7 @@ public:
 	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
+	std::vector<glm::ivec2> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
 };
 
 #endif
