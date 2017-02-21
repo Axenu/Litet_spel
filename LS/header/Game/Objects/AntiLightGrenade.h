@@ -6,20 +6,26 @@
 #include <iostream>
 #include "GameObject.h"
 #include "Game/Camera.h"
+
+struct GrenadeValues {
+	glm::vec4 _grenadePositionWhenLanded;
+	float fading;
+	float expanding;
+};
+
 class AntiLightGrenade : public GameObject
 {
 private:
 float _fallspeed;
 float _velocity;
 glm::vec3 _direction;
-glm::mat4 viewMatrix;
 bool QBeenPressed = true;
 bool QbeenActivated = false;
+bool TheBombHasBeenActivated = false;
 glm::vec3 _movement;
-glm::vec4 _grenadePositionWhenLanded;
-glm::mat4 projMatrix;
+GrenadeValues _grenadeValue;
 public:
-glm::vec4 getgrenadePositionWhenlanded();
+GrenadeValues getgrenadeData();
 virtual	void update(float dt);
 AntiLightGrenade(Model & m);
 ~AntiLightGrenade();

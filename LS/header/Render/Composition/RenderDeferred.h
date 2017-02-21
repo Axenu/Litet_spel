@@ -20,8 +20,9 @@ class RenderDeferred :
 	GLint _screenInv, _near, _far, _right, _top, _viewMatrixLocation, _camPosLocation;
 	//Light uniforms
 	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
-	//Other
+	//AntiLightGrenade
 	GLint _lightNade;
+	GLint _LightNadeExpansionFading;
 
 protected:
 

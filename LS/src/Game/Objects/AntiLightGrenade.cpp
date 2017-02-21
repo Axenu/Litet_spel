@@ -3,16 +3,31 @@
 AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
-	_grenadePositionWhenLanded=glm::vec4(-5,100.0f,-5.0f,0.f);
+	_grenadeValue._grenadePositionWhenLanded=glm::vec4(-5,100.0f,-5.0f,0.f);
+	_grenadeValue.expanding = 0;
+	_grenadeValue.fading = 0.2;
 }
 
 AntiLightGrenade::~AntiLightGrenade()
 {
 
 }
-glm::vec4 AntiLightGrenade::getgrenadePositionWhenlanded()
+GrenadeValues AntiLightGrenade::getgrenadeData()
 {
-	return _grenadePositionWhenLanded;
+	std::cout << "this is spam" << std::endl;
+	if (_grenadeValue.expanding<3 && TheBombHasBeenActivated==true)
+	{
+		_grenadeValue.expanding += 0.01;
+	}
+	else if(_grenadeValue.fading<1&& TheBombHasBeenActivated == true)
+	{
+		_grenadeValue.fading += 0.0002;
+	}
+	else
+	{
+
+	}
+	return _grenadeValue;
 }
 void AntiLightGrenade::update(float dt)
 {
@@ -28,9 +43,11 @@ void AntiLightGrenade::update(float dt)
 		}
 		else
 		{
-			_grenadePositionWhenLanded = this->getWorldPos();
+			_grenadeValue._grenadePositionWhenLanded = this->getWorldPos();
+			this->setPosition(-5, 1, -5);
 			QBeenPressed = true;
 			QbeenActivated = false;
+			TheBombHasBeenActivated = true;
 		}
 
 	}
@@ -48,5 +65,8 @@ void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::v
 		//	std::cout << "You pressed Q    "<<CharacterPositions.x<<","<<CharacterPositions.y<<","<<CharacterPositions.z<<" "<< std::endl;
 		QbeenActivated = true;
 		QBeenPressed = false;
+		TheBombHasBeenActivated = false;
+		_grenadeValue.fading = 0.1;
+		_grenadeValue.expanding = 0;
 	}
 }
