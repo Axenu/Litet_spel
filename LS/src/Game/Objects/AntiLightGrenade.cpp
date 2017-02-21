@@ -14,7 +14,7 @@ AntiLightGrenade::~AntiLightGrenade()
 }
 GrenadeValues AntiLightGrenade::getgrenadeData()
 {
-	std::cout << "this is spam" << std::endl;
+//	std::cout << "this is spam" << std::endl;
 	if (_grenadeValue.expanding<3 && TheBombHasBeenActivated==true)
 	{
 		_grenadeValue.expanding += 0.01;
