@@ -29,13 +29,11 @@ private:
 	float _distLength;
 	int _aiChoice;
 	int _height;
-	Grid *_currentLevel;
 	int _width;
-	glm::vec3 _displacement;
+	Grid *_currentLevel;
 	float _currentGridSpace;
 	bool DetectedPlayer();
 	float _currentRot;
-	float getWallDist(glm::vec3 pos, glm::vec3 ray);
 public:
 	virtual ~Guard();
 	Guard();

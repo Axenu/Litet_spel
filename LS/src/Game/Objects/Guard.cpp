@@ -55,7 +55,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 		case 1:
 		{
 			goToSquare(dt, _point1z);
-			if (roundedPosition == glm::vec2(this->getPosition().x, this->getPosition().z))//roundedPosition == glm::vec2(_point1z.x, _point1z.z))
+			if (roundedPosition == glm::vec2(this->getPosition().x, this->getPosition().z))
 			{
 				_aiChoice = -1;
 			}
@@ -121,9 +121,9 @@ void Guard::update(float dt)
 	{
 		if (DetectedPlayer())
 		{
-			std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-			//GameOverEvent event(false);
-			//_eventManager->execute(event);
+			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+			GameOverEvent event(false);
+			_eventManager->execute(event);
 		}
 	}
 
@@ -131,19 +131,17 @@ void Guard::update(float dt)
 }
 
 Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
-	GameObject(m), _player(player), _eventManager(event), _displacement(0.5f, 0.f, 0.5f)
+	GameObject(m), _player(player), _eventManager(event)
 {
 	_forward = glm::vec3(0.f, 0.f, -1.f);
-	glm::vec3 guardStartPosition=gridet->getLastValueOfGuardLocationsAndremovesit();
+	glm::vec3 guardStartPosition = gridet->getLastValueOfGuardLocationsAndremovesit();
 	srand((unsigned int)time(NULL));
-	//x = h�jd z= bred
+	 
 	gridet->Creategetheightandwidthpoint12(guardStartPosition);
-	_point1z = gridet->getheightandwidthpoint12(0)+ _displacement;
-	_point2z = gridet->getheightandwidthpoint12(1)+ _displacement;
-	_point1x = gridet->getheightandwidthpoint12(2)+ _displacement;
-	_point2x = gridet->getheightandwidthpoint12(3)+ _displacement;
-
-	_displacement = glm::vec3(0.5f, 0.0f, 0.5f);
+	_point1z = gridet->getheightandwidthpoint12(0) + glm::vec3(0.5f, 0.f, 0.5f);
+	_point2z = gridet->getheightandwidthpoint12(1) + glm::vec3(0.5f, 0.f, 0.5f);
+	_point1x = gridet->getheightandwidthpoint12(2) + glm::vec3(0.5f, 0.f, 0.5f);
+	_point2x = gridet->getheightandwidthpoint12(3) + glm::vec3(0.5f, 0.f, 0.5f);
 
 	_width = gridet->getWidth();
 	_height = gridet->getHeight();
@@ -151,7 +149,7 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	path = new Path();
 	path->setLevel(gridet);
 
-	_guardsstartposition = guardStartPosition + _displacement;
+	_guardsstartposition = guardStartPosition + glm::vec3(GRIDSPACE / 2.f, -1.f, GRIDSPACE / 2.f);
 	
 	this->setPosition(_guardsstartposition);	
 
