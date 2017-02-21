@@ -308,6 +308,11 @@ void Grid::addObject(GameObject * object, gridType gridType)
 	}
 }
 
+float Grid::getHeight(int height, int width)
+{
+	return 0.0f;
+}
+
 Mesh Grid::generateMesh()
 {
 	std::vector<glm::vec3> position;

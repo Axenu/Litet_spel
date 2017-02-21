@@ -74,6 +74,7 @@ public:
 	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
+	float getHeight(int height, int width);
 };
 
 #endif

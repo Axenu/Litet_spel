@@ -37,6 +37,7 @@ private:
 	bool DetectedPlayer();
 	float _currentRot = 0.f; //deans kod
 	float getWallDist(glm::vec3 pos, glm::vec3 ray);
+	float getObjectDist(glm::vec3 pos, glm::vec3 ray);
 public:
 	virtual ~Guard();
 	Guard();

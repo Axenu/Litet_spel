@@ -327,7 +327,7 @@ void Guard::update(float dt)
 Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	GameObject(m), _player(player), _eventManager(event), _displacement(0.5f, 0.f, 0.5f)
 {
-	_forward = glm::vec3(1.f, 0.f, 0.f);
+	_forward = glm::vec3(0.f, 0.f, -1.f);
 	glm::vec3 guardStartPosition=gridet->getLastValueOfGuardLocationsAndremovesit();
 	srand((unsigned int)time(NULL));
 	//x = h�jd z= bred
@@ -534,25 +534,27 @@ bool Guard::DetectedPlayer()
 	if (hitCounter > 1)
 	{
 		float wallDist = getWallDist(pos, rayUpperLeft);
+		float objectDist = getObjectDist(pos, rayLowerLeft);
 
-		if (playerDist < wallDist)
+		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && playerDist < GUARDVIEWDISTANCE)
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * _player->getColor()))
 		{
 			result = true;
 		}
 
 		wallDist = getWallDist(pos, rayUpperRight);
+		objectDist = getObjectDist(pos, rayLowerLeft);
 
-		if (playerDist < wallDist)
+		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && playerDist < GUARDVIEWDISTANCE)
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * _player->getColor()))
 		{
 			result = true;
 		}
@@ -573,7 +575,7 @@ float Guard::getWallDist(glm::vec3 pos, glm::vec3 ray)
 	float viewingRange = 0.f;
 	float wallDist = 0.0f;
 
-	while (viewingRange < 5.f * GRIDSPACE)
+	while (viewingRange < (GUARDVIEWDISTANCE * GRIDSPACE))
 	{
 		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
 		if (_currentLevel->gettype(gridPos.y, gridPos.x) == wall)
@@ -660,4 +662,28 @@ float Guard::getWallDist(glm::vec3 pos, glm::vec3 ray)
 		viewingRange += GRIDSPACE;
 	}
 	return wallDist;
+}
+
+float Guard::getObjectDist(glm::vec3 pos, glm::vec3 ray)
+{
+	glm::vec3 rayPos(pos.x, pos.y, pos.z);
+	float viewingRange = 0.f;
+	float objectDist = 0.0f;
+
+	while (viewingRange < (GUARDVIEWDISTANCE * GRIDSPACE))
+	{
+		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
+		if (_currentLevel->gettype(gridPos.y, gridPos.x) == object)
+		{
+			objectDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(rayPos.x, rayPos.z));
+			break;
+		}
+
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
+		viewingRange += GRIDSPACE;
+	}
+
+	if ()
+
+	return objectDist;
 }

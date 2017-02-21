@@ -9,7 +9,8 @@
 #include "Event/EventManager.h"
 #include "GridDataStructure.h"
 #include "Game/Scene/Scene.h"
-#include "AntiLightGrenade.h" 
+#include "AntiLightGrenade.h"
+
 #define RotationSpeed 0.005f
 
 
@@ -40,6 +41,8 @@ public:
     Character(glm::vec3 pos, EventManager *manager);
 	Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * grenade);
 
+	float getColor();
+
     Character();
     virtual ~Character();
 private:
@@ -56,4 +59,5 @@ private:
     int _lootValue;
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_DISABLED;
+	float _playerColor;
 };
