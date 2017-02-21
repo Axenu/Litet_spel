@@ -36,6 +36,7 @@ public:
 	void setScene(Scene *scene);
 	void move(float dT);
 	void climb(float dT);
+	void tryClimb();
 	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);

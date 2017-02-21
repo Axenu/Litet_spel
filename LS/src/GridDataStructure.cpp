@@ -241,6 +241,58 @@ bool Grid::isInside(glm::ivec2 sq) const {
 glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const {
 	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
 }
+float Grid::getGridHeight(const glm::vec3 & pos) const
+{
+	glm::ivec2 gridPos = getSquare(pos);
+	if (isInside(gridPos))
+	{
+		return _twodArray[gridPos.y][gridPos.x].height;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+void Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &animEndTime)
+{
+	animEndTime = 0.0f;
+	glm::ivec2 moveVec;
+	if (abs(dir.x) > abs(dir.z))
+	{
+		if (dir.x > 0.0f)
+		{
+			moveVec = glm::ivec2(1, 0);
+		}
+		else
+		{
+			moveVec = glm::ivec2(-1, 0);
+		}
+	}
+	else
+	{
+		if (dir.z > 0.0f)
+		{
+			moveVec = glm::ivec2(0, 1);
+		}
+		else
+		{
+			moveVec = glm::ivec2(0, -1);
+		}
+	}
+	glm::ivec2 iPos = getSquare(pos);
+	iPos += moveVec;
+	if (isInside(iPos))
+	{
+		if (_twodArray[iPos.y][iPos.x].type != gridType::wall)
+		{
+			float heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
+			if (abs(heightDiff) > 0.25f)
+			{
+				heightDiff
+			}
+		}
+	}
+}
 GridSquare Grid::operator[](glm::vec3 vec) const {
 	glm::ivec2 sq = getSquare(vec);
 	return isInside(sq) ? GridSquare(sq, _twodArray[sq.y][sq.x].type) : GridSquare();

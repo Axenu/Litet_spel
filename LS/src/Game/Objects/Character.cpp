@@ -16,6 +16,13 @@ void Character::onUpdate(float dt)
 	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
 	if (newSquare._square != _gridSquare._square) {
+		//Set new height
+		//if (!_climbing)
+		//{
+		//	glm::vec3 pos = getWorldPos();
+		//	setY(_currentLevel->getGridHeight(pos));
+		//}
+		//Send event
 		CharacterSquareEvent squareEvent(this, newSquare);
 		_eventManager->execute(squareEvent);
 		this->_gridSquare = newSquare;
@@ -55,6 +62,7 @@ void Character::move(float dt) {
 
 void Character::climb(float dT)
 {
+	_animTime += dT;
 	if (_animTime < _animEndTime)
 	{
 		float firstPhaseTime = _animEndTime - 1.0f;
@@ -62,7 +70,7 @@ void Character::climb(float dT)
 		{
 			float yDist = _position.y - _animEndPos.y;
 			float timeDiff = firstPhaseTime - _animTime;
-			if (timeDiff > 0.00001) //Check if animationphase is not about to end.
+			if (timeDiff > 0.00001) //Check if animation phase is not about to end.
 			{
 				float yPos = dT * yDist / timeDiff;
 				moveY(yPos);
@@ -75,7 +83,7 @@ void Character::climb(float dT)
 		else //Animate end phase
 		{
 			float timeDiff = _animEndTime - _animTime;
-			if (abs(timeDiff) > 0.00001) //Check if animationphase is not about to end.
+			if (abs(timeDiff) > 0.00001) //Check if animation phase is not about to end.
 			{
 				glm::vec3 dir = _position - _animEndPos;
 				dir *= dT / timeDiff;
@@ -87,6 +95,20 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_climbing = false;
+	}
+}
+
+void Character::tryClimb()
+{
+	if (!_climbing)
+	{
+		_animEndPos = glm::vec3(getWorldPos());
+		_currentLevel->testForClimb(_animEndPos, _animEndTime);
+		if (_animEndTime > 0.0f)
+		{
+			_animTime = 0.0f;
+			_climbing = true;
+		}
 	}
 }
 
@@ -187,6 +209,10 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
 			_antiLightGrenade->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
 		}
+	}
+	else if (event.getKey() == GLFW_KEY_SPACE)
+	{
+		tryClimb();
 	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
