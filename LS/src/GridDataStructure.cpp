@@ -317,7 +317,7 @@ void Grid::addObject(GameObject * object, gridType gridType)
 
 float Grid::getHeight(int height, int width)
 {
-	return 0.0f;
+	return _twodArray[height][width].height;
 }
 
 Mesh Grid::generateMesh()
@@ -828,4 +828,135 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[height][width].type;
+}
+
+float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
+{
+	glm::vec2 rayPos(pos.x, pos.z);
+
+	glm::vec3 point(0.0f);
+
+	bool signX = signbit(ray.x);
+	bool signZ = signbit(ray.z);
+
+	float viewingRange = 0.f;
+	float wallDist = 0.0f;
+
+	while (viewingRange < (guardViewDist * GRIDSPACE))
+	{
+		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
+		if (gettype(gridPos.y, gridPos.x) == wall)
+		{
+			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
+			break;
+		}
+		else
+		{
+			if (signX)
+			{
+				if (gettype(gridPos.y, gridPos.x - 1) == wall)
+				{
+					glm::vec3 triangles[6];
+					getLeftQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (gettype(gridPos.y, gridPos.x + 1) == wall)
+				{
+					glm::vec3 triangles[6];
+					getRightQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+			if (signZ)
+			{
+				if (gettype(gridPos.y - 1, gridPos.x) == wall)
+				{
+					glm::vec3 triangles[6];
+					getBackQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (gettype(gridPos.y + 1, gridPos.x) == wall)
+				{
+					glm::vec3 triangles[6];
+					getFrontQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+		}
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
+		viewingRange += GRIDSPACE;
+	}
+	return wallDist;
+}
+
+float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos)
+{
+	glm::vec2 rayPos = glm::vec2(guardPos.x, guardPos.z);
+	float viewingRange = 0.f;
+	float objectDist = 0.0f;
+
+	while (viewingRange < (guardViewDist * GRIDSPACE))
+	{
+		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
+		if (gettype(gridPos.y, gridPos.x) == object)
+		{
+			objectDist = glm::length(glm::vec2(guardPos.x, guardPos.z) - rayPos);
+			break;
+		}
+
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
+		viewingRange += GRIDSPACE;
+	}
+
+	float heightDifference = abs(playerPos.y - getHeight((int)floor(rayPos.y), (int)floor(rayPos.x)));
+	heightDifference = 100.0f * (heightDifference / playerPos.y);
+
+	if (heightDifference < 75.0f)
+	{
+		return 0.0f;
+	}
+
+	return objectDist;
 }

@@ -34,10 +34,9 @@ private:
 	glm::vec3 _displacement;
 	float _currentGridSpace;
 	std::vector<glm::vec2> _currentPath;
-	bool DetectedPlayer();
 	float _currentRot = 0.f; //deans kod
-	float getWallDist(glm::vec3 pos, glm::vec3 ray);
-	float getObjectDist(glm::vec3 pos, glm::vec3 ray);
+	bool DetectedPlayer();
+	
 public:
 	virtual ~Guard();
 	Guard();

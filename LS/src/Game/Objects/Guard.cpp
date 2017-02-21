@@ -312,13 +312,14 @@ void Guard::update(float dt)
 		_currentPath = generatingPath(glm::ivec2(randomgenerator(_width)-1,randomgenerator(_height)-1));
 	}
 
-	glm::vec3 pos = this->getWorldPos();
-
-	if (pos != glm::vec3(0.f, 0.f, 0.f) && this->DetectedPlayer())
+	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
-		std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-		//GameOverEvent event(false);
-		//_eventManager->execute(event);
+		if (DetectedPlayer())
+		{
+			std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+			//GameOverEvent event(false);
+			//_eventManager->execute(event);
+		}
 	}
 
 	GameObject::update(dt);
@@ -337,10 +338,9 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	_point1x = gridet->getheightandwidthpoint12(2)+ _displacement;
 	_point2x = gridet->getheightandwidthpoint12(3)+ _displacement;
 
-	_displacement = glm::vec3(0.5f, 0.5f, 0.5f);
+	_displacement = glm::vec3(0.5f, 0.0f, 0.5f);
 
 	_guardsstartposition = guardStartPosition + _displacement;
-	_guardsstartposition.y = 1.0f;
 	_widthLength = gridet->getWidth();
 	_heightLength = gridet->getHeight();
 	
@@ -492,6 +492,8 @@ bool Guard::DetectedPlayer()
 	glm::vec3 pos = this->getWorldPos();
 	glm::vec3 playerPos = _player->getWorldPos();
 
+	pos.y = 1.3f;
+
 	glm::vec3 guardToPlayer = playerPos - pos;
 
 	float playerDist = glm::length(guardToPlayer);
@@ -503,12 +505,12 @@ bool Guard::DetectedPlayer()
 
 	glm::vec3 upVector(0.f, 1.f, 0.f);
 	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.2f;
-	
+
 	glm::vec3 upperLeft = playerPos - rightVector;
 	glm::vec3 upperRight = playerPos + rightVector;
 	glm::vec3 lowerLeft = playerPos - upVector - rightVector;
 	glm::vec3 lowerRight = playerPos - upVector + rightVector;
-	
+
 	glm::vec3 rayUpperLeft = glm::normalize(upperLeft - pos);
 	glm::vec3 rayUpperRight = glm::normalize(upperRight - pos);
 	glm::vec3 rayLowerLeft = glm::normalize(lowerLeft - pos);
@@ -533,157 +535,32 @@ bool Guard::DetectedPlayer()
 
 	if (hitCounter > 1)
 	{
-		float wallDist = getWallDist(pos, rayUpperLeft);
-		float objectDist = getObjectDist(pos, rayLowerLeft);
+		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE);
+		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * _player->getColor()))
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * 1.0f))
 		{
 			result = true;
 		}
 
-		wallDist = getWallDist(pos, rayUpperRight);
-		objectDist = getObjectDist(pos, rayLowerLeft);
+		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE);
+		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * _player->getColor()))
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * 1.0f))
 		{
 			result = true;
 		}
 	}
 
 	return result;
-}
-
-float Guard::getWallDist(glm::vec3 pos, glm::vec3 ray)
-{
-	glm::vec2 rayPos(pos.x, pos.z);
-
-	glm::vec3 point(0.0f);
-
-	bool signX = signbit(ray.x);
-	bool signZ = signbit(ray.z);
-
-	float viewingRange = 0.f;
-	float wallDist = 0.0f;
-
-	while (viewingRange < (GUARDVIEWDISTANCE * GRIDSPACE))
-	{
-		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
-		if (_currentLevel->gettype(gridPos.y, gridPos.x) == wall)
-		{
-			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
-			break;
-		}
-		else
-		{
-			if (signX)
-			{
-				if (_currentLevel->gettype(gridPos.y, gridPos.x - 1) == wall)
-				{
-					glm::vec3 triangles[6];
-					_currentLevel->getLeftQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (_currentLevel->gettype(gridPos.y, gridPos.x + 1) == wall)
-				{
-					glm::vec3 triangles[6];
-					_currentLevel->getRightQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			if (signZ)
-			{
-				if (_currentLevel->gettype(gridPos.y - 1, gridPos.x) == wall)
-				{
-					glm::vec3 triangles[6];
-					_currentLevel->getBackQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (_currentLevel->gettype(gridPos.y + 1, gridPos.x) == wall)
-				{
-					glm::vec3 triangles[6];
-					_currentLevel->getFrontQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-		}
-		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
-		viewingRange += GRIDSPACE;
-	}
-	return wallDist;
-}
-
-float Guard::getObjectDist(glm::vec3 pos, glm::vec3 ray)
-{
-	glm::vec3 rayPos(pos.x, pos.y, pos.z);
-	float viewingRange = 0.f;
-	float objectDist = 0.0f;
-
-	while (viewingRange < (GUARDVIEWDISTANCE * GRIDSPACE))
-	{
-		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
-		if (_currentLevel->gettype(gridPos.y, gridPos.x) == object)
-		{
-			objectDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(rayPos.x, rayPos.z));
-			break;
-		}
-
-		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
-		viewingRange += GRIDSPACE;
-	}
-
-	if ()
-
-	return objectDist;
 }

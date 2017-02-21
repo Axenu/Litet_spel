@@ -13,6 +13,7 @@
 #include "Render/Mesh/Mesh.h"
 #include "Event/Events.h"
 #include "Game/Objects/GameObject.h"
+#include "intersectionFunctions.h"
 
 struct gridValues {
 	glm::vec2 xz;
@@ -39,6 +40,7 @@ private:
 	std::vector<glm::vec3> _guardLocations;
 	int IsInVector(glm::ivec2 pos, std::vector<gridNode> *vector);
 	bool removeGridCell(glm::ivec2 pos, std::vector<gridNode> *vector);
+
 public:
 	Grid(const std::string& level);
 	void buildgridarray();
@@ -52,6 +54,7 @@ public:
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
+	float getHeight(int height, int width);
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
 	glm::vec3 getLastValueOfGuardLocationsAndremovesit();
@@ -75,7 +78,8 @@ public:
 	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
-	float getHeight(int height, int width);
+	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
+	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
 };
 
 #endif

@@ -209,17 +209,6 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
 	_antiLightGrenade = grenade;
-	_playerColor = 1.0f;
-}
-
-float Character::getColor()
-{
-	if (glm::length(this->getWorldPos() - _antiLightGrenade->getWorldPos()) < 5.0f)
-	{
-		_playerColor = 0.5f;
-	}
-
-	return _playerColor;
 }
 
 Character::Character()
