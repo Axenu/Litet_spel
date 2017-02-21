@@ -35,6 +35,7 @@ public:
 	void setLevel(Grid *level);
 	void setScene(Scene *scene);
 	void move(float dT);
+	void climb(float dT);
 	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);
@@ -56,4 +57,9 @@ private:
     int _lootValue;
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_DISABLED;
+	//Climbing variables
+	bool _climbing;
+	glm::vec3 _animEndPos;
+	float _animTime;
+	float _animEndTime;
 };

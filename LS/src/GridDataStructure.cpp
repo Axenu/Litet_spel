@@ -520,6 +520,15 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		{
 			position->x += velocity.x;
 		}
+		else if (_twodArray[currentZ][currentX + 1].type == object)
+		{
+			float heightDiff = _twodArray[currentZ][currentX + 1].height - position->y; 
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < 0.25)
+			{
+				position->x += velocity.x;
+			}
+		}
 	}
 	else
 	{
@@ -530,6 +539,15 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		else if (position->x - currentX > 0.3f)
 		{
 			position->x += velocity.x;
+		}
+		else if (_twodArray[currentZ][currentX - 1].type == object)
+		{
+			float heightDiff = _twodArray[currentZ][currentX - 1].height - position->y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < 0.25)
+			{
+				position->x += velocity.x;
+			}
 		}
 	}
 
@@ -544,6 +562,15 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		{
 			position->z += velocity.y;
 		}
+		else if (_twodArray[currentZ + 1][currentX].type == object)
+		{
+			float heightDiff = _twodArray[currentZ + 1][currentX].height - position->y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < 0.25)
+			{
+				position->z += velocity.y;
+			}
+		}
 	}
 	else
 	{
@@ -554,6 +581,15 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		else if (position->z - currentZ > 0.3f)
 		{
 			position->z += velocity.y;
+		}
+		else if (_twodArray[currentZ - 1][currentX].type == object)
+		{
+			float heightDiff = _twodArray[currentZ - 1][currentX].height - position->y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < 0.25)
+			{
+				position->z += velocity.y;
+			}
 		}
 	}
 	//Check if there's a wall in the north east square, if true, move the player 0.3 units away from the corner in the direction he was moving

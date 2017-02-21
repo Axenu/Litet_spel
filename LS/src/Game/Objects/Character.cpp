@@ -4,7 +4,15 @@
 
 void Character::onUpdate(float dt)
 {
-	move(dt);
+	if (_climbing)
+	{
+		climb(dt);
+	}
+	else
+	{
+		move(dt);
+	}
+
 	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
 	if (newSquare._square != _gridSquare._square) {
@@ -43,6 +51,43 @@ void Character::move(float dt) {
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
+}
+
+void Character::climb(float dT)
+{
+	if (_animTime < _animEndTime)
+	{
+		float firstPhaseTime = _animEndTime - 1.0f;
+		if (_animTime < firstPhaseTime) //Animate climb phase
+		{
+			float yDist = _position.y - _animEndPos.y;
+			float timeDiff = firstPhaseTime - _animTime;
+			if (timeDiff > 0.00001) //Check if animationphase is not about to end.
+			{
+				float yPos = dT * yDist / timeDiff;
+				moveY(yPos);
+			}
+			else
+			{
+				setY(_animEndPos.y);
+			}
+		}
+		else //Animate end phase
+		{
+			float timeDiff = _animEndTime - _animTime;
+			if (abs(timeDiff) > 0.00001) //Check if animationphase is not about to end.
+			{
+				glm::vec3 dir = _position - _animEndPos;
+				dir *= dT / timeDiff;
+				Node::move(dir);
+			}
+		}
+	}
+	else
+	{
+		setPosition(_animEndPos);
+		_climbing = false;
+	}
 }
 
 void Character::onRender()
@@ -156,16 +201,19 @@ void Character::moveMouse(const MouseMoveEvent& event)
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
-    {
-        rotateY(deltaPos.y * -RotationSpeed);
-        rotateX(deltaPos.x * -RotationSpeed);
-        if (getRY() > glm::pi<float>()*0.5f)
+    {	
+		//Player rotats in the walking plane.
+		rotateX(deltaPos.x * -RotationSpeed);
+		//Camera rotates in up and down.                                                                                      
+		Camera* cam = &_currentScene->getCamera();  
+		cam->rotateY(deltaPos.y * -RotationSpeed);
+        if (cam->getRY() > glm::pi<float>()*0.5f)
         {
-            setRY(glm::pi<float>()*0.5f);
+            cam->setRY(glm::pi<float>()*0.5f);
         }
-        if (getRY() < glm::pi<float>()*-0.5f)
+        if (cam->getRY() < glm::pi<float>()*-0.5f)
         {
-            setRY(glm::pi<float>()*-0.5f);
+            cam->setRY(glm::pi<float>()*-0.5f);
         }
     }
 }
