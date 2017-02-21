@@ -29,7 +29,7 @@ class Character : public GameObject
 public:
     virtual void onUpdate(float dt);
     void onRender();
-	glm::vec3 getGrenadePosition();
+	GrenadeValues getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
 

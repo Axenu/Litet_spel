@@ -34,8 +34,9 @@
 		_pLightSpecCol = _shader.getUniform("pLightSpec");
 		_pLightFade = _shader.getUniform("pLightFade");
 
-		//Other
+		//lightGrenade
 		_lightNade = _shader.getUniform("viewGrenadePosition");
+		_LightNadeExpansionFading = _shader.getUniform("GrenadeExpansionFading");
 
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
@@ -90,9 +91,10 @@
 		glUniform1fv(_pLightFade, numLights, (const GLfloat*)&FADE[0]);
 
 
-		//Other
+		//GrenadeStuff
 		glm::vec3 antiLightPos = rI._V *  glm::vec4(rI._lightGrenadePos, 1.f);
 		glUniform3f(_lightNade, antiLightPos.x, antiLightPos.y, antiLightPos.z);
+		glUniform2f(_LightNadeExpansionFading, rI._lightGrenadeExpansionAndFading.x, rI._lightGrenadeExpansionAndFading.y);
 	}
 
 	/* Call on window size change

@@ -5,7 +5,6 @@
 #define GLM_FORCE_RADIANS
 #include <glm/mat4x4.hpp>
 #include "Render/PointLight.h"
-
 /* Forward Declare
 */
 
@@ -28,6 +27,8 @@ public:
 	*/
 
 	glm::vec3 _lightGrenadePos;
+	glm::vec2 _lightGrenadeExpansionAndFading;
+
 
 	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);
 	~RenderInfo();
