@@ -9,7 +9,8 @@
 #include "Event/EventManager.h"
 #include "GridDataStructure.h"
 #include "Game/Scene/Scene.h"
-#include "AntiLightGrenade.h" 
+#include "AntiLightGrenade.h"
+
 #define RotationSpeed 0.005f
 
 

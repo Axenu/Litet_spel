@@ -232,131 +232,6 @@ void Grid::addObject(GameObject * object, gridType gridType)
 	}
 }
 
-std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
-{
-	int maxValue = _heightLength * _widthLength - 1;
-	int oldMaxValue = 0;
-	int value = 0;
-	//-1 outforskadmark, ej gåbart
-	// -2 vägg
-	for (int j = 0; j < _heightLength; j++)
-	{
-		for (int i = 0; i < _widthLength; i++)
-		{
-			setvalue(j, i, -1);
-		}
-	}
-	setvalue(startPosition.y, startPosition.x, 0);
-
-	while (maxValue != 0)
-	{
-		oldMaxValue = maxValue;
-		for (int j = 0; j < _heightLength; j++)
-		{
-			for (int i = 0; i < _widthLength; i++)
-			{
-				if (gettype(j, i) == nothing || gettype(j, i) == guard)
-				{
-					if (getvalue(j, i) == value)
-					{
-						if (j == 0)
-						{
-
-						}
-						else if (j > 0 && getvalue(j - 1, i) == -1 && (gettype(j - 1, i) == nothing || gettype(j - 1, i) == guard))
-						{
-							setvalue(j - 1, i, value + 1);
-							maxValue--;
-						}
-
-						if (j == _heightLength - 1)
-						{
-
-						}
-						else if (j < _heightLength && getvalue(j + 1, i) == -1 && (gettype(j + 1, i) == nothing || gettype(j + 1, i) == guard))
-						{
-							setvalue(j + 1, i, value + 1);
-							maxValue--;
-						}
-
-						if (i == 0)
-						{
-
-						}
-						else if (i > 0 && getvalue(j, i - 1) == -1 && (gettype(j, i - 1) == nothing || gettype(j, i - 1) == guard))
-						{
-							setvalue(j, i - 1, value + 1);
-							maxValue--;
-						}
-
-						if (i == _widthLength - 1)
-						{
-
-						}
-						else if (i < _widthLength && getvalue(j, i + 1) == -1 && (gettype(j, i + 1) == nothing || gettype(j, i + 1) == guard))
-						{
-							setvalue(j, i + 1, value + 1);
-							maxValue--;
-						}
-					}
-				}
-			}
-		}
-		if (oldMaxValue == maxValue)
-		{
-			break;
-		}
-		value++;
-	}
-	for (int j = 0; j < _heightLength; j++)
-	{
-		for (int i = 0; i < _widthLength; i++)
-		{
-			if (gettype(j, i) == wall)
-			{
-				setvalue(j, i, -2);
-			}
-		}
-	}
-
-	std::vector<glm::ivec2> path;
-
-	glm::ivec2 currentPos = goalPosition;
-	if (getvalue(goalPosition.y, goalPosition.x) > 0)
-	{
-		path.push_back(goalPosition);
-	}
-	glm::ivec2 startPos = glm::ivec2(_widthLength / 2, _heightLength / 2);
-
-
-	int currentValue = getvalue(goalPosition.y, goalPosition.x);
-	while (currentValue > 1)
-	{
-		if (getvalue(currentPos.y - 1, currentPos.x)<currentValue && getvalue(currentPos.y - 1, currentPos.x) >= 0)
-		{
-			currentPos.y -= 1;
-			path.push_back(currentPos);
-		}
-		else if (getvalue(currentPos.y + 1, currentPos.x)<currentValue && getvalue(currentPos.y + 1, currentPos.x) >= 0)
-		{
-			currentPos.y += 1;
-			path.push_back(currentPos);
-		}
-		else if (getvalue(currentPos.y, currentPos.x - 1)<currentValue && getvalue(currentPos.y, currentPos.x - 1) >= 0)
-		{
-			currentPos.x -= 1;
-			path.push_back(currentPos);
-		}
-		else if (getvalue(currentPos.y, currentPos.x + 1)<currentValue && getvalue(currentPos.y, currentPos.x + 1) >= 0)
-		{
-			currentPos.x += 1;
-			path.push_back(currentPos);
-		}
-		currentValue--;
-	}
-	return path;
-}
-
 Mesh Grid::generateMesh()
 {
 	std::vector<glm::vec3> position;
@@ -762,3 +637,265 @@ gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[height][width].type;
 }
+
+float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
+{
+	glm::vec2 rayPos(pos.x, pos.z);
+
+	glm::vec3 point(0.0f);
+
+	bool signX = signbit(ray.x);
+	bool signZ = signbit(ray.z);
+
+	float viewingRange = 0.f;
+	float wallDist = 0.0f;
+
+	while (viewingRange < (guardViewDist * GRIDSPACE))
+	{
+		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
+		if (gettype(gridPos.y, gridPos.x) == wall)
+		{
+			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
+			break;
+		}
+		else
+		{
+			if (signX)
+			{
+				if (gettype(gridPos.y, gridPos.x - 1) == wall)
+				{
+					glm::vec3 triangles[6];
+					getLeftQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (gettype(gridPos.y, gridPos.x + 1) == wall)
+				{
+					glm::vec3 triangles[6];
+					getRightQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+			if (signZ)
+			{
+				if (gettype(gridPos.y - 1, gridPos.x) == wall)
+				{
+					glm::vec3 triangles[6];
+					getBackQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (gettype(gridPos.y + 1, gridPos.x) == wall)
+				{
+					glm::vec3 triangles[6];
+					getFrontQuad(triangles, gridPos.x, gridPos.y);
+					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
+					{
+						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
+						break;
+					}
+				}
+			}
+		}
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
+		viewingRange += GRIDSPACE;
+	}
+	return wallDist;
+}
+
+float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos)
+{
+	glm::vec2 rayPos = glm::vec2(guardPos.x, guardPos.z);
+	float viewingRange = 0.f;
+	float objectDist = 0.0f;
+
+	while (viewingRange < (guardViewDist * GRIDSPACE))
+	{
+		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
+		if (gettype(gridPos.y, gridPos.x) == object)
+		{
+			objectDist = glm::length(glm::vec2(guardPos.x, guardPos.z) - rayPos);
+			break;
+		}
+
+		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
+		viewingRange += GRIDSPACE;
+	}
+
+	float heightDifference = abs(playerPos.y - getHeight((int)floor(rayPos.y), (int)floor(rayPos.x)));
+	heightDifference = 100.0f * (heightDifference / playerPos.y);
+
+	if (heightDifference < 75.0f)
+	{
+		return 0.0f;
+	}
+
+	return objectDist;
+}
+
+}
+
+std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
+{
+	int maxValue = _heightLength * _widthLength - 1;
+	int oldMaxValue = 0;
+	int value = 0;
+	//-1 outforskadmark, ej gåbart
+	// -2 vägg
+	for (int j = 0; j < _heightLength; j++)
+	{
+		for (int i = 0; i < _widthLength; i++)
+		{
+			setvalue(j, i, -1);
+		}
+	}
+	setvalue(startPosition.y, startPosition.x, 0);
+
+	while (maxValue != 0)
+	{
+		oldMaxValue = maxValue;
+		for (int j = 0; j < _heightLength; j++)
+		{
+			for (int i = 0; i < _widthLength; i++)
+			{
+				if (gettype(j, i) == nothing || gettype(j, i) == guard)
+				{
+					if (getvalue(j, i) == value)
+					{
+						if (j == 0)
+						{
+
+						}
+						else if (j > 0 && getvalue(j - 1, i) == -1 && (gettype(j - 1, i) == nothing || gettype(j - 1, i) == guard))
+						{
+							setvalue(j - 1, i, value + 1);
+							maxValue--;
+						}
+
+						if (j == _heightLength - 1)
+						{
+
+						}
+						else if (j < _heightLength && getvalue(j + 1, i) == -1 && (gettype(j + 1, i) == nothing || gettype(j + 1, i) == guard))
+						{
+							setvalue(j + 1, i, value + 1);
+							maxValue--;
+						}
+
+						if (i == 0)
+						{
+
+						}
+						else if (i > 0 && getvalue(j, i - 1) == -1 && (gettype(j, i - 1) == nothing || gettype(j, i - 1) == guard))
+						{
+							setvalue(j, i - 1, value + 1);
+							maxValue--;
+						}
+
+						if (i == _widthLength - 1)
+						{
+
+						}
+						else if (i < _widthLength && getvalue(j, i + 1) == -1 && (gettype(j, i + 1) == nothing || gettype(j, i + 1) == guard))
+						{
+							setvalue(j, i + 1, value + 1);
+							maxValue--;
+						}
+					}
+				}
+			}
+		}
+		if (oldMaxValue == maxValue)
+		{
+			break;
+		}
+		value++;
+	}
+	for (int j = 0; j < _heightLength; j++)
+	{
+		for (int i = 0; i < _widthLength; i++)
+		{
+			if (gettype(j, i) == wall)
+			{
+				setvalue(j, i, -2);
+			}
+		}
+	}
+
+	std::vector<glm::ivec2> path;
+
+	glm::ivec2 currentPos = goalPosition;
+	if (getvalue(goalPosition.y, goalPosition.x) > 0)
+	{
+		path.push_back(goalPosition);
+	}
+	glm::ivec2 startPos = glm::ivec2(_widthLength / 2, _heightLength / 2);
+
+
+	int currentValue = getvalue(goalPosition.y, goalPosition.x);
+	while (currentValue > 1)
+	{
+		if (getvalue(currentPos.y - 1, currentPos.x)<currentValue && getvalue(currentPos.y - 1, currentPos.x) >= 0)
+		{
+			currentPos.y -= 1;
+			path.push_back(currentPos);
+		}
+		else if (getvalue(currentPos.y + 1, currentPos.x)<currentValue && getvalue(currentPos.y + 1, currentPos.x) >= 0)
+		{
+			currentPos.y += 1;
+			path.push_back(currentPos);
+		}
+		else if (getvalue(currentPos.y, currentPos.x - 1)<currentValue && getvalue(currentPos.y, currentPos.x - 1) >= 0)
+		{
+			currentPos.x -= 1;
+			path.push_back(currentPos);
+		}
+		else if (getvalue(currentPos.y, currentPos.x + 1)<currentValue && getvalue(currentPos.y, currentPos.x + 1) >= 0)
+		{
+			currentPos.x += 1;
+			path.push_back(currentPos);
+		}
+		currentValue--;
+	}
+	return path;
+}
+
+float Grid::getHeight(int height, int width)
+{
+	return _twodArray[height][width].height;

@@ -211,7 +211,6 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_antiLightGrenade = grenade;
 }
 
-
 Character::Character()
 {
     _lootValue = 0;
