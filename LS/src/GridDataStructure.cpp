@@ -769,8 +769,6 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 	return objectDist;
 }
 
-}
-
 std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
 {
 	int maxValue = _heightLength * _widthLength - 1;
@@ -898,4 +896,4 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 
 float Grid::getHeight(int height, int width)
 {
-	return _twodArray[height][width].height;
+	return _twodArray[height][width].height;}

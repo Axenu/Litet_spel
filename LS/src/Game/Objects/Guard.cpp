@@ -152,8 +152,6 @@ Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	path->setLevel(gridet);
 
 	_guardsstartposition = guardStartPosition + _displacement;
-	_widthLength = gridet->getWidth();
-	_heightLength = gridet->getHeight();
 	
 	this->setPosition(_guardsstartposition);	
 
