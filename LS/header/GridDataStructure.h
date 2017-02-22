@@ -67,7 +67,7 @@ public:
 	gridType returnGridType(int width,int height);
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;
 	float getGridHeight(const glm::vec3 &pos) const;
-	void testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &animEndTime);
+	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	GridSquare operator[](glm::vec3 vec) const;
 	gridType operator[](const glm::ivec2 &sq) const;
 	/* Get the center position of the specified square */

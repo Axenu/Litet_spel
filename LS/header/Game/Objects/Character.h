@@ -62,6 +62,8 @@ private:
 	//Climbing variables
 	bool _climbing;
 	glm::vec3 _animEndPos;
+	float _animFirstPhaseTime;
+	float _animSecondPhaseTime;
 	float _animTime;
 	float _animEndTime;
 };

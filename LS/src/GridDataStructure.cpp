@@ -162,9 +162,8 @@ float Grid::getGridHeight(const glm::vec3 & pos) const
 		return 0.0f;
 	}
 }
-void Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &animEndTime)
+bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff)
 {
-	animEndTime = 0.0f;
 	glm::ivec2 moveVec;
 	if (abs(dir.x) > abs(dir.z))
 	{
@@ -194,16 +193,17 @@ void Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &animEndTime)
 	{
 		if (_twodArray[iPos.y][iPos.x].type != gridType::wall)
 		{
-			float heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
+			heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
 			heightDiff = abs(heightDiff);
 			if (heightDiff > WalkHeight)
 			{
-				animEndTime = heightDiff + 1.0f;
 				pos = getCenter(iPos);
 				pos.y = _twodArray[iPos.y][iPos.x].height;
+				return true;
 			}
 		}
 	}
+	return false;
 }
 
 GridSquare Grid::operator[](glm::vec3 vec) const
