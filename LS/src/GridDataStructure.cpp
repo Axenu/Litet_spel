@@ -726,6 +726,16 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 */
 }
 
+void Grid::addLight(glm::vec3 lightPos, glm::vec3 diff, float dist)
+{
+	lightValues light;
+	light.pos = lightPos;
+	light.diffuse = diff;
+	light.dist = dist;
+	_light.push_back(light);
+}
+
+
 std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
 {
 	int maxValue = _heightLength * _widthLength - 1;

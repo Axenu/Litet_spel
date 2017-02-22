@@ -221,14 +221,17 @@ bool Guard::DetectedPlayer()
 
 	glm::vec3 pos = this->getWorldPos();
 	glm::vec3 playerPos = _player->getWorldPos();
+	glm::vec3 playerEyePos = _player->getEyePos();
 
 	pos.y = 1.3f;
 
 	glm::vec3 guardToPlayer = playerPos - pos;
 
+	float playerLight = 1.0f;
+
 	float playerDist = glm::length(guardToPlayer);
 
-	if (playerDist < 0.8f)
+	if (playerDist < 1.5f)
 	{
 		return true;
 	}
@@ -266,28 +269,35 @@ bool Guard::DetectedPlayer()
 
 	if (hitCounter > 1)
 	{
-		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE);
-		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE, playerPos);
+		playerLight = glm::min(_currentLevel->calcLightOnPosition(playerPos), 1.0f);
+		
+		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
+		{
+			playerLight *= _player->getGrenadeData().fading;
+		}
+
+		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE * playerLight);
+		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * 1.0f))
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * playerLight))
 		{
 			result = true;
 		}
 
-		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE);
-		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE, playerPos);
+		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE * playerLight);
+		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * 1.0f))
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * playerLight))
 		{
 			result = true;
 		}

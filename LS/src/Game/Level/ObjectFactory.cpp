@@ -32,11 +32,12 @@ Level* ObjectFactory::createLevel(const std::string &level)
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square) + glm::vec3 (0.f, height, 0.f), &_events);
+	Character* player = new Character(_level->getGrid().getCenter(square), &_events);
 	player->setLevel(&_level->getGrid());
 	player->setScene(&_scene);
 	player->init();
 	_scene.getCamera().setParent(player);
+	_scene.getCamera().setY(height);
 	_scene.add(player, true);
 	return player;
 }
@@ -44,10 +45,12 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square) + glm::vec3(0.f, height, 0.f), &_events,&grenade);
+	Character* player = new Character(_level->getGrid().getCenter(square), &_events,&grenade);
 	player->setLevel(&_level->getGrid());
 	player->setScene(&_scene);
+	player->init();
 	_scene.getCamera().setParent(player);
+	_scene.getCamera().setY(height);
 	_scene.add(player,true);
 	return player;
 }
@@ -109,6 +112,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	object->init();
 	_scene.add(object, true);
+	_level->getGrid().addLight(light._pos, light._diffuse, light._fadeDist);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
