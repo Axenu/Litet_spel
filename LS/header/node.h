@@ -27,6 +27,7 @@ public:
 	Node();
 	Node(const glm::vec3 &position);
 	Node(const glm::vec3 &position, Node *parent);
+	Node(glm::mat4 mat);
 
 	void addChild(Node *child);
 	std::vector<Node *> getAllChildren();

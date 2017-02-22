@@ -36,7 +36,7 @@ Camera::Camera(const Setting &setting)
 
 void Camera::update(float dT) {
 	Node::update(dT);
-	glm::mat4 viewTransform(glm::normalize(_modelMatrix[0]), glm::normalize(_modelMatrix[1]), glm::normalize(_modelMatrix[2]), _modelMatrix[3]);
+	glm::mat4 viewTransform(glm::normalize(-_modelMatrix[0]), glm::normalize(_modelMatrix[1]), glm::normalize(-_modelMatrix[2]), _modelMatrix[3]);
 	_viewMatrix = glm::inverse(viewTransform);
 
 	//_viewMatrix = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0, 0, 1));

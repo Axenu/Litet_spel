@@ -6,16 +6,19 @@
 
 
 Node::Node()
-	: _position(0.f), _forward(0.f, 0.f, -1.f), _up(0.f, 1.f, 0.f), _scale(1.0f) {
+	: _position(0.f), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f) {
     this->_isActive = true;
-    this->_modelMatrix = glm::mat4();
+}
+Node::Node(glm::mat4 mat)
+	: _modelMatrix(mat), _isActive(false) {
+	
 }
 
 Node::Node(const glm::vec3 &position)
-	: _isActive(true), _position(position), _forward(0.f, 0.f, -1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	: _isActive(true), _position(position), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
 }
 Node::Node(const glm::vec3 &position, Node *parent)
-	: _isActive(true), _position(position), _forward(0.f, 0.f, -1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	: _isActive(true), _position(position), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
 	setParent(parent);
 }
 Node::~Node() {
@@ -26,7 +29,7 @@ void Node::calcModelMatrix()
 {
 	glm::mat3 mat = glm::mat3(glm::vec3(_scale.x, 0.f, 0.f), glm::vec3(0.f, _scale.y, 0.f), glm::vec3(0.f, 0.f, _scale.z));
 	glm::vec3 right = getRight();
-	this->_modelMatrix = glm::mat3(getRight(), _up, _forward) * mat;
+	this->_modelMatrix = glm::mat3(right, _up, _forward) * mat;
 	this->_modelMatrix[3] = glm::vec4(_position, 1.0f); 
 	if (this->_parent != nullptr) {
 		this->_modelMatrix = this->_parent->_modelMatrix * this->_modelMatrix;
@@ -88,9 +91,11 @@ void Node::removeChild(Node *node) {
 }
 
 void Node::update(float dt) {
-    if (!_isActive) return;
-	onUpdate(dt);
-	calcModelMatrix();
+	if (_isActive) 
+	{
+		onUpdate(dt);
+		calcModelMatrix();
+	}
     for (Node *Node : _children)
         Node->update(dt);
 }
@@ -102,7 +107,7 @@ void Node::init()
 void Node::reOrthogonalize()
 {
 	//Orthogonalize forward against up: (Gram-Schmidt):
-	glm::vec3 forw = _forward - _up * glm::dot(_up, _forward);
+	glm::vec3 forw = _forward - _up * glm::dot(_forward, _up);
 	_forward = glm::normalize(forw);
 }
 void Node::face(glm::vec3 point) 
@@ -112,9 +117,13 @@ void Node::face(glm::vec3 point)
 void Node::setForward(glm::vec3 axis) 
 {
 	glm::vec3 forw = glm::normalize(axis);
-	glm::vec3 right = -glm::cross(glm::vec3(0.f, 1.f, 0.f), forw);
-	_up = glm::cross(right, forw);
+	glm::vec3 right = glm::cross(glm::vec3(0.f, 1.f, 0.f), forw);
+	_up = glm::cross(forw, right);
 	_forward = forw;
+}
+glm::vec3 Node::getRight() const
+{
+	return glm::cross(_up, _forward);
 }
 void Node::setX(float x) {
     _position.x = x;
@@ -224,10 +233,6 @@ glm::vec3 Node::getForward() const
 glm::vec3 Node::getUp() const
 {
 	return _up;
-}
-glm::vec3 Node::getRight() const
-{
-	return glm::cross(_forward, _up);
 }
 
 const glm::mat4& Node::getModelMatrix()

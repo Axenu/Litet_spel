@@ -16,7 +16,7 @@ void Character::onUpdate(float dt)
 
 void Character::move(float dt) {
 
-	if (_direction.x != 0 || _direction.y != 0)
+	if (_moveDir.x != 0 || _moveDir.y != 0)
 	{
 		//calculate inertia
 		if (_isMoving < 1)
@@ -27,24 +27,21 @@ void Character::move(float dt) {
 				_isMoving = 1;
 			}
 		}
-		_velocity = _direction * _isMoving * _speed;
+		//Add the movement velocity travel
+		glm::vec3 forw2D = glm::normalize(glm::vec3(_forward.x, 0.f, _forward.z));
+		glm::vec3 right2D = getRight();
+		right2D.y = 0;
+		right2D = glm::normalize(right2D);
+		_velocity = _moveDir.x * right2D * _isMoving * _speed;
+		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
 	}
-	glm::vec3 actualVelocity;
-	//Calculate the velocity
-	glm::vec3 forw = glm::normalize(glm::vec3(_forward.x, 0.f, _forward.z));
-	glm::vec3 right = getRight();
-	right.y = 0;
-	right = glm::normalize(right);
-	actualVelocity = -_velocity.y * dt * forw;
-	actualVelocity += _velocity.x * dt * right;
-
 	//Calculate new camera position and update the camera
-	_position = _currentLevel->wallCollission(_position, actualVelocity);
+	_position = _currentLevel->wallCollission(_position, _velocity * dt);
 }
 
 void Character::onRender()
@@ -71,46 +68,30 @@ void Character::moveCharacter(const KeyboardEvent& event)
     if (event.getKey() == GLFW_KEY_W)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.y -= 1.0f;
-        }
+            _moveDir.y += 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.y += 1.0f;
-        }
+			_moveDir.y -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_A)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.x -= 1.0f;
-        }
+			_moveDir.x += 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.x += 1.0f;
-        }
+			_moveDir.x -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_S)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.y += 1.0f;
-        }
+			_moveDir.y -= 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.y -= 1.0f;
-        }
+			_moveDir.y += 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_D)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.x += 1.0f;
-        }
+			_moveDir.x -= 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.x -= 1.0f;
-        }
+			_moveDir.x += 1.0f;
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
@@ -174,7 +155,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
     {
-		float rotY = deltaPos.y * -RotationSpeed;
+		float rotY = deltaPos.y * RotationSpeed;
 		_yRotation += rotY;
         rotateY(deltaPos.x * -RotationSpeed);
         if (_yRotation > glm::pi<float>()*0.5f)

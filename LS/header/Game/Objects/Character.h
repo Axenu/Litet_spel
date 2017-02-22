@@ -49,7 +49,9 @@ private:
     EventManager *_eventManager;
     glm::vec2 _lastCursorPos;
 	GridSquare _gridSquare;
-    glm::vec3 _velocity, _direction;
+	glm::vec3 _velocity;
+	/* Camera relative move dir. X: Right, Y: Forward */
+	glm::vec2 _moveDir;
 	float _yRotation;
 	AntiLightGrenade* _antiLightGrenade;
     float _speed;

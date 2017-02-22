@@ -103,12 +103,15 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-	glm::vec3 moveTo;
-	if (path->walkOnPath(&_position, moveTo, _speed, dt))
+	glm::vec3 moveTo, pos = _position;
+	if (path->walkOnPath(&pos, moveTo, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
 		path->createPath(start, _currentLevel->getRandomSquare());
 	}
+	if (pos.x < 0 || pos.z < 0)
+		int a = 0;
+	setPosition(pos);
 	face(moveTo);
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
@@ -116,7 +119,7 @@ void Guard::update(float dt)
 		{
 			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 			GameOverEvent event(false);
-			_eventManager->execute(event);
+			//_eventManager->execute(event);
 		}
 	}
 

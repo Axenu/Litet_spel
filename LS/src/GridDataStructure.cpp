@@ -687,7 +687,7 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 			return dist;
 
 		//Check if each square is 'viewable'?
-		float heightDifference = abs(playerPos.y - getHeight(trav.getSquare().x, trav.getSquare().y));
+		float heightDifference = abs(playerPos.y - getHeight(trav.getSquare().y, trav.getSquare().x));
 		heightDifference = 100.0f * (heightDifference / playerPos.y);
 
 		if (heightDifference < 75.0f)
@@ -740,7 +740,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 			setvalue(j, i, -1);
 		}
 	}
-	if(isInside(startPosition)) //?
+	if(isInside(startPosition)) //yyyyy
 		setvalue(startPosition.y, startPosition.x, 0);
 
 	while (maxValue != 0)

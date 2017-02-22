@@ -6,9 +6,9 @@
 GridTraveler::GridTraveler(float GRIDSPACING, glm::ivec2 square, glm::vec3 pos, glm::vec3 dir)
 	: _GRIDSPACING(GRIDSPACING), _gridP(square)
 {
-	_signX = (dir.x > 0) - (dir.x < 0);
-	_signY = (dir.y > 0) - (dir.y < 0);
 	_dir = glm::normalize(glm::vec2(dir.x, dir.z));
+	_signX = (_dir.x > 0) - (_dir.x < 0);
+	_signY = (_dir.y > 0) - (_dir.y < 0);
 	glm::vec2 invDir = glm::vec2(1 / _dir.x, 1 / _dir.y);
 
 	//Calc initial distance to edges
