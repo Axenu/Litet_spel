@@ -65,11 +65,23 @@ void Character::climb(float dT)
 	_animTime += dT;
 	if (_animTime < _animEndTime)
 	{
-		float firstPhaseTime = _animEndTime - 1.0f;
-		if (_animTime < firstPhaseTime) //Animate climb phase
+		float firstPhaseTime = 0.5f;
+		float secondPhaseTime = _animEndTime - 0.5f;
+		if (_animTime < firstPhaseTime)
 		{
-			float yDist = _position.y - _animEndPos.y;
-			float timeDiff = firstPhaseTime - _animTime;
+			float timeDiff = _animEndTime - _animTime;
+			if (abs(timeDiff) > 0.00001) //Check if animation phase is not about to end.
+			{
+				glm::vec3 dir = _animEndPos - _position;
+				dir *= dT / timeDiff;
+				Node::moveX(dir.x);
+				Node::moveZ(dir.z);
+			}
+		}
+		else if (_animTime < secondPhaseTime) //Animate climb phase
+		{
+			float yDist = _animEndPos.y - _position.y;
+			float timeDiff = secondPhaseTime - _animTime;
 			if (timeDiff > 0.00001) //Check if animation phase is not about to end.
 			{
 				float yPos = dT * yDist / timeDiff;
@@ -85,7 +97,7 @@ void Character::climb(float dT)
 			float timeDiff = _animEndTime - _animTime;
 			if (abs(timeDiff) > 0.00001) //Check if animation phase is not about to end.
 			{
-				glm::vec3 dir = _position - _animEndPos;
+				glm::vec3 dir = _animEndPos - _position;
 				dir *= dT / timeDiff;
 				Node::move(dir);
 			}
@@ -103,7 +115,8 @@ void Character::tryClimb()
 	if (!_climbing)
 	{
 		_animEndPos = glm::vec3(getWorldPos());
-		_currentLevel->testForClimb(_animEndPos, _animEndTime);
+		glm::vec3 dir = glm::vec3(_currentScene->getCamera().getLookAt());
+		_currentLevel->testForClimb(_animEndPos, dir,_animEndTime);
 		if (_animEndTime > 0.0f)
 		{
 			_animTime = 0.0f;
