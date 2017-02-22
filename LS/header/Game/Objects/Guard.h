@@ -10,7 +10,7 @@
 #include "intersectionFunctions.h"
 #include "Game/Level/Path.h"
 
-#define GUARDVIEWDISTANCE 5.f
+#define GUARDVIEWDISTANCE 9.f
 #define GUARDFOV M_PIf / 4.f
 
 class Guard : public GameObject

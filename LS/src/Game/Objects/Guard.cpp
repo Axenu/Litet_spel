@@ -111,19 +111,19 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-	if (path->walkOnPath(&_position, &_forward, &_currentRot, _speed, dt))
+	/*if (path->walkOnPath(&_position, &_forward, &_currentRot, _speed, dt))
 	{
 		path->createPath(_currentLevel->getSquare(this->getWorldPos()), glm::ivec2(randomgenerator(_width) - 1, randomgenerator(_height) - 1));
-	}
+	}*/
 
 	setRX(_currentRot + 180.f * M_PIf / 180.f); // silvertejp här
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
 		if (DetectedPlayer())
 		{
-			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-			GameOverEvent event(false);
-			_eventManager->execute(event);
+			std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+			/*GameOverEvent event(false);
+			_eventManager->execute(event);*/
 		}
 	}
 
@@ -133,7 +133,7 @@ void Guard::update(float dt)
 Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	GameObject(m), _player(player), _eventManager(event)
 {
-	_forward = glm::vec3(0.f, 0.f, -1.f);
+	_forward = glm::vec3(0.f, 0.f, 1.f);
 	glm::vec3 guardStartPosition = gridet->getLastValueOfGuardLocationsAndremovesit();
 	srand((unsigned int)time(NULL));
 	 
@@ -238,6 +238,8 @@ bool Guard::DetectedPlayer()
 
 	glm::vec3 guardToPlayer = playerPos - pos;
 
+	float playerLight = 1.0f;
+
 	float playerDist = glm::length(guardToPlayer);
 
 	if (playerDist < 0.8f)
@@ -277,28 +279,35 @@ bool Guard::DetectedPlayer()
 
 	if (hitCounter > 1)
 	{
-		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE);
-		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE, playerPos);
+		playerLight = glm::min(_currentLevel->calcLightOnPosition(playerPos), 1.0f);
+		
+		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
+		{
+			playerLight *= _player->getGrenadeData().fading;
+		}
+
+		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE * playerLight);
+		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * 1.0f))
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * playerLight))
 		{
 			result = true;
 		}
 
-		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE);
-		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE, playerPos);
+		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE * playerLight);
+		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
 			result = true;
 		}
 
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * 1.0f))
+		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * playerLight))
 		{
 			result = true;
 		}

@@ -633,6 +633,34 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	}
 }
 
+float Grid::calcLightOnPosition(glm::vec3 playerPos)
+{
+	float wallDist = 0.0f;
+	glm::vec3 posColor(0.0f);
+
+	for (int i = 0; i < _light.size(); i++)
+	{
+		glm::vec3 lightRay = playerPos - _light[i].pos;
+
+		if (glm::length(lightRay) < _light[i].dist)
+		{
+			wallDist = getWallDist(_light[i].pos, lightRay, _light[i].dist);
+
+			if (wallDist > glm::length(lightRay) || wallDist == 0.0f)
+			{
+				lightRay = glm::normalize(lightRay);
+				float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
+				float distance = glm::length(lightRay);
+				float att = glm::max(1.0f - (distance / _light[i].dist), 0.0f);
+
+				posColor += _light[i].diffuse * diff * att;
+			}
+		}
+	}
+
+	return (posColor.x + posColor.y + posColor.z + 0.5f);
+}
+
 gridType Grid::returnGridType(int width, int height)
 {
 	return _twodArray[height][width].type;
@@ -735,6 +763,10 @@ float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
 		}
 		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
 		viewingRange += GRIDSPACE;
+		if (!isInside(rayPos))
+		{
+			return wallDist;
+		}
 	}
 	return wallDist;
 }
@@ -756,6 +788,10 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 
 		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
 		viewingRange += GRIDSPACE;
+		if (!isInside(rayPos))
+		{
+			return objectDist;
+		}
 	}
 
 	float heightDifference = abs(playerPos.y - getHeight((int)floor(rayPos.y), (int)floor(rayPos.x)));
@@ -767,6 +803,15 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 	}
 
 	return objectDist;
+}
+
+void Grid::addLight(glm::vec3 lightPos, glm::vec3 diff, float dist)
+{
+	lightValues light;
+	light.pos = lightPos;
+	light.diffuse = diff;
+	light.dist = dist;
+	_light.push_back(light);
 }
 
 std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
