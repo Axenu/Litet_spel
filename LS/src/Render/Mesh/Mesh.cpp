@@ -1,6 +1,6 @@
 #include "Render/Mesh/Mesh.h"
 #include "gl/GLFunctions.h"
-#include "intersectionFunctions.h"
+#include "math/intersectionFunctions.h"
 
 //Private
 void Mesh::setUpMesh(const std::vector<glm::vec3> &normals)

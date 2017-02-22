@@ -6,7 +6,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <vector>
-#include "AABB.h"
+#include "math/AABB.h"
 #include "Animation/SkeletonPart.h"
 
 

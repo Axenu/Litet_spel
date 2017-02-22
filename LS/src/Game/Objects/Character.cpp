@@ -44,7 +44,7 @@ void Character::move(float dt) {
 	actualVelocity += _velocity.x * dt * right;
 
 	//Calculate new camera position and update the camera
-	_currentLevel->wallCollission(&_position, actualVelocity);
+	_position = _currentLevel->wallCollission(_position, actualVelocity);
 }
 
 void Character::onRender()
@@ -150,12 +150,12 @@ void Character::moveCharacter(const KeyboardEvent& event)
 
 		if (event.getAction() == GLFW_PRESS)
 		{
-			this->setPosition(this->getWorldPos().x, this->getWorldPos().y - 0.5, this->getWorldPos().z);
+			this->setPosition(this->getWorldPos().x, this->getWorldPos().y - 0.5f, this->getWorldPos().z);
 			_speed = _speed - 1;
 		}
 		if (event.getAction() == GLFW_RELEASE)
 		{
-			this->setPosition(this->getWorldPos().x, this->getWorldPos().y + 0.5, this->getWorldPos().z);
+			this->setPosition(this->getWorldPos().x, this->getWorldPos().y + 0.5f, this->getWorldPos().z);
 			_speed = _speed + 1;
 		}
 
@@ -175,7 +175,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
     if (_cursorMode == GLFW_CURSOR_DISABLED)
     {
 		float rotY = deltaPos.y * -RotationSpeed;
-		_yRotation = +rotY;
+		_yRotation += rotY;
         rotateY(deltaPos.x * -RotationSpeed);
         if (_yRotation > glm::pi<float>()*0.5f)
 			_yRotation = glm::pi<float>()*0.5f;

@@ -1,15 +1,7 @@
 #include "Game/Objects/Guard.h"
+#include "math/MathFunctions.h"
 
-Guard::~Guard()
-{
-	delete path;
-}
-
-Guard::Guard()
-{
-
-}
-
+/*
 void Guard::print()
 {
 	for (int m = 0;m < _width;m++)
@@ -46,7 +38,7 @@ void Guard::print()
 	}
 	std::cout << "end" << std::endl;
 }
-
+*/
 void Guard::WalkingBetweenFourPoints(float dt)
 {
 	glm::vec2 roundedPosition = glm::vec2(this->getPosition().x, this->getPosition().z);
@@ -66,7 +58,7 @@ void Guard::WalkingBetweenFourPoints(float dt)
 			goToSquare(dt, _guardsstartposition);
 			if (roundedPosition == glm::vec2(_guardsstartposition.x, _guardsstartposition.z))
 			{
-				_aiChoice = randomgenerator(4);
+				_aiChoice = getRand(5);
 			}
 			break;
 		}
@@ -111,12 +103,13 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-	if (path->walkOnPath(&_position, &_forward, &_currentRot, _speed, dt))
+	glm::vec3 moveTo;
+	if (path->walkOnPath(&_position, moveTo, _speed, dt))
 	{
-		path->createPath(_currentLevel->getSquare(this->getWorldPos()), glm::ivec2(randomgenerator(_width) - 1, randomgenerator(_height) - 1));
+		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
+		path->createPath(start, _currentLevel->getRandomSquare());
 	}
-
-	setRX(_currentRot + 180.f * M_PIf / 180.f); // silvertejp här
+	face(moveTo);
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
 		if (DetectedPlayer())
@@ -130,38 +123,30 @@ void Guard::update(float dt)
 	GameObject::update(dt);
 }
 
-Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Grid *gridet) :
 	GameObject(m), _player(player), _eventManager(event)
 {
-	_forward = glm::vec3(0.f, 0.f, -1.f);
-	glm::vec3 guardStartPosition = gridet->getLastValueOfGuardLocationsAndremovesit();
-	srand((unsigned int)time(NULL));
+	setPosition(position);
+	_guardsstartposition = position;
 	 
-	gridet->Creategetheightandwidthpoint12(guardStartPosition);
+	gridet->Creategetheightandwidthpoint12(position);
 	_point1z = gridet->getheightandwidthpoint12(0) + glm::vec3(0.5f, 0.f, 0.5f);
 	_point2z = gridet->getheightandwidthpoint12(1) + glm::vec3(0.5f, 0.f, 0.5f);
 	_point1x = gridet->getheightandwidthpoint12(2) + glm::vec3(0.5f, 0.f, 0.5f);
 	_point2x = gridet->getheightandwidthpoint12(3) + glm::vec3(0.5f, 0.f, 0.5f);
 
-	_width = gridet->getWidth();
-	_height = gridet->getHeight();
-
 	path = new Path();
 	path->setLevel(gridet);
 
-	_guardsstartposition = guardStartPosition + glm::vec3(GRIDSPACE / 2.f, -1.f, GRIDSPACE / 2.f);
-	
-	this->setPosition(_guardsstartposition);	
 
 	_speed = 0.4f;
 
-	_aiChoice = randomgenerator(4);
-	_currentRot = 0.f;
+	_aiChoice = getRand(5);
 }
 
-int Guard::randomgenerator(int randomNumber)
+Guard::~Guard()
 {
-	return (int)rand() % randomNumber + 1;
+	delete path;
 }
 
 void Guard::setPositionfromMap(glm::vec3 Guarden)
@@ -246,7 +231,7 @@ bool Guard::DetectedPlayer()
 	}
 
 	glm::vec3 upVector(0.f, 1.f, 0.f);
-	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.2f;
+	glm::vec3 rightVector = glm::normalize(glm::cross(guardToPlayer, upVector)) * 0.2f;
 
 	glm::vec3 upperLeft = playerPos - rightVector;
 	glm::vec3 upperRight = playerPos + rightVector;

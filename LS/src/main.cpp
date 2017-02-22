@@ -13,6 +13,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
+#include "math/MathFunctions.h"
 
 void setupWindow()
 {
@@ -20,6 +21,8 @@ void setupWindow()
 	//Memory leak debug
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+	//Random seed
+	seed(1000);
     // Init glfw
 	if (!glfwInit())
 	{

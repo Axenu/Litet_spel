@@ -87,7 +87,7 @@ void Path::setLevel(Grid * level)
 	this->_level = level;
 }
 
-bool Path::walkOnPath(glm::vec3 *position, glm::vec3 *forward, float *rotation, float speed, float dt)
+bool Path::walkOnPath(glm::vec3 *position, glm::vec3 &movingTo, float speed, float dt)
 {
 	if (_path.size() == 0)
 	{
@@ -100,19 +100,7 @@ bool Path::walkOnPath(glm::vec3 *position, glm::vec3 *forward, float *rotation, 
 			glm::vec2 currentSquare = _path[_path.size() - 1];
 			glm::vec2 nextSquare = _path[_path.size() - 2];
 
-			glm::vec2 difference = (currentSquare - nextSquare) * -1.f;
-			difference = glm::normalize(difference);
-
-			*forward = glm::vec3(difference.x, 0.0f, difference.y);
-
-			float angle = acos(forward->z);
-
-			if (forward->x < 0.f)
-			{
-				angle = M_2PIf - angle;
-			}
-
-			*rotation = angle;
+			movingTo = glm::vec3(nextSquare.x, 0.0f, nextSquare.y);
 		}
 		_path.erase(_path.begin() + _path.size() - 1);
 	}

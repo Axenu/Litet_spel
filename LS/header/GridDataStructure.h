@@ -13,7 +13,8 @@
 #include "Render/Mesh/Mesh.h"
 #include "Event/Events.h"
 #include "Game/Objects/GameObject.h"
-#include "intersectionFunctions.h"
+#include "math/intersectionFunctions.h"
+#include "math/AARect.h"
 
 struct gridValues {
 	glm::vec2 xz;
@@ -42,12 +43,14 @@ private:
 	void buildgridarray();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
+
+	bool isWalkable(glm::ivec2 square);
 public:
 	Grid(const std::string& level);
 	~Grid();
 	glm::vec3 getData(gridType Data);
 	Mesh generateMesh();
-	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
+	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
@@ -61,11 +64,23 @@ public:
 	int getvalue(int height,int width);
 	void setvalue(int height, int width, int value);
 	gridType gettype(int height, int width);
+
+#pragma region Mfuncs
+	/* Verify a grid square is represented in the grid
+	*/
 	bool isInside(glm::ivec2 vec) const;
 	gridType returnGridType(int width,int height);
+	/* Get the grid square associated with the position value
+	*/
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;
+	/* Get the rectangle representing a square */
+	AARect getSquareRect(glm::ivec2 square) const;
+	/* Get a random square in the grid
+	*/
+	glm::ivec2 getRandomSquare();
 	GridSquare operator[](glm::vec3 vec) const;
 	gridType operator[](const glm::ivec2 &sq) const;
+#pragma endregion
 	/* Get the center position of the specified square */
 	glm::vec3 getCenter(glm::ivec2 vec) const;
 	void getRightQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);

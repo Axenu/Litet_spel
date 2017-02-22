@@ -158,6 +158,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\math\GridTraveler.cpp" />
+    <ClCompile Include="src\math\AARect.cpp" />
+    <ClCompile Include="src\math\MathFunctions.cpp" />
     <ClCompile Include="src\Game\Level\Path.cpp" />
     <ClCompile Include="src\gl\CubeMapBuffer.cpp" />
     <ClCompile Include="src\Render\Composition\RednerCubeMap.cpp" />
@@ -195,9 +198,9 @@
     <ClCompile Include="src\Render\Mesh\Shader\DefSkinnedMeshShader.cpp" />
     <ClCompile Include="src\Render\Mesh\ModelLoader.cpp" />
     <ClCompile Include="src\Render\Composition\RenderDefBuffers.cpp" />
-    <ClCompile Include="src\intersectionFunctions.cpp" />
+    <ClCompile Include="src\math\intersectionFunctions.cpp" />
     <ClCompile Include="src\Game\Scene\DrawFrame.cpp" />
-    <ClCompile Include="src\AABB.cpp" />
+    <ClCompile Include="src\math\AABB.cpp" />
     <ClCompile Include="src\gl\Texture.cpp" />
     <ClCompile Include="src\Game\Objects\Guard.cpp" />
     <ClCompile Include="src\gui\Element.cpp" />
@@ -236,6 +239,8 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\math\GridTraveler.h" />
+    <ClInclude Include="header\math\AARect.h" />
     <ClInclude Include="header\Game\Level\Path.h" />
     <ClInclude Include="header\gl\CubeMapBuffer.h" />
     <ClInclude Include="header\Render\Composition\RenderCubeMap.h" />
@@ -274,9 +279,9 @@
     <ClInclude Include="header\gui\Manager.h" />
     <ClInclude Include="header\Render\Mesh\MaterialLink.h" />
     <ClInclude Include="header\Render\PointLight.h" />
-    <ClInclude Include="header\IntersectionFunctions.h" />
+    <ClInclude Include="header\math\IntersectionFunctions.h" />
     <ClInclude Include="header\Game\Scene\DrawFrame.h" />
-    <ClInclude Include="header\AABB.h" />
+    <ClInclude Include="header\math\AABB.h" />
     <ClInclude Include="header\Event\EventManager.h" />
     <ClInclude Include="header\gl\Texture.h" />
     <ClInclude Include="header\gl\VAData.h" />
@@ -318,6 +323,7 @@
     <ClInclude Include="header\Game\Level\ObjectFactory.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Skeleton.h" />
     <ClInclude Include="header\Render\Mesh\Animation\KeyFrame.h" />
+    <ClInclude Include="header\math\MathFunctions.h" />
     <ClInclude Include="src\Render\Mesh\Animation\AnimationConstruct.h" />
     <ClInclude Include="src\Render\Mesh\ModelConstruct.h" />
   </ItemGroup>

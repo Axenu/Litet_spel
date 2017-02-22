@@ -3,7 +3,7 @@
 #include "Render/RenderInfo.h"
 #include "Animation/AnimatedSkeleton.h"
 #include "Material.h"
-#include "AABB.h"
+#include "math/AABB.h"
 
 
 class ModelPart

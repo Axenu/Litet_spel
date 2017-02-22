@@ -7,7 +7,6 @@
 #include "Character.h"
 #include <stdlib.h>
 #include <time.h>
-#include "intersectionFunctions.h"
 #include "Game/Level/Path.h"
 
 #define GUARDVIEWDISTANCE 5.f
@@ -23,26 +22,20 @@ private:
 	glm::vec3 _guardsstartposition;
 	EventManager*_eventManager;
 	Character* _player;
-	glm::vec3 _forward;
 	Path *path;
 	float _speed;
 	float _distLength;
 	int _aiChoice;
-	int _height;
-	int _width;
 	Grid *_currentLevel;
 	float _currentGridSpace;
 	bool DetectedPlayer();
-	float _currentRot;
 public:
 	virtual ~Guard();
-	Guard();
 	void print();
 	void setLevel(Grid *level);
 	void WalkingBetweenFourPoints(float dt);
 	virtual	void update(float dt);
-	Guard(Character* player, EventManager* event, Model & m, Grid * gridet);
-	int randomgenerator(int randomNumber);
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Grid * gridet);
 	void setPositionfromMap(glm::vec3 Guarden);
 	void goToSquare(float dt, glm::vec3 walkTo); 
 };

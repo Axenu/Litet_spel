@@ -16,5 +16,5 @@ public:
 	~Path();
 	void createPath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
 	void setLevel(Grid * level);
-	bool walkOnPath(glm::vec3 *position, glm::vec3 *forward, float *rotation, float speed, float dt);
+	bool walkOnPath(glm::vec3 *position, glm::vec3 &movingTo, float speed, float dt);
 };

@@ -1,4 +1,6 @@
 #include "GridDataStructure.h"
+#include "math/MathFunctions.h"
+#include "math/GridTraveler.h"
 #pragma warning(disable:4996)
 
 Grid::Grid(const std::string &level)
@@ -148,6 +150,14 @@ bool Grid::isInside(glm::ivec2 sq) const
 glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const 
 {
 	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
+}
+
+AARect Grid::getSquareRect(glm::ivec2 square) const {
+	return AARect(square, glm::vec2(square.x + GRIDSPACE, square.y + GRIDSPACE));
+}
+glm::ivec2 Grid::getRandomSquare()
+{
+	return randIVec2(_widthLength, _heightLength);
 }
 
 GridSquare Grid::operator[](glm::vec3 vec) const
@@ -412,19 +422,34 @@ Mesh Grid::generateMesh()
 	return mesh;
 }
 
-void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
+bool Grid::isWalkable(glm::ivec2 square)
 {
-	//calculate current grid position
-	int currentX = (int)glm::floor(position->x / GRIDSPACE);
-	int currentZ = (int)glm::floor(position->z / GRIDSPACE);
+	gridType t = this->operator[](square);
+	return  t != gridType::wall && t != gridType::object;
+}
 
+glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
+{
+	//Calculate current grid position
+	glm::ivec2 sq = getSquare(position);
+	//Check X dir is walkable
+	sq.x += (int)((position.x - sq.x) + velocity.x);
+	if (isWalkable(sq))
+		position.x += velocity.x;
+	//Check Z dir is walkable
+	sq.y += (int)((position.z - sq.y) + velocity.z);
+	if (isWalkable(sq))
+		position.z += velocity.z;
+
+	position += velocity.y; //Y : w/e
+	return position;
+	/*
 	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength || currentZ > _heightLength)
 	{
 		position->x += velocity.x;
 		position->z += velocity.y;
 		return;
 	}
-
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
 	if (signbit(velocity.x) == false)
 	{
@@ -528,6 +553,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 			position->z = (float)currentZ + 1 - dist.z * 0.3f;
 		}
 	}
+	*/
 }
 
 glm::vec3 Grid::getheightandwidthpoint12(int i)
@@ -640,107 +666,37 @@ gridType Grid::returnGridType(int width, int height)
 
 float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
 {
-	glm::vec2 rayPos(pos.x, pos.z);
-
-	glm::vec3 point(0.0f);
-
-	bool signX = signbit(ray.x);
-	bool signZ = signbit(ray.z);
-
-	float viewingRange = 0.f;
-	float wallDist = 0.0f;
-
-	while (viewingRange < (guardViewDist * GRIDSPACE))
+	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
+	float dist = 0.f;
+	do
 	{
-		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
-		if (gettype(gridPos.y, gridPos.x) == wall)
-		{
-			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
-			break;
-		}
-		else
-		{
-			if (signX)
-			{
-				if (gettype(gridPos.y, gridPos.x - 1) == wall)
-				{
-					glm::vec3 triangles[6];
-					getLeftQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (gettype(gridPos.y, gridPos.x + 1) == wall)
-				{
-					glm::vec3 triangles[6];
-					getRightQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			if (signZ)
-			{
-				if (gettype(gridPos.y - 1, gridPos.x) == wall)
-				{
-					glm::vec3 triangles[6];
-					getBackQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (gettype(gridPos.y + 1, gridPos.x) == wall)
-				{
-					glm::vec3 triangles[6];
-					getFrontQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-		}
-		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
-		viewingRange += GRIDSPACE;
-	}
-	return wallDist;
+		dist += trav.goNext();
+	} while (isInside(trav.getSquare()) && (*this)[trav.getSquare()] != gridType::wall && dist < guardViewDist);
+	return dist;
 }
 
 float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos)
 {
+
+	GridTraveler trav(GRIDSPACE, getSquare(guardPos), guardPos, ray);
+	float dist = 0.f;
+	while (dist < guardViewDist)
+	{
+		dist += trav.goNext();
+		if (!isInside(trav.getSquare()))
+			return dist;
+
+		//Check if each square is 'viewable'?
+		float heightDifference = abs(playerPos.y - getHeight(trav.getSquare().x, trav.getSquare().y));
+		heightDifference = 100.0f * (heightDifference / playerPos.y);
+
+		if (heightDifference < 75.0f)
+		{
+			return 0.0f;
+		}
+	}
+	return dist;
+	/*
 	glm::vec2 rayPos = glm::vec2(guardPos.x, guardPos.z);
 	float viewingRange = 0.f;
 	float objectDist = 0.0f;
@@ -767,6 +723,7 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 	}
 
 	return objectDist;
+*/
 }
 
 std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
@@ -783,7 +740,8 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 			setvalue(j, i, -1);
 		}
 	}
-	setvalue(startPosition.y, startPosition.x, 0);
+	if(isInside(startPosition)) //?
+		setvalue(startPosition.y, startPosition.x, 0);
 
 	while (maxValue != 0)
 	{
@@ -796,7 +754,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 				{
 					if (getvalue(j, i) == value)
 					{
-						if (j == 0)
+						if (j <= 0)
 						{
 
 						}
@@ -806,7 +764,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 							maxValue--;
 						}
 
-						if (j == _heightLength - 1)
+						if (j >= _heightLength - 1)
 						{
 
 						}
@@ -816,7 +774,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 							maxValue--;
 						}
 
-						if (i == 0)
+						if (i <= 0)
 						{
 
 						}
@@ -826,7 +784,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 							maxValue--;
 						}
 
-						if (i == _widthLength - 1)
+						if (i >= _widthLength - 1)
 						{
 
 						}

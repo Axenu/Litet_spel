@@ -1,4 +1,4 @@
-#include "intersectionFunctions.h"
+#include "math/intersectionFunctions.h"
 
 bool PointInTriangle(glm::vec3 triV1, glm::vec3 triV2, glm::vec3 triV3, glm::vec3 pointInTriangle)
 {

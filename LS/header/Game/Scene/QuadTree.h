@@ -3,7 +3,7 @@
 #include <map>
 #include <math.h>
 #include "Game/Objects/GameObject.h"
-#include "IntersectionFunctions.h"
+#include "math/IntersectionFunctions.h"
 
 class QuadTreeNode
 {
