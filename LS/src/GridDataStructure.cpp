@@ -96,6 +96,7 @@ void Grid::loadingBmpPicture(const char* filename)
 			tmp = data[j];
 			data[j] = data[j + 2];
 			data[j + 2] = tmp;
+			_twodArray[height - 1 - i][realj].height = 0.0f;
 
 			if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 255, 255))
 			{
@@ -148,6 +149,61 @@ bool Grid::isInside(glm::ivec2 sq) const
 glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const 
 {
 	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
+}
+float Grid::getGridHeight(const glm::vec3 & pos) const
+{
+	glm::ivec2 gridPos = getSquare(pos);
+	if (isInside(gridPos))
+	{
+		return _twodArray[gridPos.y][gridPos.x].height;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+void Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &animEndTime)
+{
+	animEndTime = 0.0f;
+	glm::ivec2 moveVec;
+	if (abs(dir.x) > abs(dir.z))
+	{
+		if (dir.x > 0.0f)
+		{
+			moveVec = glm::ivec2(1, 0);
+		}
+		else
+		{
+			moveVec = glm::ivec2(-1, 0);
+		}
+	}
+	else
+	{
+		if (dir.z > 0.0f)
+		{
+			moveVec = glm::ivec2(0, 1);
+		}
+		else
+		{
+			moveVec = glm::ivec2(0, -1);
+		}
+	}
+	glm::ivec2 iPos = getSquare(pos);
+	iPos += moveVec;
+	if (isInside(iPos))
+	{
+		if (_twodArray[iPos.y][iPos.x].type != gridType::wall)
+		{
+			float heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
+			heightDiff = abs(heightDiff);
+			if (heightDiff > WalkHeight)
+			{
+				animEndTime = heightDiff + 1.0f;
+				pos = getCenter(iPos);
+				pos.y = _twodArray[iPos.y][iPos.x].height;
+			}
+		}
+	}
 }
 
 GridSquare Grid::operator[](glm::vec3 vec) const
@@ -428,48 +484,96 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
 	if (signbit(velocity.x) == false)
 	{
-		if (_twodArray[currentZ][currentX + 1].type != wall && _twodArray[currentZ][currentX + 1].type != object)
+		if (_twodArray[currentZ][currentX + 1].type == wall)
 		{
-			position->x += velocity.x;
+			if (position->x - currentX < 0.7f)
+			{
+				position->x += velocity.x;
+			}
 		}
-		else if (position->x - currentX < 0.7f)
+		else
 		{
-			position->x += velocity.x;
+			float heightDiff = _twodArray[currentZ][currentX + 1].height - position->y; 
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position->x += velocity.x;
+			}
+			else if (position->x - currentX < 0.7f)
+			{
+				position->x += velocity.x;
+			}
 		}
 	}
 	else
 	{
-		if (_twodArray[currentZ][currentX - 1].type != wall && _twodArray[currentZ][currentX - 1].type != object)
+		if (_twodArray[currentZ][currentX - 1].type == wall)
 		{
-			position->x += velocity.x;
+			if (position->x - currentX > 0.3f)
+			{
+				position->x += velocity.x;
+			}
 		}
-		else if (position->x - currentX > 0.3f)
+		else
 		{
-			position->x += velocity.x;
+			float heightDiff = _twodArray[currentZ][currentX - 1].height - position->y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position->x += velocity.x;
+			}
+			else if (position->x - currentX > 0.3f)
+			{
+				position->x += velocity.x;
+			}
 		}
 	}
 
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
 	if (signbit(velocity.y) == false)
 	{
-		if (_twodArray[currentZ + 1][currentX].type != wall && _twodArray[currentZ + 1][currentX].type != object)
+		if (_twodArray[currentZ + 1][currentX].type == wall)
 		{
-			position->z += velocity.y;
+			if (position->z - currentZ < 0.7f)
+			{
+				position->z += velocity.y;
+			}
 		}
-		else if (position->z - currentZ < 0.7f)
+		else
 		{
-			position->z += velocity.y;
+			float heightDiff = _twodArray[currentZ + 1][currentX].height - position->y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position->z += velocity.y;
+			} 
+			else if (position->z - currentZ < 0.7f)
+			{
+				position->z += velocity.y;
+			}
 		}
 	}
 	else
 	{
-		if (_twodArray[currentZ - 1][currentX].type != wall && _twodArray[currentZ - 1][currentX].type != object)
+		if (_twodArray[currentZ - 1][currentX].type == wall)
 		{
-			position->z += velocity.y;
+			if (position->z - currentZ > 0.3f)
+			{
+				position->z += velocity.y;
+			}
 		}
-		else if (position->z - currentZ > 0.3f)
+		else
 		{
-			position->z += velocity.y;
+			float heightDiff = _twodArray[currentZ - 1][currentX].height - position->y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position->z += velocity.y;
+			} 
+			else if (position->z - currentZ > 0.3f)
+			{
+				position->z += velocity.y;
+			}
 		}
 	}
 	//Check if there's a wall in the north east square, if true, move the player 0.3 units away from the corner in the direction he was moving
