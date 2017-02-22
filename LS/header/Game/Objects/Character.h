@@ -56,7 +56,7 @@ private:
 	glm::vec3 _velocity;
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
-	float _yRotation;
+	float _camTilt;
 	AntiLightGrenade* _antiLightGrenade;
     float _speed;
     float _isMoving;
@@ -66,6 +66,8 @@ private:
 	//Climbing variables
 	bool _climbing;
 	glm::vec3 _animEndPos;
+	float _animFirstPhaseTime;
+	float _animSecondPhaseTime;
 	float _animTime;
 	float _animEndTime;
 };

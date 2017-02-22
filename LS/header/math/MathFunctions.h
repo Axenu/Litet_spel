@@ -12,3 +12,11 @@ glm::ivec2 randIVec2(unsigned int maxX, unsigned int maxY);
 
 
 
+template
+<
+	typename T, //real type
+	typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+>
+int sign(T value) {
+	return (value > 0) - (value < 0);
+}

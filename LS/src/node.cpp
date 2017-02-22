@@ -107,10 +107,11 @@ void Node::reOrthogonalize()
 }
 void Node::face(glm::vec3 point) 
 {
-	setForward(point - _position);
+	setForward(point - glm::vec3(getWorldPos()));
 }
 void Node::setForward(glm::vec3 axis) 
 {
+	//Calculates the orientation vectors. Axis needs to be moved into local space
 	glm::vec3 forw = glm::normalize(axis);
 	glm::vec3 right = glm::cross(glm::vec3(0.f, 1.f, 0.f), forw);
 	_up = glm::cross(forw, right);

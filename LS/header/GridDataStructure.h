@@ -79,7 +79,6 @@ public:
 	/* Verify a grid square is represented in the grid
 	*/
 	bool isInside(glm::ivec2 vec) const;
-	gridType returnGridType(int width,int height);
 	/* Get the grid square associated with the position value
 	*/
 	glm::ivec2 getSquare(const glm::vec3 &pos) const;
@@ -89,7 +88,7 @@ public:
 	*/
 	glm::ivec2 getRandomSquare();
 	float getGridHeight(const glm::vec3 &pos) const;
-	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &animEndTime);
+	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	GridSquare operator[](glm::vec3 vec) const;
 	gridType operator[](const glm::ivec2 &sq) const;
 #pragma endregion
