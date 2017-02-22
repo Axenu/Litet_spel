@@ -45,7 +45,6 @@ private:
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray;
-	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
 	std::vector<glm::vec3> _guardLocations;
 	std::vector<lightValues> _light;
@@ -57,19 +56,23 @@ public:
 	Grid(const std::string& level);
 	~Grid();
 	Mesh generateMesh();
-	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
-	float calcLightOnPosition(glm::vec3 playerPos);
+
+	/* Get height size of grid in squares */
 	int getHeight();
+	/* Get width size of grid in squares */
 	int getWidth();
-	std::vector<glm::vec3> * getLootLocations();
-	std::vector<glm::vec3> *  getGuardLocations();
 	/* Get the size of a grid square */
 	float getGridSpace();
 	int getvalue(int height,int width);
 	void setvalue(int height, int width, int value);
-	gridType gettype(int height, int width);
+	/* Get grid square type not checking if inside */
+	gridType getTypeNC(int height, int width);
 
 #pragma region Mfuncs
+	/* Get distance to closest wall */
+	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
+	/* Get distance to closest blocking object...?*/
+	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
 	/* Verify a grid square is represented in the grid
 	*/
 	bool isInside(glm::ivec2 vec) const;
@@ -89,12 +92,19 @@ public:
 	gridType operator[](const glm::ivec2 &sq) const;
 #pragma endregion
 	float getGridHeight(const glm::vec3 &pos) const;
-	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
+	/* Generate a walkable path */
 	std::shared_ptr<Path> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
-	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
-	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
+
 	float getHeight(int height, int width);
+
+	//These funcs should not be in grid: /Mattias
+
+	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
+	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
 	void addLight(glm::vec3 lightPos, glm::vec3 diff, float dist);
+	float calcLightOnPosition(glm::vec3 playerPos);
+	std::vector<glm::vec3> * getLootLocations();
+	std::vector<glm::vec3> *  getGuardLocations();
 };
