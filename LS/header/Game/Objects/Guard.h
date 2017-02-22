@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Game/Level/Path.h"
+#include <memory>
 
 #define GUARDVIEWDISTANCE 5.f
 #define GUARDFOV M_PIf / 4.f
@@ -22,7 +23,7 @@ private:
 	glm::vec3 _guardsstartposition;
 	EventManager*_eventManager;
 	Character* _player;
-	Path *path;
+	std::shared_ptr<Path> _path;
 	float _speed;
 	float _distLength;
 	int _aiChoice;

@@ -726,7 +726,7 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 */
 }
 
-std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
+std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
 {
 	int maxValue = _heightLength * _widthLength - 1;
 	int oldMaxValue = 0;
@@ -740,7 +740,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 			setvalue(j, i, -1);
 		}
 	}
-	if(isInside(startPosition)) //yyyyy
+	if(isInside(startPosition)) 
 		setvalue(startPosition.y, startPosition.x, 0);
 
 	while (maxValue != 0)
@@ -814,15 +814,13 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 		}
 	}
 
-	std::vector<glm::ivec2> path;
+	std::vector<glm::vec3> path;
 
 	glm::ivec2 currentPos = goalPosition;
 	if (getvalue(goalPosition.y, goalPosition.x) > 0)
 	{
-		path.push_back(goalPosition);
+		path.push_back(glm::vec3(goalPosition.x, 0.f, goalPosition.y));
 	}
-	glm::ivec2 startPos = glm::ivec2(_widthLength / 2, _heightLength / 2);
-
 
 	int currentValue = getvalue(goalPosition.y, goalPosition.x);
 	while (currentValue > 1)
@@ -830,26 +828,31 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 		if (getvalue(currentPos.y - 1, currentPos.x)<currentValue && getvalue(currentPos.y - 1, currentPos.x) >= 0)
 		{
 			currentPos.y -= 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		else if (getvalue(currentPos.y + 1, currentPos.x)<currentValue && getvalue(currentPos.y + 1, currentPos.x) >= 0)
 		{
 			currentPos.y += 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		else if (getvalue(currentPos.y, currentPos.x - 1)<currentValue && getvalue(currentPos.y, currentPos.x - 1) >= 0)
 		{
 			currentPos.x -= 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		else if (getvalue(currentPos.y, currentPos.x + 1)<currentValue && getvalue(currentPos.y, currentPos.x + 1) >= 0)
 		{
 			currentPos.x += 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		currentValue--;
 	}
-	return path;
+
+	for (int i = 0; i < path.size(); i++)
+	{
+		path[i] += glm::vec3(GRIDSPACE / 2.f, 0.f, GRIDSPACE / 2.f);
+	}
+	return std::shared_ptr<Path>(new Path(path));
 }
 
 float Grid::getHeight(int height, int width)

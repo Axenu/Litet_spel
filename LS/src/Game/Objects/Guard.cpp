@@ -103,16 +103,16 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-	glm::vec3 moveTo, pos = _position;
-	if (path->walkOnPath(&pos, moveTo, _speed, dt))
+	glm::vec3 pos = _position;
+	if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
-		path->createPath(start, _currentLevel->getRandomSquare());
+		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
 	}
 	if (pos.x < 0 || pos.z < 0)
 		int a = 0;
 	setPosition(pos);
-	face(moveTo);
+	face(_path->movingTo());
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
 		if (DetectedPlayer())
@@ -138,9 +138,8 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_point1x = gridet->getheightandwidthpoint12(2) + glm::vec3(0.5f, 0.f, 0.5f);
 	_point2x = gridet->getheightandwidthpoint12(3) + glm::vec3(0.5f, 0.f, 0.5f);
 
-	path = new Path();
-	path->setLevel(gridet);
-
+	glm::ivec2 start = gridet->getSquare(this->getWorldPos());
+	_path = gridet->generatePath(start, gridet->getRandomSquare());
 
 	_speed = 0.4f;
 
@@ -149,7 +148,7 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 Guard::~Guard()
 {
-	delete path;
+	
 }
 
 void Guard::setPositionfromMap(glm::vec3 Guarden)

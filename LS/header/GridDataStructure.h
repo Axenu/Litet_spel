@@ -1,5 +1,4 @@
-#ifndef GRIDDATASTRUCTURE
-#define GRIDDATASTRUCTURE
+#pragma once
 
 #define GRIDSPACE 1.f
 #define ROOFHEIGHT 2.f
@@ -15,6 +14,8 @@
 #include "Game/Objects/GameObject.h"
 #include "math/intersectionFunctions.h"
 #include "math/AARect.h"
+#include "Game/Level/Path.h"
+#include <memory>
 
 struct gridValues {
 	glm::vec2 xz;
@@ -89,9 +90,7 @@ public:
 	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
-	std::vector<glm::ivec2> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
+	std::shared_ptr<Path> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
 	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
 	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
 };
-
-#endif
