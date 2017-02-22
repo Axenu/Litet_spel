@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/Objects/StaticGameObject.h"
-#include "GridDataStructure.h"
+#include "Grid.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "Event/EventManager.h"
 

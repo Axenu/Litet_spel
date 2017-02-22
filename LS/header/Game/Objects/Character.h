@@ -7,7 +7,7 @@
 #include "Game/camera.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
-#include "GridDataStructure.h"
+#include "Game/Level/Grid.h"
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
 
