@@ -494,7 +494,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		else
 		{
 			float heightDiff = _twodArray[currentZ][currentX + 1].height - position->y; 
-			std::cout << heightDiff << std::endl;
+			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
 				position->x += velocity.x;
@@ -517,7 +517,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		else
 		{
 			float heightDiff = _twodArray[currentZ][currentX - 1].height - position->y;
-			std::cout << heightDiff << std::endl;
+			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
 				position->x += velocity.x;
@@ -542,7 +542,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		else
 		{
 			float heightDiff = _twodArray[currentZ + 1][currentX].height - position->y;
-			std::cout << heightDiff << std::endl;
+			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
 				position->z += velocity.y;
@@ -565,7 +565,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		else
 		{
 			float heightDiff = _twodArray[currentZ - 1][currentX].height - position->y;
-			std::cout << heightDiff << std::endl;
+			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
 				position->z += velocity.y;

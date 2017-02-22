@@ -228,12 +228,12 @@ void Character::moveCharacter(const KeyboardEvent& event)
 
 		if (event.getAction() == GLFW_PRESS)
 		{
-			this->setPosition(this->getWorldPos().x, this->getWorldPos().y - 0.5, this->getWorldPos().z);
+			_currentScene->getCamera().moveY(-0.5);
 			_speed = _speed - 1;
 		}
 		if (event.getAction() == GLFW_RELEASE)
 		{
-			this->setPosition(this->getWorldPos().x, this->getWorldPos().y + 0.5, this->getWorldPos().z);
+			_currentScene->getCamera().moveY(0.5);
 			_speed = _speed + 1;
 		}
 
