@@ -120,6 +120,7 @@ void Guard::update(float dt)
 			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 			GameOverEvent event(false);
 			//_eventManager->execute(event);
+			std::cout << "Detected :" << pos.x << ", " << pos.y << ", " << pos.z << '\n';
 		}
 	}
 
@@ -233,7 +234,8 @@ bool Guard::DetectedPlayer()
 	}
 
 	glm::vec3 upVector(0.f, 1.f, 0.f);
-	glm::vec3 rightVector = glm::normalize(glm::cross(guardToPlayer, upVector)) * 0.2f;
+	glm::vec3 forward = getForward();
+	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.2f;
 
 	glm::vec3 upperLeft = playerPos - rightVector;
 	glm::vec3 upperRight = playerPos + rightVector;
@@ -245,19 +247,19 @@ bool Guard::DetectedPlayer()
 	glm::vec3 rayLowerLeft = glm::normalize(lowerLeft - pos);
 	glm::vec3 rayLowerRight = glm::normalize(lowerRight - pos);
 
-	if (acos(glm::dot(rayUpperLeft, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayUpperLeft, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
-	if (acos(glm::dot(rayLowerRight, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayLowerRight, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
-	if (acos(glm::dot(rayUpperRight, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayUpperRight, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
-	if (acos(glm::dot(rayLowerLeft, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayLowerLeft, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}

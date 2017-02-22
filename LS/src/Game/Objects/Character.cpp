@@ -28,7 +28,9 @@ void Character::move(float dt) {
 			}
 		}
 		//Add the movement velocity travel
-		glm::vec3 forw2D = glm::normalize(glm::vec3(_forward.x, 0.f, _forward.z));
+		
+		glm::vec3 forw2D = getForward();
+		forw2D = glm::normalize(glm::vec3(forw2D.x, 0.f, forw2D.z));
 		glm::vec3 right2D = getRight();
 		right2D.y = 0;
 		right2D = glm::normalize(right2D);
@@ -68,30 +70,30 @@ void Character::moveCharacter(const KeyboardEvent& event)
     if (event.getKey() == GLFW_KEY_W)
     {
         if (event.getAction() == GLFW_PRESS)
-            _moveDir.y += 1.0f;
+            _moveDir.y -= 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.y -= 1.0f;
+			_moveDir.y += 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_A)
     {
         if (event.getAction() == GLFW_PRESS)
-			_moveDir.x += 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
 			_moveDir.x -= 1.0f;
+        else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.x += 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_S)
     {
         if (event.getAction() == GLFW_PRESS)
-			_moveDir.y -= 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
 			_moveDir.y += 1.0f;
+        else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.y -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_D)
     {
         if (event.getAction() == GLFW_PRESS)
-			_moveDir.x -= 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
 			_moveDir.x += 1.0f;
+        else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.x -= 1.0f;
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{

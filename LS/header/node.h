@@ -27,7 +27,6 @@ public:
 	Node();
 	Node(const glm::vec3 &position);
 	Node(const glm::vec3 &position, Node *parent);
-	Node(glm::mat4 mat);
 
 	void addChild(Node *child);
 	std::vector<Node *> getAllChildren();
@@ -70,10 +69,6 @@ public:
 	float getY();
 	float getZ();
 	glm::vec3 getScale() const;
-    glm::vec3 getPosition() const;
-	glm::vec3 getForward() const;
-	glm::vec3 getUp() const;
-	glm::vec3 getRight() const;
 
 	void reOrthogonalize();
 
@@ -81,6 +76,17 @@ public:
 	const glm::mat4& getModelMatrix();
 
 	glm::vec4 getWorldPos() const;
+	/* Get forward in world space
+	*/
+	glm::vec3 getForward() const;
+	glm::vec3 getRight() const;
+	glm::vec3 getUp() const;
+	/* Get local forward vector
+	*/
+	glm::vec3 getLocalForward() const;
+	glm::vec3 getLocalUp() const;
+	glm::vec3 getLocalRight() const;
+    glm::vec3 getPosition() const;
 	float getDistance(Node const &other) const;
 	float getDistance(glm::vec4 const &pos) const;
 
@@ -91,8 +97,9 @@ public:
 private:
 	bool _isActive;
 	void calcModelMatrix();
+	glm::vec3 _forward, _up;
 protected:
-	glm::vec3 _position, _forward, _up;
+	glm::vec3 _position;
 	glm::vec3 _scale;
     glm::mat4 _modelMatrix;
     std::vector<Node *> _children;
