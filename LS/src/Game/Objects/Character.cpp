@@ -4,10 +4,25 @@
 
 void Character::onUpdate(float dt)
 {
-	move(dt);
+	if (_climbing)
+	{
+		climb(dt);
+	}
+	else
+	{
+		move(dt);
+	}
+
 	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
 	if (newSquare._square != _gridSquare._square) {
+		//Set new height
+		if (!_climbing)
+		{
+			glm::vec3 pos = getWorldPos();
+			setY(_currentLevel->getGridHeight(pos));
+		}
+		//Send event
 		CharacterSquareEvent squareEvent(this, newSquare);
 		_eventManager->execute(squareEvent);
 		this->_gridSquare = newSquare;
@@ -43,6 +58,71 @@ void Character::move(float dt) {
 
 	//Calculate new camera position and update the camera
 	_currentLevel->wallCollission(&_position, actualVelocity);
+}
+
+void Character::climb(float dT)
+{
+	_animTime += dT;
+	if (_animTime < _animEndTime)
+	{
+		float firstPhaseTime = 0.5f;
+		float secondPhaseTime = _animEndTime - 0.5f;
+		if (_animTime < firstPhaseTime)
+		{
+			float timeDiff = _animEndTime - _animTime;
+			if (abs(timeDiff) > 0.00001) //Check if animation phase is not about to end.
+			{
+				glm::vec3 dir = _animEndPos - _position;
+				dir *= dT / timeDiff;
+				Node::moveX(dir.x);
+				Node::moveZ(dir.z);
+			}
+		}
+		else if (_animTime < secondPhaseTime) //Animate climb phase
+		{
+			float yDist = _animEndPos.y - _position.y;
+			float timeDiff = secondPhaseTime - _animTime;
+			if (timeDiff > 0.00001) //Check if animation phase is not about to end.
+			{
+				float yPos = dT * yDist / timeDiff;
+				moveY(yPos);
+			}
+			else
+			{
+				setY(_animEndPos.y);
+			}
+		}
+		else //Animate end phase
+		{
+			float timeDiff = _animEndTime - _animTime;
+			if (abs(timeDiff) > 0.00001) //Check if animation phase is not about to end.
+			{
+				glm::vec3 dir = _animEndPos - _position;
+				dir *= dT / timeDiff;
+				Node::move(dir);
+			}
+		}
+	}
+	else
+	{
+		setPosition(_animEndPos);
+		_climbing = false;
+	}
+}
+
+void Character::tryClimb()
+{
+	if (!_climbing)
+	{
+		_animEndPos = glm::vec3(getWorldPos());
+		glm::vec3 dir = glm::vec3(_currentScene->getCamera().getLookAt());
+		_currentLevel->testForClimb(_animEndPos, dir,_animEndTime);
+		if (_animEndTime > 0.0f)
+		{
+			_animTime = 0.0f;
+			_climbing = true;
+		}
+	}
 }
 
 void Character::onRender()
@@ -158,6 +238,10 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		}
 
 	}
+	else if (event.getKey() == GLFW_KEY_SPACE)
+	{
+		tryClimb();
+	}
 }
 void Character::moveMouse(const MouseMoveEvent& event)
 {
@@ -171,16 +255,19 @@ void Character::moveMouse(const MouseMoveEvent& event)
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
-    {
-        rotateY(deltaPos.y * -RotationSpeed);
-        rotateX(deltaPos.x * -RotationSpeed);
-        if (getRY() > glm::pi<float>()*0.5f)
+    {	
+		//Player rotats in the walking plane.
+		rotateX(deltaPos.x * -RotationSpeed);
+		//Camera rotates in up and down.                                                                                      
+		Camera* cam = &_currentScene->getCamera();  
+		cam->rotateY(deltaPos.y * -RotationSpeed);
+        if (cam->getRY() > glm::pi<float>()*0.5f)
         {
-            setRY(glm::pi<float>()*0.5f);
+            cam->setRY(glm::pi<float>()*0.5f);
         }
-        if (getRY() < glm::pi<float>()*-0.5f)
+        if (cam->getRY() < glm::pi<float>()*-0.5f)
         {
-            setRY(glm::pi<float>()*-0.5f);
+            cam->setRY(glm::pi<float>()*-0.5f);
         }
     }
 }
