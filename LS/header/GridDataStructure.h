@@ -53,22 +53,16 @@ private:
 	void buildgridarray();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
-
-	bool isWalkable(glm::ivec2 square);
 public:
 	Grid(const std::string& level);
 	~Grid();
-	glm::vec3 getData(gridType Data);
 	Mesh generateMesh();
 	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
-	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
 	float calcLightOnPosition(glm::vec3 playerPos);
-	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
-	glm::vec3 getLastValueOfGuardLocationsAndremovesit();
 	/* Get the size of a grid square */
 	float getGridSpace();
 	int getvalue(int height,int width);
@@ -87,17 +81,15 @@ public:
 	/* Get a random square in the grid
 	*/
 	glm::ivec2 getRandomSquare();
-	float getGridHeight(const glm::vec3 &pos) const;
-	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
+	/* Get the center position of the specified square. If outside wall is returned. */
+	glm::vec3 getCenter(glm::ivec2 vec) const;
 	GridSquare operator[](glm::vec3 vec) const;
+	/* Get the grid type at a square, checking if valid square and returning wall on fail.
+	*/
 	gridType operator[](const glm::ivec2 &sq) const;
 #pragma endregion
-	/* Get the center position of the specified square */
-	glm::vec3 getCenter(glm::ivec2 vec) const;
-	void getRightQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
-	void getLeftQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
-	void getFrontQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
-	void getBackQuad(glm::vec3* triangle, unsigned short int xOffset, unsigned short int zOffset);
+	float getGridHeight(const glm::vec3 &pos) const;
+	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
 	std::shared_ptr<Path> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
