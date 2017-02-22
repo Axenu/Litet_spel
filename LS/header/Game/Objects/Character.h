@@ -45,6 +45,8 @@ public:
 
     Character();
     virtual ~Character();
+
+	glm::vec3 getEyePos();
 private:
 	Grid *_currentLevel;
 	Scene *_currentScene;

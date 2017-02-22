@@ -111,6 +111,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	object->init();
 	_scene.add(object, true);
+	_level->getGrid().addLight(light._pos, light._diffuse, light._fadeDist);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)

@@ -29,6 +29,12 @@ struct gridNode {
 	glm::ivec2 position;
 };
 
+struct lightValues {
+	glm::vec3 pos;
+	glm::vec3 diffuse;
+	float dist;
+};
+
 class Grid {
 
 private:
@@ -40,6 +46,7 @@ private:
 	glm::vec3 pointxy[4];
 	std::vector<glm::vec3> _lootLocations;
 	std::vector<glm::vec3> _guardLocations;
+	std::vector<lightValues> _light;
 
 	void buildgridarray();
 	void print2darraydata();
@@ -51,10 +58,10 @@ public:
 	Mesh generateMesh();
 	void wallCollission(glm::vec3 *position, glm::vec3 velocity);
 	void Creategetheightandwidthpoint12(glm::vec3 guardposition);
+	float calcLightOnPosition(glm::vec3 playerPos);
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
-	float getHeight(int height, int width);
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
 	glm::vec3 getLastValueOfGuardLocationsAndremovesit();
@@ -80,7 +87,8 @@ public:
 	void addObject(GameObject* object, gridType gridType);
 	std::vector<glm::ivec2> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
 	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
-	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
+	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos, glm::vec3 playerEyePos);
+	void addLight(glm::vec3 lightPos, glm::vec3 diff, float dist);
 };
 
 #endif
