@@ -1,4 +1,6 @@
 #include "GridDataStructure.h"
+#include "math/MathFunctions.h"
+#include "math/GridTraveler.h"
 #pragma warning(disable:4996)
 
 Grid::Grid(const std::string &level)
@@ -97,7 +99,6 @@ void Grid::loadingBmpPicture(const char* filename)
 			data[j] = data[j + 2];
 			data[j + 2] = tmp;
 			_twodArray[height - 1 - i][realj].height = 0.0f;
-
 			if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 255, 255))
 			{
 				_twodArray[height - 1 - i][realj].type = wall;
@@ -145,6 +146,14 @@ bool Grid::isInside(glm::ivec2 sq) const
 {
 	return sq.x >= 0 && sq.x < _widthLength && sq.y >= 0 && sq.y < _heightLength;
 }
+AARect Grid::getSquareRect(glm::ivec2 square) const {
+	return AARect(square, glm::vec2(square.x + GRIDSPACE, square.y + GRIDSPACE));
+}
+glm::ivec2 Grid::getRandomSquare()
+{
+	return randIVec2(_widthLength, _heightLength);
+}
+
 
 glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const 
 {
@@ -468,17 +477,17 @@ Mesh Grid::generateMesh()
 	return mesh;
 }
 
-void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
+glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 {
 	//calculate current grid position
-	int currentX = (int)glm::floor(position->x / GRIDSPACE);
-	int currentZ = (int)glm::floor(position->z / GRIDSPACE);
+	int currentX = (int)glm::floor(position.x / GRIDSPACE);
+	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
 
 	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength || currentZ > _heightLength)
 	{
-		position->x += velocity.x;
-		position->z += velocity.y;
-		return;
+		position.x += velocity.x;
+		position.z += velocity.z;
+		return position;
 	}
 
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
@@ -486,22 +495,22 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	{
 		if (_twodArray[currentZ][currentX + 1].type == wall)
 		{
-			if (position->x - currentX < 0.7f)
+			if (position.x - currentX < 0.7f)
 			{
-				position->x += velocity.x;
+				position.x += velocity.x;
 			}
 		}
 		else
 		{
-			float heightDiff = _twodArray[currentZ][currentX + 1].height - position->y; 
+			float heightDiff = _twodArray[currentZ][currentX + 1].height - position.y; 
 			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
-				position->x += velocity.x;
+				position.x += velocity.x;
 			}
-			else if (position->x - currentX < 0.7f)
+			else if (position.x - currentX < 0.7f)
 			{
-				position->x += velocity.x;
+				position.x += velocity.x;
 			}
 		}
 	}
@@ -509,47 +518,47 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	{
 		if (_twodArray[currentZ][currentX - 1].type == wall)
 		{
-			if (position->x - currentX > 0.3f)
+			if (position.x - currentX > 0.3f)
 			{
-				position->x += velocity.x;
+				position.x += velocity.x;
 			}
 		}
 		else
 		{
-			float heightDiff = _twodArray[currentZ][currentX - 1].height - position->y;
+			float heightDiff = _twodArray[currentZ][currentX - 1].height - position.y;
 			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
-				position->x += velocity.x;
+				position.x += velocity.x;
 			}
-			else if (position->x - currentX > 0.3f)
+			else if (position.x - currentX > 0.3f)
 			{
-				position->x += velocity.x;
+				position.x += velocity.x;
 			}
 		}
 	}
 
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
-	if (signbit(velocity.y) == false)
+	if (signbit(velocity.z) == false)
 	{
 		if (_twodArray[currentZ + 1][currentX].type == wall)
 		{
-			if (position->z - currentZ < 0.7f)
+			if (position.z - currentZ < 0.7f)
 			{
-				position->z += velocity.y;
+				position.z += velocity.z;
 			}
 		}
 		else
 		{
-			float heightDiff = _twodArray[currentZ + 1][currentX].height - position->y;
+			float heightDiff = _twodArray[currentZ + 1][currentX].height - position.y;
 			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
-				position->z += velocity.y;
+				position.z += velocity.z;
 			} 
-			else if (position->z - currentZ < 0.7f)
+			else if (position.z - currentZ < 0.7f)
 			{
-				position->z += velocity.y;
+				position.z += velocity.z;
 			}
 		}
 	}
@@ -557,81 +566,82 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 	{
 		if (_twodArray[currentZ - 1][currentX].type == wall)
 		{
-			if (position->z - currentZ > 0.3f)
+			if (position.z - currentZ > 0.3f)
 			{
-				position->z += velocity.y;
+				position.z += velocity.z;
 			}
 		}
 		else
 		{
-			float heightDiff = _twodArray[currentZ - 1][currentX].height - position->y;
+			float heightDiff = _twodArray[currentZ - 1][currentX].height - position.y;
 			//std::cout << heightDiff << std::endl;
 			if (abs(heightDiff) < WalkHeight)
 			{
-				position->z += velocity.y;
+				position.z += velocity.z;
 			} 
-			else if (position->z - currentZ > 0.3f)
+			else if (position.z - currentZ > 0.3f)
 			{
-				position->z += velocity.y;
+				position.z += velocity.z;
 			}
 		}
 	}
 	//Check if there's a wall in the north east square, if true, move the player 0.3 units away from the corner in the direction he was moving
 	if (_twodArray[currentZ - 1][currentX - 1].type == wall && _twodArray[currentZ - 1][currentX - 1].type != object)
 	{
-		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ - position->z);
+		glm::vec3 playerToCorner = glm::vec3((float)currentX - position.x, 0.f, (float)currentZ - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
 			dist.x /= len;
 			dist.z /= len;
-			position->x = (float)currentX - dist.x * 0.3f;
-			position->z = (float)currentZ - dist.z * 0.3f;
+			position.x = (float)currentX - dist.x * 0.3f;
+			position.z = (float)currentZ - dist.z * 0.3f;
 		}
 	}
 	//north west square
 	if (_twodArray[currentZ - 1][currentX + 1].type == wall && _twodArray[currentZ - 1][currentX + 1].type != object)
 	{
-		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ - position->z);
+		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position.x, 0.f, (float)currentZ - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
 			dist.x /= len;
 			dist.z /= len;
-			position->x = (float)currentX + 1 - dist.x * 0.3f;
-			position->z = (float)currentZ - dist.z * 0.3f;
+			position.x = (float)currentX + 1 - dist.x * 0.3f;
+			position.z = (float)currentZ - dist.z * 0.3f;
 		}
 	}
 	//south east square
 	if (_twodArray[currentZ + 1][currentX - 1].type == wall && _twodArray[currentZ + 1][currentX - 1].type != object)
 	{
-		glm::vec3 playerToCorner = glm::vec3((float)currentX - position->x, 0.f, (float)currentZ + 1 - position->z);
+		glm::vec3 playerToCorner = glm::vec3((float)currentX - position.x, 0.f, (float)currentZ + 1 - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
 			dist.x /= len;
 			dist.z /= len;
-			position->x = (float)currentX - dist.x * 0.3f;
-			position->z = (float)currentZ + 1 - dist.z * 0.3f;
+			position.x = (float)currentX - dist.x * 0.3f;
+			position.z = (float)currentZ + 1 - dist.z * 0.3f;
 		}
 	}
 	//south west square
 	if (_twodArray[currentZ + 1][currentX + 1].type == wall && _twodArray[currentZ + 1][currentX + 1].type != object)
 	{
-		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position->x, 0.f, (float)currentZ + 1 - position->z);
+		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position.x, 0.f, (float)currentZ + 1 - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
 		if (len < 0.3f && len != 0)
 		{
 			glm::vec3 dist = playerToCorner;
 			dist.x /= len;
 			dist.z /= len;
-			position->x = (float)currentX + 1 - dist.x * 0.3f;
-			position->z = (float)currentZ + 1 - dist.z * 0.3f;
+			position.x = (float)currentX + 1 - dist.x * 0.3f;
+			position.z = (float)currentZ + 1 - dist.z * 0.3f;
 		}
 	}
+	return position;
 }
 
 glm::vec3 Grid::getheightandwidthpoint12(int i)
@@ -737,151 +747,44 @@ void Grid::Creategetheightandwidthpoint12(glm::vec3 guardposition)
 	}
 }
 
-float Grid::calcLightOnPosition(glm::vec3 playerPos)
+float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
 {
-	float wallDist = 0.0f;
-	glm::vec3 posColor(0.0f);
-
-	for (unsigned int i = 0; i < _light.size(); i++)
+	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
+	float dist = 0.f;
+	do
 	{
-		glm::vec3 lightRay = playerPos - _light[i].pos;
+		dist += trav.goNext();
+	} while (isInside(trav.getSquare()) && (*this)[trav.getSquare()] != gridType::wall && dist < guardViewDist);
+	return dist;
+}
 
-		if (glm::length(lightRay) < _light[i].dist)
+float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos)
+{
+
+	GridTraveler trav(GRIDSPACE, getSquare(guardPos), guardPos, ray);
+	float dist = 0.f;
+	while (dist < guardViewDist)
+	{
+		dist += trav.goNext();
+		if (!isInside(trav.getSquare()))
+			return dist;
+
+		//Check if each square is 'viewable'?
+		float heightDifference = abs(playerPos.y - getHeight(trav.getSquare().y, trav.getSquare().x));
+		heightDifference = 100.0f * (heightDifference / playerPos.y);
+
+		if (heightDifference < 75.0f)
 		{
-			wallDist = getWallDist(_light[i].pos, lightRay, _light[i].dist);
-
-			if (wallDist > glm::length(lightRay) || wallDist == 0.0f)
-			{
-				lightRay = glm::normalize(lightRay);
-				float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
-				float distance = glm::length(lightRay);
-				float att = glm::max(1.0f - (distance / _light[i].dist), 0.0f);
-
-				posColor += _light[i].diffuse * diff * att;
-			}
+			return 0.0f;
 		}
 	}
-
-	return (posColor.x + posColor.y + posColor.z + 0.5f);
-}
-
-gridType Grid::returnGridType(int width, int height)
-{
-	return _twodArray[height][width].type;
-}
-
-float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
-{
-	glm::vec2 rayPos(pos.x, pos.z);
-
-	glm::vec3 point(0.0f);
-
-	bool signX = signbit(ray.x);
-	bool signZ = signbit(ray.z);
-
-	float viewingRange = 0.f;
-	float wallDist = 0.0f;
-
-	while (viewingRange < (viewDist * GRIDSPACE))
-	{
-		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
-		if (gettype(gridPos.y, gridPos.x) == wall)
-		{
-			wallDist = glm::length(glm::vec2(pos.x, pos.z) - rayPos);
-			break;
-		}
-		else
-		{
-			if (signX)
-			{
-				if (gettype(gridPos.y, gridPos.x - 1) == wall)
-				{
-					glm::vec3 triangles[6];
-					getLeftQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (gettype(gridPos.y, gridPos.x + 1) == wall)
-				{
-					glm::vec3 triangles[6];
-					getRightQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			if (signZ)
-			{
-				if (gettype(gridPos.y - 1, gridPos.x) == wall)
-				{
-					glm::vec3 triangles[6];
-					getBackQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (gettype(gridPos.y + 1, gridPos.x) == wall)
-				{
-					glm::vec3 triangles[6];
-					getFrontQuad(triangles, gridPos.x, gridPos.y);
-					if (TriangleIntersection(triangles[0], triangles[1], triangles[2], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-					if (TriangleIntersection(triangles[3], triangles[4], triangles[5], glm::vec3(rayPos.x, 0.0f, rayPos.y), ray, point))
-					{
-						wallDist = glm::length(glm::vec2(pos.x, pos.z) - glm::vec2(point.x, point.z));
-						break;
-					}
-				}
-			}
-		}
-		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
-		viewingRange += GRIDSPACE;
-		if (!isInside(rayPos))
-		{
-			return wallDist;
-		}
-	}
-	return wallDist;
-}
-
-float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, glm::vec3 playerEyePos)
-{
+	return dist;
+	/*
 	glm::vec2 rayPos = glm::vec2(guardPos.x, guardPos.z);
 	float viewingRange = 0.f;
 	float objectDist = 0.0f;
 
-	while (viewingRange < (viewDist * GRIDSPACE))
+	while (viewingRange < (guardViewDist * GRIDSPACE))
 	{
 		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
 		if (gettype(gridPos.y, gridPos.x) == object)
@@ -894,15 +797,16 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float viewDist, glm
 		viewingRange += GRIDSPACE;
 	}
 
-	float heightDifference = playerEyePos.y - getGridHeight(glm::vec3(rayPos.x, 0.0f, rayPos.y));
-	heightDifference = 100.0f * (heightDifference / playerEyePos.y);
+	float heightDifference = abs(playerPos.y - getHeight((int)floor(rayPos.y), (int)floor(rayPos.x)));
+	heightDifference = 100.0f * (heightDifference / playerPos.y);
 
-	if (heightDifference > 0.0f && heightDifference < 75.0f)
+	if (heightDifference < 75.0f)
 	{
 		return 0.0f;
 	}
 
 	return objectDist;
+*/
 }
 
 void Grid::addLight(glm::vec3 lightPos, glm::vec3 diff, float dist)
@@ -914,7 +818,8 @@ void Grid::addLight(glm::vec3 lightPos, glm::vec3 diff, float dist)
 	_light.push_back(light);
 }
 
-std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
+
+std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
 {
 	int maxValue = _heightLength * _widthLength - 1;
 	int oldMaxValue = 0;
@@ -928,7 +833,8 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 			setvalue(j, i, -1);
 		}
 	}
-	setvalue(startPosition.y, startPosition.x, 0);
+	if(isInside(startPosition)) 
+		setvalue(startPosition.y, startPosition.x, 0);
 
 	while (maxValue != 0)
 	{
@@ -941,7 +847,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 				{
 					if (getvalue(j, i) == value)
 					{
-						if (j == 0)
+						if (j <= 0)
 						{
 
 						}
@@ -951,7 +857,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 							maxValue--;
 						}
 
-						if (j == _heightLength - 1)
+						if (j >= _heightLength - 1)
 						{
 
 						}
@@ -961,7 +867,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 							maxValue--;
 						}
 
-						if (i == 0)
+						if (i <= 0)
 						{
 
 						}
@@ -971,7 +877,7 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 							maxValue--;
 						}
 
-						if (i == _widthLength - 1)
+						if (i >= _widthLength - 1)
 						{
 
 						}
@@ -1001,15 +907,13 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 		}
 	}
 
-	std::vector<glm::ivec2> path;
+	std::vector<glm::vec3> path;
 
 	glm::ivec2 currentPos = goalPosition;
 	if (getvalue(goalPosition.y, goalPosition.x) > 0)
 	{
-		path.push_back(goalPosition);
+		path.push_back(glm::vec3(goalPosition.x, 0.f, goalPosition.y));
 	}
-	glm::ivec2 startPos = glm::ivec2(_widthLength / 2, _heightLength / 2);
-
 
 	int currentValue = getvalue(goalPosition.y, goalPosition.x);
 	while (currentValue > 1)
@@ -1017,24 +921,62 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 		if (getvalue(currentPos.y - 1, currentPos.x)<currentValue && getvalue(currentPos.y - 1, currentPos.x) >= 0)
 		{
 			currentPos.y -= 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		else if (getvalue(currentPos.y + 1, currentPos.x)<currentValue && getvalue(currentPos.y + 1, currentPos.x) >= 0)
 		{
 			currentPos.y += 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		else if (getvalue(currentPos.y, currentPos.x - 1)<currentValue && getvalue(currentPos.y, currentPos.x - 1) >= 0)
 		{
 			currentPos.x -= 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		else if (getvalue(currentPos.y, currentPos.x + 1)<currentValue && getvalue(currentPos.y, currentPos.x + 1) >= 0)
 		{
 			currentPos.x += 1;
-			path.push_back(currentPos);
+			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		currentValue--;
 	}
-	return path;
-}
+
+	for (int i = 0; i < path.size(); i++)
+	{
+		path[i] += glm::vec3(GRIDSPACE / 2.f, 0.f, GRIDSPACE / 2.f);
+	}
+	return std::shared_ptr<Path>(new Path(path));
+}
+
+float Grid::getHeight(int height, int width)
+{
+	return _twodArray[height][width].height;
+}
+
+float Grid::calcLightOnPosition(glm::vec3 playerPos)
+{
+	float wallDist = 0.0f;
+	glm::vec3 posColor(0.0f);
+
+	for (unsigned int i = 0; i < _light.size(); i++)
+	{
+		glm::vec3 lightRay = playerPos - _light[i].pos;
+
+		if (glm::length(lightRay) < _light[i].dist)
+		{
+			wallDist = getWallDist(_light[i].pos, lightRay, _light[i].dist);
+
+			if (wallDist > glm::length(lightRay) || wallDist == 0.0f)
+			{
+				lightRay = glm::normalize(lightRay);
+				float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
+				float distance = glm::length(lightRay);
+				float att = glm::max(1.0f - (distance / _light[i].dist), 0.0f);
+
+				posColor += _light[i].diffuse * diff * att;
+			}
+		}
+	}
+
+	return (posColor.x + posColor.y + posColor.z + 0.5f);
+}

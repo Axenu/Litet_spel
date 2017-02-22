@@ -3,7 +3,7 @@
 
 
 Scene::Scene()
-	:_quadTree()
+	:_quadTree(), _root()
 {
 }
 

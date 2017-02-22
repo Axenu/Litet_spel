@@ -4,7 +4,7 @@
 #include "node.h"
 #include "Render/Mesh/Model.h"
 #include "gl/glInclude.h"
-#include "AABB.h"
+#include "math/AABB.h"
 #include "Game/Scene/DrawFrame.h"
 #include "GameObjectType.h"
 #include "Render/Mesh/Animation/AnimatedSkeleton.h"

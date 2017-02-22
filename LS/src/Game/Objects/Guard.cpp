@@ -1,108 +1,7 @@
 #include "Game/Objects/Guard.h"
+#include "math/MathFunctions.h"
 
-Guard::~Guard()
-{
-	delete path;
-}
 
-Guard::Guard()
-{
-
-}
-
-void Guard::print()
-{
-	for (int m = 0;m < _width;m++)
-	{
-		if (m < 10)
-			std::cout << "W" << m << " ";
-		else
-			std::cout << m << " ";
-	}
-	std::cout << "" << std::endl;
-	int row = 0;
-	for (int j = 0; j < _height; j++)
-	{
-		for (int i = 0; i < _width; i++)
-		{
-			if (_currentLevel->getvalue(j,i) == -1 || _currentLevel->getvalue(j, i) == -2)
-			{
-				std::cout << _currentLevel->getvalue(j, i) << " ";
-			}
-			else if (_currentLevel->getvalue(j, i) >=0 && _currentLevel->getvalue(j, i) < 10)
-			{
-				std::cout << "+" << _currentLevel->getvalue(j, i) << " ";
-			}
-			else
-				std::cout << _currentLevel->getvalue(j, i) << " ";
-
-			if (i == _width - 1)
-			{
-				std::cout << "R" << row;
-				row = row + 1;
-			}
-		}
-		std::cout << "" << std::endl;
-	}
-	std::cout << "end" << std::endl;
-}
-
-void Guard::WalkingBetweenFourPoints(float dt)
-{
-	glm::vec2 roundedPosition = glm::vec2(this->getPosition().x, this->getPosition().z);
-	switch (_aiChoice)
-	{
-		case 1:
-		{
-			goToSquare(dt, _point1z);
-			if (roundedPosition == glm::vec2(this->getPosition().x, this->getPosition().z))
-			{
-				_aiChoice = -1;
-			}
-			break;
-		}
-		case -1:
-		{
-			goToSquare(dt, _guardsstartposition);
-			if (roundedPosition == glm::vec2(_guardsstartposition.x, _guardsstartposition.z))
-			{
-				_aiChoice = randomgenerator(4);
-			}
-			break;
-		}
-		case 2:
-		{
-			goToSquare(dt, _point2z);
-			if (roundedPosition == glm::vec2(_point2z.x, _point2z.z))
-			{
-				_aiChoice = -1;
-			}
-			break;
-		}
-		case 3:
-		{
-			goToSquare(dt, _point2x);
-			if (roundedPosition == glm::vec2(_point2x.x, _point2x.z))
-			{
-				_aiChoice = -1;
-			}
-			break;
-		}
-		case 4:
-		{
-			goToSquare(dt, _point1x);
-			if (roundedPosition == glm::vec2(_point1x.x, _point1x.z))
-			{
-				_aiChoice = -1;
-			}
-			break;
-		}
-		default:
-		{
-			std::cout << "something went horribley wrong here AI HAS SOME FLAWS MATE" << std::endl;
-		}
-	}
-}
 
 void Guard::setLevel(Grid *level)
 {
@@ -111,125 +10,54 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-	/*if (path->walkOnPath(&_position, &_forward, &_currentRot, _speed, dt))
+	/*
+	glm::vec3 pos = _position;
+	if (_path->walkOnPath(&pos, _speed, dt))
 	{
-		path->createPath(_currentLevel->getSquare(this->getWorldPos()), glm::ivec2(randomgenerator(_width) - 1, randomgenerator(_height) - 1));
-	}*/
+		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
+		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
+	}
+	if (pos.x < 0 || pos.z < 0)
+		int a = 0;
+	setPosition(pos);
+	face(_path->movingTo());
+	*/
+	face(_player->getWorldPos());
+	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
-	setRX(_currentRot + 180.f * M_PIf / 180.f); // silvertejp här
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
 		if (DetectedPlayer())
 		{
-			std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-			/*GameOverEvent event(false);
-			_eventManager->execute(event);*/
+			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+			GameOverEvent event(false);
+			//_eventManager->execute(event);
+
+			glm::vec3 detP = _player->getWorldPos();
+			std::cout << "Detected :" << detP.x << ", " << detP.y << ", " << detP.z << '\n';
 		}
 	}
 
-	GameObject::update(dt);
 }
 
-Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Grid *gridet) :
 	GameObject(m), _player(player), _eventManager(event)
 {
-	_forward = glm::vec3(0.f, 0.f, -1.f);
-	glm::vec3 guardStartPosition = gridet->getLastValueOfGuardLocationsAndremovesit();
-	srand((unsigned int)time(NULL));
-	 
-	gridet->Creategetheightandwidthpoint12(guardStartPosition);
-	_point1z = gridet->getheightandwidthpoint12(0) + glm::vec3(0.5f, 0.f, 0.5f);
-	_point2z = gridet->getheightandwidthpoint12(1) + glm::vec3(0.5f, 0.f, 0.5f);
-	_point1x = gridet->getheightandwidthpoint12(2) + glm::vec3(0.5f, 0.f, 0.5f);
-	_point2x = gridet->getheightandwidthpoint12(3) + glm::vec3(0.5f, 0.f, 0.5f);
+	setPosition(position);
+	_detectFov = std::cos(GUARDFOV);
 
-	_width = gridet->getWidth();
-	_height = gridet->getHeight();
-
-	path = new Path();
-	path->setLevel(gridet);
-
-	_guardsstartposition = guardStartPosition + glm::vec3(GRIDSPACE / 2.f, -1.f, GRIDSPACE / 2.f);
-	
-	this->setPosition(_guardsstartposition);	
+	glm::ivec2 start = gridet->getSquare(this->getWorldPos());
+	_path = gridet->generatePath(start, gridet->getRandomSquare());
 
 	_speed = 0.4f;
-
-	_aiChoice = randomgenerator(4);
-	_currentRot = 0.f;
 }
 
-int Guard::randomgenerator(int randomNumber)
+Guard::~Guard()
 {
-	return (int)rand() % randomNumber + 1;
-}
-
-void Guard::setPositionfromMap(glm::vec3 Guarden)
-{
-	this->setPosition(Guarden);
-}
-
-void Guard::goToSquare(float dt, glm::vec3 walkTo)
-{
-	glm::vec3 value = this->getPosition();
-	glm::vec3 distance = walkTo - value;
-	distance = glm::vec3(distance.x, 0, distance.z);
-	_distLength = glm::length(distance);
-
-	if (distance.z > 0)
-	{
-		if (_distLength < (_speed*dt))
-		{
-			this->setPosition(value.x,value.y,walkTo.z);
-		
-		}
-		else
-		{
-			this->move(glm::vec3(0, 0, _speed) * dt);
-		}
-	}
-	if (distance.z < 0)
-	{
-		if (_distLength < (_speed*dt))
-		{
-			this->setPosition(value.x, value.y, walkTo.z);
-		
-		}
-		else
-		{
-			this->move(glm::vec3(0, 0, -_speed) * dt);
-		}
-	}
-	if (distance.x > 0)
-	{
-		if (_distLength < (_speed*dt) )
-		{
-			this->setPosition(walkTo.x, value.y, value.z);
-		
-		}
-		else
-		{
-		this->move(glm::vec3(_speed, 0,0) * dt);
-		}
-	}
-	if (distance.x < 0)
-	{
-		if (_distLength < (_speed*dt))
-		{
-			this->setPosition(walkTo.x, value.y, value.z);
-			
-		}
-		else
-		{
-		this->move(glm::vec3(-_speed, 0, 0) * dt);
-		}
-	}
 }
 
 bool Guard::DetectedPlayer()
 {
-	bool result = false;
-	unsigned int hitCounter = 0;
 
 	glm::vec3 pos = this->getWorldPos();
 	glm::vec3 playerPos = _player->getWorldPos();
@@ -238,17 +66,35 @@ bool Guard::DetectedPlayer()
 	pos.y = 1.3f;
 
 	glm::vec3 guardToPlayer = playerPos - pos;
-
-	float playerLight = 1.0f;
-
 	float playerDist = glm::length(guardToPlayer);
+	guardToPlayer = glm::normalize(guardToPlayer);
 
-	if (playerDist < 1.5f)
-	{
+
+	//Player to close detect!
+	if (playerDist < 1.2f)
 		return true;
-	}
+	glm::vec3 forward = getForward();
 
+	if (glm::dot(guardToPlayer, forward) > _detectFov)
+	{
+		float playerLight = 1.0f;
+		//Calculate light at position
+		playerLight = glm::min(_currentLevel->calcLightOnPosition(playerPos), 1.0f);
+		//Account light for Anti-L Grenade
+		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
+			playerLight *= _player->getGrenadeData().fading;
+		//Distance to stuff
+		float wallDist = _currentLevel->getWallDist(pos, forward, GUARDVIEWDISTANCE * playerLight);
+		float objectDist = _currentLevel->getObjectDist(pos, forward, GUARDVIEWDISTANCE * playerLight, playerPos);
+		//If player closer then stuff, detect!
+		if (playerDist < wallDist && playerDist < objectDist)
+			return true;
+	}
+	return false;
+	/*
 	glm::vec3 upVector(0.f, 1.f, 0.f);
+	bool result = false;
+	unsigned int hitCounter = 0;
 	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.2f;
 
 	glm::vec3 upperLeft = playerPos - rightVector;
@@ -260,20 +106,19 @@ bool Guard::DetectedPlayer()
 	glm::vec3 rayUpperRight = glm::normalize(upperRight - pos);
 	glm::vec3 rayLowerLeft = glm::normalize(lowerLeft - pos);
 	glm::vec3 rayLowerRight = glm::normalize(lowerRight - pos);
-
-	if (acos(glm::dot(rayUpperLeft, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayUpperLeft, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
-	if (acos(glm::dot(rayLowerRight, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayLowerRight, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
-	if (acos(glm::dot(rayUpperRight, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayUpperRight, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
-	if (acos(glm::dot(rayLowerLeft, _forward)) < GUARDFOV)
+	if (acos(glm::dot(rayLowerLeft, forward)) < GUARDFOV)
 	{
 		hitCounter++;
 	}
@@ -288,7 +133,7 @@ bool Guard::DetectedPlayer()
 		}
 
 		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
+		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
@@ -301,7 +146,7 @@ bool Guard::DetectedPlayer()
 		}
 
 		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE * playerLight);
-		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
+		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
@@ -313,6 +158,6 @@ bool Guard::DetectedPlayer()
 			result = true;
 		}
 	}
-
 	return result;
+	*/
 }

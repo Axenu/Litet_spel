@@ -31,7 +31,7 @@ void Character::onUpdate(float dt)
 
 void Character::move(float dt) {
 
-	if (_direction.x != 0 || _direction.y != 0)
+	if (_moveDir.x != 0 || _moveDir.y != 0)
 	{
 		//calculate inertia
 		if (_isMoving < 1)
@@ -42,22 +42,23 @@ void Character::move(float dt) {
 				_isMoving = 1;
 			}
 		}
-		_velocity = glm::normalize(_direction) * _isMoving * _speed;
+		//Add the movement velocity travel
+		
+		glm::vec3 forw2D = getForward();
+		forw2D = glm::normalize(glm::vec3(forw2D.x, 0.f, forw2D.z));
+		glm::vec3 right2D = getRight();
+		right2D.y = 0;
+		right2D = glm::normalize(right2D);
+		_velocity = _moveDir.x * right2D * _isMoving * _speed;
+		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
 	}
-	glm::vec3 actualVelocity;
-	//Calculate the velocity
-	actualVelocity.x = _velocity.y * dt * sinf(_rotation.x);
-	actualVelocity.x += _velocity.x * dt * cosf(_rotation.x);
-	actualVelocity.y = _velocity.y * dt * cosf(_rotation.x);
-	actualVelocity.y += _velocity.x * dt * -sinf(_rotation.x);
-
 	//Calculate new camera position and update the camera
-	_currentLevel->wallCollission(&_position, actualVelocity);
+	_position = _currentLevel->wallCollission(_position, _velocity * dt);
 }
 
 void Character::climb(float dT)
@@ -151,46 +152,30 @@ void Character::moveCharacter(const KeyboardEvent& event)
     if (event.getKey() == GLFW_KEY_W)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.y -= 1.0f;
-        }
+            _moveDir.y += 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.y += 1.0f;
-        }
+			_moveDir.y -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_A)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.x -= 1.0f;
-        }
+			_moveDir.x += 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.x += 1.0f;
-        }
+			_moveDir.x -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_S)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.y += 1.0f;
-        }
+			_moveDir.y -= 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.y -= 1.0f;
-        }
+			_moveDir.y += 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_D)
     {
         if (event.getAction() == GLFW_PRESS)
-        {
-            _direction.x += 1.0f;
-        }
+			_moveDir.x -= 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-        {
-            _direction.x -= 1.0f;
-        }
+			_moveDir.x += 1.0f;
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{
@@ -263,20 +248,16 @@ void Character::moveMouse(const MouseMoveEvent& event)
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
-    {	
-		//Player rotats in the walking plane.
-		rotateX(deltaPos.x * -RotationSpeed);
-		//Camera rotates in up and down.                                                                                      
-		Camera* cam = &_currentScene->getCamera();  
-		cam->rotateY(deltaPos.y * -RotationSpeed);
-        if (cam->getRY() > glm::pi<float>()*0.5f)
-        {
-            cam->setRY(glm::pi<float>()*0.5f);
-        }
-        if (cam->getRY() < glm::pi<float>()*-0.5f)
-        {
-            cam->setRY(glm::pi<float>()*-0.5f);
-        }
+    {
+		float tilt = deltaPos.y * RotationSpeed;
+		_camTilt += tilt;
+        rotateY(deltaPos.x * -RotationSpeed);
+		if (_camTilt > glm::pi<float>()*0.5f)
+			_camTilt = glm::pi<float>()*0.5f;
+		else if (_camTilt < glm::pi<float>()*-0.5f)
+			_camTilt = glm::pi<float>()*-0.5f;
+		else //Rotate
+			_currentScene->getCamera().rotateX(tilt);
     }
 }
 
@@ -300,7 +281,7 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
     _lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
-	_direction = glm::vec3(0, 0, 0);
+	_camTilt = 0;
 	_speed = 2;
 	_isMoving = 0;
     _eventManager->listen(this, &Character::moveCharacter);
@@ -313,7 +294,7 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
-	_direction = glm::vec3(0, 0, 0);
+	_camTilt = 0;
 	_speed = 2;
 	_isMoving = 0;
 	_eventManager->listen(this, &Character::moveCharacter);
