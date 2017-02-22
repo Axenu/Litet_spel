@@ -10,8 +10,9 @@ void Guard::setLevel(Grid *level)
 
 void Guard::update(float dt)
 {
-	/*
+	
 	glm::vec3 pos = _position;
+	
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
@@ -21,8 +22,8 @@ void Guard::update(float dt)
 		int a = 0;
 	setPosition(pos);
 	face(_path->movingTo());
-	*/
-	face(_player->getWorldPos());
+	
+	//face(_player->getWorldPos());
 	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
@@ -34,7 +35,9 @@ void Guard::update(float dt)
 			//_eventManager->execute(event);
 
 			glm::vec3 detP = _player->getWorldPos();
-			std::cout << "Detected :" << detP.x << ", " << detP.y << ", " << detP.z << '\n';
+			std::cout << "Detected\n";
+			std::cout << "Guard Co: "<< pos.x << ", " << pos.y << ", " << pos.z << '\n';
+			std::cout << "Player Co: " << detP.x << ", " << detP.y << ", " << detP.z << '\n';
 		}
 	}
 
@@ -65,17 +68,16 @@ bool Guard::DetectedPlayer()
 
 	pos.y = 1.3f;
 
-	glm::vec3 guardToPlayer = playerPos - pos;
-	float playerDist = glm::length(guardToPlayer);
-	guardToPlayer = glm::normalize(guardToPlayer);
+	glm::vec3 dirToPlayer = playerPos - pos;
+	float playerDist = glm::length(dirToPlayer);
+	dirToPlayer = glm::normalize(dirToPlayer);
 
 
 	//Player to close detect!
 	if (playerDist < 1.2f)
 		return true;
-	glm::vec3 forward = getForward();
 
-	if (glm::dot(guardToPlayer, forward) > _detectFov)
+	if (glm::dot(dirToPlayer, getForward()) > _detectFov)
 	{
 		float playerLight = 1.0f;
 		//Calculate light at position
@@ -84,80 +86,11 @@ bool Guard::DetectedPlayer()
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
 			playerLight *= _player->getGrenadeData().fading;
 		//Distance to stuff
-		float wallDist = _currentLevel->getWallDist(pos, forward, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, forward, GUARDVIEWDISTANCE * playerLight, playerPos);
+		float wallDist = _currentLevel->getWallDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
+		float objectDist = _currentLevel->getObjectDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos);
 		//If player closer then stuff, detect!
 		if (playerDist < wallDist && playerDist < objectDist)
 			return true;
 	}
 	return false;
-	/*
-	glm::vec3 upVector(0.f, 1.f, 0.f);
-	bool result = false;
-	unsigned int hitCounter = 0;
-	glm::vec3 rightVector = glm::normalize(glm::cross(upVector, guardToPlayer)) * 0.2f;
-
-	glm::vec3 upperLeft = playerPos - rightVector;
-	glm::vec3 upperRight = playerPos + rightVector;
-	glm::vec3 lowerLeft = playerPos - upVector - rightVector;
-	glm::vec3 lowerRight = playerPos - upVector + rightVector;
-
-	glm::vec3 rayUpperLeft = glm::normalize(upperLeft - pos);
-	glm::vec3 rayUpperRight = glm::normalize(upperRight - pos);
-	glm::vec3 rayLowerLeft = glm::normalize(lowerLeft - pos);
-	glm::vec3 rayLowerRight = glm::normalize(lowerRight - pos);
-	if (acos(glm::dot(rayUpperLeft, forward)) < GUARDFOV)
-	{
-		hitCounter++;
-	}
-	if (acos(glm::dot(rayLowerRight, forward)) < GUARDFOV)
-	{
-		hitCounter++;
-	}
-	if (acos(glm::dot(rayUpperRight, forward)) < GUARDFOV)
-	{
-		hitCounter++;
-	}
-	if (acos(glm::dot(rayLowerLeft, forward)) < GUARDFOV)
-	{
-		hitCounter++;
-	}
-
-	if (hitCounter > 1)
-	{
-		playerLight = glm::min(_currentLevel->calcLightOnPosition(playerPos), 1.0f);
-		
-		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
-		{
-			playerLight *= _player->getGrenadeData().fading;
-		}
-
-		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
-
-		if (playerDist < wallDist || playerDist < objectDist)
-		{
-			result = true;
-		}
-
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * playerLight))
-		{
-			result = true;
-		}
-
-		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE * playerLight);
-		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
-
-		if (playerDist < wallDist || playerDist < objectDist)
-		{
-			result = true;
-		}
-
-		else if (wallDist == 0.0f && objectDist == 0.0f && playerDist < (GUARDVIEWDISTANCE * playerLight))
-		{
-			result = true;
-		}
-	}
-	return result;
-	*/
 }

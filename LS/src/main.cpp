@@ -106,7 +106,7 @@ void setupWindow()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Calculate dt
 		currentTime = (float)glfwGetTime();
-		dT = currentTime - lastTime;
+		dT = std::fminf(currentTime - lastTime, 0.030f); //Can't have to large dt!
 	    lastTime = currentTime;
 		FPS = 1.0f/dT;
 		//Update game logic

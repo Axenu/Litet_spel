@@ -11,9 +11,10 @@ GridTraveler::GridTraveler(float GRIDSPACING, glm::ivec2 square, glm::vec3 pos, 
 	_signX = sign(_dir.x);
 	_signY = sign(_dir.y);
 
-	//Calc initial distance to edges
+	//Calc initial distance to edges, signs between nEdge distance and dir is matched so: dir * nEdge -> +
 	_nEdge.x = (_gridP.x + (_signX > 0)) * GRIDSPACING - pos.x;
 	_nEdge.y = (_gridP.y + (_signY > 0)) * GRIDSPACING - pos.z;
+	//Calc inv dir, relates to div by zer0 and the matches sign to the nEdge sign.
 	_invDir = glm::vec2((_dir.x != 0 ? 1 / _dir.x : LargeF * sign(_nEdge.x)), (_dir.y != 0 ? 1 / _dir.y : LargeF  * sign(_nEdge.y)));
 }
 
@@ -24,9 +25,9 @@ GridTraveler::~GridTraveler()
 
 float GridTraveler::goNext()
 {
-	//Calc dist to next edge
+	//Calc dist to next edges
 	glm::vec2 nDist = _invDir * _nEdge;
-	if (nDist.x < nDist.y) //True: X edge is closest
+	if (nDist.x < nDist.y) //Go to closest
 	{
 		//Pass over to next x square:
 		_nEdge.x += _signX * _GRIDSPACING;
