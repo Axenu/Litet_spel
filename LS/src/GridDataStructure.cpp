@@ -98,7 +98,7 @@ void Grid::loadingBmpPicture(const char* filename)
 			tmp = data[j];
 			data[j] = data[j + 2];
 			data[j + 2] = tmp;
-
+			_twodArray[height - 1 - i][realj].height = 0.0f;
 			if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 255, 255))
 			{
 				_twodArray[height - 1 - i][realj].type = wall;
@@ -868,4 +868,88 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 float Grid::getHeight(int height, int width)
 {
 	return _twodArray[height][width].height;
+}
+
+bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff)
+{
+	glm::ivec2 moveVec;
+	if (abs(dir.x) > abs(dir.z))
+	{
+		if (dir.x > 0.0f)
+		{
+			moveVec = glm::ivec2(1, 0);
+		}
+		else
+		{
+			moveVec = glm::ivec2(-1, 0);
+		}
+	}
+	else
+	{
+		if (dir.z > 0.0f)
+		{
+			moveVec = glm::ivec2(0, 1);
+		}
+		else
+		{
+			moveVec = glm::ivec2(0, -1);
+		}
+	}
+	glm::ivec2 iPos = getSquare(pos);
+	iPos += moveVec;
+	if (isInside(iPos))
+	{
+		if (_twodArray[iPos.y][iPos.x].type != gridType::wall)
+		{
+			heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
+			heightDiff = abs(heightDiff);
+			if (heightDiff > WalkHeight)
+			{
+				pos = getCenter(iPos);
+				pos.y = _twodArray[iPos.y][iPos.x].height;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+float Grid::getGridHeight(const glm::vec3 & pos) const
+{
+	glm::ivec2 gridPos = getSquare(pos);
+	if (isInside(gridPos))
+	{
+		return _twodArray[gridPos.y][gridPos.x].height;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+float Grid::calcLightOnPosition(glm::vec3 playerPos)
+{
+	float wallDist = 0.0f;
+	glm::vec3 posColor(0.0f);
+
+	for (unsigned int i = 0; i < _light.size(); i++)
+	{
+		glm::vec3 lightRay = playerPos - _light[i].pos;
+
+		if (glm::length(lightRay) < _light[i].dist)
+		{
+			wallDist = getWallDist(_light[i].pos, lightRay, _light[i].dist);
+
+			if (wallDist > glm::length(lightRay) || wallDist == 0.0f)
+			{
+				lightRay = glm::normalize(lightRay);
+				float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
+				float distance = glm::length(lightRay);
+				float att = glm::max(1.0f - (distance / _light[i].dist), 0.0f);
+
+				posColor += _light[i].diffuse * diff * att;
+			}
+		}
+	}
+
+	return (posColor.x + posColor.y + posColor.z + 0.5f);
 }

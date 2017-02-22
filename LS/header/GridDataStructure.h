@@ -89,7 +89,7 @@ public:
 	*/
 	glm::ivec2 getRandomSquare();
 	float getGridHeight(const glm::vec3 &pos) const;
-	void testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &animEndTime);
+	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &animEndTime);
 	GridSquare operator[](glm::vec3 vec) const;
 	gridType operator[](const glm::ivec2 &sq) const;
 #pragma endregion

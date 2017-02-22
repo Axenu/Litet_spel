@@ -277,7 +277,7 @@ bool Guard::DetectedPlayer()
 		}
 
 		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
+		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
@@ -290,7 +290,7 @@ bool Guard::DetectedPlayer()
 		}
 
 		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE * playerLight);
-		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
+		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
