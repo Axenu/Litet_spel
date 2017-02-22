@@ -289,7 +289,7 @@ void Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &animEndTime)
 		{
 			float heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
 			heightDiff = abs(heightDiff);
-			if (heightDiff > 0.25f)
+			if (heightDiff > WalkHeight)
 			{
 				animEndTime = heightDiff + 1.0f;
 				pos = getCenter(iPos);
@@ -580,7 +580,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ][currentX + 1].height - position->y; 
 			std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < 0.25)
+			if (abs(heightDiff) < WalkHeight)
 			{
 				position->x += velocity.x;
 			}
@@ -603,7 +603,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ][currentX - 1].height - position->y;
 			std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < 0.25)
+			if (abs(heightDiff) < WalkHeight)
 			{
 				position->x += velocity.x;
 			}
@@ -628,7 +628,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ + 1][currentX].height - position->y;
 			std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < 0.25)
+			if (abs(heightDiff) < WalkHeight)
 			{
 				position->z += velocity.y;
 			} 
@@ -651,7 +651,7 @@ void Grid::wallCollission(glm::vec3 *position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ - 1][currentX].height - position->y;
 			std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < 0.25)
+			if (abs(heightDiff) < WalkHeight)
 			{
 				position->z += velocity.y;
 			} 

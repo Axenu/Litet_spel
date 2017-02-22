@@ -17,11 +17,11 @@ void Character::onUpdate(float dt)
 	//Character moved on a square
 	if (newSquare._square != _gridSquare._square) {
 		//Set new height
-		//if (!_climbing)
-		//{
-		//	glm::vec3 pos = getWorldPos();
-		//	setY(_currentLevel->getGridHeight(pos));
-		//}
+		if (!_climbing)
+		{
+			glm::vec3 pos = getWorldPos();
+			setY(_currentLevel->getGridHeight(pos));
+		}
 		//Send event
 		CharacterSquareEvent squareEvent(this, newSquare);
 		_eventManager->execute(squareEvent);

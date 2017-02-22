@@ -14,6 +14,8 @@
 #include "Event/Events.h"
 #include "Game/Objects/GameObject.h"
 
+#define WalkHeight 0.25f
+
 struct gridValues {
 	glm::vec2 xz;
 	gridType type;
