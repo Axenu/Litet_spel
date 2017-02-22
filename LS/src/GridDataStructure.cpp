@@ -857,4 +857,5 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 
 float Grid::getHeight(int height, int width)
 {
-	return _twodArray[height][width].height;}
+	return _twodArray[height][width].height;
+}

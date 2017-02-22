@@ -70,30 +70,30 @@ void Character::moveCharacter(const KeyboardEvent& event)
     if (event.getKey() == GLFW_KEY_W)
     {
         if (event.getAction() == GLFW_PRESS)
-            _moveDir.y -= 1.0f;
+            _moveDir.y += 1.0f;
         else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.y += 1.0f;
+			_moveDir.y -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_A)
     {
         if (event.getAction() == GLFW_PRESS)
-			_moveDir.x -= 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
 			_moveDir.x += 1.0f;
+        else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.x -= 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_S)
     {
         if (event.getAction() == GLFW_PRESS)
-			_moveDir.y += 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
 			_moveDir.y -= 1.0f;
+        else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.y += 1.0f;
     }
     else if (event.getKey() == GLFW_KEY_D)
     {
         if (event.getAction() == GLFW_PRESS)
-			_moveDir.x += 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
 			_moveDir.x -= 1.0f;
+        else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.x += 1.0f;
     }
 	else if (event.getKey() == GLFW_KEY_E)
 	{

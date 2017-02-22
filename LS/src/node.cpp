@@ -240,14 +240,14 @@ glm::vec4 Node::getWorldPos() const
 
 glm::vec3 Node::getForward() const
 {
-	return glm::normalize(-glm::vec3(_modelMatrix[2]));
+	return glm::normalize(glm::vec3(_modelMatrix[2]));
 }
 
 glm::vec3 Node::getUp() const {
 	return glm::normalize(glm::vec3(_modelMatrix[1]));
 }
 glm::vec3 Node::getRight() const {
-	return glm::normalize(-glm::vec3(_modelMatrix[0]));
+	return glm::normalize(glm::vec3(_modelMatrix[0]));
 }
 
 float Node::getDistance(Node const & other) const
