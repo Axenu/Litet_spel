@@ -742,7 +742,7 @@ float Grid::calcLightOnPosition(glm::vec3 playerPos)
 	float wallDist = 0.0f;
 	glm::vec3 posColor(0.0f);
 
-	for (int i = 0; i < _light.size(); i++)
+	for (unsigned int i = 0; i < _light.size(); i++)
 	{
 		glm::vec3 lightRay = playerPos - _light[i].pos;
 
@@ -770,7 +770,7 @@ gridType Grid::returnGridType(int width, int height)
 	return _twodArray[height][width].type;
 }
 
-float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
+float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 {
 	glm::vec2 rayPos(pos.x, pos.z);
 
@@ -782,7 +782,7 @@ float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
 	float viewingRange = 0.f;
 	float wallDist = 0.0f;
 
-	while (viewingRange < (guardViewDist * GRIDSPACE))
+	while (viewingRange < (viewDist * GRIDSPACE))
 	{
 		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
 		if (gettype(gridPos.y, gridPos.x) == wall)
@@ -875,13 +875,13 @@ float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
 	return wallDist;
 }
 
-float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos)
+float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, glm::vec3 playerEyePos)
 {
 	glm::vec2 rayPos = glm::vec2(guardPos.x, guardPos.z);
 	float viewingRange = 0.f;
 	float objectDist = 0.0f;
 
-	while (viewingRange < (guardViewDist * GRIDSPACE))
+	while (viewingRange < (viewDist * GRIDSPACE))
 	{
 		glm::ivec2 gridPos((int)(floor(rayPos.x)), (int)(floor(rayPos.y)));
 		if (gettype(gridPos.y, gridPos.x) == object)
@@ -892,16 +892,12 @@ float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist
 
 		rayPos += glm::vec2(ray.x, ray.z) * GRIDSPACE;
 		viewingRange += GRIDSPACE;
-		if (!isInside(rayPos))
-		{
-			return objectDist;
-		}
 	}
 
-	float heightDifference = abs(playerPos.y - getHeight((int)floor(rayPos.y), (int)floor(rayPos.x)));
-	heightDifference = 100.0f * (heightDifference / playerPos.y);
+	float heightDifference = playerEyePos.y - getGridHeight(glm::vec3(rayPos.x, 0.0f, rayPos.y));
+	heightDifference = 100.0f * (heightDifference / playerEyePos.y);
 
-	if (heightDifference < 75.0f)
+	if (heightDifference > 0.0f && heightDifference < 75.0f)
 	{
 		return 0.0f;
 	}
@@ -1041,8 +1037,4 @@ std::vector<glm::ivec2> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 
 		currentValue--;
 	}
 	return path;
-}
-
-float Grid::getHeight(int height, int width)
-{
-	return _twodArray[height][width].height;}
+}

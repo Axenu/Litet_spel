@@ -243,6 +243,12 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		tryClimb();
 	}
 }
+
+glm::vec3 Character::getEyePos()
+{
+	return _currentScene->getCamera().getWorldPos();
+}
+
 void Character::moveMouse(const MouseMoveEvent& event)
 {
     if (_hasMoved == false)

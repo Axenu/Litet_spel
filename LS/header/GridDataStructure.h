@@ -62,7 +62,6 @@ public:
 	glm::vec3 getheightandwidthpoint12(int i);
 	int getHeight();
 	int getWidth();
-	float getHeight(int height, int width);
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
 	glm::vec3 getLastValueOfGuardLocationsAndremovesit();
@@ -88,7 +87,7 @@ public:
 	void addObject(GameObject* object, gridType gridType);
 	std::vector<glm::ivec2> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
 	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
-	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
+	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos, glm::vec3 playerEyePos);
 	void addLight(glm::vec3 lightPos, glm::vec3 diff, float dist);
 };
 

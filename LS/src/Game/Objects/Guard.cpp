@@ -133,7 +133,7 @@ void Guard::update(float dt)
 Guard::Guard(Character* player, EventManager* event, Model &m, Grid *gridet) :
 	GameObject(m), _player(player), _eventManager(event)
 {
-	_forward = glm::vec3(0.f, 0.f, 1.f);
+	_forward = glm::vec3(0.f, 0.f, -1.f);
 	glm::vec3 guardStartPosition = gridet->getLastValueOfGuardLocationsAndremovesit();
 	srand((unsigned int)time(NULL));
 	 
@@ -233,6 +233,7 @@ bool Guard::DetectedPlayer()
 
 	glm::vec3 pos = this->getWorldPos();
 	glm::vec3 playerPos = _player->getWorldPos();
+	glm::vec3 playerEyePos = _player->getEyePos();
 
 	pos.y = 1.3f;
 
@@ -242,7 +243,7 @@ bool Guard::DetectedPlayer()
 
 	float playerDist = glm::length(guardToPlayer);
 
-	if (playerDist < 0.8f)
+	if (playerDist < 1.5f)
 	{
 		return true;
 	}
@@ -287,7 +288,7 @@ bool Guard::DetectedPlayer()
 		}
 
 		float wallDist = _currentLevel->getWallDist(pos, rayUpperLeft, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
+		float objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
@@ -300,7 +301,7 @@ bool Guard::DetectedPlayer()
 		}
 
 		wallDist =_currentLevel->getWallDist(pos, rayUpperRight, GUARDVIEWDISTANCE * playerLight);
-		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos);
+		objectDist = _currentLevel->getObjectDist(pos, rayLowerLeft, GUARDVIEWDISTANCE * playerLight, playerPos, playerEyePos);
 
 		if (playerDist < wallDist || playerDist < objectDist)
 		{
