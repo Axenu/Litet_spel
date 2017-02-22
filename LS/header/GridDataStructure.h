@@ -103,6 +103,7 @@ public:
 	void addObject(GameObject* object, gridType gridType);
 	std::shared_ptr<Path> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
 	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
-	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos, glm::vec3 playerEyePos);
+	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
+	float getHeight(int height, int width);
 	void addLight(glm::vec3 lightPos, glm::vec3 diff, float dist);
 };
