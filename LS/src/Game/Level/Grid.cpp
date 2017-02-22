@@ -1,4 +1,4 @@
-#include "GridDataStructure.h"
+#include "Game/Level/Grid.h"
 #include "math/MathFunctions.h"
 #include "math/GridTraveler.h"
 #pragma warning(disable:4996)

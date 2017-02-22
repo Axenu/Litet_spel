@@ -1,7 +1,7 @@
 #pragma once
 #include "gl/glInclude.h"
 #include "GameObject.h"
-#include "GridDataStructure.h"
+#include "Game/Level/Grid.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
 #include "Character.h"

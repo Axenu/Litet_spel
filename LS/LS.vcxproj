@@ -223,7 +223,7 @@
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />
     <ClCompile Include="src\Render\RenderInfo.cpp" />
     <ClCompile Include="src\Render\GraphicsResource.cpp" />
-    <ClCompile Include="src\GridDataStructure.cpp" />
+    <ClCompile Include="src\Game\Level\Grid.cpp" />
     <ClCompile Include="src\gl\FBOData.cpp" />
     <ClCompile Include="src\gl\GLFunctions.cpp" />
     <ClCompile Include="src\gl\SamplerObject.cpp" />
@@ -300,7 +300,7 @@
     <ClInclude Include="header\gl\glInclude.h" />
     <ClInclude Include="header\Render\RenderInfo.h" />
     <ClInclude Include="header\Render\GraphicsResource.h" />
-    <ClInclude Include="header\GridDataStructure.h" />
+    <ClInclude Include="header\Game\Level\Grid.h" />
     <ClInclude Include="header\gl\FBOData.h" />
     <ClInclude Include="header\gl\GLFunctions.h" />
     <ClInclude Include="header\gl\SamplerObject.h" />
