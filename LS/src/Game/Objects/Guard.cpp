@@ -15,9 +15,12 @@ void Guard::update(float dt)
 	
 	/*if (_path->walkOnPath(&pos, _speed, dt))
 	{
-		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-		_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
-	}*/
+		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
+		if (sizeOfVector < 1)
+			_path = _currentLevel->generatePath(start, _currentLevel->getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
+		else
+			_path = _currentLevel->generatePath(start, getNextPosition());
+	}
 	if (pos.x < 0 || pos.z < 0)
 		int a = 0;
 	setPosition(pos);
@@ -43,9 +46,31 @@ void Guard::update(float dt)
 
 }
 
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level) :
+glm::vec2 Guard::getNextPosition()
+{
+	_whatPathToLoad += 1;
+	if (_whatPathToLoad > sizeOfVector - 1)
+		_whatPathToLoad = 0;
+	return(walkingPointsen[_whatPathToLoad]);
+
+//	glm::vec2 test = (*walkingPoints)[_whatPathToLoad];
+//	return (*walkingPoints)[_whatPathToLoad];
+}
+
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Grid *gridet, std::vector<glm::vec2>* walkingPoints) :
 	GameObject(m), _player(player), _eventManager(event)
 {
+	
+
+	this->walkingPoints = walkingPoints;
+	sizeOfVector = walkingPoints->size();
+	_whatPathToLoad = 0;
+	
+	for (int i = 0; i < sizeOfVector; i++)
+	{
+		walkingPointsen.push_back((*walkingPoints)[i]);
+	}
+
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
 

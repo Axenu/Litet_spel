@@ -10,3 +10,6 @@ light 16 4
 light 5 16
 light 25 7
 model 15 7 models/Table.obj
+guard 3 3 5 5 -1 -1
+guard 4 4 6 6 -1 -1
+guard -1 -1 

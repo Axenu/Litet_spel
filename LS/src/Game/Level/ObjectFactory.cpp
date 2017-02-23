@@ -58,14 +58,14 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiL
 }
 
 
-Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, Character& player)
+Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints)
 {
 	Material mat(&_skinnedShader);
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level);
-	guard->setLevel(_level);
+	Guard* guard = new Guard(pos, &player, &_events, tmpModel, &_level->getGrid(), &walkingPoints);
+	guard->setLevel(&_level->getGrid());
 	guard->init();
 	_scene->add(guard, true);
 
@@ -154,6 +154,18 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 			iss >> x >> y;
 			createLight(l, glm::ivec2(x, y));
 		}
+		else if (type == "guard")
+		{
+			int x, y;
+			iss >> x >> y;
+			std::vector<glm::vec2> walkingPoints;
+			while (x != -1 && y != -1)
+			{
+				walkingPoints.push_back(glm::vec2(x, y));
+				iss >> x >> y;
+			}
+			guardWalkingPoints.push_back(walkingPoints);
+		}
 	    // int a, b;
 	    // if (!(iss >> a >> b)) { break; } // error
 
@@ -163,4 +175,9 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 
 MeshShader& ObjectFactory::getShader() {
 	return _meshShader;
+}
+
+std::vector<std::vector<glm::vec2>> ObjectFactory::getGuardsWalkingPoints()
+{
+	return this->guardWalkingPoints;
 }

@@ -3,7 +3,7 @@
 AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
-	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-5, 100.0f, -5.0f, 0.f);
+	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-5, 1.0f, -5.0f, 0.f);
 	_grenadeValue.expanding = 0;
 	_grenadeValue.fading = 0.2f;
 }

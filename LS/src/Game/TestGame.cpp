@@ -28,11 +28,15 @@ void TestGame::initiate() {
 	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("models/grenade.obj", glm::ivec2(2, 2));
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, *grenade);
 	_player = player;
-	std::vector<glm::ivec2> &pGuardPosList = level->_guardSpawn;
-	for (int i = 0; i < pGuardPosList.size(); i++)
-		_factory.createGuard("models/Character.dae", pGuardPosList[i], *player);
 
 	_factory.loadSceneFromFile("level.txt");
+
+	std::vector<glm::ivec2> &pGuardPosList = level->_guardSpawn;
+	std::vector<std::vector<glm::vec2>> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
+	for (int i = 0; i < pGuardPosList.size(); i++)
+	{
+		_factory.createGuard("models/Character.dae", pGuardPosList[i], *player, guardsWalkingPoints[i]);
+	}
 
 	// _factory.createObject("models/Table.obj", glm::ivec2(3, 1));
 	//Add some lights
