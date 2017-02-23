@@ -22,12 +22,12 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box)
 
 std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Level *&lvl)
 {
-
 	_level = new Level(_path + level, _events, _meshShader);
-	_level->init();
 	lvl = _level;
+	_level->init();
 	std::unique_ptr<GameObject> ptr(_level);
 	std::unique_ptr<Scene> scene(new Scene(ptr, _level->getAABB()));
+	_level->setScene(scene.get());
 	_scene = scene.get();
 	return std::move(scene);
 }
@@ -81,7 +81,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setLevel(&_level->getGrid());
 	grenade->setScale(0.0675);
-	_scene->add(grenade,true);
+	_scene->add(grenade, true);
 	return grenade;
 }
 
@@ -96,7 +96,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	_level->getGrid().addObject(object, gridType::object);
 	return object;
 }
-LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos)
+LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square)
 {
 	Material tmpMat(&_meshShader);
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
@@ -104,7 +104,9 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos)
 	tmpMat.setFloat("shine", 20.0f);
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
-	object->setPosition(pos);
+
+	object->setPosition(calcPos(square, tmpModel.getBox()));
+	object->moveY(1.f);
 	object->init();
 	_scene->add(object, false);
 	return object;
