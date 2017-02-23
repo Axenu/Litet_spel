@@ -3,9 +3,9 @@
 AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
-	_grenadeValue._grenadePositionWhenLanded=glm::vec4(-5,100.0f,-5.0f,0.f);
+	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-5, 100.0f, -5.0f, 0.f);
 	_grenadeValue.expanding = 0;
-	_grenadeValue.fading = 0.2;
+	_grenadeValue.fading = 0.2f;
 }
 
 AntiLightGrenade::~AntiLightGrenade()
@@ -15,29 +15,25 @@ AntiLightGrenade::~AntiLightGrenade()
 GrenadeValues AntiLightGrenade::getgrenadeData()
 {
 //	std::cout << "this is spam" << std::endl;
-	if (_grenadeValue.expanding<3 && TheBombHasBeenActivated==true)
+	if (_grenadeValue.expanding < 3 && TheBombHasBeenActivated==true)
 	{
-		_grenadeValue.expanding += 0.01;
+		_grenadeValue.expanding += 0.01f;
 	}
-	else if(_grenadeValue.fading<1&& TheBombHasBeenActivated == true)
+	else if(_grenadeValue.fading < 1 && TheBombHasBeenActivated == true)
 	{
-		_grenadeValue.fading += 0.0002;
-	}
-	else
-	{
-
+		_grenadeValue.fading += 0.0002f;
 	}
 	return _grenadeValue;
 }
 void AntiLightGrenade::update(float dt)
 {
-	_fallspeed = -0.01f;
-	_velocity = 1.5f;
+	_fallspeed = -0.02f;
+	_velocity = 5.f;
 	if (QBeenPressed == false && QbeenActivated == true)
 	{
 		_movement = glm::vec3(_movement.x, _movement.y + _fallspeed, _movement.z);
 
-		if (this->getPosition().y > 0.15)
+		if (this->getPosition().y > 0.15 && !_currentLevel->wallCollissionForGrenade(this->getWorldPos(), _movement * dt))
 		{
 			this->move(_movement*dt);
 		}
@@ -53,6 +49,12 @@ void AntiLightGrenade::update(float dt)
 	}
 	GameObject::update(dt);
 }
+
+void AntiLightGrenade::setLevel(Grid *level)
+{
+	this->_currentLevel = level;
+}
+
 void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::vec3 Direction)
 {
 
@@ -66,7 +68,7 @@ void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::v
 		QbeenActivated = true;
 		QBeenPressed = false;
 		TheBombHasBeenActivated = false;
-		_grenadeValue.fading = 0.1;
+		_grenadeValue.fading = 0.1f;
 		_grenadeValue.expanding = 0;
 	}
 }

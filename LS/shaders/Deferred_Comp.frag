@@ -82,13 +82,12 @@ AntiLightgrenade Setting the color to diffured in a set space
 */
 vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,in vec3 color,in vec2 GrenadeExpansionFading)
 {
-float Distance = length(GrenadePosition - pos);
-if(GrenadeExpansionFading.x>Distance)
-{
-return color * GrenadeExpansionFading.y;
-}
-return color;
-
+	float Distance = length(GrenadePosition - pos);
+	if(GrenadeExpansionFading.x>Distance)
+	{
+		return color * GrenadeExpansionFading.y;
+	}
+	return color;
 }
 
 

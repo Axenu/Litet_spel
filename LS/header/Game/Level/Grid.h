@@ -49,7 +49,7 @@ private:
 public:
 	Grid(const std::string& level);
 	~Grid();
-	Mesh generateMesh();
+	void generateMesh(Mesh* meshes);
 
 	/* Get height size of grid in squares */
 	int getHeight();

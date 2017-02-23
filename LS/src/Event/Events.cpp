@@ -43,3 +43,18 @@ bool GameOverEvent::hasWon() const
 {
 	return _hasWon;
 }
+
+
+CanClimbEvent::CanClimbEvent(bool canClimb)
+{
+	_canClimb = canClimb;
+}
+
+CanClimbEvent::~CanClimbEvent()
+{
+}
+
+bool CanClimbEvent::canClimb() const
+{
+	return _canClimb;
+}

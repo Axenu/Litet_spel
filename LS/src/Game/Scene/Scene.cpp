@@ -1,12 +1,13 @@
 #include "Game/Scene/Scene.h"
+#include <memory>
 
 
 
-Scene::Scene()
-	:_quadTree(), _root()
+Scene::Scene(std::unique_ptr<GameObject>& root, AABB sceneBounds)
+	: _quadTree(), _rootObject(root.get()), _root(root.release())
 {
+	initQuadTree(sceneBounds);
 }
-
 
 Scene::~Scene()
 {
@@ -22,7 +23,7 @@ Scene::~Scene()
 /* Update all objects in the scene
 */
 void Scene::update(float dT) {
-	_root.update(dT);
+	_root->update(dT);
 }
 Camera& Scene::setCamera(Setting &camSetting) {
 	Camera* cam = new Camera(camSetting);
@@ -43,7 +44,7 @@ void Scene::add(GameObject *object, bool dynamic) {
 	if (!dynamic)
 	{
 		if (!object->getParent())
-			object->setParent(&_root);
+			object->setParent(_root.get());
 		//Initiates the modelMatrix
 		object->update(0.0f);
 		//adds the object to the QuadTree
@@ -53,7 +54,7 @@ void Scene::add(GameObject *object, bool dynamic) {
 	else
 	{
 		if (!object->getParent())
-			object->setParent(&_root);
+			object->setParent(_root.get());
 		object->update(0.0f);
 		_dynamicObjects.push_back(std::move(object));
 	}
@@ -62,7 +63,7 @@ void Scene::add(GameObject *object, bool dynamic) {
 
 void Scene::addNode(Node *object) {
 	if (!object->getParent())
-		object->setParent(&_root);
+		object->setParent(_root.get());
 	_nodes.push_back(object);
 
 }
@@ -116,6 +117,7 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 	std::vector<GameObject*> drawList;
 	getDynObjects(drawList, _cam->VPMatrix);
 	_quadTree.QuadTreeTest(drawList, _cam->VPMatrix);
+	drawList.push_back(_rootObject);
 	for (unsigned int i = 0; i < drawList.size(); i++)
 		drawList[i]->addToFrame(dF);
 	/*for (unsigned int i = 0; i < _objects.size(); i++)
@@ -125,6 +127,7 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
 	std::vector<GameObject*> drawList = _dynamicObjects;
 	_quadTree.QuadTreeTest(drawList, aabb);
+	drawList.push_back(_rootObject);
 	for (unsigned int i = 0; i < drawList.size(); i++)
 		drawList[i]->addToFrame(dF);
 	/*for (unsigned int i = 0; i < _objects.size(); i++)
@@ -207,10 +210,19 @@ void Scene::initQuadTree(AABB & aabb)
 	_quadTree.CreateNodes();
 }
 
+
+/* Get a list of objects inside the bounds and of the specific type. */
+void Scene::fetchObjects(std::vector<GameObject>* list, AABB& bounds, type::GameObjectType type)
+{
+
+}
+
 void Scene::getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat)
 {
 	//Create planes from projview matrix
 	Plane planes[6];
+
+	//Create a Frustum class/object:
 
 	//Left
 	planes[0].normal.x = -(mat[0][3] + mat[0][0]);

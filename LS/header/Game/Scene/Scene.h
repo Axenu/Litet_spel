@@ -25,11 +25,12 @@ private:
 
 	QuadTreeNode _quadTree;
 protected:
+	GameObject* _rootObject;
 	/* The scene tree root.
 	*/
-	Node _root;
+	std::unique_ptr<Node> _root;
 public:
-	Scene();
+	Scene(std::unique_ptr<GameObject> &root, AABB sceneBounds);
 	~Scene();
 
 	Camera& setCamera(Setting &camSetting);
@@ -56,6 +57,11 @@ public:
 	void fetchDrawables(DrawFrame &dF);
 
 	void fetchDrawables(DrawFrame &dF, AABB &aabb);
+
+	/* Get a list of objects inside the bounds and of the specific type. */
+	void fetchObjects(std::vector<GameObject>* list, AABB& bounds, type::GameObjectType type);
+
+	std::vector<GameObject*> getObjects(type::GameObjectType type);
 
 	int loot(float pickDist);
 

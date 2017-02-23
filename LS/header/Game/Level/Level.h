@@ -8,13 +8,13 @@
 /* Level struct holding 'all' information about a specific level loaded for a game instance.
 */
 class Level
-	: public StaticGameObject
+	: public GameObject
 {
 private:
 
 	Grid _grid;
-	Mesh _gridMesh;
 	std::vector<PointLight*> _light;
+	Mesh _gridMesh[3];
 
 public:
 

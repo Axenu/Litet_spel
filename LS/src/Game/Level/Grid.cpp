@@ -275,7 +275,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 		currentValue--;
 	}
 
-	for (int i = 0; i < path.size(); i++)
+	for (unsigned int i = 0; i < path.size(); i++)
 	{
 		path[i] += glm::vec3(GRIDSPACE / 2.f, 0.f, GRIDSPACE / 2.f);
 	}
@@ -379,60 +379,71 @@ void Grid::loadingBmpPicture(const char* filename)
 	fclose(f);
 }
 
-Mesh Grid::generateMesh()
+void Grid::generateMesh(Mesh* meshes)
 {
 	std::vector<glm::vec3> position;
 	std::vector<glm::vec3> normal;
 	std::vector<GLuint> indices;
 	GLint k = 0;
 
+	std::vector<glm::vec3> floorPosition;
+	std::vector<glm::vec3> floorNormal;
+	std::vector<GLuint> floorIndices;
+
 	// Position
-	position.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f));
-	position.push_back(glm::vec3(0.f, 0.f, 0.f));
-	position.push_back(glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE));
-	position.push_back(glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE));
-	position.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, _heightLength * GRIDSPACE));
-	position.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f));
+	floorPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f));
+	floorPosition.push_back(glm::vec3(0.f, 0.f, 0.f));
+	floorPosition.push_back(glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE));
+	floorPosition.push_back(glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE));
+	floorPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, _heightLength * GRIDSPACE));
+	floorPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f));
 	// Normals
-	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
+	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
 	// Index
-	indices.push_back(k);
-	indices.push_back(k + 1);
-	indices.push_back(k + 2);
-	indices.push_back(k + 3);
-	indices.push_back(k + 4);
-	indices.push_back(k + 5);
-	k += 6;
+	floorIndices.push_back(0);
+	floorIndices.push_back(1);
+	floorIndices.push_back(2);
+	floorIndices.push_back(3);
+	floorIndices.push_back(4);
+	floorIndices.push_back(5);
+	
+	meshes[0].setMesh(floorPosition, floorNormal, floorIndices);
 
 	// Roof
 
+	std::vector<glm::vec3> roofPosition;
+	std::vector<glm::vec3> roofNormal;
+	std::vector<GLuint> roofIndices;
+
 	// Position
-	position.push_back(glm::vec3(0.f, ROOFHEIGHT, 0.f));
-	position.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, 0.f));
-	position.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
-	position.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
-	position.push_back(glm::vec3(0.f, ROOFHEIGHT, _heightLength * GRIDSPACE));
-	position.push_back(glm::vec3(0.f, ROOFHEIGHT, 0.f));
+	roofPosition.push_back(glm::vec3(0.f, ROOFHEIGHT, 0.f));
+	roofPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, 0.f));
+	roofPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
+	roofPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
+	roofPosition.push_back(glm::vec3(0.f, ROOFHEIGHT, _heightLength * GRIDSPACE));
+	roofPosition.push_back(glm::vec3(0.f, ROOFHEIGHT, 0.f));
 	// Normals
-	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	normal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
+	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
 	// Index
-	indices.push_back(k);
-	indices.push_back(k + 1);
-	indices.push_back(k + 2);
-	indices.push_back(k + 3);
-	indices.push_back(k + 4);
-	indices.push_back(k + 5);
-	k += 6;
+	roofIndices.push_back(0);
+	roofIndices.push_back(1);
+	roofIndices.push_back(2);
+	roofIndices.push_back(3);
+	roofIndices.push_back(4);
+	roofIndices.push_back(5);
+	
+	meshes[1].setMesh(roofPosition, roofNormal, roofIndices);
+
 	for (int j = 0; j < _heightLength; j++)
 	{
 		for (int i = 0; i < _widthLength; i++)
@@ -553,10 +564,8 @@ Mesh Grid::generateMesh()
 				}
 			}
 		}
-	}
-	Mesh mesh;
-	mesh.setMesh(position, normal, indices);
-	return mesh;
+	}	
+	meshes[2].setMesh(position, normal, indices);
 }
 
 void Grid::print2darraydata()
@@ -785,6 +794,29 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		}
 	}
 	return position;
+}
+
+
+bool Grid::wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity)
+{
+	//calculate current grid position
+	int currentX = (int)glm::floor(position.x / GRIDSPACE);
+	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
+
+	if (currentX < 0 || currentZ < 0 || currentX > _widthLength || currentZ > _heightLength)
+	{
+		return false;
+	}
+
+	if (_twodArray[currentZ][currentX].type == wall)
+	{
+		return true;
+	}
+	else if (_twodArray[currentZ][currentX].type == object && _twodArray[currentZ][currentX].height > position.y)
+	{
+		return true;
+	}
+	return false;
 }
 
 /* Move */

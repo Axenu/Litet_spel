@@ -26,17 +26,17 @@ private:
 	DeferredMeshShader _meshShader;
 	DefSkinnedMeshShader _skinnedShader;
 	ModelLoader _models;
-	Scene& _scene;
+	Scene* _scene;
 	EventManager& _events;
 	Level* _level;
 
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
 
 public:
-	ObjectFactory(Scene &scene, EventManager &events, const std::string &resourcePath = "");
+	ObjectFactory(EventManager &events, const std::string &resourcePath = "");
 	~ObjectFactory();
 
-	Level* createLevel(const std::string &level);
+	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);
 	Character* createCharacter(glm::ivec2 square, float height);
 	Character* createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player);
