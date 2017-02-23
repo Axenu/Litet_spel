@@ -12,7 +12,6 @@ Level::Level(const std::string &level, EventManager &events, MeshShader &shader)
 	ModelPart part(&_gridMesh, mat);
 	Model m(part);
 	setModel(m);
-	StaticGameObject::init();
 }
 
 

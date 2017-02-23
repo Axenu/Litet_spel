@@ -2,8 +2,8 @@
 
 
 
-ObjectFactory::ObjectFactory(Scene &scene, EventManager &events, const std::string &resourcePath)
-	: _path(resourcePath), _meshShader(), _skinnedShader(), _models(), _scene(scene), _events(events)
+ObjectFactory::ObjectFactory(EventManager &events, const std::string &resourcePath)
+	: _path(resourcePath), _meshShader(), _skinnedShader(), _models(),  _events(events)
 {
 }
 
@@ -20,25 +20,27 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box)
 	return vec;
 }
 
-Level* ObjectFactory::createLevel(const std::string &level)
+std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Level *&lvl)
 {
+
 	_level = new Level(_path + level, _events, _meshShader);
 	_level->init();
-	AABB aabb = _level->getAABB();
-	_scene.initQuadTree(aabb);
-	_scene.add(_level, true);
-	return _level;
+	lvl = _level;
+	std::unique_ptr<GameObject> ptr(_level);
+	std::unique_ptr<Scene> scene(new Scene(ptr, _level->getAABB()));
+	_scene = scene.get();
+	return std::move(scene);
 }
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 {
 
 	Character* player = new Character(_level->getGrid().getCenter(square), &_events);
 	player->setLevel(&_level->getGrid());
-	player->setScene(&_scene);
+	player->setScene(_scene);
 	player->init();
-	_scene.getCamera().setParent(player);
-	_scene.getCamera().setPositionY(height);
-	_scene.add(player, true);
+	_scene->getCamera().setParent(player);
+	_scene->getCamera().setPositionY(height);
+	_scene->add(player, true);
 	return player;
 }
 
@@ -47,11 +49,11 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiL
 
 	Character* player = new Character(_level->getGrid().getCenter(square), &_events,&grenade);
 	player->setLevel(&_level->getGrid());
-	player->setScene(&_scene);
+	player->setScene(_scene);
 	player->init();
-	_scene.getCamera().setParent(player);
-	_scene.getCamera().setPositionY(height);
-	_scene.add(player,true);
+	_scene->getCamera().setParent(player);
+	_scene->getCamera().setPositionY(height);
+	_scene->add(player,true);
 	return player;
 }
 
@@ -65,7 +67,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	Guard* guard = new Guard(pos, &player, &_events, tmpModel, &_level->getGrid());
 	guard->setLevel(&_level->getGrid());
 	guard->init();
-	_scene.add(guard, true);
+	_scene->add(guard, true);
 
 	return guard;
 }
@@ -77,7 +79,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setScale(0.25);
-	_scene.add(grenade,true);
+	_scene->add(grenade,true);
 	return grenade;
 }
 
@@ -88,7 +90,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
 	object->init();
-	_scene.add(object, false);
+	_scene->add(object, false);
 	_level->getGrid().addObject(object, gridType::object);
 	return object;
 }
@@ -102,7 +104,7 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::vec3 pos)
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 	object->setPosition(pos);
 	object->init();
-	_scene.add(object, false);
+	_scene->add(object, false);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square)
@@ -111,7 +113,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	light._pos += calcPos(square, box);
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	object->init();
-	_scene.add(object, true);
+	_scene->add(object, true);
 	_level->getGrid().addLight(light._pos, light._diffuse, light._fadeDist);
 	return object;
 }
@@ -119,7 +121,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
 {
 	PointLightObject* object = new PointLightObject(light, parent);
 	object->init();
-	_scene.add(object, true);
+	_scene->add(object, true);
 	return object;
 }
 

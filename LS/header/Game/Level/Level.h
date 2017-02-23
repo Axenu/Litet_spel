@@ -7,7 +7,7 @@
 /* Level struct holding 'all' information about a specific level loaded for a game instance.
 */
 class Level
-	: public StaticGameObject
+	: public GameObject
 {
 private:
 

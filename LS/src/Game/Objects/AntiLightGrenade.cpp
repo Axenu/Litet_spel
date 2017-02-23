@@ -3,9 +3,9 @@
 AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
-	_grenadeValue._grenadePositionWhenLanded=glm::vec4(-5,100.0f,-5.0f,0.f);
-	_grenadeValue.expanding = 0;
-	_grenadeValue.fading = 0.2;
+	_grenadeValue._grenadePositionWhenLanded=glm::vec4(-5,100.0f, -5.0f, 0.f);
+	_grenadeValue.expanding = 0.f;
+	_grenadeValue.fading = 0.2f;
 }
 
 AntiLightGrenade::~AntiLightGrenade()
@@ -17,11 +17,11 @@ GrenadeValues AntiLightGrenade::getgrenadeData()
 //	std::cout << "this is spam" << std::endl;
 	if (_grenadeValue.expanding<3 && TheBombHasBeenActivated==true)
 	{
-		_grenadeValue.expanding += 0.01;
+		_grenadeValue.expanding += 0.01f;
 	}
 	else if(_grenadeValue.fading<1&& TheBombHasBeenActivated == true)
 	{
-		_grenadeValue.fading += 0.0002;
+		_grenadeValue.fading += 0.0002f;
 	}
 	else
 	{
@@ -66,7 +66,7 @@ void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::v
 		QbeenActivated = true;
 		QBeenPressed = false;
 		TheBombHasBeenActivated = false;
-		_grenadeValue.fading = 0.1;
+		_grenadeValue.fading = 0.1f;
 		_grenadeValue.expanding = 0;
 	}
 }

@@ -13,7 +13,7 @@ class Game
 protected:
 	Setting _setting;
 	EventManager &_event;
-	Scene _scene;
+	std::unique_ptr<Scene> _scene;
 	GraphicsResource _resource;
 	RenderDeferred _deferred;
 	ObjectFactory _factory;

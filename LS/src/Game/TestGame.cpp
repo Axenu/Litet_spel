@@ -6,7 +6,6 @@
 TestGame::TestGame(Setting &setting, EventManager &events)
 	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _cubeMapRenderer(_resource.getQuad(), events), _renderBufferKey(events, GLFW_KEY_R), _cubeMapBufferKey(events, GLFW_KEY_C)
 {
-	_bufferRenderer.setWindowSize((float)setting.Width(), (float)setting.Height(), _scene.getCamera());
 }
 TestGame::~TestGame()
 {
@@ -19,9 +18,15 @@ void TestGame::setupRI(RenderInfo &rI) {
 }
 void TestGame::initiate() {
 
-	Level* level = _factory.createLevel("Demo1.bmp");
-	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("models/cube.obj", glm::ivec2(2, 2));
+	//Create the scene, and the level
+	Level* level;
+	_scene = _factory.createLevel("Demo1.bmp", level);
+	//Initiate camera and renderer vars:
+	Camera& cam = _scene->setCamera(_setting);
+	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
+	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), _scene->getCamera());
 
+	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("models/cube.obj", glm::ivec2(2, 2));
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, *grenade);
 	_player = player;
 	std::vector<glm::vec3>* pGuardPosList = level->getGrid().getGuardLocations();
