@@ -13,13 +13,13 @@ void Guard::update(float dt)
 	
 	glm::vec3 pos = _position;
 	
-	/*if (_path->walkOnPath(&pos, _speed, dt))
+	if (_path->walkOnPath(&pos, _speed, dt))
 	{
-		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
+		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
 		if (sizeOfVector < 1)
-			_path = _currentLevel->generatePath(start, _currentLevel->getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
+			_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
 		else
-			_path = _currentLevel->generatePath(start, getNextPosition());
+			_path = _currentLevel->getGrid().generatePath(start, getNextPosition());
 	}
 	if (pos.x < 0 || pos.z < 0)
 		int a = 0;
@@ -57,11 +57,9 @@ glm::vec2 Guard::getNextPosition()
 //	return (*walkingPoints)[_whatPathToLoad];
 }
 
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Grid *gridet, std::vector<glm::vec2>* walkingPoints) :
-	GameObject(m), _player(player), _eventManager(event)
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>* walkingPoints) :
+	GameObject(m), _player(player), _eventManager(event), _currentLevel(level)
 {
-	
-
 	this->walkingPoints = walkingPoints;
 	sizeOfVector = walkingPoints->size();
 	_whatPathToLoad = 0;
@@ -74,8 +72,8 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
 
-	glm::ivec2 start = level->getGrid().getSquare(this->getWorldPos());
-	_path = level->getGrid().generatePath(start, level->getGrid().getRandomSquare());
+	glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
+	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
 
 	_speed = 0.4f;
 }

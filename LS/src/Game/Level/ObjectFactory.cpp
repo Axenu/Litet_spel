@@ -64,8 +64,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, &_events, tmpModel, &_level->getGrid(), &walkingPoints);
-	guard->setLevel(&_level->getGrid());
+	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, &walkingPoints);
 	guard->init();
 	_scene->add(guard, true);
 
@@ -80,7 +79,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setLevel(&_level->getGrid());
-	grenade->setScale(0.0675);
+	grenade->setScale((float)0.0675);
 	_scene->add(grenade, true);
 	return grenade;
 }

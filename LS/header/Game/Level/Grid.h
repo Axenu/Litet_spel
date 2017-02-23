@@ -39,7 +39,6 @@ private:
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray;
-	std::vector<lightValues> _light;
 
 	void buildgridarray();
 	void print2darraydata();
