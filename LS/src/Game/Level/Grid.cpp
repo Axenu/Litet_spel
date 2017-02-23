@@ -3,9 +3,9 @@
 #include "math/GridTraveler.h"
 #pragma warning(disable:4996)
 
-Grid::Grid(const std::string &level)
+Grid::Grid(const std::string &level, std::vector<glm::ivec2> &guardSpawn, std::vector<glm::ivec2> &lootPlace)
 {
-	loadingBmpPicture(level.c_str());
+	loadingBmpPicture(level.c_str(), guardSpawn, lootPlace);
 }
 
 Grid::~Grid()
@@ -137,16 +137,6 @@ int Grid::getHeight()
 int Grid::getWidth()
 {
 	return _widthLength;
-}
-
-std::vector<glm::vec3>* Grid::getLootLocations()
-{
-	return &_lootLocations;
-}
-
-std::vector<glm::vec3>* Grid::getGuardLocations()
-{
-	return &_guardLocations;
 }
 
 
@@ -320,7 +310,7 @@ void Grid::buildgridarray()
 	}
 }
 
-void Grid::loadingBmpPicture(const char* filename)
+void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &guardSpawn, std::vector<glm::ivec2> &lootPlace)
 {
 	FILE* f = fopen(filename, "rb");
 	if (f == NULL)
@@ -369,16 +359,18 @@ void Grid::loadingBmpPicture(const char* filename)
 			}
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
 			{
-				_twodArray[height - 1 - i][realj].type = guard;
-				glm::vec3 tmpVec((realj), 1.3f, (height - 1 - i));
-				this->_guardLocations.push_back(tmpVec);
+				//_twodArray[height - 1 - i][realj].type = guard;
+				//glm::vec3 tmpVec((realj), 1.3f, (height - 1 - i));
+				guardSpawn.push_back(glm::ivec2(realj, height - 1 - i));
+				_twodArray[height - 1 - i][realj].type = nothing;
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
-				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
-				this->_lootLocations.push_back(tmpVec);
-				_twodArray[height - 1 - i][realj].type = loot;
-			}
+				//glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
+				lootPlace.push_back(glm::ivec2(realj, height - 1 - i));
+				_twodArray[height - 1 - i][realj].type = nothing;
+				//_twodArray[height - 1 - i][realj].type = loot;
+			} 
 			else if (data[j] == 100 && data[j + 1] == 100 && data[j + 2] == 100)
 			{
 				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
@@ -832,6 +824,13 @@ bool Grid::wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity)
 	else if (_twodArray[currentZ][currentX].type == object && _twodArray[currentZ][currentX].height > position.y)
 	{
 		return true;
+	}
+	else
+	{
+		if (position.y < 0.15f || position.y > ROOFHEIGHT - 0.15f)
+		{
+			return true;
+		}
 	}
 	return false;
 }

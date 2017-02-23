@@ -29,8 +29,8 @@ private:
 	Scene* _scene;
 	EventManager& _events;
 	Level* _level;
-
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
+	std::vector<std::vector<glm::vec2>> guardWalkingPoints;
 
 public:
 	ObjectFactory(EventManager &events, const std::string &resourcePath = "");
@@ -39,12 +39,13 @@ public:
 	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);
 	Character* createCharacter(glm::ivec2 square, float height);
 	Character* createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade);
-	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player);
+	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
 	GameObject* createObject(const std::string &model, glm::ivec2 square);
-	LootObject* createLoot(const std::string &model, glm::vec3 pos);
+	LootObject* createLoot(const std::string &model, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path);
 	MeshShader& getShader();
+	std::vector<std::vector<glm::vec2>> getGuardsWalkingPoints();
 };

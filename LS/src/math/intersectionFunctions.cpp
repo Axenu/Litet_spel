@@ -134,82 +134,21 @@ bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::v
 	return false;
 }
 
-bool AABBIntersection(const AABB &aabb, glm::vec3 dir, glm::vec3 origin)
+
+bool AABBIntersectTo(const AABB & aabb, glm::vec3 dir, glm::vec3 origin, float distance)
 {
-	glm::vec3 min = aabb.getMin();
-	glm::vec3 max = aabb.getMax();
-
-	float tx1 = (min.x - origin.x) / dir.x;
-	float tx2 = (max.x - origin.x) / dir.x;
-
-	float tmin = glm::min(tx1, tx2);
-	float tmax = glm::max(tx1, tx2);
-
-	if (tmax < 0)
-	{
-		return false;
-	}
-
-	float ty1 = (min.y - origin.y) / dir.y;
-	float ty2 = (max.y - origin.y) / dir.y;
-
-	float tymin = glm::min(ty1, ty2);
-	float tymax = glm::max(ty1, ty2);
-
-	if ((tmin > tymax) || (tymin > tmax))
-	{
-		return false;
-	}
-
-	tmin = glm::max(tmin, tymin);
-	tmax = glm::min(tmax, tymax);
-	if (tmax < 0)
-	{
-		return false;
-	}
-
-	float tz1 = (min.z - origin.z) / dir.z;
-	float tz2 = (max.z - origin.z) / dir.z;
-
-	float tzmin = glm::min(tz1, tz2);
-	float tzmax = glm::max(tz1, tz2);
-
-	if ((tmin > tymax) || (tymin > tmax))
-	{
-		return false;
-	}
-
-	tmin = glm::max(tmin, tzmin);
-	tmax = glm::min(tmax, tzmax);
-
-	if (tmax < 0)
-	{
-		return false;
-	}
-
-	if (tmax < tmin)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool AABBIntersection(const AABB & aabb, glm::vec3 dir, glm::vec3 origin, float distance)
-{
-	float test = AABBIntersectionDistance(aabb, dir, origin);
-	if (test < 0)
-	{
-		return false;
-	}
-	else if (test >= distance)
-	{
-		return false;
-	}
+	float trav;
+	if (AABBIntersect(aabb, dir, origin, trav))
+		return trav < distance;
 	return false;
 }
 
-float AABBIntersectionDistance(const AABB & aabb, glm::vec3 dir, glm::vec3 origin)
+bool AABBIntersect(const AABB & aabb, glm::vec3 dir, glm::vec3 origin)
+{
+	float dist;
+	return AABBIntersect(aabb, dir, origin, dist);
+}
+bool AABBIntersect(const AABB & aabb, glm::vec3 dir, glm::vec3 origin, float &dist)
 {
 	glm::vec3 min = aabb.getMin();
 	glm::vec3 max = aabb.getMax();
@@ -221,9 +160,7 @@ float AABBIntersectionDistance(const AABB & aabb, glm::vec3 dir, glm::vec3 origi
 	float tmax = glm::max(tx1, tx2);
 
 	if (tmax < 0)
-	{
-		return -1;
-	}
+		return false;
 
 	float ty1 = (min.y - origin.y) / dir.y;
 	float ty2 = (max.y - origin.y) / dir.y;
@@ -232,16 +169,12 @@ float AABBIntersectionDistance(const AABB & aabb, glm::vec3 dir, glm::vec3 origi
 	float tymax = glm::max(ty1, ty2);
 
 	if ((tmin > tymax) || (tymin > tmax))
-	{
-		return -1;
-	}
+		return false;
 
 	tmin = glm::max(tmin, tymin);
 	tmax = glm::min(tmax, tymax);
 	if (tmax < 0)
-	{
-		return -1;
-	}
+		return false;
 
 	float tz1 = (min.z - origin.z) / dir.z;
 	float tz2 = (max.z - origin.z) / dir.z;
@@ -250,29 +183,15 @@ float AABBIntersectionDistance(const AABB & aabb, glm::vec3 dir, glm::vec3 origi
 	float tzmax = glm::max(tz1, tz2);
 
 	if ((tmin > tymax) || (tymin > tmax))
-	{
-		return -1;
-	}
+		return false;
 
 	tmin = glm::max(tmin, tzmin);
 	tmax = glm::min(tmax, tzmax);
 
-	if (tmax < 0)
-	{
-		return -1;
-	}
-
-	if (tmax < tmin)
-	{
-		return -1;
-	}
-
-	if (tmin > 0)
-	{
-		return tmin;
-	}
-
-	return tmax;
+	if (tmax < 0 || tmax < tmin)
+		return false;
+	dist = tmin > 0 ? tmin : 0.f; //tmax is distance to AABB edges
+	return true;
 }
 
 bool PointInsideAABB(AABB & aabb, glm::vec3 point)

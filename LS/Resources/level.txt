@@ -10,3 +10,6 @@ model 10 11 models/Table.obj
 model 2 17 models/Table.obj
 model 3 17 models/Table.obj
 model 6 24 models/Table.obj
+guard 3 3 5 5 -1 -1
+guard 4 4 6 6 -1 -1
+guard -1 -1 

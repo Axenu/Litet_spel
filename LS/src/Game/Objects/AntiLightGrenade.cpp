@@ -3,7 +3,7 @@
 AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
-	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-5, 100.0f, -5.0f, 0.f);
+	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-5, 1.0f, -5.0f, 0.f);
 	_grenadeValue.expanding = 0;
 	_grenadeValue.fading = 0.2f;
 }
@@ -33,7 +33,7 @@ void AntiLightGrenade::update(float dt)
 	{
 		_movement = glm::vec3(_movement.x, _movement.y + _fallspeed, _movement.z);
 
-		if (this->getPosition().y > 0.15 && !_currentLevel->wallCollissionForGrenade(this->getWorldPos(), _movement * dt))
+		if (!_currentLevel->wallCollissionForGrenade(this->getWorldPos(), _movement * dt))
 		{
 			this->move(_movement*dt);
 		}
