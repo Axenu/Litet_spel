@@ -75,11 +75,13 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & model, glm::ivec2 square)
 {
 	Material mat(&_meshShader);
+
 	mat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
-	grenade->setScale(0.25);
-	_scene->add(grenade,true);
+	grenade->setLevel(&_level->getGrid());
+	grenade->setScale(0.0675);
+	_scene.add(grenade,true);
 	return grenade;
 }
 

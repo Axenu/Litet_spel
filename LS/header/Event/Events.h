@@ -65,3 +65,13 @@ public:
 	~GameOverEvent();
 	bool hasWon() const;
 };
+
+class CanClimbEvent : public Event
+{
+private:
+	bool _canClimb;
+public:
+	CanClimbEvent(bool _canClimb);
+	~CanClimbEvent();
+	bool canClimb() const;
+};
