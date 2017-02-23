@@ -1,4 +1,3 @@
-light 2 19
 light 6 27
 light 3 22
 light 3 17

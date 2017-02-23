@@ -37,16 +37,10 @@ void TestGame::initiate() {
 	{
 		_factory.createGuard("models/Character.dae", pGuardPosList[i], *player, guardsWalkingPoints[i]);
 	}
-
-	// _factory.createObject("models/Table.obj", glm::ivec2(3, 1));
-	//Add some lights
-	// PointLight l(glm::vec3(0.0f), glm::vec3(0.6f), glm::vec3(0.7f), 5.0f);
-	// _factory.createLight(l, player);
 	//Add some loot
 	std::vector<glm::ivec2> &pLootPosList = level->_lootPlace;
 	for (unsigned int i = 0; i < pLootPosList.size(); i++)
 		GameObject *tmpLoot = _factory.createLoot("models/Chalice.obj", pLootPosList[i]);
-
 }
 
 

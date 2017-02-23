@@ -17,16 +17,16 @@ uniform mat4 bones[64];
 void main() {
 	int index = int(weight_0.x);
 	gl_Position = weight_0.y * (bones[index] * vec4(vertex_position, 1.0));
-	Normal0 = weight_0.y * (bones[index] * vec4(vertex_position, 0.f)).xyz;
+	Normal0 = weight_0.y * (bones[index] * vec4(vertex_normal, 0.f)).xyz;
 	index = int(weight_1.x);
 	gl_Position += weight_1.y * (bones[index] * vec4(vertex_position, 1.0));
-	Normal0 += weight_1.y * (bones[index] * vec4(vertex_position, 0.f)).xyz;
+	Normal0 += weight_1.y * (bones[index] * vec4(vertex_normal, 0.f)).xyz;
 	index = int(weight_1.x);
 	gl_Position += weight_2.y * (bones[index] * vec4(vertex_position, 1.0));
-	Normal0 += weight_2.y * (bones[index] * vec4(vertex_position, 0.f)).xyz;
+	Normal0 += weight_2.y * (bones[index] * vec4(vertex_normal, 0.f)).xyz;
 	index = int(weight_1.x);
 	gl_Position += weight_3.y * (bones[index] * vec4(vertex_position, 1.0));
-	Normal0 += weight_3.y * (bones[index] * vec4(vertex_position, 0.f)).xyz;
+	Normal0 += weight_3.y * (bones[index] * vec4(vertex_normal, 0.f)).xyz;
 
 	gl_Position = mvp * gl_Position;
 	Normal0 =  normalize((mv * vec4(Normal0, 0.f)).xyz);
