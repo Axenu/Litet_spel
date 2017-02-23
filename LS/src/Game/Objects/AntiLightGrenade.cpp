@@ -33,7 +33,7 @@ void AntiLightGrenade::update(float dt)
 	{
 		_movement = glm::vec3(_movement.x, _movement.y + _fallspeed, _movement.z);
 
-		if (!_currentLevel->wallCollissionForGrenade(this->getWorldPos(), _movement * dt))
+		if (!_currentLevel->wallCollissionForGrenade(this->getPosition(), _movement * dt))
 		{
 			this->move(_movement*dt);
 		}
