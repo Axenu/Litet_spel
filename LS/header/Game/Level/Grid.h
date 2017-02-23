@@ -45,15 +45,13 @@ private:
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray;
-	std::vector<glm::vec3> _lootLocations;
-	std::vector<glm::vec3> _guardLocations;
 	std::vector<lightValues> _light;
 
 	void buildgridarray();
 	void print2darraydata();
-	void loadingBmpPicture(const char* filename);
+	void loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &guardSpawn, std::vector<glm::ivec2> &lootPlace);
 public:
-	Grid(const std::string& level);
+	Grid(const std::string& level, std::vector<glm::ivec2> &guardSpawn, std::vector<glm::ivec2> &lootPlace);
 	~Grid();
 	void generateMesh(Mesh* meshes);
 
