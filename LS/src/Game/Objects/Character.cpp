@@ -20,7 +20,7 @@ void Character::onUpdate(float dt)
 		if (!_climbing)
 		{
 			glm::vec3 pos = getWorldPos();
-			setY(_currentLevel->getGridHeight(pos));
+			setPositionY(_currentLevel->getGridHeight(pos));
 		}
 		//Send event
 		CharacterSquareEvent squareEvent(this, newSquare);
@@ -87,7 +87,7 @@ void Character::climb(float dT)
 			}
 			else
 			{
-				setY(_animEndPos.y);
+				setPositionY(_animEndPos.y);
 			}
 		}
 		else //Animate end phase

@@ -37,7 +37,7 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 	player->setScene(&_scene);
 	player->init();
 	_scene.getCamera().setParent(player);
-	_scene.getCamera().setY(height);
+	_scene.getCamera().setPositionY(height);
 	_scene.add(player, true);
 	return player;
 }
@@ -50,7 +50,7 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiL
 	player->setScene(&_scene);
 	player->init();
 	_scene.getCamera().setParent(player);
-	_scene.getCamera().setY(height);
+	_scene.getCamera().setPositionY(height);
 	_scene.add(player,true);
 	return player;
 }
