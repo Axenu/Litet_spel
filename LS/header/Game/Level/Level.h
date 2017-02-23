@@ -18,6 +18,7 @@ public:
 private:
 
 	Grid _grid;
+	std::vector<PointLight*> _light;
 	Mesh _gridMesh[3];
 	Scene*  _scene;
 
@@ -33,5 +34,9 @@ public:
 	const Scene& getScene();
 
 	virtual void onUpdate(float dT);
+
+	void getLight(PointLight* light);
+
+	float calcLightOnPosition(glm::vec3 playerPos);
 };
 

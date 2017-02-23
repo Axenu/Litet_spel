@@ -3,7 +3,7 @@
 
 
 
-void Guard::setLevel(Grid *level)
+void Guard::setLevel(Level *level)
 {
 	this->_currentLevel = level;
 }
@@ -13,7 +13,7 @@ void Guard::update(float dt)
 	
 	glm::vec3 pos = _position;
 	
-	if (_path->walkOnPath(&pos, _speed, dt))
+	/*if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
 		if (sizeOfVector < 1)
@@ -74,8 +74,8 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
 
-	glm::ivec2 start = gridet->getSquare(this->getWorldPos());
-	_path = gridet->generatePath(start, gridet->getRandomSquare());
+	glm::ivec2 start = level->getGrid().getSquare(this->getWorldPos());
+	_path = level->getGrid().generatePath(start, level->getGrid().getRandomSquare());
 
 	_speed = 0.4f;
 }
@@ -110,11 +110,16 @@ bool Guard::DetectedPlayer()
 		//Account light for Anti-L Grenade
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
 			playerLight *= _player->getGrenadeData().fading;
+
+		//Account for the fact if the player is right infront of the guard or not
+		playerLight *= glm::dot(getForward(), dirToPlayer);
+
 		//Distance to stuff
-		float wallDist = _currentLevel->getWallDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos);
-		//If player closer then stuff, detect!
-		if (playerDist < wallDist && playerDist < objectDist)
+		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
+		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, _player->getEyePos(), object);
+
+		//If player closer then stuff or object is to low in height to cover the player, detect!
+		if ((playerDist < wallDist && playerDist < objectDist) || objectDist == 0.0f)
 			return true;
 	}
 	return false;

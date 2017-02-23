@@ -1,7 +1,7 @@
 #pragma once
 #include "gl/glInclude.h"
 #include "GameObject.h"
-#include "Game/Level/Grid.h"
+#include "Game/Level/Level.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
 #include "Character.h"
@@ -25,7 +25,7 @@ private:
 	*/
 	unsigned int _whatPathToLoad;
 	float _detectFov;
-	Grid *_currentLevel;
+	Level *_currentLevel;
 	int sizeOfVector;
 	float _currentGridSpace;
 	bool DetectedPlayer();
@@ -33,7 +33,7 @@ private:
 	std::vector<glm::vec2> walkingPointsen;
 public:
 	virtual ~Guard();
-	void setLevel(Grid *level);
+	void setLevel(Level *level);
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
 	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Grid * gridet, std::vector<glm::vec2>* walkingPoints);
