@@ -2,7 +2,6 @@
 
 
 
-
 TestGame::TestGame(Setting &setting, EventManager &events)
 	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _cubeMapRenderer(_resource.getQuad(), events), _renderBufferKey(events, GLFW_KEY_R), _cubeMapBufferKey(events, GLFW_KEY_C)
 {
@@ -47,6 +46,7 @@ void TestGame::initiate() {
 	std::vector<glm::ivec2> &pLootPosList = level->_lootPlace;
 	for (unsigned int i = 0; i < pLootPosList.size(); i++)
 		GameObject *tmpLoot = _factory.createLoot("models/Chalice.obj", pLootPosList[i]);
+
 }
 
 

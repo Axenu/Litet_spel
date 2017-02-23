@@ -26,11 +26,12 @@ bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::v
 
 bool TriangleIntersection(glm::vec3 tri1, glm::vec3 tri2, glm::vec3 tri3, glm::vec3 origin, glm::vec3 dir, glm::vec3& point);
 
-bool AABBIntersection(const AABB &aabb, glm::vec3 dir, glm::vec3 origin);
-
-bool AABBIntersection(const AABB &aabb, glm::vec3 dir, glm::vec3 origin, float distance);
-
-float AABBIntersectionDistance(const AABB &aabb, glm::vec3 dir, glm::vec3 origin);
+/* Check collision along ray verifying the distance to intersection */
+bool AABBIntersectTo(const AABB &aabb, glm::vec3 dir, glm::vec3 origin, float dist);
+/* Check collision along ray */
+bool AABBIntersect(const AABB & aabb, glm::vec3 dir, glm::vec3 origin);
+/* Check collision along ray returning the distance to target */
+bool AABBIntersect(const AABB & aabb, glm::vec3 dir, glm::vec3 origin, float &dist);
 
 bool PointInsideAABB(AABB &aabb, glm::vec3 point);
 
