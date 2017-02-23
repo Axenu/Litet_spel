@@ -64,7 +64,7 @@ public:
 	std::vector<GameObject*> fetchStaticObjects(const AABB& aabb);
 	/* Get a list of objects inside the bounds and of the specific class type. */
 	template<typename T>
-	std::vector<GameObject*> fetchDynamicObjects(const AABB& aabb);
+	std::vector<T*> fetchDynamicObjects(const AABB& aabb);
 	/* Fetch a set of game objects compared with the function */
 	std::vector<GameObject*> fetchStaticObjects(const AABB& aabb, bool *(compFunc)(GameObject* obj));
 	int loot(float pickDist);
@@ -88,10 +88,10 @@ std::vector<GameObject*> Scene::fetchStaticObjects(const AABB& aabb)
 	return fetchObjects(aabb, &isGameType<Type>)
 }
 template<typename T>
-std::vector<GameObject*> fetchDynamicObjects(const AABB& aabb)
+std::vector<T*> Scene::fetchDynamicObjects(const AABB& aabb)
 {
 	static_assert(std::is_base_of<GameObject, T>::value, "T param must be derived from GameObject");
-	std::vector<T> list;
+	std::vector<T*> list; 
 	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
 	{
 		T* ptr = dynamic_cast<T*>(_dynamicObjects[i]);
