@@ -804,6 +804,98 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	return position;
 }
 
+
+glm::vec3 Grid::wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity)
+{
+	//calculate current grid position
+	int currentX = (int)glm::floor(position.x / GRIDSPACE);
+	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
+
+	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength || currentZ > _heightLength)
+	{
+		position.x += velocity.x;
+		position.z += velocity.z;
+		return position;
+	}
+
+	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
+	if (signbit(velocity.x) == false)
+	{
+		if (_twodArray[currentZ][currentX + 1].type == wall)
+		{
+				position.x += velocity.x;
+		}
+		else
+		{
+			float heightDiff = _twodArray[currentZ][currentX + 1].height - position.y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position.x += velocity.x;
+			}
+		}
+	}
+	else
+	{
+		if (_twodArray[currentZ][currentX - 1].type == wall)
+		{
+				position.x += velocity.x;
+		}
+		else
+		{
+			float heightDiff = _twodArray[currentZ][currentX - 1].height - position.y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position.x += velocity.x;
+			}
+			
+		}
+	}
+
+	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
+	if (signbit(velocity.z) == false)
+	{
+		if (_twodArray[currentZ + 1][currentX].type == wall)
+		{
+			
+				position.z += velocity.z;
+		}
+		else
+		{
+			float heightDiff = _twodArray[currentZ + 1][currentX].height - position.y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position.z += velocity.z;
+			}
+		
+		}
+	}
+	else
+	{
+		if (_twodArray[currentZ - 1][currentX].type == wall)
+		{
+		
+				position.z += velocity.z;
+			
+		}
+		else
+		{
+			float heightDiff = _twodArray[currentZ - 1][currentX].height - position.y;
+			//std::cout << heightDiff << std::endl;
+			if (abs(heightDiff) < WalkHeight)
+			{
+				position.z += velocity.z;
+			}
+		
+		}
+	}
+	
+	return position;
+}
+
+
 /* Move */
 void Grid::addLight(glm::vec3 lightPos, glm::vec3 diff, float dist)
 {
