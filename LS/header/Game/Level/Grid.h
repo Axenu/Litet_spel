@@ -45,7 +45,7 @@ private:
 	void buildgridarray();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
-	float getLightAtPos();
+
 public:
 	Grid(const std::string& level);
 	~Grid();
@@ -63,7 +63,10 @@ public:
 	gridType getTypeNC(int height, int width);
 
 #pragma region Mfuncs
-	/* Get distance to closest anything in grid (wall) */
+	/* Get distance to closest wall */
+	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
+
+	/* Get distance to closest object */
 	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType);
 	/* Verify a grid square is represented in the grid
 	*/
@@ -95,6 +98,7 @@ public:
 
 	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
+	bool wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity);
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
 };

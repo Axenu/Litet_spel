@@ -21,6 +21,18 @@ Grid::~Grid()
 #pragma region MCode
 
 
+float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
+{
+	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
+	float dist = 0.f;
+	do
+	{
+		dist += trav.goNext();
+	} while ((*this)[trav.getSquare()] != gridType::wall && dist < viewDist);
+
+	return dist;
+}
+
 float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType)
 {
 	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
@@ -30,7 +42,7 @@ float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 play
 		dist += trav.goNext();
 	} while ((*this)[trav.getSquare()] != gridType && dist < viewDist);
 
-	if (getHeight(trav.getSquare().y, trav.getSquare().x) < playerPos.y * 0.8f)
+	if (getHeight(trav.getSquare().y, trav.getSquare().x) < playerPos.y * 0.8f && getHeight(trav.getSquare().y, trav.getSquare().x) > 0.2f)
 	{
 		return 0.0f;
 	}

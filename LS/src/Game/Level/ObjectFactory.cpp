@@ -115,7 +115,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	light._pos += calcPos(square, box);
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	object->init();
-	_scene.add(object, true);
+	_scene->add(object, true);
 	_level->getLight(&light);
 	return object;
 }

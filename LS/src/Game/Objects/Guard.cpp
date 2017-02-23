@@ -13,11 +13,11 @@ void Guard::update(float dt)
 	
 	glm::vec3 pos = _position;
 	
-	if (_path->walkOnPath(&pos, _speed, dt))
+	/*if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
 		_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
-	}
+	}*/
 	if (pos.x < 0 || pos.z < 0)
 		int a = 0;
 	setPosition(pos);
@@ -85,11 +85,16 @@ bool Guard::DetectedPlayer()
 		//Account light for Anti-L Grenade
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
 			playerLight *= _player->getGrenadeData().fading;
+
+		//Account for the fact if the player is right infront of the guard or not
+		playerLight *= glm::dot(getForward(), dirToPlayer);
+
 		//Distance to stuff
-		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos, wall);
-		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos, object);
-		//If player closer then stuff, detect!
-		if (playerDist < wallDist && playerDist < objectDist)
+		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
+		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, _player->getEyePos(), object);
+
+		//If player closer then stuff or object is to low in height to cover the player, detect!
+		if ((playerDist < wallDist && playerDist < objectDist) || objectDist == 0.0f)
 			return true;
 	}
 	return false;

@@ -77,5 +77,5 @@ float Level::calcLightOnPosition(glm::vec3 playerPos)
 		}
 	}
 
-	return (posColor.x + posColor.y + posColor.z + 0.5f);
+	return (posColor.x + posColor.y + posColor.z + 0.6f);
 }
