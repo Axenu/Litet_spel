@@ -38,6 +38,7 @@ public:
 	void move(float dT);
 	void climb(float dT);
 	void tryClimb();
+	void testClimb();
 	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);
@@ -65,9 +66,11 @@ private:
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables
 	bool _climbing;
+	bool _canClimb;
 	glm::vec3 _animEndPos;
 	float _animFirstPhaseTime;
 	float _animSecondPhaseTime;
 	float _animTime;
 	float _animEndTime;
+	float _heightDiff;
 };

@@ -11,6 +11,7 @@ void Character::onUpdate(float dt)
 	else
 	{
 		move(dt);
+		testClimb();
 	}
 
 	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
@@ -111,19 +112,43 @@ void Character::tryClimb()
 {
 	if (!_climbing)
 	{
+		if (_canClimb)
+		{
+		//Calc length between destination pos and current pos in xz-plane
+		float xzDist = glm::length(glm::vec2(_animEndPos.x, _animEndPos.z) - glm::vec2(_position.x, _position.z));
+		//calc animation time
+		_animFirstPhaseTime = xzDist / (2 * _speed);
+		_animSecondPhaseTime = _animFirstPhaseTime + _heightDiff / _speed;
+		_animEndTime = (_heightDiff + xzDist) / _speed;
+		_animTime = 0.0f;
+		_climbing = true;
+		}
+	}
+}
+
+void Character::testClimb()
+{
+	if (!_climbing)
+	{
 		_animEndPos = glm::vec3(getWorldPos());
 		glm::vec3 dir = glm::vec3(_currentScene->getCamera().getLookAt());
-		float heightDiff;
-		if (_currentLevel->testForClimb(_animEndPos, dir, heightDiff))
+		if (_currentLevel->testForClimb(_animEndPos, dir, _heightDiff))
 		{
-			//Calc length between destination pos and current pos in xz-plane
-			float xzDist = glm::length(glm::vec2(_animEndPos.x, _animEndPos.z) - glm::vec2(_position.x, _position.z));
-			//calc animation time
-			_animFirstPhaseTime = xzDist / (2* _speed);
-			_animSecondPhaseTime = _animFirstPhaseTime + heightDiff / _speed;
-			_animEndTime = (heightDiff + xzDist) / _speed;
-			_animTime = 0.0f;
-			_climbing = true;
+			if (!_canClimb)
+			{
+				_canClimb = true;
+				CanClimbEvent cEvent(_canClimb);
+				_eventManager->execute(cEvent);
+			}
+		}
+		else
+		{
+			if (_canClimb)
+			{
+				_canClimb = false;
+				CanClimbEvent cEvent(_canClimb);
+				_eventManager->execute(cEvent);
+			}
 		}
 	}
 }
