@@ -48,6 +48,8 @@ public:
     virtual ~Character();
 
 	glm::vec3 getEyePos();
+
+	float calcLightOnPosition();
 private:
 	Grid *_currentLevel;
 	Scene *_currentScene;

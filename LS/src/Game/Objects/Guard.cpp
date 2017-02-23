@@ -106,13 +106,13 @@ bool Guard::DetectedPlayer()
 	{
 		float playerLight = 1.0f;
 		//Calculate light at position
-		playerLight = glm::min(_currentLevel->calcLightOnPosition(playerPos), 1.0f);
+		playerLight = glm::min(_player->calcLightOnPosition(), 1.0f);
 		//Account light for Anti-L Grenade
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
 			playerLight *= _player->getGrenadeData().fading;
 
 		//Account for the fact if the player is right infront of the guard or not
-		playerLight *= glm::dot(getForward(), dirToPlayer);
+		//playerLight *= glm::dot(getForward(), dirToPlayer);
 
 		//Distance to stuff
 		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);

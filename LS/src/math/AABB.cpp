@@ -3,6 +3,9 @@
 AABB::AABB() {
 
 }
+AABB::AABB(glm::vec3 pos, float cubeSize)
+	: _min(pos - glm::vec3(cubeSize)), _max(pos + glm::vec3(cubeSize)) {
+}
 AABB::AABB(const glm::vec3& min, const glm::vec3& max)
 	: _min(min), _max(max) {
 }

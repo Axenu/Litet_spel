@@ -80,7 +80,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setLevel(&_level->getGrid());
-	grenade->setScale(0.0675);
+	grenade->setScale((float)0.0675);
 	_scene->add(grenade, true);
 	return grenade;
 }
@@ -118,7 +118,6 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	object->init();
 	_scene->add(object, true);
-	_level->getLight(&light);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
