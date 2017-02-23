@@ -6,7 +6,7 @@
 #include <iostream>
 #include "GameObject.h"
 #include "Game/Camera.h"
-
+#include "Game/Level/Grid.h"
 struct GrenadeValues {
 	glm::vec4 _grenadePositionWhenLanded;
 	float fading;
@@ -24,7 +24,9 @@ bool QbeenActivated = false;
 bool TheBombHasBeenActivated = false;
 glm::vec3 _movement;
 GrenadeValues _grenadeValue;
+Grid *_currentLevel;
 public:
+void setLevel(Grid *level);
 GrenadeValues getgrenadeData();
 virtual	void update(float dt);
 AntiLightGrenade(Model & m);

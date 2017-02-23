@@ -12,7 +12,7 @@ class Level
 private:
 
 	Grid _grid;
-	Mesh _gridMesh;
+	Mesh _gridMesh[3];
 
 public:
 

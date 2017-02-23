@@ -68,24 +68,6 @@ void setupWindow()
 	InputManager iManager(window, &eventManager);
 	bool windowalive=false;
 
-	//basic init
-	// Setting setting(wWidth, wHeight, 3, 0.1f, 100.f, 70.f);
-	// setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
-	//
-	// TestGame game(setting, eventManager);
-
-	/* Load game
-	*/
-	// game.initiate();
-	gl::CheckGLErrors("Init stage failed: Resource");
-
-	// gui::Font *font = new gui::Font("Resources/fonts/arial");
-	// gui::Label label(font, "Hello World!");
-	// label.setZ(99);
-	// gui::Rectangle rect(0.5, 0.5);
-	// glm::vec4 color(0,0,0,1);
-	// rect.setColor(color);
-
 	//init dt calculation
 	float lastTime = (float)glfwGetTime();
 	float currentTime;
@@ -106,9 +88,10 @@ void setupWindow()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Calculate dt
 		currentTime = (float)glfwGetTime();
-		dT = std::fminf(currentTime - lastTime, 0.1f); //Can't have to large dt!
+		dT = currentTime - lastTime;
 	    lastTime = currentTime;
-		FPS = 1.0f/dT;
+		FPS = 1.0f / dT;
+		dT = std::fminf(dT, 0.1f); //Can't have to large dt!
 		//Update game logic
 		// game.update(dT);
 		//Draw game drawables
