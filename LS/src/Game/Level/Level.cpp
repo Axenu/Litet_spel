@@ -39,6 +39,17 @@ Level::~Level()
 {
 }
 
+
+void Level::setScene(Scene *scene)
+{
+	_scene = scene;
+}
+
+const Scene& Level::getScene()
+{
+	return *_scene;
+}
+
 Grid& Level::getGrid() {
 	return _grid;
 }

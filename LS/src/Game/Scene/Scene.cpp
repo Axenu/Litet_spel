@@ -6,7 +6,8 @@
 Scene::Scene(std::unique_ptr<GameObject>& root, AABB sceneBounds)
 	: _quadTree(), _rootObject(root.get()), _root(root.release())
 {
-	initQuadTree(sceneBounds);
+	_quadTree.SetAABB(sceneBounds);
+	_quadTree.CreateNodes();
 }
 
 Scene::~Scene()
@@ -136,7 +137,7 @@ void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
 
 
 /* Fetch a set of game objects compared with the function */
-std::vector<GameObject*> Scene::fetchObjects(const AABB& aabb, bool *(compFunc)(GameObject* obj))
+std::vector<GameObject*> Scene::fetchStaticObjects(const AABB& aabb, bool *(compFunc)(GameObject* obj))
 {
 	std::vector<GameObject*> list;
 	_quadTree.QuadTreeTest(list, aabb, compFunc);
@@ -213,11 +214,6 @@ int Scene::loot(float pickDist)
 	return value;
 }
 
-void Scene::initQuadTree(AABB & aabb)
-{
-	_quadTree.SetAABB(aabb);
-	_quadTree.CreateNodes();
-}
 
 
 void Scene::getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat)

@@ -23,10 +23,11 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box)
 std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Level *&lvl)
 {
 	_level = new Level(_path + level, _events, _meshShader);
-	_level->init();
 	lvl = _level;
+	_level->init();
 	std::unique_ptr<GameObject> ptr(_level);
 	std::unique_ptr<Scene> scene(new Scene(ptr, _level->getAABB()));
+	_level->setScene(scene.get());
 	_scene = scene.get();
 	return std::move(scene);
 }
