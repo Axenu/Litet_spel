@@ -38,12 +38,14 @@ namespace gui {
         _manager->listen(this, &HUDView::gameStarted);
         _manager->listen(this, &HUDView::gameOver);
         _manager->listen(this, &HUDView::exitSquareTrigger);
+		_manager->listen(this, &HUDView::canClimb);
     }
     HUDView::~HUDView()
     {
         _manager->unlisten(this, &HUDView::gameStarted);
         _manager->unlisten(this, &HUDView::gameOver);
         _manager->unlisten(this, &HUDView::exitSquareTrigger);
+		_manager->unlisten(this, &HUDView::canClimb);
         delete _font;
         delete _game;
     }
@@ -117,4 +119,18 @@ namespace gui {
             }
         }
     }
+	void HUDView::canClimb(const CanClimbEvent & event)
+	{
+		if (event.canClimb())
+		{
+			_tipDisplay->updateStringComponent(0, new StringComponentString("Press Space to Climb."));
+			_tipDisplay->activate();
+			_tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
+			_tipDisplay->update(0.0f);
+		}
+		else
+		{
+			_tipDisplay->deactivate();
+		}
+	}
 }
