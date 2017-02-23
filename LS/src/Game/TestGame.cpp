@@ -20,7 +20,7 @@ void TestGame::initiate() {
 
 	//Create the scene, and the level
 	Level* level;
-	_scene = _factory.createLevel("Demo1.bmp", level);
+	_scene = _factory.createLevel("Demo2.bmp", level);
 	//Initiate camera and renderer vars:
 	Camera& cam = _scene->setCamera(_setting);
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
