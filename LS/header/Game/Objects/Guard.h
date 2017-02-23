@@ -10,7 +10,7 @@
 #include "Game/Level/Path.h"
 #include <memory>
 
-#define GUARDVIEWDISTANCE 9.f
+#define GUARDVIEWDISTANCE 6.f
 #define GUARDFOV 75.0f * M_PIf / 180.f
 
 class Guard : public GameObject

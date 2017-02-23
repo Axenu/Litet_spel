@@ -33,7 +33,7 @@ float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 	return dist;
 }
 
-float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType)
+float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType, bool &obscured)
 {
 	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
 	float dist = 0.f;
@@ -44,7 +44,7 @@ float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 play
 
 	if (getHeight(trav.getSquare().y, trav.getSquare().x) < playerPos.y * 0.8f && getHeight(trav.getSquare().y, trav.getSquare().x) > 0.2f)
 	{
-		return 0.0f;
+		obscured = false;
 	}
 
 	return dist;

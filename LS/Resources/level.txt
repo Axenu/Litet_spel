@@ -4,12 +4,14 @@ light 3 22
 light 3 17
 light 5 10
 light 3 5
+light 5 27
 model 1 11 models/Table.obj
 model 2 11 models/Table.obj
 model 10 11 models/Table.obj
 model 2 17 models/Table.obj
 model 3 17 models/Table.obj
 model 6 24 models/Table.obj
-guard 3 3 5 5 -1 -1
+guard -1 -1
+guard 3 25 3 29 -1 -1
 guard -1 -1
 guard -1 -1 

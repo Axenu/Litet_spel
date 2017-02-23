@@ -35,12 +35,12 @@ void Guard::update(float dt)
 		{
 			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 			GameOverEvent event(false);
-			//_eventManager->execute(event);
+			_eventManager->execute(event);
 
-			glm::vec3 detP = _player->getWorldPos();
+			/*glm::vec3 detP = _player->getWorldPos();
 			std::cout << "Detected\n";
 			std::cout << "Guard Co: "<< pos.x << ", " << pos.y << ", " << pos.z << '\n';
-			std::cout << "Player Co: " << detP.x << ", " << detP.y << ", " << detP.z << '\n';
+			std::cout << "Player Co: " << detP.x << ", " << detP.y << ", " << detP.z << '\n';*/
 		}
 	}
 
@@ -114,11 +114,16 @@ bool Guard::DetectedPlayer()
 
 		//Distance to stuff
 		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, _player->getEyePos(), object);
+		if (playerDist > wallDist)
+		{
+			return false;
+		}
 
-		//If player closer then stuff or object is to low in height to cover the player, detect!
-		if ((playerDist < wallDist && playerDist < objectDist) || objectDist == 0.0f)
+		bool obscured = true;
+		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, _player->getEyePos(), object, obscured);
+		if (playerDist < objectDist || (playerDist > objectDist && obscured == false))
 			return true;
+		 
 	}
 	return false;
 }

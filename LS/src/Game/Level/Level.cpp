@@ -74,7 +74,7 @@ float Level::calcLightOnPosition(glm::vec3 playerPos)
 
 		if (glm::length(lightRay) < _light[i]->_fadeDist)
 		{
-			wallDist = _grid.getDist(_light[i]->_pos, lightRay, _light[i]->_fadeDist, playerPos, wall);
+			wallDist = _grid.getDist(_light[i]->_pos, lightRay, _light[i]->_fadeDist);
 
 			if (wallDist > glm::length(lightRay) || wallDist == 0.0f)
 			{
