@@ -27,8 +27,8 @@ GrenadeValues AntiLightGrenade::getgrenadeData()
 }
 void AntiLightGrenade::update(float dt)
 {
-	_fallspeed = -0.01f;
-	_velocity = 1.5f;
+	_fallspeed = -0.02f;
+	_velocity = 5.f;
 	if (QBeenPressed == false && QbeenActivated == true)
 	{
 		_movement = glm::vec3(_movement.x, _movement.y + _fallspeed, _movement.z);

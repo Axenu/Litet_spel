@@ -20,7 +20,7 @@ void TestGame::setupRI(RenderInfo &rI) {
 void TestGame::initiate() {
 
 	Level* level = _factory.createLevel("Demo1.bmp");
-	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("models/cube.obj", glm::ivec2(2, 2));
+	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("models/Grenade.obj", glm::ivec2(2, 2));
 
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, *grenade);
 	_player = player;

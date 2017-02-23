@@ -820,7 +820,7 @@ bool Grid::wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity)
 	int currentX = (int)glm::floor(position.x / GRIDSPACE);
 	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
 
-	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength || currentZ > _heightLength)
+	if (currentX < 0 || currentZ < 0 || currentX > _widthLength || currentZ > _heightLength)
 	{
 		return false;
 	}

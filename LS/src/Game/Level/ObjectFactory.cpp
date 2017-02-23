@@ -78,7 +78,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setLevel(&_level->getGrid());
-	grenade->setScale(0.25);
+	grenade->setScale(0.0675);
 	_scene.add(grenade,true);
 	return grenade;
 }
