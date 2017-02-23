@@ -103,7 +103,7 @@ public:
 
 	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
-	glm::vec3 wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity);
+	bool wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity);
 	
 	void addLight(glm::vec3 lightPos, glm::vec3 diff, float dist);
 	float calcLightOnPosition(glm::vec3 playerPos);
