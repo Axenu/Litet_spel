@@ -21,37 +21,20 @@ Grid::~Grid()
 #pragma region MCode
 
 
-float Grid::getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist)
+float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType)
 {
 	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
 	float dist = 0.f;
 	do
 	{
 		dist += trav.goNext();
-	} while ((*this)[trav.getSquare()] != gridType::wall && dist < guardViewDist);
-	return dist;
-}
+	} while ((*this)[trav.getSquare()] != gridType && dist < viewDist);
 
-float Grid::getObjectDist(glm::vec3 guardPos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos)
-{
-
-	GridTraveler trav(GRIDSPACE, getSquare(guardPos), guardPos, ray);
-	float dist = 0.f;
-	while (dist < guardViewDist)
+	if (getHeight(trav.getSquare().y, trav.getSquare().x) < playerPos.y * 0.8f)
 	{
-		dist += trav.goNext();
-		if (!isInside(trav.getSquare()))
-			return dist;
-
-		//Check if each square is 'viewable'?
-		float heightDifference = abs(playerPos.y - getHeight(trav.getSquare().y, trav.getSquare().x));
-		heightDifference = 100.0f * (heightDifference / playerPos.y);
-
-		if (heightDifference < 75.0f)
-		{
-			return 0.0f;
-		}
+		return 0.0f;
 	}
+
 	return dist;
 }
 
@@ -805,43 +788,5 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 }
 
 /* Move */
-void Grid::addLight(glm::vec3 lightPos, glm::vec3 diff, float dist)
-{
-	lightValues light;
-	light.pos = lightPos;
-	light.diffuse = diff;
-	light.dist = dist;
-	_light.push_back(light);
-}
-
-
-/* Move */
-float Grid::calcLightOnPosition(glm::vec3 playerPos)
-{
-	float wallDist = 0.0f;
-	glm::vec3 posColor(0.0f);
-
-	for (unsigned int i = 0; i < _light.size(); i++)
-	{
-		glm::vec3 lightRay = playerPos - _light[i].pos;
-
-		if (glm::length(lightRay) < _light[i].dist)
-		{
-			wallDist = getWallDist(_light[i].pos, lightRay, _light[i].dist);
-
-			if (wallDist > glm::length(lightRay) || wallDist == 0.0f)
-			{
-				lightRay = glm::normalize(lightRay);
-				float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
-				float distance = glm::length(lightRay);
-				float att = glm::max(1.0f - (distance / _light[i].dist), 0.0f);
-
-				posColor += _light[i].diffuse * diff * att;
-			}
-		}
-	}
-
-	return (posColor.x + posColor.y + posColor.z + 0.5f);
-}
 
 #pragma endregion

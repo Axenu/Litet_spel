@@ -1,7 +1,7 @@
 #pragma once
 #include "gl/glInclude.h"
 #include "GameObject.h"
-#include "Game/Level/Grid.h"
+#include "Game/Level/Level.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
 #include "Character.h"
@@ -24,13 +24,13 @@ private:
 	/* Field of view in cosine
 	*/
 	float _detectFov;
-	Grid *_currentLevel;
+	Level *_currentLevel;
 	float _currentGridSpace;
 	bool DetectedPlayer();
 public:
 	virtual ~Guard();
-	void setLevel(Grid *level);
+	void setLevel(Level *level);
 	virtual	void update(float dt);
-	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Grid * gridet);
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level * level);
 };
 

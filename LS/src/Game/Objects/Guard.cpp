@@ -3,7 +3,7 @@
 
 
 
-void Guard::setLevel(Grid *level)
+void Guard::setLevel(Level *level)
 {
 	this->_currentLevel = level;
 }
@@ -15,8 +15,8 @@ void Guard::update(float dt)
 	
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
-		glm::ivec2 start = _currentLevel->getSquare(this->getWorldPos());
-		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
+		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
+		_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
 	}
 	if (pos.x < 0 || pos.z < 0)
 		int a = 0;
@@ -43,14 +43,14 @@ void Guard::update(float dt)
 
 }
 
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Grid *gridet) :
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level) :
 	GameObject(m), _player(player), _eventManager(event)
 {
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
 
-	glm::ivec2 start = gridet->getSquare(this->getWorldPos());
-	_path = gridet->generatePath(start, gridet->getRandomSquare());
+	glm::ivec2 start = level->getGrid().getSquare(this->getWorldPos());
+	_path = level->getGrid().generatePath(start, level->getGrid().getRandomSquare());
 
 	_speed = 0.4f;
 }
@@ -86,8 +86,8 @@ bool Guard::DetectedPlayer()
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
 			playerLight *= _player->getGrenadeData().fading;
 		//Distance to stuff
-		float wallDist = _currentLevel->getWallDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
-		float objectDist = _currentLevel->getObjectDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos);
+		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos, wall);
+		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, playerPos, object);
 		//If player closer then stuff, detect!
 		if (playerDist < wallDist && playerDist < objectDist)
 			return true;

@@ -31,12 +31,6 @@ struct gridNode {
 	glm::ivec2 position;
 };
 
-struct lightValues {
-	glm::vec3 pos;
-	glm::vec3 diffuse;
-	float dist;
-};
-
 class Grid {
 
 private:
@@ -47,11 +41,11 @@ private:
 	gridValues** _twodArray;
 	std::vector<glm::vec3> _lootLocations;
 	std::vector<glm::vec3> _guardLocations;
-	std::vector<lightValues> _light;
 
 	void buildgridarray();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
+	float getLightAtPos();
 public:
 	Grid(const std::string& level);
 	~Grid();
@@ -69,10 +63,8 @@ public:
 	gridType getTypeNC(int height, int width);
 
 #pragma region Mfuncs
-	/* Get distance to closest wall */
-	float getWallDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist);
-	/* Get distance to closest blocking object...?*/
-	float getObjectDist(glm::vec3 pos, glm::vec3 ray, float guardViewDist, glm::vec3 playerPos);
+	/* Get distance to closest anything in grid (wall) */
+	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType);
 	/* Verify a grid square is represented in the grid
 	*/
 	bool isInside(glm::ivec2 vec) const;
@@ -103,8 +95,6 @@ public:
 
 	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
-	void addLight(glm::vec3 lightPos, glm::vec3 diff, float dist);
-	float calcLightOnPosition(glm::vec3 playerPos);
 	std::vector<glm::vec3> * getLootLocations();
 	std::vector<glm::vec3> *  getGuardLocations();
 };

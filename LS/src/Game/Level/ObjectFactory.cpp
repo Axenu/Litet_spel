@@ -62,8 +62,8 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_path + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, &_events, tmpModel, &_level->getGrid());
-	guard->setLevel(&_level->getGrid());
+	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level);
+	guard->setLevel(_level);
 	guard->init();
 	_scene.add(guard, true);
 
@@ -112,7 +112,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square
 	PointLightObject* object = new PointLightObject(light, nullptr);
 	object->init();
 	_scene.add(object, true);
-	_level->getGrid().addLight(light._pos, light._diffuse, light._fadeDist);
+	_level->getLight(&light);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)

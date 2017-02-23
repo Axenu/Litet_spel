@@ -3,6 +3,7 @@
 #include "Grid.h"
 #include "Render/Mesh/Shader/DeferredMeshShader.h"
 #include "Event/EventManager.h"
+#include "Render/PointLight.h"
 
 /* Level struct holding 'all' information about a specific level loaded for a game instance.
 */
@@ -13,6 +14,7 @@ private:
 
 	Grid _grid;
 	Mesh _gridMesh;
+	std::vector<PointLight*> _light;
 
 public:
 
@@ -22,5 +24,9 @@ public:
 	Grid& getGrid();
 
 	virtual void onUpdate(float dT);
+
+	void getLight(PointLight* light);
+
+	float calcLightOnPosition(glm::vec3 playerPos);
 };
 
