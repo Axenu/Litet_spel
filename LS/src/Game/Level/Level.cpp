@@ -3,7 +3,7 @@
 
 
 Level::Level(const std::string &level, EventManager &events, MeshShader &shader)
-	: _grid(level)
+	: _grid(level, _guardSpawn, _lootPlace)
 {
 	_grid.generateMesh(_gridMesh);
 

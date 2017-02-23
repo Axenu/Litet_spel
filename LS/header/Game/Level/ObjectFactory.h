@@ -42,7 +42,7 @@ public:
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player);
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
 	GameObject* createObject(const std::string &model, glm::ivec2 square);
-	LootObject* createLoot(const std::string &model, glm::vec3 pos);
+	LootObject* createLoot(const std::string &model, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path);

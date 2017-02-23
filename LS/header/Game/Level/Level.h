@@ -9,6 +9,8 @@
 class Level
 	: public GameObject
 {
+public:
+	std::vector<glm::ivec2> _guardSpawn, _lootPlace;
 private:
 
 	Grid _grid;
