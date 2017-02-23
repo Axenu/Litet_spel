@@ -23,14 +23,19 @@ private:
 	float _distLength;
 	/* Field of view in cosine
 	*/
+	unsigned int _whatPathToLoad;
 	float _detectFov;
 	Grid *_currentLevel;
+	int sizeOfVector;
 	float _currentGridSpace;
 	bool DetectedPlayer();
+	std::vector<glm::vec2>* walkingPoints;
+	std::vector<glm::vec2> walkingPointsen;
 public:
 	virtual ~Guard();
 	void setLevel(Grid *level);
 	virtual	void update(float dt);
-	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Grid * gridet);
+	glm::vec2 getNextPosition();
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Grid * gridet, std::vector<glm::vec2>* walkingPoints);
 };
 
