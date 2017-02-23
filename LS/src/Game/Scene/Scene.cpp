@@ -135,6 +135,15 @@ void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
 }
 
 
+/* Fetch a set of game objects compared with the function */
+std::vector<GameObject*> Scene::fetchObjects(const AABB& aabb, bool *(compFunc)(GameObject* obj))
+{
+	std::vector<GameObject*> list;
+	_quadTree.QuadTreeTest(list, aabb, compFunc);
+	return list;
+}
+
+
 int Scene::loot(float pickDist)
 {
 	float testDist;
@@ -210,12 +219,6 @@ void Scene::initQuadTree(AABB & aabb)
 	_quadTree.CreateNodes();
 }
 
-
-/* Get a list of objects inside the bounds and of the specific type. */
-void Scene::fetchObjects(std::vector<GameObject>* list, AABB& bounds, type::GameObjectType type)
-{
-
-}
 
 void Scene::getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat)
 {

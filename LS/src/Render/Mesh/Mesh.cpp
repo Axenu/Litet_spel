@@ -192,14 +192,15 @@ const SkeletonPart& Mesh::getSkeletonPart() const {
 bool Mesh::pick(glm::vec3 origin, glm::vec3 dir) const
 {
 	//picking in modelspace
-	if (AABBIntersection(_aabb, dir, origin))
+	float dist;
+	if (AABBIntersect(_aabb, dir, origin, dist))
 	{
-	glm::vec3 tri1, tri2, tri3;
+		glm::vec3 tri1, tri2, tri3;
 		for (unsigned int i = 0; i < _indices.size(); i += 3)
 		{
 			tri1 = _position[_indices[i]];
-			tri2 = _position[_indices[i+1]];
-			tri3 = _position[_indices[i+2]];
+			tri2 = _position[_indices[i + 1]];
+			tri3 = _position[_indices[i + 2]];
 			if (TriangleIntersection(tri1, tri2, tri3, origin, dir))
 			{
 				return true;
