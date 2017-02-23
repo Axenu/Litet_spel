@@ -25,12 +25,14 @@
 class Node {
 public:
 	Node();
-	Node(const glm::vec3 &position);
-	Node(const glm::vec3 &position, Node *parent);
+	Node(const glm::vec3 &position, Node *parent = nullptr);
 
+	/* Add a child to the node, sets the child's parent to this. */
 	void addChild(Node *child);
+	/* Get a list over all child nodes of this, including this. */
 	std::vector<Node *> getAllChildren();
     void setParent(Node *parent);
+	/* Get the reference to the parent */
 	Node* getParent();
 	/* Removes the object from the parent
 	*/
@@ -44,9 +46,11 @@ public:
     virtual void render(){}
 	virtual void init();
 
-	void setX(float x);
-    void setY(float y);
-    void setZ(float z);
+#pragma region Get/Set Orientation vars
+
+	void setPositionX(float x);
+    void setPositionY(float y);
+    void setPositionZ(float z);
     void setPosition(float x, float y, float z);
     void setPosition(glm::vec3 pos);
     void moveX(float x);
@@ -70,8 +74,6 @@ public:
 	float getZ();
 	glm::vec3 getScale() const;
 
-	void reOrthogonalize();
-
 	/* Get the transformation matrix */
 	const glm::mat4& getModelMatrix();
 
@@ -90,14 +92,17 @@ public:
 	float getDistance(Node const &other) const;
 	float getDistance(glm::vec4 const &pos) const;
 
+#pragma endregion
+
 	virtual ~Node();
-
-
 
 private:
 	bool _isActive;
-	void calcModelMatrix();
+	/* Our forward and up local orientation vectors */
 	glm::vec3 _forward, _up;
+
+	void calcModelMatrix();
+	void reOrthogonalize();
 protected:
 	glm::vec3 _position;
 	glm::vec3 _scale;

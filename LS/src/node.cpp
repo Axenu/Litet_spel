@@ -6,15 +6,12 @@
 
 
 Node::Node()
-	: _position(0.f), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f) {
-    this->_isActive = true;
-}
-
-Node::Node(const glm::vec3 &position)
-	: _isActive(true), _position(position), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	: _isActive(true), _position(0.f), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f) 
+{
 }
 Node::Node(const glm::vec3 &position, Node *parent)
-	: _isActive(true), _position(position), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix(glm::translate(glm::mat4(), position)) {
+	: _isActive(true), _position(position), _forward(0.f, 0.f, 1.f), _up(0.f, 1.f, 0.f), _scale(1.0f), _modelMatrix() 
+{
 	setParent(parent);
 }
 Node::~Node() {
@@ -121,15 +118,50 @@ glm::vec3 Node::getLocalRight() const
 {
 	return glm::cross(_up, _forward);
 }
-void Node::setX(float x) {
+
+
+void Node::rotateX(float f) {
+	glm::quat q = glm::angleAxis(f, getLocalRight());
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
+}
+
+void Node::rotateY(float f) {
+	glm::quat q = glm::angleAxis(f, glm::vec3(0, 1.f, 0.f));
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
+}
+
+void Node::rotateZ(float f) {
+	glm::quat q = glm::angleAxis(f, _forward);
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
+}
+
+void Node::rotate(glm::vec3 r) {
+
+	glm::quat q = glm::angleAxis(r.y, _up);
+	q *= glm::angleAxis(r.x, getLocalRight());
+	q *= glm::angleAxis(r.z, _forward);
+	_up = q * _up;
+	_forward = q * _forward;
+	reOrthogonalize();
+}
+
+#pragma region Set/Get vars
+
+void Node::setPositionX(float x) {
     _position.x = x;
 }
 
-void Node::setY(float y) {
+void Node::setPositionY(float y) {
 	_position.y = y;
 }
 
-void Node::setZ(float z) {
+void Node::setPositionZ(float z) {
 	_position.z = z;
 }
 
@@ -170,37 +202,6 @@ void Node::setScale(float x, float y) {
 	_scale.y = y;
 }
 
-void Node::rotateX(float f) {
-	glm::quat q = glm::angleAxis(f, getLocalRight());
-	_up = q * _up;
-	_forward = q * _forward;
-	reOrthogonalize();
-}
-
-void Node::rotateY(float f) {
-	glm::quat q = glm::angleAxis(f, glm::vec3(0, 1.f, 0.f));
-	_up = q * _up;
-	_forward = q * _forward;
-	reOrthogonalize();
-}
-
-void Node::rotateZ(float f) {
-	glm::quat q = glm::angleAxis(f, _forward);
-	_up = q * _up;
-	_forward = q * _forward;
-	reOrthogonalize();
-}
-
-void Node::rotate(glm::vec3 r) {
-
-	glm::quat q = glm::angleAxis(r.y, _up);
-	q *= glm::angleAxis(r.x, getLocalRight());
-	q *= glm::angleAxis(r.z, _forward);
-	_up = q * _up;
-	_forward = q * _forward;
-	reOrthogonalize();
-}
-
 float Node::getX()  {
     return _position.x;
 }
@@ -223,7 +224,7 @@ glm::vec3 Node::getPosition() const {
 }
 glm::vec3 Node::getLocalForward() const
 {
-	return -_forward;
+	return _forward;
 }
 glm::vec3 Node::getLocalUp() const
 {
@@ -243,7 +244,6 @@ glm::vec3 Node::getForward() const
 {
 	return glm::normalize(glm::vec3(_modelMatrix[2]));
 }
-
 glm::vec3 Node::getUp() const {
 	return glm::normalize(glm::vec3(_modelMatrix[1]));
 }
@@ -260,3 +260,5 @@ float Node::getDistance(glm::vec4 const &pos) const
 {
 	return glm::length(getWorldPos() - pos);
 }
+
+#pragma endregion
