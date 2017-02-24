@@ -16,6 +16,8 @@
 #include "math/AARect.h"
 #include "Game/Level/Path.h"
 #include <memory>
+#include <math.h> 
+#include <cmath>
 
 #define WalkHeight 0.25f
 

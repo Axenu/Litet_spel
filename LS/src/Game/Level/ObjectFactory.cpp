@@ -135,7 +135,7 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 	std::ifstream file;
   	file.open(_path + path);
 	std::string line;
-	PointLight l(glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.8f, 0.5f, 0.5f), glm::vec3(1.0f), 3.0f);
+	PointLight l(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	while (std::getline(file, line))
 	{
 		// std::cout << line << std::endl;

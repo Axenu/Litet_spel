@@ -1,7 +1,7 @@
 light 6 27
-light 3 22
-light 3 17
-light 5 10
+light 2.5 21.5
+light 2.5 17.5
+light 5 9.5
 light 3 5
 light 5 27
 model 1 11 models/Table.obj
@@ -13,4 +13,4 @@ model 6 24 models/Table.obj
 guard -1 -1
 guard 3 25 3 29 -1 -1
 guard -1 -1
-guard -1 -1 
+guard -1 -1

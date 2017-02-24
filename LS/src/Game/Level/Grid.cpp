@@ -64,7 +64,7 @@ glm::ivec2 Grid::getRandomSquare()
 	return randIVec2(_widthLength, _heightLength);
 }
 
-glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const 
+glm::ivec2 Grid::getSquare(const glm::vec3 &pos) const
 {
 	return glm::ivec2(glm::floor(pos.x / GRIDSPACE), glm::floor(pos.z / GRIDSPACE));
 }
@@ -91,7 +91,7 @@ gridType Grid::operator[](const glm::ivec2 &sq) const
 	return isInside(sq) ? _twodArray[sq.y][sq.x].type : gridType::wall;
 }
 
-glm::vec3 Grid::getCenter(glm::ivec2 sq) const 
+glm::vec3 Grid::getCenter(glm::ivec2 sq) const
 {
 	return glm::vec3((sq.x + 0.5f) * GRIDSPACE, 0.f, (sq.y + 0.5f) * GRIDSPACE);
 }
@@ -169,7 +169,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 			setvalue(j, i, -1);
 		}
 	}
-	if(isInside(startPosition)) 
+	if(isInside(startPosition))
 		setvalue(startPosition.y, startPosition.x, 0);
 
 	while (maxValue != 0)
@@ -365,7 +365,7 @@ void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &guar
 				lootPlace.push_back(glm::ivec2(realj, height - 1 - i));
 				_twodArray[height - 1 - i][realj].type = nothing;
 				//_twodArray[height - 1 - i][realj].type = loot;
-			} 
+			}
 			else if (data[j] == 100 && data[j + 1] == 100 && data[j + 2] == 100)
 			{
 				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
@@ -415,7 +415,7 @@ void Grid::generateMesh(Mesh* meshes)
 	floorIndices.push_back(3);
 	floorIndices.push_back(4);
 	floorIndices.push_back(5);
-	
+
 	meshes[0].setMesh(floorPosition, floorNormal, floorIndices);
 
 	// Roof
@@ -445,7 +445,7 @@ void Grid::generateMesh(Mesh* meshes)
 	roofIndices.push_back(3);
 	roofIndices.push_back(4);
 	roofIndices.push_back(5);
-	
+
 	meshes[1].setMesh(roofPosition, roofNormal, roofIndices);
 
 	for (int j = 0; j < _heightLength; j++)
@@ -568,7 +568,7 @@ void Grid::generateMesh(Mesh* meshes)
 				}
 			}
 		}
-	}	
+	}
 	meshes[2].setMesh(position, normal, indices);
 }
 
@@ -591,7 +591,8 @@ void Grid::print2darraydata()
 bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff)
 {
 	glm::ivec2 moveVec;
-	if (abs(dir.x) > abs(dir.z))
+
+	if (std::abs(dir.x) > std::abs(dir.z))
 	{
 		if (dir.x > 0.0f)
 		{
@@ -620,7 +621,7 @@ bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff)
 		if (_twodArray[iPos.y][iPos.x].type != gridType::wall)
 		{
 			heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
-			heightDiff = abs(heightDiff);
+			heightDiff = std::abs(heightDiff);
 			if (heightDiff > WalkHeight)
 			{
 				pos = getCenter(iPos);
@@ -660,7 +661,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ][currentX + 1].height - position.y;
 			//std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < WalkHeight)
+			if (std::abs(heightDiff) < WalkHeight)
 			{
 				position.x += velocity.x;
 			}
@@ -683,7 +684,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ][currentX - 1].height - position.y;
 			//std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < WalkHeight)
+			if (std::abs(heightDiff) < WalkHeight)
 			{
 				position.x += velocity.x;
 			}
@@ -708,7 +709,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ + 1][currentX].height - position.y;
 			//std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < WalkHeight)
+			if (std::abs(heightDiff) < WalkHeight)
 			{
 				position.z += velocity.z;
 			}
@@ -731,7 +732,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		{
 			float heightDiff = _twodArray[currentZ - 1][currentX].height - position.y;
 			//std::cout << heightDiff << std::endl;
-			if (abs(heightDiff) < WalkHeight)
+			if (std::abs(heightDiff) < WalkHeight)
 			{
 				position.z += velocity.z;
 			}
