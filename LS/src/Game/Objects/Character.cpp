@@ -240,13 +240,24 @@ void Character::moveCharacter(const KeyboardEvent& event)
 
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_currentScene->getCamera().moveY(-0.5);
-			_speed = _speed - 1;
+			if(sneaking == true)
+			{
+				_currentScene->getCamera().moveY(0.5);
+				_speed = _speed + 1;
+				sneaking = false;
+			}
+			else
+			{
+
+				_currentScene->getCamera().moveY(-0.5);
+				_speed = _speed - 1;
+				sneaking = true;
+			}
 		}
 		if (event.getAction() == GLFW_RELEASE)
 		{
-			_currentScene->getCamera().moveY(0.5);
-			_speed = _speed + 1;
+//			_currentScene->getCamera().moveY(0.5);
+//			_speed = _speed + 1;
 		}
 
 	}
