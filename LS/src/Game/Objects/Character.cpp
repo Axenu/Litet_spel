@@ -240,13 +240,24 @@ void Character::moveCharacter(const KeyboardEvent& event)
 
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_currentScene->getCamera().moveY(-0.5);
-			_speed = _speed - 1;
+			if(sneaking == true)
+			{
+				_currentScene->getCamera().moveY(0.5);
+				_speed = _speed + 1;
+				sneaking = false;
+			}
+			else
+			{
+
+				_currentScene->getCamera().moveY(-0.5);
+				_speed = _speed - 1;
+				sneaking = true;
+			}
 		}
 		if (event.getAction() == GLFW_RELEASE)
 		{
-			_currentScene->getCamera().moveY(0.5);
-			_speed = _speed + 1;
+//			_currentScene->getCamera().moveY(0.5);
+//			_speed = _speed + 1;
 		}
 
 	}
@@ -329,6 +340,14 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
 	_antiLightGrenade = grenade;
+	_climbing = false;
+	_canClimb = false;
+	_animFirstPhaseTime = 0.0f;
+	_animSecondPhaseTime = 0.0f;
+	_animEndPos = glm::vec3(0.0f);
+	_animTime = 0.0f;
+	_animEndTime = 0.0f;
+	_heightDiff = 0.0f;
 }
 
 Character::Character()

@@ -66,6 +66,7 @@ private:
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables
 	bool _climbing;
+	bool sneaking;
 	bool _canClimb;
 	glm::vec3 _animEndPos;
 	float _animFirstPhaseTime;
