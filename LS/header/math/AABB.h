@@ -11,6 +11,7 @@ class AABB
 {
 public:
 	AABB();
+	AABB(glm::vec3 pos, float cubeSize);
 	AABB(const glm::vec3& min, const glm::vec3& max);
     AABB(std::vector<glm::vec3> *position);
 	AABB(std::vector<glm::vec4> *position);

@@ -33,7 +33,6 @@ private:
 	std::vector<glm::vec2> walkingPointsen;
 public:
 	virtual ~Guard();
-	void setLevel(Level *level);
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
 	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>* walkingPoints);
