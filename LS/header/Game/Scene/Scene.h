@@ -85,18 +85,18 @@ bool isGameType(GameObject *obj)
 template<type::GameObjectType Type>
 std::vector<GameObject*> Scene::fetchStaticObjects(const AABB& aabb)
 {
-	return fetchObjects(aabb, &isGameType<Type>)
+	return fetchObjects(aabb, &isGameType<Type>);
 }
 template<typename T>
 std::vector<T*> Scene::fetchDynamicObjects(const AABB& aabb)
 {
 	static_assert(std::is_base_of<GameObject, T>::value, "T param must be derived from GameObject");
-	std::vector<T*> list; 
+	std::vector<T*> list;
 	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
 	{
 		T* ptr = dynamic_cast<T*>(_dynamicObjects[i]);
 		//If cast successfull and is inside aabb add obj to list
-		if (ptr && AABBvAABB(_dynamicObjects[i]->getAABB(), aabb)) 
+		if (ptr && AABBvAABB(_dynamicObjects[i]->getAABB(), aabb))
 			list.push_back(ptr);
 	}
 	return list;

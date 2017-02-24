@@ -112,11 +112,11 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 squar
 	_scene->add(object, false);
 	return object;
 }
-PointLightObject* ObjectFactory::createLight(PointLight light, glm::ivec2 square)
+PointLightObject* ObjectFactory::createLight(PointLight light, glm::vec3 position)
 {
-	AABB box;
-	light._pos += calcPos(square, box);
+	light._pos += position;
 	PointLightObject* object = new PointLightObject(light, nullptr);
+	// Model tmpModel = _models.GetModel(_path + "", &_meshShader);
 	object->init();
 	_scene->add(object, true);
 	_level->getLight(&light);
@@ -151,9 +151,9 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 		}
 		else if (type == "light")
 		{
-			int x, y;
+			float x, y;
 			iss >> x >> y;
-			createLight(l, glm::ivec2(x, y));
+			createLight(l, glm::vec3(x, 0.5f, y));
 		}
 		else if (type == "guard")
 		{

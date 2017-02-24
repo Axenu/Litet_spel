@@ -26,7 +26,7 @@ void AnimatedSkeleton::update(float dT) {
 		updateSkeleton();
 	}
 }
-void AnimatedSkeleton::updateSkeleton() 
+void AnimatedSkeleton::updateSkeleton()
 {
 	//Update skeleton
 	_pose[0] = _channel[0].lerp(_elapAnimTime);

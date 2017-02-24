@@ -2,7 +2,6 @@
 
 Model::Model() {
 
-	
 }
 
 
@@ -12,7 +11,7 @@ Model::Model(std::vector<ModelPart> &pMeshes, Skeleton *skeleton)
 	initAABB();
 }
 
-Model::Model(ModelPart &part) 
+Model::Model(ModelPart &part)
 	: _meshParts(1)
 {
 	_meshParts[0] = part;
@@ -81,7 +80,7 @@ std::string Model::getName()
 
 
 
-Model::~Model() 
+Model::~Model()
 {
 
 }

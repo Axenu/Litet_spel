@@ -42,8 +42,8 @@ public:
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
 	GameObject* createObject(const std::string &model, glm::ivec2 square);
+	PointLightObject* createLight(PointLight light, glm::vec3 position);
 	LootObject* createLoot(const std::string &model, glm::ivec2 square);
-	PointLightObject* createLight(PointLight light, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path);
 	MeshShader& getShader();

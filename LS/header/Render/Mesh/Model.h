@@ -43,5 +43,5 @@ private:
 	AABB _aabb;
 	std::string _name;
 	std::vector<ModelPart> _meshParts;
-	Skeleton *_skeleton;
+	Skeleton *_skeleton = nullptr;
 };

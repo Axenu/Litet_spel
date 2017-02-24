@@ -43,3 +43,26 @@ void DrawFrame::renderMeshOnly(GLint matrixLocation) {
 std::vector<PointLight>& DrawFrame::getLightInfo() {
 	return _lightInfo;
 }
+
+void DrawFrame::cullLightsByDistance(glm::vec3 &pos)
+{
+	if (_lightInfo.size() > 8)
+	{
+		unsigned long count = _lightInfo.size()-8;
+		for (size_t i = 0; i < count; i++)
+		{
+			int largest = 0;
+			float dist = glm::distance(pos, _lightInfo[0]._pos);
+			for (size_t j = 1; j < _lightInfo.size(); j++)
+			{
+				float d = glm::distance(pos, _lightInfo[j]._pos);
+				if (d > dist)
+				{
+					dist = d;
+					largest = j;
+				}
+			}
+			_lightInfo.erase(_lightInfo.begin()+largest);
+		}
+	}
+}

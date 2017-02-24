@@ -39,6 +39,7 @@ public:
 	*/
 	void render(RenderInfo &fD);
 	void renderMeshOnly(GLint matrixLocation);
+	void cullLightsByDistance(glm::vec3 &pos);
 	/* Get batched light info for the frame
 	*/
 	std::vector<PointLight>& getLightInfo();

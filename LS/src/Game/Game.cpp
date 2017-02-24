@@ -32,10 +32,15 @@ void Game::draw() {
 
 	DrawFrame dF;
 	_scene->fetchDrawables(dF);
+	glm::vec3 camPos = _scene->getCamera().getWorldPos();
+	dF.cullLightsByDistance(camPos);
 	RenderInfo rI(_resource, _scene->getCamera(), dF.getLightInfo());
 	setupRI(rI);
-	// std::cout << rI._pLightInfo.size() << std::endl;
-	for (size_t i = 0; i < rI._pLightInfo.size(); i++)
+
+	glDisable(GL_CULL_FACE);
+	size_t numLights = rI._pLightInfo.size();
+
+	for (size_t i = 0; i < numLights; i++)
 	{
 		DrawFrame tempDF;
 		float fadeDist = rI._pLightInfo[i]._fadeDist;
@@ -49,6 +54,7 @@ void Game::draw() {
 		tempDF.renderMeshOnly(_modelMatrixLocation);
 		gl::CheckGLErrors("Render stage failed: CubeMap");
 	}
+	glEnable(GL_CULL_FACE);
 
 	_resource.getDeffered().bindDraw();
 	dF.render(rI);

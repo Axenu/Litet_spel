@@ -28,8 +28,8 @@ float AARect::dist(glm::vec2 o, glm::vec2 dir, float &dist) {
 	float t3 = (_max.y - o.y) * dir.y;
 	float t4 = (_max.y - o.y) * dir.y;
 
-	float tmin = std::fmaxf(std::fminf(t1, t2), std::fminf(t3, t4));
-	float tmax = std::fminf(std::fmaxf(t1, t2), std::fmaxf(t3, t4));
+	float tmin = fmaxf(fminf(t1, t2), fminf(t3, t4));
+	float tmax = fminf(fmaxf(t1, t2), fmaxf(t3, t4));
 
 	// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
 	if (tmax < 0)

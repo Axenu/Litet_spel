@@ -3,7 +3,7 @@
 namespace gl {
 
     CubeMapBuffer::CubeMapBuffer()
-		: CubeMapBuffer(512, 512)
+		: CubeMapBuffer(256, 256)
 	{
 	}
 

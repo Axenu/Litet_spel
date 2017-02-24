@@ -5,13 +5,16 @@ GameObject::GameObject()
 {
 }
 GameObject::GameObject(Model &m)
-	: GameObject(m, type::Doodad) {
+	: GameObject(m, type::Doodad)
+{
 }
 GameObject::GameObject(Node* parent, const glm::vec3 &pos, type::GameObjectType type)
-	: Node(pos, parent), _model(), _type(type) {
+	: Node(pos, parent), _model(), _type(type)
+{
 }
 GameObject::GameObject(Model &m, type::GameObjectType type)
-	: _model(m), _type(type) {
+	: _model(m), _type(type)
+{
 }
 GameObject::GameObject(type::GameObjectType type)
  : Node(), _model(), _type(type)
@@ -27,10 +30,11 @@ void GameObject::init()
 	Node::init();
 	//Generate a animation controller if necessary
 	 Skeleton* skel = _model.getSkeleton();
-	 if (skel) {
-	 	_animatedSkel = std::unique_ptr<AnimatedSkeleton>(new AnimatedSkeleton(*skel, *this));
-	 	_model.setAnimController(_animatedSkel.get());
-	 	bool success = _animatedSkel->setAnim("");
+	 if (skel)
+	 {
+		_animatedSkel = std::unique_ptr<AnimatedSkeleton>(new AnimatedSkeleton(*skel, *this));
+		_model.setAnimController(_animatedSkel.get());
+		bool success = _animatedSkel->setAnim("");
 	}
 	_model.transform(_modelMatrix);
 }
@@ -44,14 +48,16 @@ void GameObject::update(float dt)
 }
 
 
-void GameObject::setModel(Model &m) {
+void GameObject::setModel(Model &m)
+{
 	_model = m;
 }
 void GameObject::setModelAABB(const AABB & aabb)
 {
 	_model.setAABB(aabb);
 }
-const Model& GameObject::getModel() {
+const Model& GameObject::getModel()
+{
 	return _model;
 }
 
@@ -75,6 +81,7 @@ bool GameObject::pick(Camera & cam)
 }
 /* Add the object to the frame
 */
-void GameObject::addToFrame(DrawFrame &dF) {
+void GameObject::addToFrame(DrawFrame &dF)
+{
 	dF.add(_model, _modelMatrix);
 }

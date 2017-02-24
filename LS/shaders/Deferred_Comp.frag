@@ -39,7 +39,8 @@ return	>>	The texture coordinate of the window
 vec2 calcFrameCoord();
 vec3 positionFromDepth(in float depth, in vec2 frameCoord);
 vec3 decodeNormal(in vec3 normal);
-vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess);
+vec3 shadowTest(in uint i, in vec3 pos, in vec3 color);
+vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess, in vec3 pLightPos, in float pLightFade, in vec3 pLightDif, in vec3 pLightSpec);
 float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, out float lambertian);
 
 vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,in vec3 color,in vec2 GrenadeExpansionFading);
@@ -62,8 +63,11 @@ void main () {
 	//Calc light
 	ColorOut = vec4(color * 0.2f, 1.0f); //Add ambient
 
+	//player light
+	ColorOut.xyz += pointLightCalc(position, normal, color, specular.xyz, specular.w, vec3(0,0,0), 2.5f, vec3(0.5,0.5,0.5), vec3(0,0,0));
+
 	for(uint i = 0; i < pNumLight; i++)
-		ColorOut.xyz += pointLightCalc(i, position, normal, color, specular.xyz, specular.w);
+		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
 
 	ColorOut.xyz=antiLightGrenadeCal(viewGrenadePosition,position,color,ColorOut.xyz,GrenadeExpansionFading);
 }
@@ -90,21 +94,8 @@ vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,
 	return color;
 }
 
-
-/*	Point light specular calculation:
-*/
-vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess){
-
-	//Vector to light
-	vec3 lightDir = normalize(pLightPos[i] - pos);
-
-	float lambertian;
-	float specular = lightCalc(lightDir, pos, nor, shininess, lambertian);
-
-	//Light fades of in the distance:
-	float fade_factor = max(1 - (distance(pos, pLightPos[i]) / pLightFade[i]), 0);
-
-
+vec3 shadowTest(in uint i, in vec3 pos, in vec3 color)
+{
 	//shadow
 	vec4 lightPosView = VM * vec4(pLightPos[i], 1.0); //world position
 	vec4 wPos = VM * (vec4(pos.xyz, 1.0));
@@ -113,11 +104,29 @@ vec3 pointLightCalc(in uint i, in vec3 pos, in vec3 nor, in vec3 diffuseCol, in 
 	float currentDepth = length(lightDirShadow)/pLightFade[i];
 	if (f + 0.005 > currentDepth)
 	{
-		return (diffuseCol * pLightDif[i] * lambertian +	//Diffuse calculation
-		 pLightSpec[i] * specularCol * specular)			//Specular calculation
-		 * fade_factor;										//Light fade off
+		return color;										//Light fade off
 	}
 	return vec3(0,0,0);
+}
+
+/*	Point light specular calculation:
+*/
+vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess, in vec3 pLightPos, in float pLightFade, in vec3 pLightDif, in vec3 pLightSpec)
+{
+
+	//Vector to light
+	vec3 lightDir = normalize(pLightPos - pos);
+
+	float lambertian;
+	float specular = lightCalc(lightDir, pos, nor, shininess, lambertian);
+
+	//Light fades of in the distance:
+	float fade_factor = max(1 - (distance(pos, pLightPos) / pLightFade), 0);
+
+	return (diffuseCol * pLightDif * lambertian +	//Diffuse calculation
+	 pLightSpec * specularCol * specular)			//Specular calculation
+	 * fade_factor;										//Light fade off
+
 }
 /*	BlinnPhong specular calculation:
 */

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <math.h>
 #include <glm/vec2.hpp>
 
 class AARect
@@ -15,4 +15,3 @@ public:
 	float dist(glm::vec2 o, glm::vec2 dir, float &dist);
 
 };
-

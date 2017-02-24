@@ -44,7 +44,7 @@ void Character::move(float dt) {
 			}
 		}
 		//Add the movement velocity travel
-		
+
 		glm::vec3 forw2D = getForward();
 		forw2D = glm::normalize(glm::vec3(forw2D.x, 0.f, forw2D.z));
 		glm::vec3 right2D = getRight();
@@ -155,7 +155,7 @@ void Character::testClimb()
 
 void Character::onRender()
 {
-	
+
 }
 
 GrenadeValues Character::getGrenadeData()
@@ -253,6 +253,10 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	else if (event.getKey() == GLFW_KEY_SPACE)
 	{
 		tryClimb();
+	}
+	else if (event.getKey() == GLFW_KEY_T)
+	{
+		std::cout << "X: " << getEyePos().x << " Y: " << getEyePos().z << std::endl;
 	}
 }
 
