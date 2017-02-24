@@ -19,7 +19,7 @@ void Guard::update(float dt)
 	setPosition(pos);
 	face(_path->movingTo());
 	
-	face(_player->getWorldPos());*/
+	face(_player->getWorldPos());
 	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
