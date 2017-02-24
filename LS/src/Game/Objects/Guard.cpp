@@ -66,6 +66,7 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
+	
 
 	glm::ivec2 start = level->getGrid().getSquare(this->getWorldPos());
 	_path = level->getGrid().generatePath(start, level->getGrid().getRandomSquare());
@@ -95,7 +96,7 @@ bool Guard::DetectedPlayer()
 	if (playerDist < 1.2f)
 		return true;
 
-	if (glm::dot(dirToPlayer, glm::vec3(0.0f, 0.0f, -1.0f)) > _detectFov)
+	if (glm::dot(dirToPlayer, getForward()) > _detectFov)
 	{
 		float playerLight = 1.0f;
 		//Calculate light at position
@@ -121,5 +122,17 @@ bool Guard::DetectedPlayer()
 			return true;
 		}
 	}
+	return false;
+}
+
+bool Guard::AlmostDetected(glm::vec3(dirToPlayer), float viewDist)
+{
+	float _almostDetectFOV = cos(ALMOSTDETECTFOV);
+
+	if (glm::dot(dirToPlayer, getForward()) > _almostDetectFOV)
+	{
+
+	}
+
 	return false;
 }

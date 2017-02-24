@@ -133,4 +133,18 @@ namespace gui {
 			_tipDisplay->deactivate();
 		}
 	}
+	void HUDView::almostDetected(const AlmostDetectedEvent & event)
+	{
+		if (event.almostDetected())
+		{
+			_tipDisplay->updateStringComponent(0, new StringComponentString("You are almost detected, get out of here."));
+			_tipDisplay->activate();
+			_tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
+			_tipDisplay->update(0.0f);
+		}
+		else
+		{
+			_tipDisplay->deactivate();
+		}
+	}
 }

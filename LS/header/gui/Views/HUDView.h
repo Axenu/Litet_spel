@@ -44,6 +44,7 @@ namespace gui
         void gameOver(const GameOverEvent &event);
         void exitSquareTrigger(const CharacterSquareEvent &event);
 		void canClimb(const CanClimbEvent &event);
+		void almostDetected(const AlmostDetectedEvent &event);
 
         // void endGame(int action);
 

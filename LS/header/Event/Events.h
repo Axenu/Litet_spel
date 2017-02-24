@@ -75,3 +75,13 @@ public:
 	~CanClimbEvent();
 	bool canClimb() const;
 };
+
+class AlmostDetectedEvent : public Event
+{
+private:
+	bool _almostDetected;
+public:
+	AlmostDetectedEvent(bool almostDetected);
+	~AlmostDetectedEvent();
+	bool almostDetected() const;
+};

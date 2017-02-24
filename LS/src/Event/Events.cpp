@@ -58,3 +58,48 @@ bool CanClimbEvent::canClimb() const
 {
 	return _canClimb;
 }
+
+
+CanClimbEvent::CanClimbEvent(bool canClimb)
+{
+	_canClimb = canClimb;
+}
+
+CanClimbEvent::~CanClimbEvent()
+{
+}
+
+bool CanClimbEvent::canClimb() const
+{
+	return _canClimb;
+}
+
+
+CanClimbEvent::CanClimbEvent(bool canClimb)
+{
+	_canClimb = canClimb;
+}
+
+CanClimbEvent::~CanClimbEvent()
+{
+}
+
+bool CanClimbEvent::canClimb() const
+{
+	return _canClimb;
+}
+
+AlmostDetectedEvent::AlmostDetectedEvent(bool almostDetected)
+{
+	_almostDetected = almostDetected;
+}
+
+AlmostDetectedEvent::~AlmostDetectedEvent()
+{
+
+}
+
+bool AlmostDetectedEvent::almostDetected() const
+{
+	return _almostDetected;
+}
