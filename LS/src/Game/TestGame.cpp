@@ -19,7 +19,7 @@ void TestGame::initiate() {
 
 	//Create the scene, and the level
 	Level* level;
-	_scene = _factory.createLevel("Demo2.bmp", level);
+	_scene = _factory.createLevel("Demo1.bmp", level);
 	//Initiate camera and renderer vars:
 	Camera& cam = _scene->setCamera(_setting);
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
@@ -31,11 +31,10 @@ void TestGame::initiate() {
 
 	_factory.loadSceneFromFile("level.txt");
 
-	std::vector<glm::ivec2> &pGuardPosList = level->_guardSpawn;
-	std::vector<std::vector<glm::vec2>> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
-	for (int i = 0; i < pGuardPosList.size(); i++)
+	std::vector<guardData> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
+	for (int i = 0; i < guardsWalkingPoints.size(); i++)
 	{
-		_factory.createGuard("models/Character.dae", pGuardPosList[i], *player, guardsWalkingPoints[i]);
+		_factory.createGuard("models/Character.dae", guardsWalkingPoints[i].spawnPosition, *player, guardsWalkingPoints[i].walkingPoints);
 	}
 	//Add some loot
 	std::vector<glm::ivec2> &pLootPosList = level->_lootPlace;
