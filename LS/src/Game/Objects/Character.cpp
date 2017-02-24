@@ -254,12 +254,6 @@ void Character::moveCharacter(const KeyboardEvent& event)
 				sneaking = true;
 			}
 		}
-		if (event.getAction() == GLFW_RELEASE)
-		{
-//			_currentScene->getCamera().moveY(0.5);
-//			_speed = _speed + 1;
-		}
-
 	}
 	else if (event.getKey() == GLFW_KEY_SPACE)
 	{

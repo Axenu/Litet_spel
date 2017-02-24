@@ -31,15 +31,19 @@ void TestGame::initiate() {
 
 	_factory.loadSceneFromFile("level.txt");
 
+	//Add guards
 	std::vector<guardData> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
-	for (int i = 0; i < guardsWalkingPoints.size(); i++)
+	for (unsigned int i = 0; i < guardsWalkingPoints.size(); i++)
 	{
 		_factory.createGuard("models/Character.dae", guardsWalkingPoints[i].spawnPosition, *player, guardsWalkingPoints[i].walkingPoints);
 	}
+
 	//Add some loot
-	std::vector<glm::ivec2> &pLootPosList = level->_lootPlace;
-	for (unsigned int i = 0; i < pLootPosList.size(); i++)
-		GameObject *tmpLoot = _factory.createLoot("models/Chalice.obj", pLootPosList[i]);
+	std::vector<lootData> lootList = _factory.getLootData();
+	for (unsigned int i = 0; i < lootList.size(); i++)
+	{
+		GameObject *tmpLoot = _factory.createLoot("models/Chalice.obj", lootList[i].pos, lootList[i].rotation, lootList[i].value);
+	}
 }
 
 

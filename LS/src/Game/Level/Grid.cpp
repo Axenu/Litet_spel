@@ -3,9 +3,9 @@
 #include "math/GridTraveler.h"
 #pragma warning(disable:4996)
 
-Grid::Grid(const std::string &level, std::vector<glm::ivec2> &lootPlace)
+Grid::Grid(const std::string &level)
 {
-	loadingBmpPicture(level.c_str(), lootPlace);
+	loadingBmpPicture(level.c_str());
 }
 
 Grid::~Grid()
@@ -305,7 +305,7 @@ void Grid::buildgridarray()
 	}
 }
 
-void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &lootPlace)
+void Grid::loadingBmpPicture(const char* filename)
 {
 	FILE* f = fopen(filename, "rb");
 	if (f == NULL)
@@ -351,13 +351,6 @@ void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &loot
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 0, 0))
 			{
 				_twodArray[height - 1 - i][realj].type = exiting;
-			}
-			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
-			{
-				//glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
-				lootPlace.push_back(glm::ivec2(realj, height - 1 - i));
-				_twodArray[height - 1 - i][realj].type = nothing;
-				//_twodArray[height - 1 - i][realj].type = loot;
 			}
 			else if (data[j] == 100 && data[j + 1] == 100 && data[j + 2] == 100)
 			{

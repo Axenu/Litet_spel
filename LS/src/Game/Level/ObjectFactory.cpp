@@ -97,7 +97,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	_level->getGrid().addObject(object, gridType::object);
 	return object;
 }
-LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square)
+LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value)
 {
 	Material tmpMat(&_meshShader);
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
@@ -106,7 +106,9 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 squar
 	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 
+	object->setValue(value);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
+	//Add rotation somewhere
 	object->moveY(1.f);
 	object->init();
 	_scene->add(object, false);
@@ -172,6 +174,17 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 			};
 			guardInfo.push_back(data);
 		}
+		else if (type == "loot")
+		{
+			int x, y, rX, rY, rZ, value;
+			iss >> x >> y >> rX >> rY >> rZ >> value;
+			lootData data = {
+				glm::ivec2(x, y),
+				glm::vec3(rX, rY, rZ),
+				value
+			};
+			lootInfo.push_back(data);
+		}
 	    // int a, b;
 	    // if (!(iss >> a >> b)) { break; } // error
 
@@ -186,4 +199,9 @@ MeshShader& ObjectFactory::getShader() {
 std::vector<guardData> ObjectFactory::getGuardsWalkingPoints()
 {
 	return this->guardInfo;
+}
+
+std::vector<lootData> ObjectFactory::getLootData()
+{
+	return this->lootInfo;
 }

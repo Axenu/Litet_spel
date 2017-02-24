@@ -64,7 +64,7 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	sizeOfVector = walkingPoints->size();
 	_whatPathToLoad = 0;
 	
-	for (int i = 0; i < sizeOfVector; i++)
+	for (unsigned int i = 0; i < sizeOfVector; i++)
 	{
 		walkingPointsen.push_back((*walkingPoints)[i]);
 	}

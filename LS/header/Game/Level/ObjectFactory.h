@@ -19,6 +19,12 @@ struct guardData {
 	glm::ivec2 spawnPosition;
 };
 
+struct lootData {
+	glm::ivec2 pos;
+	glm::vec3 rotation;
+	int value;
+};
+
 /* Factory creating game objects
 */
 class ObjectFactory
@@ -36,6 +42,7 @@ private:
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
 	std::vector<guardData> guardInfo;
+	std::vector<lootData> lootInfo;
 
 public:
 	ObjectFactory(EventManager &events, const std::string &resourcePath = "");
@@ -48,9 +55,10 @@ public:
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
 	GameObject* createObject(const std::string &model, glm::ivec2 square);
 	PointLightObject* createLight(PointLight light, glm::vec3 position);
-	LootObject* createLoot(const std::string &model, glm::ivec2 square);
+	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path);
 	MeshShader& getShader();
 	std::vector<guardData> getGuardsWalkingPoints();
+	std::vector<lootData> getLootData();
 };
