@@ -164,7 +164,12 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 				walkingPoints.push_back(glm::vec2(x, y));
 				iss >> x >> y;
 			}
-			guardWalkingPoints.push_back(walkingPoints);
+			iss >> x >> y;
+			guardData data = {
+				walkingPoints,
+				glm::ivec2(x , y)
+			};
+			guardInfo.push_back(data);
 		}
 	    // int a, b;
 	    // if (!(iss >> a >> b)) { break; } // error
@@ -177,7 +182,7 @@ MeshShader& ObjectFactory::getShader() {
 	return _meshShader;
 }
 
-std::vector<std::vector<glm::vec2>> ObjectFactory::getGuardsWalkingPoints()
+std::vector<guardData> ObjectFactory::getGuardsWalkingPoints()
 {
-	return this->guardWalkingPoints;
+	return this->guardInfo;
 }

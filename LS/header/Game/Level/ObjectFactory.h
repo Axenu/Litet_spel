@@ -14,6 +14,11 @@
 #include "Game/Objects/AntiLightGrenade.h"
 
 
+struct guardData {
+	std::vector<glm::vec2> walkingPoints;
+	glm::ivec2 spawnPosition;
+};
+
 /* Factory creating game objects
 */
 class ObjectFactory
@@ -30,7 +35,7 @@ private:
 	EventManager& _events;
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
-	std::vector<std::vector<glm::vec2>> guardWalkingPoints;
+	std::vector<guardData> guardInfo;
 
 public:
 	ObjectFactory(EventManager &events, const std::string &resourcePath = "");
@@ -47,5 +52,5 @@ public:
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path);
 	MeshShader& getShader();
-	std::vector<std::vector<glm::vec2>> getGuardsWalkingPoints();
+	std::vector<guardData> getGuardsWalkingPoints();
 };

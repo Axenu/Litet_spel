@@ -3,9 +3,9 @@
 #include "math/GridTraveler.h"
 #pragma warning(disable:4996)
 
-Grid::Grid(const std::string &level, std::vector<glm::ivec2> &guardSpawn, std::vector<glm::ivec2> &lootPlace)
+Grid::Grid(const std::string &level, std::vector<glm::ivec2> &lootPlace)
 {
-	loadingBmpPicture(level.c_str(), guardSpawn, lootPlace);
+	loadingBmpPicture(level.c_str(), lootPlace);
 }
 
 Grid::~Grid()
@@ -188,7 +188,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 		{
 			for (int i = 0; i < _widthLength; i++)
 			{
-				if (getTypeNC(j, i) == nothing || getTypeNC(j, i) == guard)
+				if (getTypeNC(j, i) == nothing)
 				{
 					if (getvalue(j, i) == value)
 					{
@@ -196,7 +196,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 						{
 
 						}
-						else if (j > 0 && getvalue(j - 1, i) == -1 && (getTypeNC(j - 1, i) == nothing || getTypeNC(j - 1, i) == guard))
+						else if (j > 0 && getvalue(j - 1, i) == -1 && getTypeNC(j - 1, i) == nothing)
 						{
 							setvalue(j - 1, i, value + 1);
 							maxValue--;
@@ -206,7 +206,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 						{
 
 						}
-						else if (j < _heightLength && getvalue(j + 1, i) == -1 && (getTypeNC(j + 1, i) == nothing || getTypeNC(j + 1, i) == guard))
+						else if (j < _heightLength && getvalue(j + 1, i) == -1 && getTypeNC(j + 1, i) == nothing)
 						{
 							setvalue(j + 1, i, value + 1);
 							maxValue--;
@@ -216,7 +216,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 						{
 
 						}
-						else if (i > 0 && getvalue(j, i - 1) == -1 && (getTypeNC(j, i - 1) == nothing || getTypeNC(j, i - 1) == guard))
+						else if (i > 0 && getvalue(j, i - 1) == -1 && getTypeNC(j, i - 1) == nothing)
 						{
 							setvalue(j, i - 1, value + 1);
 							maxValue--;
@@ -226,7 +226,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 						{
 
 						}
-						else if (i < _widthLength && getvalue(j, i + 1) == -1 && (getTypeNC(j, i + 1) == nothing || getTypeNC(j, i + 1) == guard))
+						else if (i < _widthLength && getvalue(j, i + 1) == -1 && getTypeNC(j, i + 1) == nothing)
 						{
 							setvalue(j, i + 1, value + 1);
 							maxValue--;
@@ -314,7 +314,7 @@ void Grid::buildgridarray()
 	}
 }
 
-void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &guardSpawn, std::vector<glm::ivec2> &lootPlace)
+void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &lootPlace)
 {
 	FILE* f = fopen(filename, "rb");
 	if (f == NULL)
@@ -360,13 +360,6 @@ void Grid::loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &guar
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(255, 0, 0))
 			{
 				_twodArray[height - 1 - i][realj].type = exiting;
-			}
-			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
-			{
-				//_twodArray[height - 1 - i][realj].type = guard;
-				//glm::vec3 tmpVec((realj), 1.3f, (height - 1 - i));
-				guardSpawn.push_back(glm::ivec2(realj, height - 1 - i));
-				_twodArray[height - 1 - i][realj].type = nothing;
 			}
 			else if (data[j] == 255 && data[j + 1] == 255 && data[j + 2] == 0)
 			{
