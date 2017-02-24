@@ -329,6 +329,14 @@ Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * gre
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
 	_antiLightGrenade = grenade;
+	_climbing = false;
+	_canClimb = false;
+	_animFirstPhaseTime = 0.0f;
+	_animSecondPhaseTime = 0.0f;
+	_animEndPos = glm::vec3(0.0f);
+	_animTime = 0.0f;
+	_animEndTime = 0.0f;
+	_heightDiff = 0.0f;
 }
 
 Character::Character()
