@@ -26,16 +26,15 @@ private:
 	unsigned int _whatPathToLoad;
 	float _detectFov;
 	Level *_currentLevel;
-	int sizeOfVector;
+	unsigned int sizeOfVector;
 	float _currentGridSpace;
 	bool DetectedPlayer();
 	std::vector<glm::vec2>* walkingPoints;
 	std::vector<glm::vec2> walkingPointsen;
 public:
 	virtual ~Guard();
-	void setLevel(Level *level);
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
-	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Grid * gridet, std::vector<glm::vec2>* walkingPoints);
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level *level, std::vector<glm::vec2>* walkingPoints);
 };
 

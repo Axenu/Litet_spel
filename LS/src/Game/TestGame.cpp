@@ -33,7 +33,7 @@ void TestGame::initiate() {
 
 	std::vector<glm::ivec2> &pGuardPosList = level->_guardSpawn;
 	std::vector<std::vector<glm::vec2>> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
-	for (int i = 0; i < pGuardPosList.size(); i++)
+	for (unsigned int i = 0; i < pGuardPosList.size(); i++)
 	{
 		_factory.createGuard("models/Character.dae", pGuardPosList[i], *player, guardsWalkingPoints[i]);
 	}
