@@ -24,19 +24,21 @@ void Guard::update(float dt)
 
 	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
 	{
-		if (DetectedPlayer())
+		if (AlmostDetected)
 		{
-			std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-			/*GameOverEvent event(false);
-			_eventManager->execute(event);*/
+			if (DetectedPlayer())
+			{
+				std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+				/*GameOverEvent event(false);
+				_eventManager->execute(event);*/
 
-			glm::vec3 detP = _player->getWorldPos();
-			std::cout << "Detected\n";
-			std::cout << "Guard Co: "<< pos.x << ", " << pos.y << ", " << pos.z << '\n';
-			std::cout << "Player Co: " << detP.x << ", " << detP.y << ", " << detP.z << '\n';
+				glm::vec3 detP = _player->getWorldPos();
+				std::cout << "Detected\n";
+				std::cout << "Guard Co: " << pos.x << ", " << pos.y << ", " << pos.z << '\n';
+				std::cout << "Player Co: " << detP.x << ", " << detP.y << ", " << detP.z << '\n';
+			}
 		}
 	}
-
 }
 
 glm::vec2 Guard::getNextPosition()
@@ -131,8 +133,7 @@ bool Guard::AlmostDetected(glm::vec3(dirToPlayer), float viewDist)
 
 	if (glm::dot(dirToPlayer, getForward()) > _almostDetectFOV)
 	{
-
+		AlmostDetectedEvent event(true);
+		_eventManager->execute(event);
 	}
-
-	return false;
 }
