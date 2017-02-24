@@ -119,7 +119,6 @@ PointLightObject* ObjectFactory::createLight(PointLight light, glm::vec3 positio
 	// Model tmpModel = _models.GetModel(_path + "", &_meshShader);
 	object->init();
 	_scene->add(object, true);
-	_level->getLight(&light);
 	return object;
 }
 PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
