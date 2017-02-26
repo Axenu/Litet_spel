@@ -31,7 +31,7 @@ class ObjectFactory
 {
 private:
 	/* Resource path */
-	std::string _path;
+	std::string _path, _modelPath;
 	/* The mesh shader of the game.
 	*/
 	DeferredMeshShader _meshShader;
@@ -42,10 +42,9 @@ private:
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
 	std::vector<guardData> guardInfo;
-	std::vector<lootData> lootInfo;
 
 public:
-	ObjectFactory(EventManager &events, const std::string &resourcePath = "");
+	ObjectFactory(EventManager &events, const std::string &resourcePath = "", std::string modelPath = "");
 	~ObjectFactory();
 
 	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);
@@ -53,12 +52,14 @@ public:
 	Character* createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
-	GameObject* createObject(const std::string &model, glm::ivec2 square);
+	/* Create a scene object
+	model << Model to load
+	*/
+	GameObject* createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
 	PointLightObject* createLight(PointLight light, glm::vec3 position);
 	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path);
 	MeshShader& getShader();
 	std::vector<guardData> getGuardsWalkingPoints();
-	std::vector<lootData> getLootData();
 };

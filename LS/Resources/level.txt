@@ -1,20 +1,25 @@
-light 5.5 27
-light 2.5 21.5
-light 2.5 17.5
-light 5 9.5
-light 3 5
-light 4.5 27
-model 1 11 models/Table.obj
-model 2 11 models/Table.obj
-model 10 11 models/Table.obj
-model 2 17 models/Table.obj
-model 3 17 models/Table.obj
-guard 14 2 15 2 -1 -1 15 2
-guard 14 3 15 3 -1 -1 15 3
-guard 14 4 15 4 -1 -1 15 4
-guard 14 5 15 5 -1 -1 15 5
-guard 15 5 14 5 14 6 15 6 -1 -1 15 6
-loot 3 3 0 90 0 50
-loot 4 4 0 90 0 100
-loot 5 5 0 90 0 150
-loot 6 6 0 90 0 200
+light P 5.5 1.2 27
+light P 2.5 1.2 21.5
+light P 2.5 1.2 17.5
+light P 5 1.2 9.5
+light P 3 1.2 5
+light P 4.5 1.2 27
+model S 1 11 M Table.obj R 0 90 0
+model S 2 11 M Table.obj
+model S 10 11 M Table.obj
+model S 2 17 M Table.obj
+model S 3 17 M Table.obj
+guard S 14 2 
+path H 15 2
+guard S 14 3
+path H 15 3
+guard S 14 4
+path H 15 4
+guard S 14 5
+path H 15 5
+guard S 15 5
+path H 14 5 H 14 6 H 15 6
+loot S 3 3 R 0 0 0 V 1 M Chalice.obj
+loot S 4 4 R 90 0 0 V 2 M Chalice.obj
+loot S 5 5 R 0 90 0 V 4 M Chalice.obj
+loot S 6 6 R 0 0 90 V 8 M Chalice.obj

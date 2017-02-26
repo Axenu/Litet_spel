@@ -119,6 +119,12 @@ glm::vec3 Node::getLocalRight() const
 	return glm::cross(_up, _forward);
 }
 
+void Node::setRotEuler(glm::vec3 xyz)
+{
+	glm::mat3 mat = glm::orientate3(glm::vec3(glm::radians(xyz.x), glm::radians(xyz.z), glm::radians(xyz.y)));
+	_forward = mat[2];
+	_up = mat[1];
+}
 
 void Node::rotateX(float f) {
 	glm::quat q = glm::angleAxis(f, getLocalRight());

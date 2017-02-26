@@ -4,7 +4,7 @@
 
 Game::Game(Setting &setting, EventManager &events)
 	: _setting(setting), _event(events), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()),
-	_factory(events, "Resources/"), _shadowMapShader("shadow_cube_map","shadow_cube_map","shadow_cube_map")
+	_factory(events, "Resources/", "Resources/models/"), _shadowMapShader("shadow_cube_map","shadow_cube_map","shadow_cube_map")
 {
 	_modelMatrixLocation = _shadowMapShader.getUniform("model");
 	_shadowMatricesLocation = _shadowMapShader.getUniform("shadowMatrices");

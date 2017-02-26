@@ -25,7 +25,7 @@ void TestGame::initiate() {
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
 	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), _scene->getCamera());
 
-	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("models/grenade.obj", glm::ivec2(2, 2));
+	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("grenade.obj", glm::ivec2(2, 2));
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, *grenade);
 	_player = player;
 
@@ -35,14 +35,7 @@ void TestGame::initiate() {
 	std::vector<guardData> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
 	for (unsigned int i = 0; i < guardsWalkingPoints.size(); i++)
 	{
-		_factory.createGuard("models/Character.dae", guardsWalkingPoints[i].spawnPosition, *player, guardsWalkingPoints[i].walkingPoints);
-	}
-
-	//Add some loot
-	std::vector<lootData> lootList = _factory.getLootData();
-	for (unsigned int i = 0; i < lootList.size(); i++)
-	{
-		GameObject *tmpLoot = _factory.createLoot("models/Chalice.obj", lootList[i].pos, lootList[i].rotation, lootList[i].value);
+		_factory.createGuard("Character.dae", guardsWalkingPoints[i].spawnPosition, *player, guardsWalkingPoints[i].walkingPoints);
 	}
 }
 
