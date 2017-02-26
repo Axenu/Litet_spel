@@ -1,8 +1,8 @@
 light P 5.5 1.2 27
 light P 2.5 1.2 21.5
 light P 2.5 1.2 17.5
-light P 5 1.2 9.5
-light P 3 1.2 5
+light P 4.9 1.2 9.5
+light P 2.9 1.2 5
 light P 4.5 1.2 27
 model S 1 11 M Table.obj R 0 90 0
 model S 2 11 M Table.obj
