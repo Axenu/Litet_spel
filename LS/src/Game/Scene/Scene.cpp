@@ -2,7 +2,6 @@
 #include <memory>
 
 
-
 Scene::Scene(std::unique_ptr<GameObject>& root, AABB sceneBounds)
 	: _quadTree(), _rootObject(root.get()), _root(root.release())
 {
@@ -212,6 +211,53 @@ int Scene::loot(float pickDist)
 	}
 
 	return value;
+}
+
+GameObject* Scene::pick(float pickDist)
+{
+	glm::vec3 lookAt = _cam->getLookAt();
+	glm::vec3 wPos = _cam->getWorldPos();
+	float minDist = FLT_MAX;
+	GameObject* retPtr = nullptr;
+	//Search dynamic objects.
+	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
+	{
+		PointLightObject* testPtr = dynamic_cast<PointLightObject*>(_dynamicObjects[i]);
+		if (testPtr)
+		{
+			//Test to see if it is a pointLight.
+			continue;
+		}
+		GameObject* ptr = _dynamicObjects[i];
+		float dist;
+		//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
+		if (AABBIntersect(_dynamicObjects[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+		{
+			retPtr = ptr;
+			minDist = dist;
+		}
+	}
+	//Search quadTree.
+	std::vector<GameObject*> pickList;
+	_quadTree.QuadTreeTest(pickList, lookAt, wPos, pickDist);
+	for (unsigned int i = 0; i < pickList.size(); i++)
+	{
+		GameObject* ptr = pickList[i];
+		float dist;
+		//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
+		if (AABBIntersect(pickList[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+		{
+			retPtr = ptr;
+			minDist = dist;
+		}
+	}
+
+	return retPtr;
+}
+
+bool Scene::takeOverGuard(float maxDist)
+{
+	return false;
 }
 
 
