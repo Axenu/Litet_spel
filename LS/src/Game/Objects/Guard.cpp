@@ -26,19 +26,24 @@ void Guard::update(float dt)
 	glm::vec3 dirToPlayer = _player->getWorldPos() - this->getWorldPos();
 	float playerDist = glm::length(dirToPlayer);
 	dirToPlayer = glm::normalize(dirToPlayer);
-	float detect = GUARDVIEWDISTANCE * DetectedPlayer(playerDist, dirToPlayer);
 
-	if (playerDist <  detect)
+	//Get the distance that the guard can see the player based on light and obscuring objects
+	float detectionDist = GUARDVIEWDISTANCE * DetectedPlayer(playerDist, dirToPlayer);
+
+	//Activate the detection event based on distance between the player and guard
+	if (playerDist <  detectionDist)
 	{
 		std::cout << "Almost detected" << std::endl;
-		float detectionAmount = (1.0f - (playerDist / detect));
-		_timer -= dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
+		
+		//Timer to determine the amount of time before the guard detects the player
+		float detectionAmount = (1.0f - (playerDist / detectionDist));
+		_detectionScore -= dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
 
-		if (_timer < 0.0f)
+		if (_detectionScore < 0.0f)
 		{
 			std::cout << "Detected" << std::endl;
 
-			_timer = 0.3f;
+			_detectionScore = 0.3f;
 		}
 	}
 
@@ -75,7 +80,7 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 	_speed = 0.4f;
 
-	_timer = 0.3f;
+	_detectionScore = 0.3f;
 }
 
 Guard::~Guard()

@@ -22,7 +22,7 @@ private:
 	float _speed;
 	float _distLength;
 	unsigned int _whatPathToLoad;
-	float _timer;
+	float _detectionScore;
 
 	//Field of view in cosine
 	float _detectFov;
