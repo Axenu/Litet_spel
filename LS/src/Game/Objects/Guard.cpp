@@ -105,7 +105,7 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 			playerLight *= _player->getGrenadeData().fading;
 
 		//If player behind wall, not detected
-		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) && _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
+		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
 		{
 			return 0.0f;
 		}

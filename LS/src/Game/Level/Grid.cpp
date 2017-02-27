@@ -31,7 +31,7 @@ bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 			return true;
 		
 		dist += trav.goNext();
-	} while ((*this)[trav.getSquare()] != gridType::wall && dist < viewDist);
+	} while (dist < viewDist);
 
 	return false;
 }
