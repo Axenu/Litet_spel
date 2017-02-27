@@ -26,9 +26,9 @@ public:
 	/* Minor
 	*/
 
-	glm::vec3 _lightGrenadePos;
-	glm::vec2 _lightGrenadeExpansionAndFading;
-
+	glm::vec3 _lightGrenadePos[4];
+	glm::vec2 _lightGrenadeExpansionAndFading[4];
+	int _arraysize=0;
 
 	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);
 	~RenderInfo();
