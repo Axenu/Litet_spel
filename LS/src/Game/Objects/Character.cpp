@@ -191,7 +191,7 @@ GrenadeValues Character::getGrenadeData()
 {
 //	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
 
-	return _antiLightGrenade->getgrenadeData();
+	return _antiLightGrenade[_grenadeCount]->getgrenadeData();
 }
 
 int* Character::getLootValuePointer()
@@ -261,7 +261,8 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		if (event.getAction() == GLFW_PRESS)
 		{
 		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
-			_antiLightGrenade->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
+			
+			_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
 		}
 	}
 	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
@@ -351,7 +352,7 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
     _eventManager->listen(this, &Character::moveMouse);
 }
 
-Character::Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * grenade) :
+Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade*> grenade) :
 	GameObject(), _eventManager(manager)
 {
 	_lootValue = 0;

@@ -24,9 +24,11 @@ void TestGame::initiate() {
 	Camera& cam = _scene->setCamera(_setting);
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
 	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), _scene->getCamera());
-
-	AntiLightGrenade* grenade = _factory.createAntiLightGrenade("grenade.obj", glm::ivec2(2, 2));
-	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, *grenade);
+	int _amountOfGrenades = 4;
+	std::vector<AntiLightGrenade*> grenade;
+	for(int i = 0;i<_amountOfGrenades;i++)
+	 grenade.push_back(_factory.createAntiLightGrenade("grenade.obj", glm::ivec2(2, 2)));
+	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, grenade);
 	_player = player;
 
 	_factory.loadSceneFromFile("level.txt");

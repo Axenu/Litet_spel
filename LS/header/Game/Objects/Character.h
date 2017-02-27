@@ -42,7 +42,7 @@ public:
 	int* getLootValuePointer();
 
     Character(glm::vec3 pos, EventManager *manager);
-	Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * grenade);
+	Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade *> grenade);
 
     Character();
     virtual ~Character();
@@ -60,7 +60,8 @@ private:
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
 	float _camTilt;
-	AntiLightGrenade* _antiLightGrenade;
+	int _grenadeCount;
+	std::vector<AntiLightGrenade*> _antiLightGrenade;
     float _speed;
     float _isMoving;
     int _lootValue;

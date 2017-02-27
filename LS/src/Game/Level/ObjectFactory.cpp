@@ -44,10 +44,10 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 	return player;
 }
 
-Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade)
+Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events,&grenade);
+	Character* player = new Character(_level->getGrid().getCenter(square), &_events,grenade);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
