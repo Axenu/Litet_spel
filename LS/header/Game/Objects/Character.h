@@ -41,6 +41,7 @@ public:
 	void climb(float dT);
 	void tryClimb();
 	void testClimb();
+	int getGrenadeID();
 	int* getLootValuePointer();
 	int* getGrenadeCountPointer();
 
@@ -55,6 +56,7 @@ public:
 
 	float calcLightOnPosition();
 private:
+	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;

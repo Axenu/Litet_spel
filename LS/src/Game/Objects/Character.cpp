@@ -160,6 +160,11 @@ void Character::testClimb()
 	}
 }
 
+int Character::getGrenadeID()
+{
+	return _grenadeID;
+}
+
 float Character::calcLightOnPosition()
 {
 	float wallDist = 0.0f;
@@ -276,16 +281,20 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		if (event.getAction() == GLFW_PRESS)
 		{
 		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
-			if (_timerForGrenade > 0.4)
+			if (_timerForGrenade > 2)
 			{
 			_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
 			_timerForGrenade = 0;
-			}
+			if(_lightGrenadeCount>0)
+			_lightGrenadeCount--;
+			_grenadeID++;
 			_grenadeCount++;
 			if (_grenadeCount == _antiLightGrenade.size())
 			{
 				_grenadeCount = 0;
 			}
+			}
+			
 		}
 	}
 	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
@@ -400,7 +409,8 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_animEndTime = 0.0f;
 	_heightDiff = 0.0f;
 	_antiLightGrenade = grenade;
-	_lightGrenadeCount = 3;
+	_lightGrenadeCount = GrenadeAmountFromCharacter;
+	_grenadeID = -1;
 }
 
 Character::Character()

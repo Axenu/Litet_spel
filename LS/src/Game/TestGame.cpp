@@ -13,6 +13,7 @@ TestGame::~TestGame()
 
 void TestGame::setupRI(RenderInfo &rI) {
 	rI._arraysize = _player->amountOfGrenades();
+	rI._grenadeID = _player->getGrenadeID();
 	for (int i = 0;i< _player->amountOfGrenades();i++)
 		{
 		rI._lightGrenadePos[i] = _player->getGrenadeData()[i]._grenadePositionWhenLanded;
