@@ -63,10 +63,10 @@ public:
 
 #pragma region Mfuncs
 	/* Get distance to closest wall */
-	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
 
 	/* Get distance to closest object */
-	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType, bool &obcure);
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType);
 	/* Verify a grid square is represented in the grid
 	*/
 	bool isInside(glm::ivec2 vec) const;

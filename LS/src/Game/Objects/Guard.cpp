@@ -22,18 +22,23 @@ void Guard::update(float dt)
 	face(_player->getWorldPos());
 	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
-	if (glm::length(this->getWorldPos() - _player->getWorldPos()) < GUARDVIEWDISTANCE)
-	{
-		if (DetectedPlayer())
-		{
-			//std::cout << "Detected player!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-			GameOverEvent event(false);
-			_eventManager->execute(event);
+	//Get direction vector and distance to player 
+	glm::vec3 dirToPlayer = _player->getWorldPos() - this->getWorldPos();
+	float playerDist = glm::length(dirToPlayer);
+	dirToPlayer = glm::normalize(dirToPlayer);
+	float detect = GUARDVIEWDISTANCE * DetectedPlayer(playerDist, dirToPlayer);
 
-			/*glm::vec3 detP = _player->getWorldPos();
-			std::cout << "Detected\n";
-			std::cout << "Guard Co: "<< pos.x << ", " << pos.y << ", " << pos.z << '\n';
-			std::cout << "Player Co: " << detP.x << ", " << detP.y << ", " << detP.z << '\n';*/
+	if (playerDist <  detect)
+	{
+		std::cout << "Almost detected" << std::endl;
+		float detectionAmount = (1.0f - (playerDist / detect));
+		_timer -= dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
+
+		if (_timer < 0.0f)
+		{
+			std::cout << "Detected" << std::endl;
+
+			_timer = 0.3f;
 		}
 	}
 
@@ -69,55 +74,43 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
 
 	_speed = 0.4f;
+
+	_timer = 0.3f;
 }
 
 Guard::~Guard()
 {
 }
 
-bool Guard::DetectedPlayer()
+float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 {
-
-	glm::vec3 pos = this->getWorldPos();
 	glm::vec3 playerPos = _player->getWorldPos();
-	glm::vec3 playerEyePos = _player->getEyePos();
+	glm::vec3 pos = this->getWorldPos();
 
 	pos.y = 1.3f;
 
-	glm::vec3 dirToPlayer = playerPos - pos;
-	float playerDist = glm::length(dirToPlayer);
-	dirToPlayer = glm::normalize(dirToPlayer);
-
-
 	//Player to close detect!
 	if (playerDist < 1.2f)
-		return true;
+		return 1.0f;
 
-	if (glm::dot(dirToPlayer, glm::vec3(0.0f, 0.0f, -1.0f)) > _detectFov)
+	if (glm::dot(dirToPlayer, glm::vec3(0.0f, 0.0f, 1.0f)) > _detectFov)
 	{
-		float playerLight = 1.0f;
 		//Calculate light at position
-		playerLight = glm::min(_player->calcLightOnPosition(), 1.0f);
+		float playerLight = _player->calcLightOnPosition();
+		
 		//Account light for Anti-L Grenade
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()._grenadePositionWhenLanded)) < _player->getGrenadeData().expanding)
 			playerLight *= _player->getGrenadeData().fading;
 
-		//Distance to wall
-		float wallDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight);
-
 		//If player behind wall, not detected
-		if (wallDist < playerDist)
+		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
 		{
-			return false;
+			return 0.0f;
 		}
-
-		bool obscure = true;
-		float objectDist = _currentLevel->getGrid().getDist(pos, dirToPlayer, GUARDVIEWDISTANCE * playerLight, _player->getEyePos(), object, obscure);
-
-		if ((objectDist < playerDist && !obscure) || objectDist > playerDist)
+		else
 		{
-			return true;
+			return playerLight;
 		}
 	}
-	return false;
+	return 0.0f;
 }

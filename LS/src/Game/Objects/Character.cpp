@@ -178,7 +178,7 @@ float Character::calcLightOnPosition()
 		}
 	}
 
-	return (posColor.x + posColor.y + posColor.z + 0.3f);
+	return glm::min(posColor.x + posColor.y + posColor.z + 0.5f, 1.0f);
 }
 
 
