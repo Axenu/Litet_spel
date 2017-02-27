@@ -29,7 +29,7 @@ class Character : public GameObject
 public:
     virtual void onUpdate(float dt);
     void onRender();
-	GrenadeValues getGrenadeData();
+	std::vector<GrenadeValues> getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
 
@@ -41,6 +41,7 @@ public:
 	void testClimb();
 	int* getLootValuePointer();
 
+	int amountOfGrenades();
     Character(glm::vec3 pos, EventManager *manager);
 	Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade *> grenade);
 
@@ -61,6 +62,7 @@ private:
 	glm::vec2 _moveDir;
 	float _camTilt;
 	int _grenadeCount;
+	float _timerForGrenade=6;
 	std::vector<AntiLightGrenade*> _antiLightGrenade;
     float _speed;
     float _isMoving;

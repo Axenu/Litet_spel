@@ -12,8 +12,12 @@ TestGame::~TestGame()
 }
 
 void TestGame::setupRI(RenderInfo &rI) {
-	rI._lightGrenadePos = _player->getGrenadeData()._grenadePositionWhenLanded;
-	rI._lightGrenadeExpansionAndFading = glm::vec2(_player->getGrenadeData().expanding, _player->getGrenadeData().fading);
+	rI._arraysize = _player->amountOfGrenades();
+	for (int i = 0;i< _player->amountOfGrenades();i++)
+		{
+		rI._lightGrenadePos[i] = _player->getGrenadeData()[i]._grenadePositionWhenLanded;
+		rI._lightGrenadeExpansionAndFading[i] = glm::vec2(_player->getGrenadeData()[i].expanding, _player->getGrenadeData()[i].fading);
+	}
 }
 void TestGame::initiate() {
 
