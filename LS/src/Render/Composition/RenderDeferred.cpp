@@ -92,9 +92,13 @@
 
 
 		//GrenadeStuff
-		glm::vec3 antiLightPos = rI._V *  glm::vec4(rI._lightGrenadePos, 1.f);
-		glUniform3f(_lightNade, antiLightPos.x, antiLightPos.y, antiLightPos.z);
-		glUniform2f(_LightNadeExpansionFading, rI._lightGrenadeExpansionAndFading.x, rI._lightGrenadeExpansionAndFading.y);
+		glm::vec3 antiLightPos[4];	//	glm::vec3 antiLightPos[rI._arraysize];
+		for(int i = 0;i<rI._arraysize;i++)
+		{
+		antiLightPos[i] = rI._V *  glm::vec4(rI._lightGrenadePos[i], 1.f);
+		}
+		glUniform3fv(_lightNade,sizeof(antiLightPos), (float*)antiLightPos);
+		glUniform2fv(_LightNadeExpansionFading, sizeof(rI._lightGrenadeExpansionAndFading),(float*)rI._lightGrenadeExpansionAndFading);
 	}
 
 	/* Call on window size change

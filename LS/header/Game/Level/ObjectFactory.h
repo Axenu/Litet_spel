@@ -19,13 +19,20 @@ struct guardData {
 	glm::ivec2 spawnPosition;
 };
 
+struct lootData {
+	std::string modelName;
+	glm::ivec2 pos;
+	glm::vec3 rotation;
+	int value;
+};
+
 /* Factory creating game objects
 */
 class ObjectFactory
 {
 private:
 	/* Resource path */
-	std::string _path;
+	std::string _path, _modelPath;
 	/* The mesh shader of the game.
 	*/
 	DeferredMeshShader _meshShader;
@@ -35,22 +42,23 @@ private:
 	EventManager& _events;
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
-	std::vector<guardData> guardInfo;
 
 public:
-	ObjectFactory(EventManager &events, const std::string &resourcePath = "");
+	ObjectFactory(EventManager &events, const std::string &resourcePath = "", std::string modelPath = "");
 	~ObjectFactory();
 
 	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);
 	Character* createCharacter(glm::ivec2 square, float height);
-	Character* createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade);
+	Character* createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *>grenade);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
-	GameObject* createObject(const std::string &model, glm::ivec2 square);
+	/* Create a scene object
+	model << Model to load
+	*/
+	GameObject* createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
 	PointLightObject* createLight(PointLight light, glm::vec3 position);
-	LootObject* createLoot(const std::string &model, glm::ivec2 square);
+	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
-	void loadSceneFromFile(std::string path);
+	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot);
 	MeshShader& getShader();
-	std::vector<guardData> getGuardsWalkingPoints();
 };

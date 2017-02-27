@@ -44,9 +44,9 @@ private:
 
 	void buildgridarray();
 	void print2darraydata();
-	void loadingBmpPicture(const char* filename, std::vector<glm::ivec2> &lootPlace);
+	void loadingBmpPicture(const char* filename);
 public:
-	Grid(const std::string& level, std::vector<glm::ivec2> &lootPlace);
+	Grid(const std::string& level);
 	~Grid();
 	void generateMesh(Mesh* meshes);
 
@@ -98,5 +98,4 @@ public:
 	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
 	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
 	bool wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity);
-	std::vector<glm::vec3> * getLootLocations();
 };

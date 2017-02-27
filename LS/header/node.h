@@ -60,6 +60,7 @@ public:
     void setScale(float p);
     void setScale(glm::vec3 p);
     void setScale(float x, float y);
+	void setRotEuler(glm::vec3 xyz);
     void rotateX(float f);
     void rotateY(float f);
     void rotateZ(float f);

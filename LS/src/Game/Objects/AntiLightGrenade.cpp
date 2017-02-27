@@ -41,7 +41,7 @@ void AntiLightGrenade::update(float dt)
 		{
 			_grenadeValue._grenadePositionWhenLanded = this->getWorldPos();
 			this->setPosition(-5, 1, -5);
-			QBeenPressed = true;
+	//		QBeenPressed = true;
 			QbeenActivated = false;
 			TheBombHasBeenActivated = true;
 		}

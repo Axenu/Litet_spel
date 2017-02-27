@@ -2,8 +2,8 @@
 
 
 
-ObjectFactory::ObjectFactory(EventManager &events, const std::string &resourcePath)
-	: _path(resourcePath), _meshShader(), _skinnedShader(), _models(),  _events(events)
+ObjectFactory::ObjectFactory(EventManager &events, const std::string &resourcePath, std::string modelPath)
+	: _path(resourcePath), _modelPath(modelPath), _meshShader(), _skinnedShader(), _models(),  _events(events)
 {
 }
 
@@ -44,10 +44,10 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 	return player;
 }
 
-Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade)
+Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events,&grenade);
+	Character* player = new Character(_level->getGrid().getCenter(square), &_events,grenade);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
@@ -62,7 +62,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 {
 	Material mat(&_skinnedShader);
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	Model tmpModel = _models.GetModel(_path + model, mat);
+	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
 	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, &walkingPoints);
 	guard->init();
@@ -76,7 +76,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	Material mat(&_meshShader);
 
 	mat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	Model tmpModel = _models.GetModel(_path + model, mat);
+	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
 	grenade->setLevel(&_level->getGrid());
 	grenade->setScale((float)0.0675);
@@ -85,11 +85,11 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 }
 
 
-GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square)
+GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation)
 {
 	Material mat(&_meshShader);
 	mat.setColor("diffuse", glm::vec4(0.627f, 0.3215f, 0.176f, 1.0f));
-	Model tmpModel = _models.GetModel(_path + model, mat);
+	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
 	object->init();
@@ -97,16 +97,19 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	_level->getGrid().addObject(object, gridType::object);
 	return object;
 }
-LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square)
+LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value)
 {
 	Material tmpMat(&_meshShader);
 	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	tmpMat.setColor("spec", glm::vec4(1.0f));
 	tmpMat.setFloat("shine", 20.0f);
-	Model tmpModel = _models.GetModel(_path + model, &_meshShader);
+	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 
+	object->setValue(value);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
+	object->setRotEuler(rotation);
+	//Add rotation somewhere
 	object->moveY(1.f);
 	object->init();
 	_scene->add(object, false);
@@ -129,52 +132,69 @@ PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
 	return object;
 }
 
-void ObjectFactory::loadSceneFromFile(std::string path)
+void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot)
 {
 	std::ifstream file;
   	file.open(_path + path);
 	std::string line;
 	PointLight l(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
+	glm::vec2 walkP;
 	while (std::getline(file, line))
 	{
 		// std::cout << line << std::endl;
-	    std::istringstream iss(line);
+		std::istringstream iss(line);
 		std::string type;
 		iss >> type;
+
+		//Data items to fill on each line
+		glm::ivec2 square(0);
+		glm::vec3 pos(0.f), rot(0.f);
+		float value = 0.f;
+		std::string modelName;
+		//Switch statement readin next data type
+		while (iss.peek() != EOF)
+		{
+			switch (iss.get())
+			{
+			case 'P': //Position
+				iss >> pos.x >> pos.y >> pos.z;
+				break;
+			case 'R': //Position
+				iss >> rot.x >> rot.y >> rot.z;
+				break;
+			case 'S': //Square
+				iss >> square.x >> square.y;
+				break;
+			case 'M': //Model
+				iss >> modelName;
+				break;
+			case 'V': //Value, custom
+				iss >> value;
+				break;
+			case 'H':
+				iss >> walkP.x >> walkP.y;
+				if (guards.size() > 0)
+					guards.back().walkingPoints.push_back(walkP);
+				break;
+			default:
+				break;
+			}
+		}
 		if (type == "model")
-		{
-			std::string fileName;
-			int x, y;
-			iss >> x >> y >> fileName;
-			createObject(fileName, glm::ivec2(x, y));
-		}
+			createObject(modelName, square, rot);
 		else if (type == "light")
-		{
-			float x, y;
-			iss >> x >> y;
-			createLight(l, glm::vec3(x, 0.5f, y));
-		}
+			createLight(l, pos);
+		else if (type == "loot")
+			loot.push_back({ modelName, square, rot, (int)value });
 		else if (type == "guard")
 		{
-			int x, y;
-			iss >> x >> y;
-			std::vector<glm::vec2> walkingPoints;
-			while (x != -1 && y != -1)
-			{
-				walkingPoints.push_back(glm::vec2(x, y));
-				iss >> x >> y;
-			}
-			iss >> x >> y;
-			guardData data = {
-				walkingPoints,
-				glm::ivec2(x , y)
-			};
-			guardInfo.push_back(data);
+			guards.push_back({ std::vector<glm::vec2>(), square });
 		}
-	    // int a, b;
-	    // if (!(iss >> a >> b)) { break; } // error
+		//else if (type == "path")
+		// int a, b;
+		// if (!(iss >> a >> b)) { break; } // error
 
-	    // process pair (a,b)
+		// process pair (a,b)
 	}
 }
 
@@ -182,7 +202,3 @@ MeshShader& ObjectFactory::getShader() {
 	return _meshShader;
 }
 
-std::vector<guardData> ObjectFactory::getGuardsWalkingPoints()
-{
-	return this->guardInfo;
-}
