@@ -29,14 +29,18 @@ void TestGame::initiate() {
 	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, *grenade);
 	_player = player;
 
-	_factory.loadSceneFromFile("level.txt");
 
-	//Add guards
-	std::vector<guardData> guardsWalkingPoints = _factory.getGuardsWalkingPoints();
-	for (unsigned int i = 0; i < guardsWalkingPoints.size(); i++)
+	std::vector<guardData> guards;
+	std::vector<lootData> loot;
+
+	_factory.loadSceneFromFile("level.txt", guards, loot);
+
+	for (unsigned int i = 0; i < guards.size(); i++)
 	{
-		_factory.createGuard("Character.dae", guardsWalkingPoints[i].spawnPosition, *player, guardsWalkingPoints[i].walkingPoints);
+		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
 	}
+	for (unsigned int i = 0; i < loot.size(); i++)
+		_factory.createLoot(loot[i].modelName, loot[i].pos, loot[i].rotation, loot[i].value);
 }
 
 

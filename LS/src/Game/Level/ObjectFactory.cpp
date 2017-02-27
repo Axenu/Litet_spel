@@ -132,7 +132,7 @@ PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
 	return object;
 }
 
-void ObjectFactory::loadSceneFromFile(std::string path)
+void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot)
 {
 	std::ifstream file;
   	file.open(_path + path);
@@ -173,8 +173,8 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 				break;
 			case 'H':
 				iss >> walkP.x >> walkP.y;
-				if (guardInfo.size() > 0)
-					guardInfo.back().walkingPoints.push_back(walkP);
+				if (guards.size() > 0)
+					guards.back().walkingPoints.push_back(walkP);
 				break;
 			default:
 				break;
@@ -185,10 +185,10 @@ void ObjectFactory::loadSceneFromFile(std::string path)
 		else if (type == "light")
 			createLight(l, pos);
 		else if (type == "loot")
-			createLoot(modelName, square, rot, value);
+			loot.push_back({ modelName, square, rot, (int)value });
 		else if (type == "guard")
 		{
-			guardInfo.push_back({ std::vector<glm::vec2>(), square });
+			guards.push_back({ std::vector<glm::vec2>(), square });
 		}
 		//else if (type == "path")
 		// int a, b;
@@ -202,7 +202,3 @@ MeshShader& ObjectFactory::getShader() {
 	return _meshShader;
 }
 
-std::vector<guardData> ObjectFactory::getGuardsWalkingPoints()
-{
-	return this->guardInfo;
-}

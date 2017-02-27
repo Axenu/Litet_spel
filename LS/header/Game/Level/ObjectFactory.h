@@ -20,6 +20,7 @@ struct guardData {
 };
 
 struct lootData {
+	std::string modelName;
 	glm::ivec2 pos;
 	glm::vec3 rotation;
 	int value;
@@ -41,7 +42,6 @@ private:
 	EventManager& _events;
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
-	std::vector<guardData> guardInfo;
 
 public:
 	ObjectFactory(EventManager &events, const std::string &resourcePath = "", std::string modelPath = "");
@@ -59,7 +59,6 @@ public:
 	PointLightObject* createLight(PointLight light, glm::vec3 position);
 	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
-	void loadSceneFromFile(std::string path);
+	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot);
 	MeshShader& getShader();
-	std::vector<guardData> getGuardsWalkingPoints();
 };
