@@ -11,8 +11,9 @@ uniform sampler2D colBuffer;
 uniform sampler2D norBuffer;
 uniform sampler2D specBuffer;
 uniform sampler2D depthBuffer;
-uniform vec3 viewGrenadePosition[4];
-uniform vec2 GrenadeExpansionFading[4];
+uniform uint GrenadeAmount;
+uniform vec3 viewGrenadePosition[10];
+uniform vec2 GrenadeExpansionFading[10];
 uniform samplerCube shadowMap[8];
 
 //X: 1 / width  Y : 1 / height
@@ -69,7 +70,7 @@ void main () {
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
 
-	for(uint i = 0;i<4;i++)
+	for(uint i = 0;i<GrenadeAmount;i++)
 	ColorOut.xyz=antiLightGrenadeCal(viewGrenadePosition[i],position,color,ColorOut.xyz,GrenadeExpansionFading[i]);
 }
 

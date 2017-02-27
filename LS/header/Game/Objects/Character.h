@@ -10,6 +10,7 @@
 #include "Game/Level/Grid.h"
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
+#include "StaticVars.h"
 
 #define RotationSpeed 0.005f
 

@@ -23,6 +23,7 @@ class RenderDeferred :
 	//AntiLightGrenade
 	GLint _lightNade;
 	GLint _LightNadeExpansionFading;
+	GLint _LightNadeAmount;
 
 protected:
 

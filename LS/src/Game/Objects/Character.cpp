@@ -271,7 +271,7 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		if (event.getAction() == GLFW_PRESS)
 		{
 		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
-			if (_timerForGrenade > 2)
+			if (_timerForGrenade > 0.4)
 			{
 			_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
 			_timerForGrenade = 0;
