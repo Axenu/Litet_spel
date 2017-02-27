@@ -209,6 +209,11 @@ int* Character::getLootValuePointer()
     return &_lootValue;
 }
 
+int* Character::getGrenadeCountPointer()
+{
+	return &_lightGrenadeCount;
+}
+
 #pragma region Events
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -386,7 +391,6 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_isMoving = 0;
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
-	_antiLightGrenade = grenade;
 	_climbing = false;
 	_canClimb = false;
 	_animFirstPhaseTime = 0.0f;
@@ -395,6 +399,8 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_animTime = 0.0f;
 	_animEndTime = 0.0f;
 	_heightDiff = 0.0f;
+	_antiLightGrenade = grenade;
+	_lightGrenadeCount = 3;
 }
 
 Character::Character()

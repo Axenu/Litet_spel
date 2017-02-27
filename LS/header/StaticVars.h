@@ -4,5 +4,8 @@
 namespace sic {
 
 	extern bool CloseWindow;
+	static bool debug = true;
+
+
 
 }

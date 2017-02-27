@@ -25,6 +25,7 @@ public:
 private:
 	int _value;
 };
+
 class Character : public GameObject
 {
 public:
@@ -41,10 +42,11 @@ public:
 	void tryClimb();
 	void testClimb();
 	int* getLootValuePointer();
+	int* getGrenadeCountPointer();
 
 	int amountOfGrenades();
     Character(glm::vec3 pos, EventManager *manager);
-	Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade *> grenade);
+	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
 
     Character();
     virtual ~Character();
@@ -80,4 +82,5 @@ private:
 	float _animTime;
 	float _animEndTime;
 	float _heightDiff;
+	int _lightGrenadeCount = 0;
 };

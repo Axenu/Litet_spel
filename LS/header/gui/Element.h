@@ -11,6 +11,10 @@
 namespace gui
 {
 
+#define PALLETBACKGROUND glm::vec4(0.20703125f, 0.29296875f, 0.28125f, 1.0f)
+#define PALLETPRIMARY glm::vec4(0.4140625f, 0.57421875f, 0.5234375f, 1.0f)
+#define PALLETHIGHLIGHT glm::vec4(0.5859375f, 0.734375f, 0.64453125f, 1.0f)
+
     class Element
     {
     protected:
