@@ -5,9 +5,9 @@
 #define GLM_FORCE_RADIANS
 #include <glm/mat4x4.hpp>
 #include "Render/PointLight.h"
+#include "StaticVars.h"
 /* Forward Declare
 */
-
 /* Frame temporary render information.
  * Used to gather render data before sending it to the render functions.
  */
@@ -25,9 +25,9 @@ public:
 
 	/* Minor
 	*/
-
-	glm::vec3 _lightGrenadePos[4];
-	glm::vec2 _lightGrenadeExpansionAndFading[4];
+	
+	glm::vec3 _lightGrenadePos[GrenadeAmountFromCharacter];
+	glm::vec2 _lightGrenadeExpansionAndFading[GrenadeAmountFromCharacter];
 	int _arraysize=0;
 
 	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);

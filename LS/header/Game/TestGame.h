@@ -8,6 +8,7 @@
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/PointLightObject.h"
+#include "StaticVars.h"
 
 class TestGame
 	: public Game {

@@ -37,6 +37,7 @@
 		//lightGrenade
 		_lightNade = _shader.getUniform("viewGrenadePosition");
 		_LightNadeExpansionFading = _shader.getUniform("GrenadeExpansionFading");
+		_LightNadeAmount = _shader.getUniform("GrenadeAmount");
 
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
@@ -92,13 +93,14 @@
 
 
 		//GrenadeStuff
-		glm::vec3 antiLightPos[4];	//	glm::vec3 antiLightPos[rI._arraysize];
+		glm::vec3 antiLightPos[GrenadeAmountFromCharacter];	//	glm::vec3 antiLightPos[rI._arraysize];
 		for(int i = 0;i<rI._arraysize;i++)
 		{
 		antiLightPos[i] = rI._V *  glm::vec4(rI._lightGrenadePos[i], 1.f);
 		}
 		glUniform3fv(_lightNade,sizeof(antiLightPos), (float*)antiLightPos);
 		glUniform2fv(_LightNadeExpansionFading, sizeof(rI._lightGrenadeExpansionAndFading),(float*)rI._lightGrenadeExpansionAndFading);
+		glUniform1ui(_LightNadeAmount, (float)rI._arraysize);
 	}
 
 	/* Call on window size change
