@@ -21,19 +21,22 @@ Grid::~Grid()
 #pragma region MCode
 
 
-float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
+bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 {
 	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
-	float dist = 0.f;
+	float dist = 0.0f;
 	do
 	{
+		if ((*this)[trav.getSquare()] == gridType::wall)
+			return true;
+		
 		dist += trav.goNext();
 	} while ((*this)[trav.getSquare()] != gridType::wall && dist < viewDist);
 
-	return dist;
+	return false;
 }
 
-float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType, bool &obscure)
+bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType)
 {
 	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
 	float dist = 0.f;
@@ -44,7 +47,6 @@ float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 play
 		if ((*this)[trav.getSquare()] == gridType)
 		{
 			height = std::max(getHeight(trav.getSquare().y, trav.getSquare().x), height);
-			objectDist = dist;
 		}
 
 		dist += trav.goNext();
@@ -53,10 +55,10 @@ float Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 play
 
 	if (height < playerPos.y * 0.8f)
 	{
-		obscure = false;
+		return false;
 	}
 
-	return objectDist;
+	return true;;
 }
 
 #pragma region Grid Square
