@@ -44,7 +44,7 @@ public:
 	int getGrenadeID();
 	int* getLootValuePointer();
 	int* getGrenadeCountPointer();
-
+	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
     Character(glm::vec3 pos, EventManager *manager);
 	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
@@ -85,4 +85,6 @@ private:
 	float _animEndTime;
 	float _heightDiff;
 	int _lightGrenadeCount = 0;
+	float LightGrenadeClock= 0;
+	bool noMoreGrenadeCount;
 };

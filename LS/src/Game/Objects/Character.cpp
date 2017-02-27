@@ -34,6 +34,10 @@ void Character::onUpdate(float dt)
 	{
 		_timerForGrenade = 6;
 	}
+	if (_timerForGrenade < 2 && noMoreGrenadeCount)
+		LightGrenadeClock = 2 - _timerForGrenade;
+	else
+		LightGrenadeClock = 0;
 
 }
 
@@ -219,6 +223,11 @@ int* Character::getGrenadeCountPointer()
 	return &_lightGrenadeCount;
 }
 
+float * Character::getGrenadeCooldownTimer()
+{
+	return &LightGrenadeClock;
+}
+
 #pragma region Events
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -291,7 +300,8 @@ void Character::moveCharacter(const KeyboardEvent& event)
 			_grenadeCount++;
 			if (_grenadeCount == _antiLightGrenade.size())
 			{
-				_grenadeCount = 0;
+			_grenadeCount = 0;
+			noMoreGrenadeCount = false;
 			}
 			}
 			
@@ -411,6 +421,8 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_antiLightGrenade = grenade;
 	_lightGrenadeCount = GrenadeAmountFromCharacter;
 	_grenadeID = -1;
+	_timerForGrenade = 0;
+	noMoreGrenadeCount = true;
 }
 
 Character::Character()

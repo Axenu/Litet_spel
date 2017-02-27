@@ -29,6 +29,7 @@ namespace gui
         Label *_tipDisplay;
         Label *_scoreLabel;
         Label *_grenadeCountLabel;
+		Label *_grenadeCooldownCounter;
         TestGame *_game = nullptr;
         float* _fps;
         bool _isAtExit = false;

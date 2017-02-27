@@ -69,6 +69,11 @@ namespace gui {
         _grenadeCountLabel->setScale(0.75);
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         addChild(_grenadeCountLabel);
+		_grenadeCooldownCounter = new Label(_font);
+		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2"));
+		_grenadeCooldownCounter->setScale(0.4);
+		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f+0.85, 0.9f);
+		addChild(_grenadeCooldownCounter);
         la = new Label(_font);
         la->addStringComponent(new StringComponentString("grenades"));
         la->setScale(0.25);
@@ -117,7 +122,7 @@ namespace gui {
         _scoreLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
         //update grenade label
         _grenadeCountLabel->updateStringComponent(0, new StringComponentInt(_game->getCharacter()->getGrenadeCountPointer()));
-
+		_grenadeCooldownCounter->updateStringComponent(0, new StringComponentFloat(_game->getCharacter()->getGrenadeCooldownTimer()));
         cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
         _manager->execute(event);
 
