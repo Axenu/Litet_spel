@@ -147,7 +147,6 @@ void  KeyFrame<N>::nextKey(unsigned int type, float eT) {
 }
 template<unsigned int N>
 void  KeyFrame<N>::loop(float eT, float animDuration) {
-	int n = N;
 	for (unsigned int i = 0; i < N; i++)
 	{
 		if (_custom[i]) {

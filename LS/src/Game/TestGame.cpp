@@ -36,9 +36,7 @@ void TestGame::initiate() {
 	_factory.loadSceneFromFile("level.txt", guards, loot);
 
 	for (unsigned int i = 0; i < guards.size(); i++)
-	{
 		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
-	}
 	for (unsigned int i = 0; i < loot.size(); i++)
 		_factory.createLoot(loot[i].modelName, loot[i].pos, loot[i].rotation, loot[i].value);
 }
