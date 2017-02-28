@@ -67,8 +67,8 @@ public:
 private:
 	void charKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
-	void charMoveMouse(const MouseMoveEvent& event);
-	void guardVisionMoveMouse(const MouseMoveEvent& event);
+	//void charMoveMouse(const MouseMoveEvent& event);
+	//void guardVisionMoveMouse(const MouseMoveEvent& event);
 	void returnVision();
 	CharState _state;
 	float _height;
