@@ -69,6 +69,7 @@ namespace gui {
         _grenadeCountLabel->setScale(0.75);
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         addChild(_grenadeCountLabel);
+        //TODO
 		_grenadeCooldownCounter = new Label(_font);
 		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2"));
 		_grenadeCooldownCounter->setScale(0.4);
