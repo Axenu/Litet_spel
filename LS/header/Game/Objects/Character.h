@@ -26,10 +26,17 @@ private:
 	int _value;
 };
 
+enum CharState
+{
+	character = 0,
+	guardVision
+};
+
 class Character : public GameObject
 {
 public:
     virtual void onUpdate(float dt);
+	virtual void init();
     void onRender();
 	std::vector<GrenadeValues> getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
@@ -41,12 +48,12 @@ public:
 	void climb(float dT);
 	void tryClimb();
 	void testClimb();
+	bool guardVision();
 	int getGrenadeID();
 	int* getLootValuePointer();
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
-    Character(glm::vec3 pos, EventManager *manager);
 	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
 
     Character();
@@ -55,7 +62,16 @@ public:
 	glm::vec3 getEyePos();
 
 	float calcLightOnPosition();
+
+	float getLightAtPosition();
 private:
+	void charKeyInput(const KeyboardEvent& event);
+	void guardVisionKeyInput(const KeyboardEvent& event);
+	void charMoveMouse(const MouseMoveEvent& event);
+	void guardVisionMoveMouse(const MouseMoveEvent& event);
+	void returnVision();
+	CharState _state;
+	float _height;
 	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;
@@ -76,7 +92,7 @@ private:
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables
 	bool _climbing;
-	bool sneaking;
+	bool _sneaking;
 	bool _canClimb;
 	glm::vec3 _animEndPos;
 	float _animFirstPhaseTime;
@@ -87,4 +103,6 @@ private:
 	int _lightGrenadeCount = 0;
 	float LightGrenadeClock= 0;
 	bool noMoreGrenadeCount;
+	//Light variable
+	float _lightAtPos;
 };

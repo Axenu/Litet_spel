@@ -9,7 +9,7 @@ void Guard::update(float dt)
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-		if (sizeOfVector < 1)
+		if (_walkingPoints.size() == 0)
 			_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
 		else
 			_path = _currentLevel->getGrid().generatePath(start, getNextPosition());
@@ -19,7 +19,6 @@ void Guard::update(float dt)
 	setPosition(pos);
 	face(_path->movingTo());
 	
-	face(_player->getWorldPos());
 	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
 	//Get direction vector and distance to player 
@@ -52,25 +51,15 @@ void Guard::update(float dt)
 glm::vec2 Guard::getNextPosition()
 {
 	_whatPathToLoad += 1;
-	if (_whatPathToLoad > sizeOfVector - 1)
+	if (_whatPathToLoad >= _walkingPoints.size())
 		_whatPathToLoad = 0;
-	return(walkingPointsen[_whatPathToLoad]);
-
-	glm::vec2 test = (*walkingPoints)[_whatPathToLoad];
-	return (*walkingPoints)[_whatPathToLoad];
+	return(_walkingPoints[_whatPathToLoad]);
 }
 
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>* walkingPoints) :
-	GameObject(m), _player(player), _eventManager(event), _currentLevel(level)
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>& walkingPoints) :
+	GameObject(m), _player(player), _eventManager(event), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
 {
-	this->walkingPoints = walkingPoints;
-	sizeOfVector = walkingPoints->size();
 	_whatPathToLoad = 0;
-	
-	for (unsigned int i = 0; i < sizeOfVector; i++)
-	{
-		walkingPointsen.push_back((*walkingPoints)[i]);
-	}
 
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
@@ -100,14 +89,14 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 
 	if (glm::dot(dirToPlayer, glm::vec3(0.0f, 0.0f, 1.0f)) > _detectFov)
 	{
-		//Calculate light at position
-		float playerLight = _player->calcLightOnPosition();
+		//Get light at position
+		float playerLight = _player->getLightAtPosition();
 		
 		//Account light for Anti-L Grenade
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()[0]._grenadePositionWhenLanded)) < _player->getGrenadeData()[0].expanding)
 			playerLight *= _player->getGrenadeData()[0].fading;
 
-		//If player behind wall, not detected
+		//If player behind wall or obscuring object, not detected
 		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
 		{
 			return 0.0f;

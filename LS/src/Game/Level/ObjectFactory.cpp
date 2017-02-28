@@ -48,18 +48,6 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 	_scene = scene.get();
 	return scene;
 }
-Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
-{
-
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events);
-	player->setLevel(&_level->getGrid());
-	player->setScene(_scene);
-	player->init();
-	_scene->getCamera().setParent(player);
-	_scene->getCamera().setPositionY(height);
-	_scene->add(player, true);
-	return player;
-}
 
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
 {
@@ -81,7 +69,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, &walkingPoints);
+	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, walkingPoints);
 	guard->init();
 	_scene->add(guard, true);
 

@@ -27,15 +27,13 @@ private:
 	//Field of view in cosine
 	float _detectFov;
 	Level *_currentLevel;
-	unsigned int sizeOfVector;
 	float _currentGridSpace;
 	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);
-	std::vector<glm::vec2>* walkingPoints;
-	std::vector<glm::vec2> walkingPointsen;
+	std::vector<glm::vec2> _walkingPoints;
 public:
 	virtual ~Guard();
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
-	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>* walkingPoints);
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>& walkingPoints);
 };
 
