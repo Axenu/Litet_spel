@@ -92,7 +92,7 @@ void Character::climb(float dT)
 		{
 			float yDist = _animEndPos.y - _position.y;
 			float timeDiff = _animSecondPhaseTime - _animTime;
-			if (timeDiff > 0.00001) //Check so animation phase is not about to end.
+			if (timeDiff > 0.00001f) //Check so animation phase is not about to end.
 			{
 				float yPos = dT * yDist / timeDiff;
 				moveY(yPos);
@@ -208,7 +208,7 @@ std::vector<GrenadeValues> Character::getGrenadeData()
 //	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
 	std::vector<GrenadeValues> _grenadevalues;
 	_grenadevalues.clear();
-	for (int i = 0; i < _antiLightGrenade.size(); i++)
+	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
 		_grenadevalues.push_back( _antiLightGrenade[i]->getgrenadeData());
 	return _grenadevalues;
 }
@@ -292,19 +292,21 @@ void Character::moveCharacter(const KeyboardEvent& event)
 		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
 			if (_timerForGrenade > 2)
 			{
-			_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
-			_timerForGrenade = 0;
-			if(_lightGrenadeCount>0)
-			_lightGrenadeCount--;
-			_grenadeID++;
-			_grenadeCount++;
-			if (_grenadeCount == _antiLightGrenade.size())
-			{
-			_grenadeCount = 0;
-			noMoreGrenadeCount = false;
+				_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
+				_timerForGrenade = 0;
+				if(_lightGrenadeCount > 0)
+				{
+					_lightGrenadeCount--;
+				}
+				_grenadeID++;
+				_grenadeCount++;
+				if (_grenadeCount == (int)_antiLightGrenade.size())
+				{
+					_grenadeCount = 0;
+					noMoreGrenadeCount = false;
+				}
 			}
-			}
-			
+
 		}
 	}
 	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
@@ -389,19 +391,6 @@ int Character::amountOfGrenades()
 Character::Character(glm::vec3 pos, EventManager *manager) :
 	GameObject(), _eventManager(manager)
 {
-    _lootValue = 0;
-	setPosition(pos);
-	_velocity = glm::vec3(0, 0, 0);
-	_camTilt = 0;
-	_speed = 2;
-	_isMoving = 0;
-    _eventManager->listen(this, &Character::moveCharacter);
-    _eventManager->listen(this, &Character::moveMouse);
-}
-
-Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade*> grenade) :
-	GameObject(), _eventManager(manager)
-{
 	_lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
@@ -418,6 +407,11 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_animTime = 0.0f;
 	_animEndTime = 0.0f;
 	_heightDiff = 0.0f;
+}
+
+Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade*> grenade) :
+	Character(pos, manager)
+{
 	_antiLightGrenade = grenade;
 	_lightGrenadeCount = GrenadeAmountFromCharacter;
 	_grenadeID = -1;

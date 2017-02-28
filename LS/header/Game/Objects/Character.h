@@ -66,7 +66,7 @@ private:
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
 	float _camTilt;
-	int _grenadeCount;
+	int _grenadeCount=0;
 	float _timerForGrenade=6;
 	std::vector<AntiLightGrenade*> _antiLightGrenade;
     float _speed;

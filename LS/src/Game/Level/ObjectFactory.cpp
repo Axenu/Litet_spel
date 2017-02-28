@@ -29,7 +29,7 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 	std::unique_ptr<Scene> scene(new Scene(ptr, _level->getAABB()));
 	_level->setScene(scene.get());
 	_scene = scene.get();
-	return std::move(scene);
+	return scene;
 }
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 {
@@ -201,4 +201,3 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 MeshShader& ObjectFactory::getShader() {
 	return _meshShader;
 }
-

@@ -37,7 +37,7 @@
 		//lightGrenade
 		_lightNade = _shader.getUniform("viewGrenadePosition");
 		_LightNadeExpansionFading = _shader.getUniform("GrenadeExpansionFading");
-		
+
 
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
@@ -105,10 +105,10 @@
 		ExpansionAndFading[i] = rI._lightGrenadeExpansionAndFading[rI._grenadeID - i];
 		}
 
-	
+
 		glUniform3fv(_lightNade,sizeof(antiLightPos), (float*)antiLightPos);
 		glUniform2fv(_LightNadeExpansionFading, sizeof(ExpansionAndFading),(float*)ExpansionAndFading);
-	
+
 	}
 
 	/* Call on window size change
@@ -119,7 +119,7 @@
 		glUniform2f(_screenInv, 1.0f / wWidth, 1.0f / wHeight);
 		glUniform1f(_near, camera.getNearPlane());
 		glUniform1f(_far, camera.getFarPlane());
-		float halfTanFowy = (float)std::tan(camera.getFieldOfView() * 0.5);
+		float halfTanFowy = (float)std::tan(camera.getFieldOfView() * 0.5f);
 		glUniform1f(_top, halfTanFowy);
 		glUniform1f(_right, halfTanFowy * camera.getAspectRatio());
 	}

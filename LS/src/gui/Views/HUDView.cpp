@@ -72,7 +72,7 @@ namespace gui {
 		_grenadeCooldownCounter = new Label(_font);
 		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2"));
 		_grenadeCooldownCounter->setScale(0.4);
-		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f+0.85, 0.9f);
+		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f+0.85f, 0.9f);
 		addChild(_grenadeCooldownCounter);
         la = new Label(_font);
         la->addStringComponent(new StringComponentString("grenades"));

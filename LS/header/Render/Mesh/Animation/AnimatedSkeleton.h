@@ -1,5 +1,6 @@
 #pragma once
-#include<vector>
+#include <vector>
+#include <math.h>
 #include "node.h"
 #include "Bone.h"
 #include "Skeleton.h"
@@ -22,7 +23,7 @@ private:
 	/* Transformation from rest pose -> world space.
 	*/
 	std::vector<glm::mat4> _skinTransform;
-	
+
 	/* Recalculates the end time when animation is looped */
 	void loopRefit();
 public:
@@ -36,4 +37,3 @@ public:
 	const std::vector<glm::mat4>& getSkin() const;
 	unsigned int boneCount() const;
 };
-
