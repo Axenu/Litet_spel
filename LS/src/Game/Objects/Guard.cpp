@@ -19,7 +19,6 @@ void Guard::update(float dt)
 	setPosition(pos);
 	face(_path->movingTo());
 	
-	face(_player->getWorldPos());
 	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
 	//Get direction vector and distance to player 
