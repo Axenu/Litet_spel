@@ -47,6 +47,7 @@ public:
 	void climb(float dT);
 	void tryClimb();
 	void testClimb();
+	bool guardVision();
 	int getGrenadeID();
 	int* getLootValuePointer();
 	int* getGrenadeCountPointer();

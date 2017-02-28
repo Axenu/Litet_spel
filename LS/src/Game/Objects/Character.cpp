@@ -1,6 +1,7 @@
 #include "Game/Objects/Character.h"
 #include "StaticVars.h"
 #include "Game/Objects/CharacterEvents.h"
+#include "Game/Objects/Guard.h"
 
 void Character::onUpdate(float dt)
 {
@@ -165,6 +166,20 @@ void Character::testClimb()
 	}
 }
 
+bool Character::guardVision()
+{
+	Guard* gPtr = dynamic_cast<Guard*>(_currentScene->pick(10.0f));
+	if (gPtr)
+	{
+		_currentScene->getCamera().setParent(gPtr);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 int Character::getGrenadeID()
 {
 	return _grenadeID;
@@ -303,6 +318,10 @@ void Character::charKeyInput(const KeyboardEvent & event)
 	else if (event.getKey() == GLFW_KEY_T)
 	{
 		std::cout << "X: " << getEyePos().x << " Y: " << getEyePos().z << std::endl;
+	}
+	else if (event.getKey() == GLFW_KEY_R)
+	{
+		//guardVision();
 	}
 }
 
