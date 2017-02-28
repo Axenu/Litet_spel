@@ -35,6 +35,7 @@ void Character::onUpdate(float dt)
 		_timerForGrenade = 6;
 	}
 
+	_lightAtPos = calcLightOnPosition();
 }
 
 void Character::move(float dt) {
@@ -162,7 +163,6 @@ void Character::testClimb()
 
 float Character::calcLightOnPosition()
 {
-	float wallDist = 0.0f;
 	glm::vec4 posColor(0.0f);
 	glm::vec3 pos(this->getWorldPos());
 	AABB playerBox(pos, 0.5f);
@@ -172,20 +172,20 @@ float Character::calcLightOnPosition()
 	{
 		glm::vec3 lightRay = lights[i]->getLightInfo()._pos - pos;
 
-		wallDist = _currentLevel->getDist(lights[i]->getLightInfo()._pos, lightRay, lights[i]->getLightInfo()._fadeDist);
+		lightRay = glm::normalize(lightRay);
+		float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
+		float distance = glm::length(lightRay);
+		float att = glm::max(1.0f - (distance / lights[i]->getLightInfo()._fadeDist), 0.0f);
 
-		if (wallDist > glm::length(lightRay))
-		{
-			lightRay = glm::normalize(lightRay);
-			float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
-			float distance = glm::length(lightRay);
-			float att = glm::max(1.0f - (distance / lights[i]->getLightInfo()._fadeDist), 0.0f);
-
-			posColor += lights[i]->getLightInfo()._diffuse * diff * att;
-		}
+		posColor += lights[i]->getLightInfo()._diffuse * diff * att;
 	}
 
-	return glm::min(posColor.x + posColor.y + posColor.z + 0.5f, 1.0f);
+	return glm::min(posColor.x + (posColor.y * posColor.y) + (posColor.z * posColor.z * posColor.z) + 0.3f, 1.0f);
+}
+
+float Character::getLightAtPosition()
+{
+	return calcLightOnPosition();
 }
 
 
@@ -373,6 +373,7 @@ Character::Character(glm::vec3 pos, EventManager *manager) :
 	_isMoving = 0;
     _eventManager->listen(this, &Character::moveCharacter);
     _eventManager->listen(this, &Character::moveMouse);
+	_lightAtPos = 1.0f;
 }
 
 Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade*> grenade) :

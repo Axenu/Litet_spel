@@ -52,6 +52,8 @@ public:
 	glm::vec3 getEyePos();
 
 	float calcLightOnPosition();
+
+	float getLightAtPosition();
 private:
 	Grid *_currentLevel;
 	Scene *_currentScene;
@@ -80,4 +82,6 @@ private:
 	float _animTime;
 	float _animEndTime;
 	float _heightDiff;
+	//Light variable
+	float _lightAtPos;
 };
