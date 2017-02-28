@@ -43,6 +43,12 @@ void Character::onUpdate(float dt)
 	_lightAtPos = calcLightOnPosition();
 }
 
+void Character::init()
+{
+	GameObject::init();
+	_height = getEyePos().y;
+}
+
 void Character::move(float dt) {
 
 	if (_moveDir.x != 0 || _moveDir.y != 0)
@@ -172,6 +178,8 @@ bool Character::guardVision()
 	if (gPtr)
 	{
 		_currentScene->getCamera().setParent(gPtr);
+		_currentScene->getCamera().setPosition(glm::vec3(0.0f, 1.4f, 0.12f));
+		_state = CharState::guardVision;
 		return true;
 	}
 	else
@@ -296,18 +304,18 @@ void Character::charKeyInput(const KeyboardEvent & event)
 
 		if (event.getAction() == GLFW_PRESS)
 		{
-			if(sneaking == true)
+			if(_sneaking == true)
 			{
 				_currentScene->getCamera().moveY(0.5);
 				_speed = _speed + 1;
-				sneaking = false;
+				_sneaking = false;
 			}
 			else
 			{
 
 				_currentScene->getCamera().moveY(-0.5);
 				_speed = _speed - 1;
-				sneaking = true;
+				_sneaking = true;
 			}
 		}
 	}
@@ -321,13 +329,36 @@ void Character::charKeyInput(const KeyboardEvent & event)
 	}
 	else if (event.getKey() == GLFW_KEY_R)
 	{
-		//guardVision();
+		if (event.getAction() == GLFW_PRESS)
+		{
+		//	guardVision();
+		}
 	}
 }
 
 void Character::guardVisionKeyInput(const KeyboardEvent & event)
 {
+	if (event.getKey() == GLFW_KEY_R)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			guardVision();
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_F)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			returnVision();
+		}
+	}
+}
 
+void Character::returnVision()
+{
+	_currentScene->getCamera().setParent(this);
+	_currentScene->getCamera().setPositionY(_height);
+	_state = CharState::character;
 }
 
 

@@ -36,6 +36,7 @@ class Character : public GameObject
 {
 public:
     virtual void onUpdate(float dt);
+	virtual void init();
     void onRender();
 	std::vector<GrenadeValues> getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
@@ -66,7 +67,11 @@ public:
 private:
 	void charKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
+	void charMoveMouse(const MouseMoveEvent& event);
+	void guardVisionMoveMouse(const MouseMoveEvent& event);
+	void returnVision();
 	CharState _state;
+	float _height;
 	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;
@@ -87,7 +92,7 @@ private:
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables
 	bool _climbing;
-	bool sneaking;
+	bool _sneaking;
 	bool _canClimb;
 	glm::vec3 _animEndPos;
 	float _animFirstPhaseTime;
