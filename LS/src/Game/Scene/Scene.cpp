@@ -165,7 +165,7 @@ int Scene::loot(float pickDist)
 		}
 	}
 	//Sorting the lists with closest to camera first
-	int swapIndice;
+	unsigned int swapIndice;
 	for (unsigned int i = 0; i < distance.size(); i++)
 	{
 		testDist = distance[i];

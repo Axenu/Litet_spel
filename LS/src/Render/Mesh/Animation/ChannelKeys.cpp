@@ -3,7 +3,7 @@
 #pragma region Channel Key
 
 ChannelKey::ChannelKey()
-	: _time(0.f), _value(nullptr) 
+	: _time(0.f), _value(nullptr)
 {
 }
 ChannelKey::ChannelKey(float time, float* value)
@@ -54,7 +54,7 @@ void ChannelKey::set(float time, glm::quat value) {
 
 ChannelMemoryKey::ChannelMemoryKey()
 	: ChannelKey()
-{	
+{
 }
 ChannelMemoryKey::ChannelMemoryKey(unsigned int size)
 	: ChannelKey(0.f, new float[size]), _size(size)
@@ -90,7 +90,7 @@ ChannelMemoryKey& ChannelMemoryKey::operator= (const ChannelMemoryKey &key) {
 void ChannelMemoryKey::set(const ChannelKey& key, unsigned int copyCount) {
 	_time = key._time;
 	//Copy value
-	for (int i = 0; i < copyCount; i++)
+	for (unsigned int i = 0; i < copyCount; i++)
 		_value[i] = key._value[i];
 	//memcpy(_value, key._value, sizeof(float) * (copyCount = copyCount < _size ? copyCount : _size));
 }

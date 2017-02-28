@@ -12,6 +12,8 @@
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
 #include "gui/Views/HUDView.h"
+#include "staticVars.h"
+#include "gui/ProgressBar.h"
 
 namespace gui
 {
@@ -20,9 +22,11 @@ namespace gui
     {
     private:
         EventManager* _manager;
-        gui::Font *_font;
-        gui::Button* _quitButton;
+        gui::Font *_font = nullptr;
         gui::Button* _startButton;
+        gui::Button* _settingsButton;
+        gui::Button* _creditsButton;
+        gui::Button* _quitButton;
         float* _fps;
 
     public:

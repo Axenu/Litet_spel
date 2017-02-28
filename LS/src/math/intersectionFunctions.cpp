@@ -223,7 +223,7 @@ PlaneResult BBPlaneTest(glm::vec3 BBMin, glm::vec3 BBMax, glm::vec3 pNormal, flo
 	h.y = (BBMax.y - BBMin.y) / 2.0f;
 	h.z = (BBMax.z - BBMin.z) / 2.0f;
 
-	float e = h.x*fabs(pNormal.x) + h.y*fabs(pNormal.y) + h.z*fabs(pNormal.z);
+	float e = h.x*std::abs(pNormal.x) + h.y*std::abs(pNormal.y) + h.z*std::abs(pNormal.z);
 
 	float s = c.x*pNormal.x + c.y*pNormal.y + c.z*pNormal.z + pDistance;
 

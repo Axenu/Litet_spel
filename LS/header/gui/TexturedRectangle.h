@@ -20,9 +20,9 @@ namespace gui
         glm::vec4 _color;
 
         //GL stuff
-        GLint _positionUniform;
-        GLint _colorUniform;;
-        GLint _sizeUniform;
+        GLint _positionZUniform;
+        GLint _colorUniform;
+        GLint _modelMatrixUniform;
         GLint _textureUniform;
         GLuint _texture;
         gl::VAData _VA;
@@ -36,9 +36,9 @@ namespace gui
         TexturedRectangle(float width, float height, std::string path);
         ~TexturedRectangle();
 
-        void render();
+        void onRender();
 
-        void update(float dt);
+        void onUpdate(float dt);
 
     };
 

@@ -29,6 +29,7 @@ public:
 	glm::vec3 _lightGrenadePos[GrenadeAmountFromCharacter];
 	glm::vec2 _lightGrenadeExpansionAndFading[GrenadeAmountFromCharacter];
 	int _arraysize=0;
+	int _grenadeID = 0;
 
 	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);
 	~RenderInfo();

@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\gui\ProgressBar.cpp" />
     <ClCompile Include="src\math\GridTraveler.cpp" />
     <ClCompile Include="src\math\AARect.cpp" />
     <ClCompile Include="src\math\MathFunctions.cpp" />
@@ -239,6 +240,7 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\gui\ProgressBar.h" />
     <ClInclude Include="header\math\GridTraveler.h" />
     <ClInclude Include="header\math\AARect.h" />
     <ClInclude Include="header\Game\Level\Path.h" />

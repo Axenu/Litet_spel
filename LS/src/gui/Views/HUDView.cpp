@@ -7,33 +7,78 @@ namespace gui {
         _name = "HUDView";
 
         _font = new gui::Font("Resources/fonts/arial");
-        gui::Label *l = new gui::Label(_font);
-        l->addStringComponent(new StringComponentString("FPS: "));
-        l->addStringComponent(new StringComponentFloat(_fps));
-        l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
-        l->setScale(0.5);
-        addChild(l);
+        // gui::Label *l = new gui::Label(_font);
+        // l->addStringComponent(new StringComponentString("FPS: "));
+        // l->addStringComponent(new StringComponentFloat(_fps));
+        // l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
+        // l->setScale(0.5);
+        // addChild(l);
 
         _tipDisplay = new gui::Label(_font);
         _tipDisplay->addStringComponent(new StringComponentString("Temp string"));
-        // _tipDisplay->addStringComponent(new StringComponentFloat(_fps));
         _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
         _tipDisplay->setScale(0.5);
         _tipDisplay->deactivate();
         addChild(_tipDisplay);
 
+        //aim
         gui::Rectangle *rect = new Rectangle(0.015f, 0.02f);
         rect->setPosition(-0.0075f, -0.01f);
         glm::vec4 color(0, 0, 0, 1);
+        rect->setColor(color);
+        addChild(rect);
+        rect = new Rectangle(0.5f, 0.15f);
+        rect->setPosition(-1.f, 0.85f);
+        color = PALLETPRIMARY;
+        color.w = 0.6f;
         rect->setColor(color);
         addChild(rect);
 
         _scoreLabel= new gui::Label(_font);
         _scoreLabel->addStringComponent(new StringComponentString("Score: "));
         _scoreLabel->addStringComponent(new StringComponentString(""));
-        _scoreLabel->setPosition(-1.0f, 0.85f-l->getSize().y*0.5f);
+        _scoreLabel->setPosition(-0.98f, 0.97f-_scoreLabel->getSize().y*0.5f);
         _scoreLabel->setScale(0.5);
+        _scoreLabel->setZ(2);
         addChild(_scoreLabel);
+
+        ProgressBar *pb = new ProgressBar(0.5f, 0.1f);
+        pb->setPrimaryColor(PALLETPRIMARY);
+        pb->setSecondaryColor(PALLETHIGHLIGHT);
+        pb->setPosition(0.1, -0.95);
+        pb->setInverted(true);
+        addChild(pb);
+        pb = new ProgressBar(0.5f, 0.1f);
+        pb->setPrimaryColor(PALLETPRIMARY);
+        pb->setSecondaryColor(PALLETHIGHLIGHT);
+        pb->setPosition(-0.6, -0.95);
+        addChild(pb);
+
+        Label *la = new Label(_font);
+        la->addStringComponent(new StringComponentString("light:"));
+        la->setScale(0.25);
+        la->setPosition(-0.6, -0.83f);
+        addChild(la);
+        la = new Label(_font);
+        la->addStringComponent(new StringComponentString("sound:"));
+        la->setScale(0.25);
+        la->setPosition(0.6f - la->getTextWidth(), -0.83f);
+        addChild(la);
+        _grenadeCountLabel = new Label(_font);
+        _grenadeCountLabel->addStringComponent(new StringComponentString("2"));
+        _grenadeCountLabel->setScale(0.75);
+        _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
+        addChild(_grenadeCountLabel);
+		_grenadeCooldownCounter = new Label(_font);
+		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2"));
+		_grenadeCooldownCounter->setScale(0.4);
+		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f+0.85f, 0.9f);
+		addChild(_grenadeCooldownCounter);
+        la = new Label(_font);
+        la->addStringComponent(new StringComponentString("grenades"));
+        la->setScale(0.25);
+        la->setPosition(0 - la->getTextWidth()*0.5f, -0.98f);
+        addChild(la);
 
         _manager->listen(this, &HUDView::gameStarted);
         _manager->listen(this, &HUDView::gameOver);
@@ -73,9 +118,11 @@ namespace gui {
         /* Load game
     	*/
     	_game->initiate();
-        //Update score ui
+        //Update score label
         _scoreLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
-
+        //update grenade label
+        _grenadeCountLabel->updateStringComponent(0, new StringComponentInt(_game->getCharacter()->getGrenadeCountPointer()));
+		_grenadeCooldownCounter->updateStringComponent(0, new StringComponentFloat(_game->getCharacter()->getGrenadeCooldownTimer()));
         cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
         _manager->execute(event);
 
@@ -94,6 +141,8 @@ namespace gui {
         }
         view->setScore(*_game->getCharacter()->getLootValuePointer());
         view->updateText(event);
+        delete _game;
+        _game = nullptr;
     }
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {

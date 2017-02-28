@@ -29,30 +29,59 @@ namespace gui
         _name = "MainMenuView";
 
         _font = new gui::Font("Resources/fonts/arial");
-        gui::Label *l = new gui::Label(_font);
-        l->addStringComponent(new StringComponentString("FPS: "));
-        l->addStringComponent(new StringComponentFloat(_fps));
-        l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
-        l->setScale(0.5);
-        addChild(l);
+        if (sic::debug)
+        {
+            gui::Label *l = new gui::Label(_font);
+            l->addStringComponent(new StringComponentString("FPS: "));
+            l->addStringComponent(new StringComponentFloat(_fps));
+            l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
+            l->setScale(0.5);
+            addChild(l);
+        }
 
-        _quitButton = new gui::Button();
+        _startButton = new gui::Button(1.5f, 0.4f);
+        _startButton->addStringComponent(new StringComponentString("Start game"));
+    	_startButton->setPosition(-_startButton->getSize().x*0.25f, 0.4f);
+        _startButton->setPrimaryColor(PALLETPRIMARY);
+        _startButton->setSecondaryColor(PALLETHIGHLIGHT);
+        _startButton->listen(this, &MainMenuView::StartGame);
+        _startButton->setScale(0.5,0.5);
+        addChild(_startButton);
+
+        _settingsButton = new gui::Button(1.5f, 0.4f);
+        _settingsButton->addStringComponent(new StringComponentString("Settings"));
+    	_settingsButton->setPosition(-_startButton->getSize().x*0.25f, 0.2f);
+        _settingsButton->setPrimaryColor(PALLETPRIMARY);
+        _settingsButton->setSecondaryColor(PALLETHIGHLIGHT);
+        // _startButton->listen(this, &MainMenuView::StartGame);
+        _settingsButton->setScale(0.5,0.5);
+        addChild(_settingsButton);
+
+        _creditsButton = new gui::Button(1.5f, 0.4f);
+        _creditsButton->addStringComponent(new StringComponentString("Credits"));
+    	_creditsButton->setPosition(-_startButton->getSize().x*0.25f, 0.0f);
+        _creditsButton->setPrimaryColor(PALLETPRIMARY);
+        _creditsButton->setSecondaryColor(PALLETHIGHLIGHT);
+        // _startButton->listen(this, &MainMenuView::StartGame);
+        _creditsButton->setScale(0.5,0.5);
+        addChild(_creditsButton);
+
+        _quitButton = new gui::Button(1.5f, 0.4f);
         _quitButton->addStringComponent(new StringComponentString("Quit"));
-    	_quitButton->setPosition(-_quitButton->getSize().x*0.25f, 0.0f);
+    	_quitButton->setPosition(-_quitButton->getSize().x*0.25f, -0.2f);
+        _quitButton->setPrimaryColor(PALLETPRIMARY);
+        _quitButton->setSecondaryColor(PALLETHIGHLIGHT);
         _quitButton->listen(this, &MainMenuView::QuitGame);
         _quitButton->setScale(0.5,0.5);
         addChild(_quitButton);
 
-        _startButton = new gui::Button();
-        _startButton->addStringComponent(new StringComponentString("Start game"));
-    	_startButton->setPosition(-_startButton->getSize().x*0.25f, 0.4f);
-        _startButton->listen(this, &MainMenuView::StartGame);
-        _startButton->setScale(0.5,0.5);
-        addChild(_startButton);
     }
     MainMenuView::~MainMenuView()
     {
-        delete _font;
+        if (_font)
+        {
+            delete _font;
+        }
         // std::cout << "gui scene destructor" << std::endl;
     }
     void MainMenuView::onRender()

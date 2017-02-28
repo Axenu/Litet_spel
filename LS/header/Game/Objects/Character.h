@@ -25,6 +25,7 @@ public:
 private:
 	int _value;
 };
+
 class Character : public GameObject
 {
 public:
@@ -40,11 +41,13 @@ public:
 	void climb(float dT);
 	void tryClimb();
 	void testClimb();
+	int getGrenadeID();
 	int* getLootValuePointer();
-
+	int* getGrenadeCountPointer();
+	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
     Character(glm::vec3 pos, EventManager *manager);
-	Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade *> grenade);
+	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
 
     Character();
     virtual ~Character();
@@ -55,6 +58,7 @@ public:
 
 	float getLightAtPosition();
 private:
+	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
@@ -64,7 +68,7 @@ private:
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
 	float _camTilt;
-	int _grenadeCount;
+	int _grenadeCount=0;
 	float _timerForGrenade=6;
 	std::vector<AntiLightGrenade*> _antiLightGrenade;
     float _speed;
@@ -82,6 +86,9 @@ private:
 	float _animTime;
 	float _animEndTime;
 	float _heightDiff;
+	int _lightGrenadeCount = 0;
+	float LightGrenadeClock= 0;
+	bool noMoreGrenadeCount;
 	//Light variable
 	float _lightAtPos;
 };
