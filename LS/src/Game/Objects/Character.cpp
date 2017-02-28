@@ -388,21 +388,7 @@ int Character::amountOfGrenades()
 	return _antiLightGrenade.size();
 }
 
-Character::Character(glm::vec3 pos, EventManager *manager) :
-	GameObject(), _eventManager(manager)
-{
-    _lootValue = 0;
-	setPosition(pos);
-	_velocity = glm::vec3(0, 0, 0);
-	_camTilt = 0;
-	_speed = 2;
-	_isMoving = 0;
-    _eventManager->listen(this, &Character::moveCharacter);
-    _eventManager->listen(this, &Character::moveMouse);
-	_lightAtPos = 1.0f;
-}
-
-Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade*> grenade) :
+Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade) :
 	GameObject(), _eventManager(manager)
 {
 	_lootValue = 0;
@@ -426,6 +412,7 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_grenadeID = -1;
 	_timerForGrenade = 0;
 	noMoreGrenadeCount = true;
+	_lightAtPos = 1.0f;
 }
 
 Character::Character()
