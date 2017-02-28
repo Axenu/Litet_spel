@@ -421,11 +421,6 @@ Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightG
 	_animTime = 0.0f;
 	_animEndTime = 0.0f;
 	_heightDiff = 0.0f;
-}
-
-Character::Character(glm::vec3 pos, EventManager *manager,std::vector<AntiLightGrenade*> grenade) :
-	Character(pos, manager)
-{
 	_antiLightGrenade = grenade;
 	_lightGrenadeCount = GrenadeAmountFromCharacter;
 	_grenadeID = -1;
