@@ -14,15 +14,32 @@
 #include "Game/Objects/AntiLightGrenade.h"
 
 
+struct worldData {
+	worldData(glm::ivec2 pos, glm::vec3 rotation)
+	{
+		this->pos = pos;
+		this->rotation = rotation;
+	}
+	worldData() {};
+	glm::ivec2 pos;
+	glm::vec3 rotation;
+};
+
 struct guardData {
 	std::vector<glm::vec2> walkingPoints;
 	glm::ivec2 spawnPosition;
 };
 
-struct lootData {
+struct lootData : worldData {
+	lootData() {};
+	lootData(glm::ivec2 pos, glm::vec3 rotation, std::string modelName, int value)
+	{
+		this->pos = pos;
+		this->rotation = rotation;
+		this->modelName = modelName;
+		this->value = value;
+	};
 	std::string modelName;
-	glm::ivec2 pos;
-	glm::vec3 rotation;
 	int value;
 };
 
@@ -42,6 +59,7 @@ private:
 	EventManager& _events;
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
+	glm::vec3 calcRot(glm::ivec2 square);
 
 public:
 	ObjectFactory(EventManager &events, const std::string &resourcePath = "", std::string modelPath = "");
@@ -59,6 +77,6 @@ public:
 	PointLightObject* createLight(PointLight light, glm::vec3 position);
 	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
-	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot);
+	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<worldData> &doorList);
 	MeshShader& getShader();
 };

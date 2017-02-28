@@ -45,10 +45,13 @@ private:
 	void buildgridarray();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
+	std::vector<glm::ivec2> _windowData;
 public:
 	Grid(const std::string& level);
 	~Grid();
-	void generateMesh(Mesh* meshes);
+	void generateMesh(Mesh* meshes, float windowMin, float windowMax, float windowDepth);
+	void addQuad(std::vector<glm::vec3> &positionList, std::vector<glm::vec3> &normalList, std::vector<GLuint> &indicesList, GLint &k, glm::vec3 quadMin, glm::vec3 quadMax, glm::vec3 upVector);
+	std::vector<glm::ivec2> getWindowData();
 
 	/* Get height size of grid in squares */
 	int getHeight();

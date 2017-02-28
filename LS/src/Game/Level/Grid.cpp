@@ -368,6 +368,10 @@ void Grid::loadingBmpPicture(const char* filename)
 				glm::vec3 tmpVec((realj * GRIDSPACE + 0.5f * GRIDSPACE), 0.0f, (((height - 1 - i) * GRIDSPACE) + 0.5f * GRIDSPACE));
 				_twodArray[height - 1 - i][realj].type = object;
 			}
+			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 255, 0))
+			{
+				_twodArray[height - 1 - i][realj].type = window;
+			}
 			else
 			{
 				std::cout << "error" << std::endl;
@@ -380,7 +384,7 @@ void Grid::loadingBmpPicture(const char* filename)
 	fclose(f);
 }
 
-void Grid::generateMesh(Mesh* meshes)
+void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float windowDepth)
 {
 	std::vector<glm::vec3> position;
 	std::vector<glm::vec3> normal;
@@ -449,7 +453,7 @@ void Grid::generateMesh(Mesh* meshes)
 	{
 		for (int i = 0; i < _widthLength; i++)
 		{
-			if (_twodArray[j][i].type != wall)
+			if (_twodArray[j][i].type != wall && _twodArray[j][i].type != window)
 			{
 				if (j != 0)
 				{
@@ -457,10 +461,10 @@ void Grid::generateMesh(Mesh* meshes)
 					{
 						// Positions
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
-						position.push_back(glm::vec3(i      * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
-						position.push_back(glm::vec3(i      * GRIDSPACE, 0.f, j * GRIDSPACE));
-						position.push_back(glm::vec3(i      * GRIDSPACE, 0.f, j * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f, j * GRIDSPACE));
+						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
+						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , j * GRIDSPACE));
+						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , j * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , j * GRIDSPACE));
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
 						// Normals
 						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
@@ -478,18 +482,27 @@ void Grid::generateMesh(Mesh* meshes)
 						indices.push_back(k + 5);
 						k += 6;
 					}
+					else if (_twodArray[j - 1][i].type == window)
+					{
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3(0.f, 0.f, 1.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 0.f, -1.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 				if (j != _heightLength - 1)
 				{
 					if (_twodArray[j + 1][i].type == wall)
 					{
 						// Positions
-						position.push_back(glm::vec3(i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i      * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
 						// Normals
 						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
 						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
@@ -505,6 +518,15 @@ void Grid::generateMesh(Mesh* meshes)
 						indices.push_back(k + 4);
 						indices.push_back(k + 5);
 						k += 6;
+					}
+					else if (_twodArray[j + 1][i].type == window)
+					{
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(0.f, 0.f, -1.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 0.f, 1.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
 				if (i != 0)
@@ -513,10 +535,10 @@ void Grid::generateMesh(Mesh* meshes)
 					{
 						// Positions
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j      * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f, j      * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f, j      * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
+						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
 						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
 						// Normals
 						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
@@ -534,18 +556,27 @@ void Grid::generateMesh(Mesh* meshes)
 						indices.push_back(k + 5);
 						k += 6;
 					}
+					else if (_twodArray[j][i + 1].type == window)
+					{
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(1.f, 0.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(-1.f, 0.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 				if (i != _widthLength - 1)
 				{
 					if (_twodArray[j][i - 1].type == wall)
 					{
 						// Positions
-						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j      * GRIDSPACE));
+						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
 						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, 0.f, j      * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j      * GRIDSPACE));
+						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
+						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
+						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
 						// Normals
 						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
 						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
@@ -562,11 +593,71 @@ void Grid::generateMesh(Mesh* meshes)
 						indices.push_back(k + 5);
 						k += 6;
 					}
+					else if (_twodArray[j][i - 1].type == window)
+					{
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(-1.f, 0.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(1.f, 0.f, 0.f));
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 			}
 		}
 	}
+	for (int j = 0; j < _heightLength; j++)
+	{
+		for (int i = 0; i < _widthLength; i++)
+		{
+			if (_twodArray[j][i].type == window)
+			{
+				_twodArray[j][i].type = wall;
+				_windowData.push_back(glm::ivec2(i, j));
+			}
+		}
+	}
 	meshes[2].setMesh(position, normal, indices);
+}
+
+void Grid::addQuad(std::vector<glm::vec3>& positionList, std::vector<glm::vec3>& normalList, std::vector<GLuint>& indicesList, GLint &k, glm::vec3 quadMin, glm::vec3 quadMax, glm::vec3 upVector)
+{
+	glm::vec3 minMax = quadMax - quadMin;
+	float len = glm::dot(upVector, minMax);
+	glm::vec3 topLeft(quadMin + len * upVector);
+	glm::vec3 bottomRight(quadMax - len * upVector);
+	
+	positionList.push_back(quadMax);
+	positionList.push_back(topLeft);
+	positionList.push_back(quadMin);
+
+	positionList.push_back(quadMax);
+	positionList.push_back(quadMin);
+	positionList.push_back(bottomRight);
+
+	glm::vec3 normal(glm::normalize(glm::cross(topLeft - quadMax, bottomRight - quadMax)));
+
+	normalList.push_back(normal);
+	normalList.push_back(normal);
+	normalList.push_back(normal);
+	normalList.push_back(normal);
+	normalList.push_back(normal);
+	normalList.push_back(normal);
+
+	indicesList.push_back(k);
+	indicesList.push_back(k + 1);
+	indicesList.push_back(k + 2);
+	indicesList.push_back(k + 3);
+	indicesList.push_back(k + 4);
+	indicesList.push_back(k + 5);
+	k += 6;
+
+	return;
+}
+
+std::vector<glm::ivec2> Grid::getWindowData()
+{
+	return _windowData;
 }
 
 void Grid::print2darraydata()
@@ -637,7 +728,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	int currentX = (int)glm::floor(position.x / GRIDSPACE);
 	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
 
-	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength || currentZ > _heightLength)
+	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength - 1 || currentZ > _heightLength - 1)
 	{
 		position.x += velocity.x;
 		position.z += velocity.z;
