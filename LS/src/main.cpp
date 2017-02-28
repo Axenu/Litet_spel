@@ -52,6 +52,9 @@ void setupWindow()
 	}
 #endif
 
+	
+
+
 	//init DevIL
 	ilInit();
 
@@ -78,7 +81,6 @@ void setupWindow()
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(wWidth, wHeight);
 	guiManager.setView(guiScene);
-
 
 
 /* Loop until the user closes the window */
@@ -116,6 +118,8 @@ int main()
 {
 	// std::cout << "Init window!" << std::endl;
 	setupWindow();
+	
+
 
     return 0;
 }

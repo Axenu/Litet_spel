@@ -106,6 +106,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions) </PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;OpenAL32.lib;EFX-Util.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
