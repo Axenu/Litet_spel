@@ -172,7 +172,7 @@ int Character::getGrenadeID()
 
 float Character::calcLightOnPosition()
 {
-	glm::vec4 posColor(0.0f);
+	glm::vec4 posLight(0.0f);
 	glm::vec3 pos(this->getWorldPos());
 	AABB playerBox(pos, 0.5f);
 	std::vector<PointLightObject*> lights = _currentScene->fetchDynamicObjects<PointLightObject>(playerBox);
@@ -186,10 +186,10 @@ float Character::calcLightOnPosition()
 		float distance = glm::length(lightRay);
 		float att = glm::max(1.0f - (distance / lights[i]->getLightInfo()._fadeDist), 0.0f);
 
-		posColor += lights[i]->getLightInfo()._diffuse * diff * att;
+		posLight += lights[i]->getLightInfo()._diffuse * diff * att;
 	}
 
-	return glm::min(posColor.x + (posColor.y * posColor.y) + (posColor.z * posColor.z * posColor.z) + 0.3f, 1.0f);
+	return glm::min(posLight.x + (posLight.y * posLight.y) + (posLight.z * posLight.z * posLight.z) + 0.3f, 1.0f);
 }
 
 float Character::getLightAtPosition()
