@@ -26,6 +26,12 @@ private:
 	int _value;
 };
 
+enum CharState
+{
+	character = 0,
+	guardVision
+};
+
 class Character : public GameObject
 {
 public:
@@ -46,7 +52,6 @@ public:
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
-    Character(glm::vec3 pos, EventManager *manager);
 	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
 
     Character();
@@ -58,6 +63,9 @@ public:
 
 	float getLightAtPosition();
 private:
+	void charKeyInput(const KeyboardEvent& event);
+	void guardVisionKeyInput(const KeyboardEvent& event);
+	CharState _state;
 	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;

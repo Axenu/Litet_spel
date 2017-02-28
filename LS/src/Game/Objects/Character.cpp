@@ -197,42 +197,9 @@ float Character::getLightAtPosition()
 	return calcLightOnPosition();
 }
 
-
-void Character::onRender()
+void Character::charKeyInput(const KeyboardEvent & event)
 {
-
-}
-
-std::vector<GrenadeValues> Character::getGrenadeData()
-{
-//	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
-	std::vector<GrenadeValues> _grenadevalues;
-	_grenadevalues.clear();
-	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
-		_grenadevalues.push_back( _antiLightGrenade[i]->getgrenadeData());
-	return _grenadevalues;
-}
-
-int* Character::getLootValuePointer()
-{
-    return &_lootValue;
-}
-
-int* Character::getGrenadeCountPointer()
-{
-	return &_lightGrenadeCount;
-}
-
-float * Character::getGrenadeCooldownTimer()
-{
-	return &LightGrenadeClock;
-}
-
-#pragma region Events
-
-void Character::moveCharacter(const KeyboardEvent& event)
-{
-    if (event.getKey() == GLFW_KEY_W)
+	  if (event.getKey() == GLFW_KEY_W)
     {
         if (event.getAction() == GLFW_PRESS)
             _moveDir.y += 1.0f;
@@ -339,6 +306,58 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	}
 }
 
+void Character::guardVisionKeyInput(const KeyboardEvent & event)
+{
+
+}
+
+
+
+void Character::onRender()
+{
+
+}
+
+std::vector<GrenadeValues> Character::getGrenadeData()
+{
+//	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
+	std::vector<GrenadeValues> _grenadevalues;
+	_grenadevalues.clear();
+	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
+		_grenadevalues.push_back( _antiLightGrenade[i]->getgrenadeData());
+	return _grenadevalues;
+}
+
+int* Character::getLootValuePointer()
+{
+    return &_lootValue;
+}
+
+int* Character::getGrenadeCountPointer()
+{
+	return &_lightGrenadeCount;
+}
+
+float * Character::getGrenadeCooldownTimer()
+{
+	return &LightGrenadeClock;
+}
+
+#pragma region Events
+
+void Character::moveCharacter(const KeyboardEvent& event)
+{
+	switch (_state)
+	{
+	case CharState::character:
+		charKeyInput(event);
+		break;
+	case CharState::guardVision:
+		guardVisionKeyInput(event);
+		break;
+	}
+}
+
 glm::vec3 Character::getEyePos()
 {
 	return _currentScene->getCamera().getWorldPos();
@@ -391,6 +410,7 @@ int Character::amountOfGrenades()
 Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade) :
 	GameObject(), _eventManager(manager)
 {
+	_state = CharState::character;
 	_lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
