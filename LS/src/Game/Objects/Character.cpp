@@ -194,7 +194,7 @@ float Character::calcLightOnPosition()
 
 float Character::getLightAtPosition()
 {
-	return calcLightOnPosition();
+	return _lightAtPos;
 }
 
 
