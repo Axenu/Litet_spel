@@ -8,6 +8,7 @@
 #include "Game/Scene/QuadTree.h"
 #include "Game/Objects/PointLightObject.h"
 
+
 /* Scene holding the objects
 */
 class Scene
@@ -65,11 +66,15 @@ public:
 	/* Get a list of objects inside the bounds and of the specific class type. */
 	template<typename T>
 	std::vector<T*> fetchDynamicObjects(const AABB& aabb);
+
 	/* Fetch a set of game objects compared with the function */
 	std::vector<GameObject*> fetchStaticObjects(const AABB& aabb, bool *(compFunc)(GameObject* obj));
 	int loot(float pickDist);
-
+	GameObject* pick(float pickDist);
+	bool takeOverGuard(float maxDist);
 	void getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat);
+	//get dynamic objects for a ligth source
+	void getDynObjects(std::vector<GameObject*> &list, AABB &iaabb);
 
 };
 

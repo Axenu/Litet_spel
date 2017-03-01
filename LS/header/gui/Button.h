@@ -49,14 +49,18 @@ namespace gui
         Font* _font;
         Label* _label;
         Rectangle* _rect;
+        glm::vec4 _primaryColor;
+        glm::vec4 _secondaryColor;
+        glm::vec4 _textColor;
 
-        float _padding;
+        glm::vec2 _padding;
 
         gui::ButtonHandlerBase* _callback = nullptr;
 
     public:
 
         Button();
+        Button(float width, float height);
 		virtual ~Button();
 
         template <class T>
@@ -70,6 +74,11 @@ namespace gui
 
         void onRender();
         void onUpdate(float dt);
+
+        void setPrimaryColor(glm::vec4 color);
+        void setSecondaryColor(glm::vec4 color);
+        void setTextColor(glm::vec4 color);
+        void setPadding(float x, float y);
 
         virtual void cursorDidEnter();
         virtual void cursorDidExit();

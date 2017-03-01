@@ -90,5 +90,5 @@ Camera::~Camera()
 
 float Camera::degreesToRadians(float degrees) const
 {
-	return (float)(degrees * (M_PI / 180.0));
+	return (float)(degrees * (glm::pi<float>() / 180.0f));
 }

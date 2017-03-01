@@ -38,6 +38,7 @@
 		_lightNade = _shader.getUniform("viewGrenadePosition");
 		_LightNadeExpansionFading = _shader.getUniform("GrenadeExpansionFading");
 
+
 		//Bind samplers
 		if (!_shader.bindSampler("colBuffer", 0))	return false;
 		if (!_shader.bindSampler("norBuffer", 1))	return false;
@@ -92,9 +93,22 @@
 
 
 		//GrenadeStuff
-		glm::vec3 antiLightPos = rI._V *  glm::vec4(rI._lightGrenadePos, 1.f);
-		glUniform3f(_lightNade, antiLightPos.x, antiLightPos.y, antiLightPos.z);
-		glUniform2f(_LightNadeExpansionFading, rI._lightGrenadeExpansionAndFading.x, rI._lightGrenadeExpansionAndFading.y);
+		glm::vec3 antiLightPos[3];	//	glm::vec3 antiLightPos[rI._arraysize];
+		glm::vec2 ExpansionAndFading[3];
+		for(int i = 0;i<3;i++)
+		{
+		if (rI._grenadeID - i < 0)
+		{
+			rI._grenadeID = rI._arraysize;
+		}
+		antiLightPos[i] = rI._V *  glm::vec4(rI._lightGrenadePos[rI._grenadeID - i], 1.f);
+		ExpansionAndFading[i] = rI._lightGrenadeExpansionAndFading[rI._grenadeID - i];
+		}
+
+
+		glUniform3fv(_lightNade,sizeof(antiLightPos), (float*)antiLightPos);
+		glUniform2fv(_LightNadeExpansionFading, sizeof(ExpansionAndFading),(float*)ExpansionAndFading);
+
 	}
 
 	/* Call on window size change
@@ -105,7 +119,7 @@
 		glUniform2f(_screenInv, 1.0f / wWidth, 1.0f / wHeight);
 		glUniform1f(_near, camera.getNearPlane());
 		glUniform1f(_far, camera.getFarPlane());
-		float halfTanFowy = (float)std::tan(camera.getFieldOfView() * 0.5);
+		float halfTanFowy = (float)std::tan(camera.getFieldOfView() * 0.5f);
 		glUniform1f(_top, halfTanFowy);
 		glUniform1f(_right, halfTanFowy * camera.getAspectRatio());
 	}

@@ -50,7 +50,7 @@ bool AnimatedSkeleton::setAnim(const std::string& name) {
 
 /* Recalculates the end time when animation is looped */
 void AnimatedSkeleton::loopRefit(){
-	_elapAnimTime = fmod(_elapAnimTime, _animation->_duration); //loop
+	_elapAnimTime = (float)fmod((double)_elapAnimTime, (double)_animation->_duration); //loop
 	for (unsigned int i = 0; i < boneCount(); i++)
 		_channel[i].loop(_elapAnimTime, _animation->_duration);
 }

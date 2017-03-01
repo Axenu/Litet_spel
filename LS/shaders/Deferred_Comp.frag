@@ -11,8 +11,8 @@ uniform sampler2D colBuffer;
 uniform sampler2D norBuffer;
 uniform sampler2D specBuffer;
 uniform sampler2D depthBuffer;
-uniform vec3 viewGrenadePosition;
-uniform vec2 GrenadeExpansionFading;
+uniform vec3 viewGrenadePosition[3];
+uniform vec2 GrenadeExpansionFading[3];
 uniform samplerCube shadowMap[8];
 
 //X: 1 / width  Y : 1 / height
@@ -69,7 +69,8 @@ void main () {
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
 
-	ColorOut.xyz=antiLightGrenadeCal(viewGrenadePosition,position,color,ColorOut.xyz,GrenadeExpansionFading);
+	for(uint i = 0;i<3;i++)
+	ColorOut.xyz=antiLightGrenadeCal(viewGrenadePosition[i],position,color,ColorOut.xyz,GrenadeExpansionFading[i]);
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)

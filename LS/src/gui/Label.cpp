@@ -142,11 +142,11 @@ namespace gui
     //getters
     float Label::getTextWidth()
     {
-        return _size.x;
+        return _size.x * _scale.x;
     }
     float Label::getTextHeight()
     {
-        return _size.y;
+        return _size.y * _scale.y;
     }
     glm::vec2& Label::getTextSize()
     {

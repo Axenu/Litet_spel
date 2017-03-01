@@ -84,7 +84,7 @@ void setupWindow()
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-		glClearColor(1.0, 0.0, 1.0, 1.0);
+		glClearColor(0.20703125f, 0.29296875f, 0.28125f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Calculate dt
 		currentTime = (float)glfwGetTime();

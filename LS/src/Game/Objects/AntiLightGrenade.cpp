@@ -3,7 +3,7 @@
 AntiLightGrenade::AntiLightGrenade(Model &m) :
 	GameObject(m)
 {
-	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-5, 1.0f, -5.0f, 0.f);
+	_grenadeValue._grenadePositionWhenLanded = glm::vec4(-100, 1.0f, -100.0f, 0.f);
 	_grenadeValue.expanding = 0;
 	_grenadeValue.fading = 0.2f;
 }
@@ -40,8 +40,8 @@ void AntiLightGrenade::update(float dt)
 		else
 		{
 			_grenadeValue._grenadePositionWhenLanded = this->getWorldPos();
-			this->setPosition(-5, 1, -5);
-			QBeenPressed = true;
+			this->setPosition(-100, 1, -100);
+	//		QBeenPressed = true;
 			QbeenActivated = false;
 			TheBombHasBeenActivated = true;
 		}

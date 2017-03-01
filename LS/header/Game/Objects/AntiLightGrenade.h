@@ -22,6 +22,7 @@ glm::vec3 _direction;
 bool QBeenPressed = true;
 bool QbeenActivated = false;
 bool TheBombHasBeenActivated = false;
+float timer = 0;
 glm::vec3 _movement;
 GrenadeValues _grenadeValue;
 Grid *_currentLevel;

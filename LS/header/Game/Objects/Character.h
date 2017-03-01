@@ -10,6 +10,7 @@
 #include "Game/Level/Grid.h"
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
+#include "StaticVars.h"
 
 #define RotationSpeed 0.005f
 
@@ -24,12 +25,20 @@ public:
 private:
 	int _value;
 };
+
+enum CharState
+{
+	character = 0,
+	guardVision
+};
+
 class Character : public GameObject
 {
 public:
     virtual void onUpdate(float dt);
+	virtual void init();
     void onRender();
-	GrenadeValues getGrenadeData();
+	std::vector<GrenadeValues> getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
 
@@ -39,10 +48,13 @@ public:
 	void climb(float dT);
 	void tryClimb();
 	void testClimb();
+	bool guardVision();
+	int getGrenadeID();
 	int* getLootValuePointer();
-
-    Character(glm::vec3 pos, EventManager *manager);
-	Character(glm::vec3 pos, EventManager *manager,AntiLightGrenade * grenade);
+	int* getGrenadeCountPointer();
+	float* getGrenadeCooldownTimer();
+	int amountOfGrenades();
+	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
 
     Character();
     virtual ~Character();
@@ -50,7 +62,17 @@ public:
 	glm::vec3 getEyePos();
 
 	float calcLightOnPosition();
+
+	float getLightAtPosition();
 private:
+	void charKeyInput(const KeyboardEvent& event);
+	void guardVisionKeyInput(const KeyboardEvent& event);
+	//void charMoveMouse(const MouseMoveEvent& event);
+	//void guardVisionMoveMouse(const MouseMoveEvent& event);
+	void returnVision();
+	CharState _state;
+	float _height;
+	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
@@ -60,7 +82,9 @@ private:
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
 	float _camTilt;
-	AntiLightGrenade* _antiLightGrenade;
+	int _grenadeCount=0;
+	float _timerForGrenade=6;
+	std::vector<AntiLightGrenade*> _antiLightGrenade;
     float _speed;
     float _isMoving;
     int _lootValue;
@@ -68,7 +92,7 @@ private:
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables
 	bool _climbing;
-	bool sneaking;
+	bool _sneaking;
 	bool _canClimb;
 	glm::vec3 _animEndPos;
 	float _animFirstPhaseTime;
@@ -76,4 +100,9 @@ private:
 	float _animTime;
 	float _animEndTime;
 	float _heightDiff;
+	int _lightGrenadeCount = 0;
+	float LightGrenadeClock= 0;
+	bool noMoreGrenadeCount;
+	//Light variable
+	float _lightAtPos;
 };

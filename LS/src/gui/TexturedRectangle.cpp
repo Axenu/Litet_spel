@@ -7,10 +7,12 @@ namespace gui
     {
         _size.x = width;
         _size.y = height;
+        _scale.x = width;
+        _scale.y = height;
         _shader = new Shader("2DTexture");
     	_colorUniform = _shader->getUniform("color");
-        _positionUniform = _shader->getUniform("position");
-        _sizeUniform = _shader->getUniform("size");
+        _positionZUniform = _shader->getUniform("positionZ");
+        _modelMatrixUniform = _shader->getUniform("modelMatrix");
         _textureUniform = _shader->getUniform("_texture");
         _texture = Texture::createTexture(path);
         _color = glm::vec4(1,1,1,1);
@@ -45,18 +47,25 @@ namespace gui
     {
 
     }
-    void TexturedRectangle::render()
+    void TexturedRectangle::onRender()
     {
         _shader->bind();
         glUniform4fv(_colorUniform, 1, &_color[0]);
-        glUniform3fv(_positionUniform, 1, &_position[0]);
-        glUniform2fv(_sizeUniform, 1, &_size[0]);
+        glUniform1f(_positionZUniform, _position.z);
+        glUniformMatrix3fv(_modelMatrixUniform, 1, false, (GLfloat*)&_modelMatrix[0]);
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, _texture);
         _VA.bindVAO();
     	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, gl::bufferOffset(0));
+        //old
+        // _shader->bind();
+        // glUniform4fv(_colorUniform, 1, &_color[0]);
+        // glUniform1f(_positionZUniform, _position.z);
+        // glUniformMatrix3fv(_modelMatrixUniform, 1, false, (GLfloat*)&_modelMatrix[0]);
+        // _VA.bindVAO();
+    	// glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, gl::bufferOffset(0));
     }
-    void TexturedRectangle::update(float dt)
+    void TexturedRectangle::onUpdate(float dt)
     {
 
     }

@@ -5,7 +5,7 @@
 Level::Level(const std::string &level, EventManager &events, MeshShader &shader)
 	: _grid(level)
 {
-	_grid.generateMesh(_gridMesh);
+	_grid.generateMesh(_gridMesh, 0.5f, 2.f, 0.3f);
 
 	std::vector<ModelPart> parts;
 

@@ -20,6 +20,23 @@ glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box)
 	return vec;
 }
 
+glm::vec3 ObjectFactory::calcRot(glm::ivec2 square)
+{
+	int offSet = 1;
+	if (square.x == _level->getGrid().getWidth() - 1)
+	{
+		offSet = -1;
+	}
+	if (_level->getGrid().getTypeNC(square.y, square.x + offSet) == nothing)
+	{
+		return glm::vec3(0.f, 0.f, 90.f);
+	}
+	else
+	{
+		return glm::vec3(0.f, 0.f, 0.f);
+	}
+}
+
 std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Level *&lvl)
 {
 	_level = new Level(_path + level, _events, _meshShader);
@@ -29,25 +46,13 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 	std::unique_ptr<Scene> scene(new Scene(ptr, _level->getAABB()));
 	_level->setScene(scene.get());
 	_scene = scene.get();
-	return std::move(scene);
-}
-Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
-{
-
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events);
-	player->setLevel(&_level->getGrid());
-	player->setScene(_scene);
-	player->init();
-	_scene->getCamera().setParent(player);
-	_scene->getCamera().setPositionY(height);
-	_scene->add(player, true);
-	return player;
+	return scene;
 }
 
-Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, AntiLightGrenade & grenade)
+Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events,&grenade);
+	Character* player = new Character(_level->getGrid().getCenter(square), &_events,grenade);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
@@ -64,7 +69,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, &walkingPoints);
+	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, walkingPoints);
 	guard->init();
 	_scene->add(guard, true);
 
@@ -90,6 +95,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
+	object->setRotEuler(rotation);
 	object->init();
 	_scene->add(object, false);
 	_level->getGrid().addObject(object, gridType::object);
@@ -130,13 +136,14 @@ PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
 	return object;
 }
 
-void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot)
+void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<worldData> &doorList)
 {
 	std::ifstream file;
   	file.open(_path + path);
 	std::string line;
 	PointLight l(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	glm::vec2 walkP;
+	std::vector<glm::ivec2> doorLocations;
 	while (std::getline(file, line))
 	{
 		// std::cout << line << std::endl;
@@ -149,6 +156,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		glm::vec3 pos(0.f), rot(0.f);
 		float value = 0.f;
 		std::string modelName;
+		glm::ivec2 door;
 		//Switch statement readin next data type
 		while (iss.peek() != EOF)
 		{
@@ -174,6 +182,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 				if (guards.size() > 0)
 					guards.back().walkingPoints.push_back(walkP);
 				break;
+			case 'D':
+				iss >> door.x >> door.y;
+				doorLocations.push_back(door);
 			default:
 				break;
 			}
@@ -183,10 +194,20 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		else if (type == "light")
 			createLight(l, pos);
 		else if (type == "loot")
-			loot.push_back({ modelName, square, rot, (int)value });
+			loot.push_back(lootData(square, rot, modelName, (int)value ));
 		else if (type == "guard")
 		{
 			guards.push_back({ std::vector<glm::vec2>(), square });
+		}
+		else if (type == "doorList")
+		{
+			srand((unsigned int)time(NULL));
+			doorLocations.erase(doorLocations.begin() + rand() % doorLocations.size());
+			for (unsigned short int i = 0; i < doorLocations.size(); i++)
+			{
+				doorList.push_back(worldData(doorLocations[i], calcRot(doorLocations[i])));
+			}
+			doorLocations.clear();
 		}
 		//else if (type == "path")
 		// int a, b;
@@ -199,4 +220,3 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 MeshShader& ObjectFactory::getShader() {
 	return _meshShader;
 }
-

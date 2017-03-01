@@ -165,11 +165,11 @@ void QuadTreeNode::AddObjects(std::vector<GameObject*>& data)
 		{
 			//First check if the object is in any of the planes.
 			glm::vec4 objectPos = data[i]->getWorldPos();
-			if (abs(plane1.distance + objectPos.x) < 0.00001f)
+			if (std::abs(plane1.distance + objectPos.x) < 0.00001f)
 			{
 				_objectData.push_back(data[i]);
 			}
-			else if (abs(plane2.distance + objectPos.z) < 0.00001f)
+			else if (std::abs(plane2.distance + objectPos.z) < 0.00001f)
 			{
 				_objectData.push_back(data[i]);
 			}
@@ -306,11 +306,11 @@ void QuadTreeNode::removeObject(GameObject * data)
 
 		//First check if the object is in any of the planes.
 		glm::vec4 objectPos = data->getWorldPos();
-		if (abs(plane1.distance + objectPos.x) < 0.00001f)
+		if (std::abs(plane1.distance + objectPos.x) < 0.00001f)
 		{
 			removeObjectData(data);
 		}
-		else if (abs(plane2.distance + objectPos.z) < 0.00001f)
+		else if (std::abs(plane2.distance + objectPos.z) < 0.00001f)
 		{
 			removeObjectData(data);
 		}

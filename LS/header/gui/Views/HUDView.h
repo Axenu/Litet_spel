@@ -9,11 +9,14 @@
 #include "gui/Font.h"
 #include "gui/View.h"
 #include "gui/Button.h"
+#include "gui/TexturedRectangle.h"
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
 #include "gui/Views/GameOverView.h"
 #include "Game/TestGame.h"
 #include "Game/Objects/CharacterEvents.h"
+#include "gui/ProgressBar.h"
+#include "staticVars.h"
 
 namespace gui
 {
@@ -25,8 +28,8 @@ namespace gui
         gui::Font *_font;
         Label *_tipDisplay;
         Label *_scoreLabel;
-        // gui::Button* _quitButton;
-        // gui::Button* _startButton;
+        Label *_grenadeCountLabel;
+		Label *_grenadeCooldownCounter;
         TestGame *_game = nullptr;
         float* _fps;
         bool _isAtExit = false;

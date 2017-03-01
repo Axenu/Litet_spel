@@ -10,8 +10,8 @@
 #include "Game/Level/Path.h"
 #include <memory>
 
-#define GUARDVIEWDISTANCE 6.f
-#define GUARDFOV 75.0f * M_PIf / 180.f
+#define GUARDVIEWDISTANCE 10.f
+#define GUARDFOV 45.0f * M_PIf / 180.f
 
 class Guard : public GameObject
 {
@@ -21,20 +21,19 @@ private:
 	std::shared_ptr<Path> _path;
 	float _speed;
 	float _distLength;
-	/* Field of view in cosine
-	*/
 	unsigned int _whatPathToLoad;
+	float _detectionScore;
+
+	//Field of view in cosine
 	float _detectFov;
 	Level *_currentLevel;
-	unsigned int sizeOfVector;
 	float _currentGridSpace;
-	bool DetectedPlayer();
-	std::vector<glm::vec2>* walkingPoints;
-	std::vector<glm::vec2> walkingPointsen;
+	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);
+	std::vector<glm::vec2> _walkingPoints;
 public:
 	virtual ~Guard();
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
-	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>* walkingPoints);
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>& walkingPoints);
 };
 

@@ -69,7 +69,7 @@ template<unsigned int N>
 KeyFrame<N>::KeyFrame(const unsigned int* nodeChannelSize)
 	: _to(), _from()
 {
-	for (int i = 0; i < N; i++)
+	for (unsigned int i = 0; i < N; i++)
 	{
 		_to[i] = ChannelMemoryKey(nodeChannelSize[i]);
 		_from[i] = ChannelMemoryKey(nodeChannelSize[i]);
@@ -103,12 +103,12 @@ void KeyFrame<N>::newAnimation(float oldET, const Channel *channel, float animDu
 			_from[i]._time = 0.f;
 			if (_channel && _channel->numKeys(i) > 0)
 				nextKey(i, 0.f);
-			else 
-			{	//If there is no values in the node's channel type keep current state 
+			else
+			{	//If there is no values in the node's channel type keep current state
 				_to[i] = _from[i];
 				_to[i]._time = FLT_MAX;
 			}
-			//Update 
+			//Update
 			time = std::fmin(time, _to[i]._time);
 		}
 		_nextUpdate = time;

@@ -9,8 +9,8 @@ enum gridType
 	wall = 1, 
 	object = 2,
 	tresure = 3, 
-	loot = 4, 
-	door = 5, 
+	loot = 4,
+	window = 5,
 	exiting = 6, 
 };
 

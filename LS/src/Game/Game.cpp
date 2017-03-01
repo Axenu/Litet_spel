@@ -39,7 +39,6 @@ void Game::draw() {
 
 	glDisable(GL_CULL_FACE);
 	size_t numLights = rI._pLightInfo.size();
-
 	for (size_t i = 0; i < numLights; i++)
 	{
 		DrawFrame tempDF;

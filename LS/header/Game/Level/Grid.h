@@ -45,10 +45,13 @@ private:
 	void buildgridarray();
 	void print2darraydata();
 	void loadingBmpPicture(const char* filename);
+	std::vector<glm::ivec2> _windowData;
 public:
 	Grid(const std::string& level);
 	~Grid();
-	void generateMesh(Mesh* meshes);
+	void generateMesh(Mesh* meshes, float windowMin, float windowMax, float windowDepth);
+	void addQuad(std::vector<glm::vec3> &positionList, std::vector<glm::vec3> &normalList, std::vector<GLuint> &indicesList, GLint &k, glm::vec3 quadMin, glm::vec3 quadMax, glm::vec3 upVector);
+	std::vector<glm::ivec2> getWindowData();
 
 	/* Get height size of grid in squares */
 	int getHeight();
@@ -63,10 +66,10 @@ public:
 
 #pragma region Mfuncs
 	/* Get distance to closest wall */
-	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
 
 	/* Get distance to closest object */
-	float getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType, bool &obcure);
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType);
 	/* Verify a grid square is represented in the grid
 	*/
 	bool isInside(glm::ivec2 vec) const;
