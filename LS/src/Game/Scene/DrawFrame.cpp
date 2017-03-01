@@ -23,6 +23,7 @@ void DrawFrame::add(const PointLight &light) {
 /* Render the frame
 */
 void DrawFrame::render(RenderInfo &fD) {
+	std::cout << _meshes.size() << std::endl;
 	for (unsigned int i = 0; i < _meshes.size(); i++) {
 		const MeshDrawable &ref = _meshes[i];
 		ref._part->render(fD, *ref._transform);
@@ -30,6 +31,7 @@ void DrawFrame::render(RenderInfo &fD) {
 }
 
 void DrawFrame::renderMeshOnly(GLint matrixLocation) {
+	std::cout << _meshes.size() << std::endl;
 	for (unsigned int i = 0; i < _meshes.size(); i++) {
 		const MeshDrawable &ref = _meshes[i];
 		glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, &(*ref._transform)[0][0]);

@@ -39,7 +39,7 @@ void Game::draw() {
 
 	glDisable(GL_CULL_FACE);
 	size_t numLights = rI._pLightInfo.size();
-
+	std::cout << "meshes" << std::endl;
 	for (size_t i = 0; i < numLights; i++)
 	{
 		DrawFrame tempDF;
@@ -57,6 +57,7 @@ void Game::draw() {
 	glEnable(GL_CULL_FACE);
 
 	_resource.getDeffered().bindDraw();
+	std::cout << "normal" << std::endl;
 	dF.render(rI);
 	gl::CheckGLErrors("Render stage failed: Mesh");
 	/*	Render to backbuffer:
