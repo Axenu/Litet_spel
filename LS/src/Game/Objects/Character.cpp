@@ -7,14 +7,15 @@ void Character::onUpdate(float dt)
 {
 	switch (_state)
 	{
-	case CharState::normal:
-		move(dt);
-		testClimb();
-		break;
 	case CharState::guardVision:
+		gVisionTimerUpdate(dt);
 		break;
 	case CharState::climbing:
 		climb(dt);
+		break;
+	default:
+		move(dt);
+		testClimb();
 		break;
 	}
 
@@ -181,6 +182,10 @@ bool Character::guardVision()
 	{
 		_currentScene->getCamera().setParent(gPtr);
 		_currentScene->getCamera().setPosition(glm::vec3(0.0f, 1.4f, 0.12f));
+		if (_state == CharState::normal)
+		{
+			_guardVisDuraTimer = 5.0f;
+		}
 		_state = CharState::guardVision;
 		return true;
 	}
@@ -188,6 +193,24 @@ bool Character::guardVision()
 	{
 		return false;
 	}
+}
+
+void Character::returnVision()
+{
+	_currentScene->getCamera().setParent(this);
+	//Setting camera to characters height(if sneaking lowering ít to sneaking height)
+	_currentScene->getCamera().setPositionY(_sneaking ? _height - SneakDiff : _height);
+	//resets the cameras forwardvec and its tilt
+	_currentScene->getCamera().setForward(glm::vec3(0.0f, 0.0f, 1.0f));
+	_camTilt = glm::bvec2(0.0f);
+	_state = CharState::normal;
+}
+
+void Character::gVisionTimerUpdate(float dt)
+{
+	_guardVisDuraTimer -= dt;
+	if (_guardVisDuraTimer < 0.0f)
+		returnVision();
 }
 
 int Character::getGrenadeID()
@@ -221,17 +244,6 @@ float Character::getLightAtPosition()
 {
 	return _lightAtPos;
 }
-
-
-
-void Character::returnVision()
-{
-	_currentScene->getCamera().setParent(this);
-	//Setting camera to characters height(if sneaking lowering ít to sneaking height)
-	_currentScene->getCamera().setPositionY(_sneaking ? _height - SneakDiff : _height);
-	_state = CharState::normal;
-}
-
 
 
 void Character::onRender()
@@ -268,13 +280,10 @@ void Character::moveCharacter(const KeyboardEvent& event)
 {
 	switch (_state)
 	{
-	case CharState::normal:
-		normalKeyInput(event);
-		break;
 	case CharState::guardVision:
 		guardVisionKeyInput(event);
 		break;
-	case CharState::climbing:
+	default:
 		normalKeyInput(event);
 		break;
 	}
@@ -289,34 +298,7 @@ glm::vec3 Character::getEyePos()
 
 void Character::normalKeyInput(const KeyboardEvent & event)
 {
-	if (event.getKey() == GLFW_KEY_W)
-	{
-		if (event.getAction() == GLFW_PRESS)
-			_moveDir.y += 1.0f;
-		else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.y -= 1.0f;
-	}
-	else if (event.getKey() == GLFW_KEY_A)
-	{
-		if (event.getAction() == GLFW_PRESS)
-			_moveDir.x += 1.0f;
-		else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.x -= 1.0f;
-	}
-	else if (event.getKey() == GLFW_KEY_S)
-	{
-		if (event.getAction() == GLFW_PRESS)
-			_moveDir.y -= 1.0f;
-		else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.y += 1.0f;
-	}
-	else if (event.getKey() == GLFW_KEY_D)
-	{
-		if (event.getAction() == GLFW_PRESS)
-			_moveDir.x -= 1.0f;
-		else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.x += 1.0f;
-	}
+	if (charMovement(event)){} // CharMovements takes care of WASD-input
 	else if (event.getKey() == GLFW_KEY_E)
 	{
 		if (event.getAction() == GLFW_PRESS)
@@ -405,7 +387,8 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 
 void Character::guardVisionKeyInput(const KeyboardEvent & event)
 {
-	if (event.getKey() == GLFW_KEY_R)
+	if (charMovement(event)){} //Takes care so movement vectors keeps up to date.
+	else if (event.getKey() == GLFW_KEY_R)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -421,6 +404,68 @@ void Character::guardVisionKeyInput(const KeyboardEvent & event)
 	}
 }
 
+bool Character::charMovement(const KeyboardEvent& event)
+{
+	if (event.getKey() == GLFW_KEY_W)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			_moveDir.y += 1.0f;
+			return true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			_moveDir.y -= 1.0f;
+			return true;
+		}
+		return false;
+	}
+	else if (event.getKey() == GLFW_KEY_A)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			_moveDir.x += 1.0f;
+			return true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			_moveDir.x -= 1.0f;
+			return true;
+		}
+		return false;
+	}
+	else if (event.getKey() == GLFW_KEY_S)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			_moveDir.y -= 1.0f;
+			return true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			_moveDir.y += 1.0f;
+			return true;
+		}
+		return false;
+	}
+	else if (event.getKey() == GLFW_KEY_D)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			_moveDir.x -= 1.0f;
+			return true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			_moveDir.x += 1.0f;
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+
 void Character::moveMouse(const MouseMoveEvent& event)
 {
     if (_hasMoved == false)
@@ -433,10 +478,31 @@ void Character::moveMouse(const MouseMoveEvent& event)
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
-    {
-		float tilt = deltaPos.y * RotationSpeed;
+    {     
+		// Left / Right camera rotation.
+		float tilt = deltaPos.x * -RotationSpeed;
+		switch (_state)
+		{
+		case CharState::guardVision:
+			_camTilt.x += tilt;
+
+			if (_camTilt.x > glm::pi<float>()*0.5f)
+				_camTilt.x = glm::pi<float>()*0.5f;
+			else if (_camTilt.x < glm::pi<float>()*-0.5f)
+				_camTilt.x = glm::pi<float>()*-0.5f;
+			else //Rotate
+				_currentScene->getCamera().rotateY(tilt);
+			break;
+		default:
+			rotateY(tilt);
+			break;
+		}
+
+
+		// Up / Down camera rotation.
+		tilt = deltaPos.y * RotationSpeed;
 		_camTilt.y += tilt;
-        rotateY(deltaPos.x * -RotationSpeed);
+
 		if (_camTilt.y > glm::pi<float>()*0.5f)
 			_camTilt.y = glm::pi<float>()*0.5f;
 		else if (_camTilt.y < glm::pi<float>()*-0.5f)

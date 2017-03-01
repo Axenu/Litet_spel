@@ -69,8 +69,8 @@ public:
 private:
 	void normalKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
-	//void charMoveMouse(const MouseMoveEvent& event);
-	//void guardVisionMoveMouse(const MouseMoveEvent& event);
+	bool charMovement(const KeyboardEvent& event);
+	void gVisionTimerUpdate(float dt);
 	void returnVision();
 	CharState _state;
 	float _height;
@@ -101,9 +101,12 @@ private:
 	float _animTime;
 	float _animEndTime;
 	float _heightDiff;
+	//AntiLightGranade  varables
 	int _lightGrenadeCount = 0;
 	float LightGrenadeClock= 0;
 	bool noMoreGrenadeCount;
 	//Light variable
 	float _lightAtPos;
+	//GuardVision varable
+	float _guardVisDuraTimer;
 };
