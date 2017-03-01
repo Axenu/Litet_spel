@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <string>
 
 #include "glm/gtx/string_cast.hpp"
@@ -32,6 +34,8 @@ namespace gui
     private:
         float* _value;
     public:
+        int _precision = 3;
+
 		~StringComponentFloat() {};
         StringComponentFloat(float* value);
         std::string getString();
