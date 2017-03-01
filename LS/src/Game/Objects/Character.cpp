@@ -195,24 +195,22 @@ int Character::getGrenadeID()
 
 float Character::calcLightOnPosition()
 {
-	glm::vec4 posLight(0.0f);
 	glm::vec3 pos(this->getWorldPos());
 	AABB playerBox(pos, 0.5f);
 	std::vector<PointLightObject*> lights = _currentScene->fetchDynamicObjects<PointLightObject>(playerBox);
+	float intensity = 0.0f;
 
 	for (unsigned int i = 0; i < lights.size(); i++)
 	{
-		glm::vec3 lightRay = lights[i]->getLightInfo()._pos - pos;
-
-		lightRay = glm::normalize(lightRay);
-		float diff = glm::max(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), lightRay), 0.0f);
-		float distance = glm::length(lightRay);
-		float att = glm::max(1.0f - (distance / lights[i]->getLightInfo()._fadeDist), 0.0f);
-
-		posLight += lights[i]->getLightInfo()._diffuse * diff * att;
+		glm::vec2 lr(lights[i]->getLightInfo()._pos.x - pos.x, lights[i]->getLightInfo()._pos.z - pos.z);
+		if (glm::length(lr) < lights[i]->getLightInfo()._fadeDist)
+		{
+			intensity += std::max(1.0f - (glm::length(lr) / lights[i]->getLightInfo()._fadeDist), 0.0f); //Shader falloff algorithm
+		}
 	}
-
-	return glm::min(posLight.x + (posLight.y * posLight.y) + (posLight.z * posLight.z * posLight.z) + 0.3f, 1.0f);
+	intensity = std::max(intensity, 0.2f); //ambient
+	intensity = std::min(intensity, 1.0f); //Cant be too bright
+	return intensity;
 }
 
 float Character::getLightAtPosition()
@@ -267,12 +265,12 @@ void Character::charKeyInput(const KeyboardEvent & event)
 	{
         if (event.getAction() == GLFW_PRESS)
         {
-            // if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
-            // {
+            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
+            {
                 //call endGameEvent
                 GameOverEvent event(true);
                 _eventManager->execute(event);
-            // }
+            }
         }
 	}
 	else if (event.getKey() == GLFW_KEY_Q)
