@@ -5,21 +5,24 @@
 
 void Character::onUpdate(float dt)
 {
-	if (_climbing)
+	switch (_state)
 	{
-		climb(dt);
-	}
-	else
-	{
+	case CharState::normal:
 		move(dt);
 		testClimb();
+		break;
+	case CharState::guardVision:
+		break;
+	case CharState::climbing:
+		climb(dt);
+		break;
 	}
 
 	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
 	if (newSquare._square != _gridSquare._square) {
 		//Set new height
-		if (!_climbing)
+		if (_state != CharState::climbing)
 		{
 			glm::vec3 pos = getWorldPos();
 			setPositionY(_currentLevel->getGridHeight(pos));
@@ -122,13 +125,13 @@ void Character::climb(float dT)
 	else
 	{
 		setPosition(_animEndPos);
-		_climbing = false;
+		_state = CharState::normal;
 	}
 }
 
 void Character::tryClimb()
 {
-	if (!_climbing)
+	if (_state != CharState::climbing)
 	{
 		if (_canClimb)
 		{
@@ -139,14 +142,14 @@ void Character::tryClimb()
 		_animSecondPhaseTime = _animFirstPhaseTime + _heightDiff / _speed;
 		_animEndTime = (_heightDiff + xzDist) / _speed;
 		_animTime = 0.0f;
-		_climbing = true;
+		_state = CharState::climbing;
 		}
 	}
 }
 
 void Character::testClimb()
 {
-	if (!_climbing)
+	if (_state != CharState::climbing)
 	{
 		_animEndPos = glm::vec3(getWorldPos());
 		glm::vec3 dir = glm::vec3(_currentScene->getCamera().getLookAt());
@@ -219,146 +222,14 @@ float Character::getLightAtPosition()
 	return _lightAtPos;
 }
 
-void Character::charKeyInput(const KeyboardEvent & event)
-{
-	  if (event.getKey() == GLFW_KEY_W)
-    {
-        if (event.getAction() == GLFW_PRESS)
-            _moveDir.y += 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.y -= 1.0f;
-    }
-    else if (event.getKey() == GLFW_KEY_A)
-    {
-        if (event.getAction() == GLFW_PRESS)
-			_moveDir.x += 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.x -= 1.0f;
-    }
-    else if (event.getKey() == GLFW_KEY_S)
-    {
-        if (event.getAction() == GLFW_PRESS)
-			_moveDir.y -= 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.y += 1.0f;
-    }
-    else if (event.getKey() == GLFW_KEY_D)
-    {
-        if (event.getAction() == GLFW_PRESS)
-			_moveDir.x -= 1.0f;
-        else if (event.getAction() == GLFW_RELEASE)
-			_moveDir.x += 1.0f;
-    }
-	else if (event.getKey() == GLFW_KEY_E)
-	{
-			if (event.getAction() == GLFW_PRESS)
-			{
-				int points = _currentScene->loot(2);
-				if (points > 0)
-				{
-					CollectLootEvent event(points);
-					_lootValue += points;
-					_eventManager->execute(event);
-				}
-			}
-	}
-    else if (event.getKey() == GLFW_KEY_G)
-	{
-        if (event.getAction() == GLFW_PRESS)
-        {
-            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
-            {
-                //call endGameEvent
-                GameOverEvent event(true);
-                _eventManager->execute(event);
-            }
-        }
-	}
-	else if (event.getKey() == GLFW_KEY_Q)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-		//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
-			if (_timerForGrenade > 2)
-			{
-				_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
-				_timerForGrenade = 0;
-				if(_lightGrenadeCount > 0)
-				{
-					_lightGrenadeCount--;
-				}
-				_grenadeID++;
-				_grenadeCount++;
-				if (_grenadeCount == (int)_antiLightGrenade.size())
-				{
-					_grenadeCount = 0;
-					noMoreGrenadeCount = false;
-				}
-			}
 
-		}
-	}
-	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
-	{
-
-		if (event.getAction() == GLFW_PRESS)
-		{
-			if(_sneaking == true)
-			{
-				_currentScene->getCamera().moveY(SneakDiff);
-				_speed = _speed + 1;
-				_sneaking = false;
-			}
-			else
-			{
-
-				_currentScene->getCamera().moveY(-SneakDiff);
-				_speed = _speed - 1;
-				_sneaking = true;
-			}
-		}
-	}
-	else if (event.getKey() == GLFW_KEY_SPACE)
-	{
-		tryClimb();
-	}
-	else if (event.getKey() == GLFW_KEY_T)
-	{
-		std::cout << "X: " << getEyePos().x << " Y: " << getEyePos().z << std::endl;
-	}
-	else if (event.getKey() == GLFW_KEY_R)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-		//	guardVision();
-		}
-	}
-}
-
-void Character::guardVisionKeyInput(const KeyboardEvent & event)
-{
-	if (event.getKey() == GLFW_KEY_R)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-			guardVision();
-		}
-	}
-	else if (event.getKey() == GLFW_KEY_F)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-			returnVision();
-		}
-	}
-}
 
 void Character::returnVision()
 {
 	_currentScene->getCamera().setParent(this);
 	//Setting camera to characters height(if sneaking lowering ít to sneaking height)
 	_currentScene->getCamera().setPositionY(_sneaking ? _height - SneakDiff : _height);
-	_state = CharState::character;
+	_state = CharState::normal;
 }
 
 
@@ -393,17 +264,18 @@ float * Character::getGrenadeCooldownTimer()
 	return &LightGrenadeClock;
 }
 
-#pragma region Events
-
 void Character::moveCharacter(const KeyboardEvent& event)
 {
 	switch (_state)
 	{
-	case CharState::character:
-		charKeyInput(event);
+	case CharState::normal:
+		normalKeyInput(event);
 		break;
 	case CharState::guardVision:
 		guardVisionKeyInput(event);
+		break;
+	case CharState::climbing:
+		normalKeyInput(event);
 		break;
 	}
 }
@@ -411,6 +283,142 @@ void Character::moveCharacter(const KeyboardEvent& event)
 glm::vec3 Character::getEyePos()
 {
 	return _currentScene->getCamera().getWorldPos();
+}
+
+#pragma region Events
+
+void Character::normalKeyInput(const KeyboardEvent & event)
+{
+	if (event.getKey() == GLFW_KEY_W)
+	{
+		if (event.getAction() == GLFW_PRESS)
+			_moveDir.y += 1.0f;
+		else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.y -= 1.0f;
+	}
+	else if (event.getKey() == GLFW_KEY_A)
+	{
+		if (event.getAction() == GLFW_PRESS)
+			_moveDir.x += 1.0f;
+		else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.x -= 1.0f;
+	}
+	else if (event.getKey() == GLFW_KEY_S)
+	{
+		if (event.getAction() == GLFW_PRESS)
+			_moveDir.y -= 1.0f;
+		else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.y += 1.0f;
+	}
+	else if (event.getKey() == GLFW_KEY_D)
+	{
+		if (event.getAction() == GLFW_PRESS)
+			_moveDir.x -= 1.0f;
+		else if (event.getAction() == GLFW_RELEASE)
+			_moveDir.x += 1.0f;
+	}
+	else if (event.getKey() == GLFW_KEY_E)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			int points = _currentScene->loot(2);
+			if (points > 0)
+			{
+				CollectLootEvent event(points);
+				_lootValue += points;
+				_eventManager->execute(event);
+			}
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_G)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
+			{
+				//call endGameEvent
+				GameOverEvent event(true);
+				_eventManager->execute(event);
+			}
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_Q)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
+			if (_timerForGrenade > 2)
+			{
+				_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
+				_timerForGrenade = 0;
+				if (_lightGrenadeCount > 0)
+				{
+					_lightGrenadeCount--;
+				}
+				_grenadeID++;
+				_grenadeCount++;
+				if (_grenadeCount == (int)_antiLightGrenade.size())
+				{
+					_grenadeCount = 0;
+					noMoreGrenadeCount = false;
+				}
+			}
+
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
+	{
+
+		if (event.getAction() == GLFW_PRESS)
+		{
+			if (_sneaking == true)
+			{
+				_currentScene->getCamera().moveY(SneakDiff);
+				_speed = _speed + 1;
+				_sneaking = false;
+			}
+			else
+			{
+
+				_currentScene->getCamera().moveY(-SneakDiff);
+				_speed = _speed - 1;
+				_sneaking = true;
+			}
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_SPACE)
+	{
+		tryClimb();
+	}
+	else if (event.getKey() == GLFW_KEY_T)
+	{
+		std::cout << "X: " << getEyePos().x << " Y: " << getEyePos().z << std::endl;
+	}
+	else if (event.getKey() == GLFW_KEY_R)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			guardVision();
+		}
+	}
+}
+
+void Character::guardVisionKeyInput(const KeyboardEvent & event)
+{
+	if (event.getKey() == GLFW_KEY_R)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			guardVision();
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_F)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			returnVision();
+		}
+	}
 }
 
 void Character::moveMouse(const MouseMoveEvent& event)
@@ -427,12 +435,12 @@ void Character::moveMouse(const MouseMoveEvent& event)
     if (_cursorMode == GLFW_CURSOR_DISABLED)
     {
 		float tilt = deltaPos.y * RotationSpeed;
-		_camTilt += tilt;
+		_camTilt.y += tilt;
         rotateY(deltaPos.x * -RotationSpeed);
-		if (_camTilt > glm::pi<float>()*0.5f)
-			_camTilt = glm::pi<float>()*0.5f;
-		else if (_camTilt < glm::pi<float>()*-0.5f)
-			_camTilt = glm::pi<float>()*-0.5f;
+		if (_camTilt.y > glm::pi<float>()*0.5f)
+			_camTilt.y = glm::pi<float>()*0.5f;
+		else if (_camTilt.y < glm::pi<float>()*-0.5f)
+			_camTilt.y = glm::pi<float>()*-0.5f;
 		else //Rotate
 			_currentScene->getCamera().rotateX(tilt);
     }
@@ -460,17 +468,16 @@ int Character::amountOfGrenades()
 Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade, float height) :
 	GameObject(), _eventManager(manager)
 {
-	_state = CharState::character;
+	_state = CharState::normal;
 	_height = height;
 	_lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
-	_camTilt = 0;
+	_camTilt = glm::vec2(0.0f);
 	_speed = 2;
 	_isMoving = 0;
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
-	_climbing = false;
 	_canClimb = false;
 	_animFirstPhaseTime = 0.0f;
 	_animSecondPhaseTime = 0.0f;

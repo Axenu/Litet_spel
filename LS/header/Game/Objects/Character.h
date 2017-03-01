@@ -29,8 +29,9 @@ private:
 
 enum CharState
 {
-	character = 0,
-	guardVision
+	normal = 0,
+	guardVision,
+	climbing
 };
 
 class Character : public GameObject
@@ -66,7 +67,7 @@ public:
 
 	float getLightAtPosition();
 private:
-	void charKeyInput(const KeyboardEvent& event);
+	void normalKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
 	//void charMoveMouse(const MouseMoveEvent& event);
 	//void guardVisionMoveMouse(const MouseMoveEvent& event);
@@ -82,7 +83,7 @@ private:
 	glm::vec3 _velocity;
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
-	float _camTilt;
+	glm::vec2 _camTilt;
 	int _grenadeCount=0;
 	float _timerForGrenade=6;
 	std::vector<AntiLightGrenade*> _antiLightGrenade;
@@ -92,7 +93,6 @@ private:
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables
-	bool _climbing;
 	bool _sneaking;
 	bool _canClimb;
 	glm::vec3 _animEndPos;
