@@ -159,7 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sound\OpenAL.cpp" />
+    <ClCompile Include="src\Sound\Irrklang.cpp" />
     <ClCompile Include="src\gui\ProgressBar.cpp" />
     <ClCompile Include="src\math\GridTraveler.cpp" />
     <ClCompile Include="src\math\AARect.cpp" />
@@ -273,7 +273,7 @@
     <ClInclude Include="header\gui\Views\MainMenuView.h" />
     <ClInclude Include="header\Render\Mesh\Shader\DefSkinnedMeshShader.h" />
     <ClInclude Include="header\Render\Mesh\ModelPart.h" />
-    <ClInclude Include="header\Sound\OpenAL.h" />
+    <ClInclude Include="header\Sound\Irrklang.h" />
     <ClInclude Include="header\StaticVars.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\StringComponents.h" />

@@ -2,7 +2,6 @@
 #include "StaticVars.h"
 #include "Game/Objects/CharacterEvents.h"
 #include "Game/Objects/Guard.h"
-#include "../include/irrklang/irrKlang.h"
 
 void Character::onUpdate(float dt)
 {
@@ -291,11 +290,6 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
-			if (!engine)
-				return;
-
-			engine->play2D("Resources/beep.ogg", true);
 			
 			//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
 			if (_timerForGrenade > 2)
