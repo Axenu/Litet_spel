@@ -529,7 +529,7 @@ int Character::amountOfGrenades()
 	return _antiLightGrenade.size();
 }
 
-Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade) :
+Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade, float height) :
 	GameObject()
 {
 	_eventManager = manager;
