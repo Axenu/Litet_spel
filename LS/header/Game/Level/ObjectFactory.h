@@ -43,6 +43,17 @@ struct lootData : worldData {
 	int value;
 };
 
+struct doorData : worldData {
+	doorData() {};
+	doorData(glm::ivec2 pos, glm::vec3 rotation, bool open)
+	{
+		this->pos = pos;
+		this->rotation = rotation;
+		this->open = open;
+	}
+	bool open;
+};
+
 /* Factory creating game objects
 */
 class ObjectFactory
@@ -73,10 +84,10 @@ public:
 	/* Create a scene object
 	model << Model to load
 	*/
-	GameObject* createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
+	GameObject* createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation, enum gridType type, glm::vec3 positionOffset);
 	PointLightObject* createLight(PointLight light, glm::vec3 position);
 	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
 	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
-	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<worldData> &doorList);
+	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<doorData> &doorList);
 	MeshShader& getShader();
 };

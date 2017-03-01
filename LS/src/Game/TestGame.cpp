@@ -39,18 +39,17 @@ void TestGame::initiate() {
 
 	std::vector<guardData> guards;
 	std::vector<lootData> loot;
-	std::vector<worldData> doorList;
+	std::vector<doorData> doorList;
 
 	_factory.loadSceneFromFile("level.txt", guards, loot, doorList);
 
-	//////////// Tmp model for doors, remove this when using the real model. I got a working function to calc the rotation, but it might need tweaking to match with the door model
-	//////////// The position and rotation is stored in vector<worldData> doorList
 	for (unsigned short int i = 0; i < doorList.size(); i++)
 	{
-		_factory.createLoot("Chalice.obj", doorList[i].pos, doorList[i].rotation, 1);
-	}
-	////////////
+		if (doorList[i].open)
+			_factory.createObject("Door.obj", doorList[i].pos, doorList[i].rotation, gridType::nothing, glm::vec3(0.f, 0.f, 0.f));
+		//Add the closed door model here
 
+	}
 	for (unsigned int i = 0; i < guards.size(); i++)
 		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
 	for (unsigned int i = 0; i < loot.size(); i++)
