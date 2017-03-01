@@ -93,9 +93,7 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 
 GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation)
 {
-	Material mat(&_meshShader);
-	mat.setColor("diffuse", glm::vec4(0.627f, 0.3215f, 0.176f, 1.0f));
-	Model tmpModel = _models.GetModel(_modelPath + model, mat);
+	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
 	GameObject* object = new GameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()));
 	object->setRotEuler(rotation);
