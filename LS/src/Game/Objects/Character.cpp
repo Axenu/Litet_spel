@@ -46,7 +46,6 @@ void Character::onUpdate(float dt)
 void Character::init()
 {
 	GameObject::init();
-	_height = getEyePos().y;
 }
 
 void Character::move(float dt) {
@@ -306,14 +305,14 @@ void Character::charKeyInput(const KeyboardEvent & event)
 		{
 			if(_sneaking == true)
 			{
-				_currentScene->getCamera().moveY(0.5);
+				_currentScene->getCamera().moveY(SneakDiff);
 				_speed = _speed + 1;
 				_sneaking = false;
 			}
 			else
 			{
 
-				_currentScene->getCamera().moveY(-0.5);
+				_currentScene->getCamera().moveY(-SneakDiff);
 				_speed = _speed - 1;
 				_sneaking = true;
 			}
@@ -357,7 +356,8 @@ void Character::guardVisionKeyInput(const KeyboardEvent & event)
 void Character::returnVision()
 {
 	_currentScene->getCamera().setParent(this);
-	_currentScene->getCamera().setPositionY(_height);
+	//Setting camera to characters height(if sneaking lowering ít to sneaking height)
+	_currentScene->getCamera().setPositionY(_sneaking ? _height - SneakDiff : _height);
 	_state = CharState::character;
 }
 
@@ -457,10 +457,11 @@ int Character::amountOfGrenades()
 	return _antiLightGrenade.size();
 }
 
-Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade) :
+Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade, float height) :
 	GameObject(), _eventManager(manager)
 {
 	_state = CharState::character;
+	_height = height;
 	_lootValue = 0;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);

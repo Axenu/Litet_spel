@@ -13,6 +13,7 @@
 #include "StaticVars.h"
 
 #define RotationSpeed 0.005f
+#define SneakDiff 0.5f
 
 
 class CollectLootEvent : public Event
@@ -54,7 +55,7 @@ public:
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
-	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
+	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade, float height);
 
     Character();
     virtual ~Character();

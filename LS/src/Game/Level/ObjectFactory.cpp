@@ -52,7 +52,7 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events,grenade);
+	Character* player = new Character(_level->getGrid().getCenter(square), &_events,grenade, height);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
