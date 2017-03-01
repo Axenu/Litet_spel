@@ -1,6 +1,6 @@
 #include "Render/Composition/RenderDefBuffers.h"
 
-RenderDefBuffers::RenderDefBuffers(const gl::RenderQuad& quad, EventManager &manager)
+RenderDefBuffers::RenderDefBuffers(const gl::RenderQuad& quad, EventManager *manager)
 	: QuadShader(quad, "Quad", "Deferred_Buffer"), _curBuffer(manager, GLFW_KEY_7, GLFW_KEY_8, 0, 8)
 {
 	acquireUniforms();

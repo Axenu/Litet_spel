@@ -1,6 +1,6 @@
 #include "Render/Composition/RenderCubeMap.h"
 
-RenderCubeMap::RenderCubeMap(const gl::RenderQuad& quad, EventManager &manager)
+RenderCubeMap::RenderCubeMap(const gl::RenderQuad& quad, EventManager *manager)
 	: QuadShader(quad, "Quad", "Cube_Map_Buffer"), _curBuffer(manager, GLFW_KEY_5, GLFW_KEY_6, 0, 5)
 {
 	acquireUniforms();

@@ -3,9 +3,9 @@
 
 void Guard::update(float dt)
 {
-	
+
 	glm::vec3 pos = _position;
-	
+
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
@@ -18,10 +18,10 @@ void Guard::update(float dt)
 		int a = 0;
 	setPosition(pos);
 	face(_path->movingTo());
-	
-	GameObject::update(dt); //Let object update the move vars before doing our update logic
 
-	//Get direction vector and distance to player 
+	GameObject::update(dt); //Let object update the move vars before doing our detection logic
+
+	//Get direction vector and distance to player
 	glm::vec3 dirToPlayer = _player->getWorldPos() - this->getWorldPos();
 	float playerDist = glm::length(dirToPlayer);
 	dirToPlayer = glm::normalize(dirToPlayer);
@@ -32,8 +32,7 @@ void Guard::update(float dt)
 	//Activate the detection event based on distance between the player and guard
 	if (playerDist <  detectionDist)
 	{
-		std::cout << "Almost detected" << std::endl;
-		
+
 		//Timer to determine the amount of time before the guard detects the player
 		float detectionAmount = (1.0f - (playerDist / detectionDist));
 		_detectionScore -= dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
@@ -43,6 +42,14 @@ void Guard::update(float dt)
 			std::cout << "Detected" << std::endl;
 
 			_detectionScore = 0.3f;
+		}
+		else
+		{
+			// ALmost detected
+			// call event
+			// use detection value
+			// use pos
+			// use VP-Matrix?
 		}
 	}
 
@@ -57,8 +64,9 @@ glm::vec2 Guard::getNextPosition()
 }
 
 Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>& walkingPoints) :
-	GameObject(m), _player(player), _eventManager(event), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
+	GameObject(m), _player(player), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
 {
+	_eventManager = event;
 	_whatPathToLoad = 0;
 
 	setPosition(position);
@@ -91,7 +99,7 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 	{
 		//Get light at position
 		float playerLight = _player->getLightAtPosition();
-		
+
 		//Account light for Anti-L Grenade
 		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()[0]._grenadePositionWhenLanded)) < _player->getGrenadeData()[0].expanding)
 			playerLight *= _player->getGrenadeData()[0].fading;

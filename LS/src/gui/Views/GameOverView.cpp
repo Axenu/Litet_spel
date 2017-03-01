@@ -18,29 +18,42 @@ namespace gui {
         {
             _victoryLabel->addStringComponent(new StringComponentString("Defeat"));
         }
-        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.2f);
+        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.4f);
         addChild(_victoryLabel);
 
         gui::Label *l = new gui::Label(_font);
         l->addStringComponent(new StringComponentString("Score: "));
         l->addStringComponent(new StringComponentInt(&_score));
         l->setScale(0.5f);
-        l->setPosition(-l->getSize().x*0.25f, 0.0f);
+        l->setPosition(-l->getSize().x*0.25f, 0.2f);
         addChild(l);
 
-        _quitButton = new gui::Button();
-        _quitButton->addStringComponent(new StringComponentString("Quit"));
-    	_quitButton->setPosition(-_quitButton->getSize().x*0.25f, -0.6f);
-        _quitButton->listen(this, &GameOverView::QuitGame);
-        _quitButton->setScale(0.5,0.5);
-        addChild(_quitButton);
+        _playAgainButton = new gui::Button(1.5f, 0.4f);
+        _playAgainButton->addStringComponent(new StringComponentString("Play again"));
+    	_playAgainButton->setPosition(-_playAgainButton->getSize().x*0.25f, -0.3f);
+        _playAgainButton->setPrimaryColor(PALLETPRIMARY);
+        _playAgainButton->setSecondaryColor(PALLETHIGHLIGHT);
+        _playAgainButton->listen(this, &GameOverView::playAgain);
+        _playAgainButton->setScale(0.5,0.5);
+        addChild(_playAgainButton);
 
-        _mainMenuButton = new gui::Button();
+        _mainMenuButton = new gui::Button(1.5f, 0.4f);
         _mainMenuButton->addStringComponent(new StringComponentString("Menu"));
-    	_mainMenuButton->setPosition(-_mainMenuButton->getSize().x*0.25f, -0.3f);
+    	_mainMenuButton->setPosition(-_mainMenuButton->getSize().x*0.25f, -0.5f);
+        _mainMenuButton->setPrimaryColor(PALLETPRIMARY);
+        _mainMenuButton->setSecondaryColor(PALLETHIGHLIGHT);
         _mainMenuButton->listen(this, &GameOverView::gotoMainMenu);
         _mainMenuButton->setScale(0.5,0.5);
         addChild(_mainMenuButton);
+
+        _quitButton = new gui::Button(1.5f, 0.4f);
+        _quitButton->addStringComponent(new StringComponentString("Quit"));
+    	_quitButton->setPosition(-_quitButton->getSize().x*0.25f, -0.7f);
+        _quitButton->setPrimaryColor(PALLETPRIMARY);
+        _quitButton->setSecondaryColor(PALLETHIGHLIGHT);
+        _quitButton->listen(this, &GameOverView::QuitGame);
+        _quitButton->setScale(0.5,0.5);
+        addChild(_quitButton);
 
     }
     GameOverView::~GameOverView()
@@ -70,7 +83,7 @@ namespace gui {
         {
             _victoryLabel->updateStringComponent(0, new StringComponentString("Defeat"));
         }
-        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.2f);
+        _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.4f);
     }
     void GameOverView::setScore(int score)
     {
@@ -93,6 +106,19 @@ namespace gui {
             {
                 float f = 0.0f;
                 view = new MainMenuView(_manager, &f);
+                _parent->setView(view);
+            }
+        }
+    }
+    void GameOverView::playAgain(int action)
+    {
+        if (action == GLFW_RELEASE)
+        {
+            HUDView *view = dynamic_cast<HUDView*>(_parent->setView("HUDView"));
+            if (view == nullptr)
+            {
+                float f = 0.0f;
+                view = new HUDView(_manager, &f);
                 _parent->setView(view);
             }
         }

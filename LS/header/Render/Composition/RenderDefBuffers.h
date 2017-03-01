@@ -22,7 +22,7 @@ protected:
 	virtual void assignUniforms(RenderInfo &fD);
 
 public:
-	RenderDefBuffers(const gl::RenderQuad& quad, EventManager &manager);
+	RenderDefBuffers(const gl::RenderQuad& quad, EventManager *manager);
 	virtual ~RenderDefBuffers();
 
 	/* Call on window size change

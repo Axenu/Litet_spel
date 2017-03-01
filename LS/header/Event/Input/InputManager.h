@@ -78,7 +78,7 @@ public:
 
     EventManager* getManager();
 private:
-    EventManager* _manager;
+    EventManager* _eventManager;
     GLFWwindow* _window;
     int _cursorMode;
 };

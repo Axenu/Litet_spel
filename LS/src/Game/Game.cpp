@@ -2,10 +2,11 @@
 
 
 
-Game::Game(Setting &setting, EventManager &events)
-	: _setting(setting), _event(events), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()),
-	_factory(events, "Resources/", "Resources/models/"), _shadowMapShader("shadow_cube_map","shadow_cube_map","shadow_cube_map")
+Game::Game(Setting &setting, EventManager *eventManager)
+	: _setting(setting), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()),
+	_factory(eventManager, "Resources/", "Resources/models/"), _shadowMapShader("shadow_cube_map","shadow_cube_map","shadow_cube_map")
 {
+	_eventManager = eventManager;
 	_modelMatrixLocation = _shadowMapShader.getUniform("model");
 	_shadowMatricesLocation = _shadowMapShader.getUniform("shadowMatrices");
 	_lightPosLocation = _shadowMapShader.getUniform("lightPos");

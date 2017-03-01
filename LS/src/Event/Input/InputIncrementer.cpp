@@ -1,14 +1,17 @@
 #include "Event/Input/InputIncrementer.h"
 
 
-InputIncrementer::InputIncrementer(EventManager &manager, int incrementKey, int decrementKey, int min, int max) 
-	: _value(min), _keyIncrement(incrementKey), _keyDecrement(decrementKey), _rangeMin(min), _rangeMax(max) {
-	manager.listen(this, &InputIncrementer::receive);
+InputIncrementer::InputIncrementer(EventManager *manager, int incrementKey, int decrementKey, int min, int max)
+	: _value(min), _keyIncrement(incrementKey), _keyDecrement(decrementKey), _rangeMin(min), _rangeMax(max)
+{
+	_eventManager = manager;
+	_eventManager->listen(this, &InputIncrementer::receive);
 }
 
 
 InputIncrementer::~InputIncrementer()
 {
+	_eventManager->unlisten(this, &InputIncrementer::receive);
 }
 
 void InputIncrementer::receive(const KeyboardEvent& event)
