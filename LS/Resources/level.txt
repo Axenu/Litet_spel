@@ -4,9 +4,9 @@ light P 2.5 1.2 17.5
 light P 4.9 1.2 9.5
 light P 2.9 1.2 5
 light P 4.5 1.2 27
-model S 1 11 M Table_Wide.obj R 0 90 0
-model S 2 11 M Table_Wide.obj
-model S 10 11 M Table_Wide.obj
+model S 1 11 M Table.obj R 0 90 0
+model S 2 11 M Table.obj
+model S 10 11 M Table.obj
 model S 2 17 M Table.obj
 model S 3 17 M Table.obj
 guard S 14 2 
@@ -20,6 +20,6 @@ path H 15 5
 guard S 15 5
 path H 14 5 H 14 6 H 15 6
 loot S 3 3 R 0 0 0 V 1 M Chalice.obj
-loot S 4 4 R 90 0 0 V 2 M Chalice.obj
-loot S 5 5 R 0 90 0 V 4 M Chalice.obj
-loot S 6 6 R 0 0 90 V 8 M Chalice.obj
+loot S 4 4 R 90 0 0 V 2 M Chandilier.obj
+loot S 5 5 R 0 90 0 V 4 M GoldBar.obj
+loot S 6 6 R 0 0 90 V 8 M Diamond.obj
