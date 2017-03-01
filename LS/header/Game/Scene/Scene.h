@@ -73,6 +73,8 @@ public:
 	GameObject* pick(float pickDist);
 	bool takeOverGuard(float maxDist);
 	void getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat);
+	//get dynamic objects for a ligth source
+	void getDynObjects(std::vector<GameObject*> &list, AABB &iaabb);
 
 };
 

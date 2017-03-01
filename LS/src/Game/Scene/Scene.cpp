@@ -125,7 +125,8 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 }
 
 void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
-	std::vector<GameObject*> drawList = _dynamicObjects;
+	std::vector<GameObject*> drawList;
+	getDynObjects(drawList, aabb);
 	_quadTree.QuadTreeTest(drawList, aabb);
 	drawList.push_back(_rootObject);
 	for (unsigned int i = 0; i < drawList.size(); i++)
@@ -328,6 +329,20 @@ void Scene::getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat)
 			}
 		}
 		if (accepted)
+		{
+			list.push_back(_dynamicObjects[i]);
+		}
+	}
+}
+
+void Scene::getDynObjects(std::vector<GameObject*> &list, AABB &iaabb)
+{
+
+	//test each aabb against light aabb
+	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)
+	{
+		AABB aabb = _dynamicObjects[i]->getAABB();
+		if (AABBvAABB(aabb, iaabb))
 		{
 			list.push_back(_dynamicObjects[i]);
 		}
