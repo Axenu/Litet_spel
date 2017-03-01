@@ -14,7 +14,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
-#include "Sound\Irrklang.h"
+#include "Sound/Irrklang.h"
 void setupWindow()
 {
 #ifndef __APPLE__
@@ -52,7 +52,7 @@ void setupWindow()
 	}
 #endif
 
-	
+
 
 
 	//init DevIL
@@ -99,8 +99,8 @@ void setupWindow()
 		// game.update(dT);
 		//Draw game drawables
 		// game.draw();
-	
-		
+
+
 		guiManager.update(dT);
 		guiManager.render();
 
@@ -120,7 +120,7 @@ int main()
 {
 	// std::cout << "Init window!" << std::endl;
 	setupWindow();
-	
+
 
 
     return 0;

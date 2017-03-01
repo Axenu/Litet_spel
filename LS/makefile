@@ -5,7 +5,7 @@ lIBDIR=lib/OSX/
 IDIR=include/
 HDIR=header/
 
-SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Level src/Game/Objects src/Game/Scene src/gui src/gui/Views src/Render src/Render/Mesh src/Render/Mesh/Shader src/Render/Mesh/Animation src/Render/Composition src/Math
+SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Level src/Game/Objects src/Game/Scene src/gui src/gui/Views src/Render src/Render/Mesh src/Render/Mesh/Shader src/Render/Mesh/Animation src/Render/Composition src/Math src/Sound
 BUILD_DIR := $(SRC_DIR:src%=build%)
 SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ_files := $(SRC:src%=build%)

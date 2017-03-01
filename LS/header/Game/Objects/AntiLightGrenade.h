@@ -7,7 +7,7 @@
 #include "GameObject.h"
 #include "Game/Camera.h"
 #include "Game/Level/Grid.h"
-#include"Sound\Irrklang.h"
+#include "Sound/Irrklang.h"
 
 struct GrenadeValues {
 	glm::vec4 _grenadePositionWhenLanded;
