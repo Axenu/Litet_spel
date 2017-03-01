@@ -23,15 +23,14 @@ private:
 
 public:
 
-	Level(const std::string &level, EventManager &events, MeshShader &shader);
+	Level(const std::string &level, EventManager *eventManager, MeshShader &shader);
 	void setScene(Scene *scene);
 	virtual ~Level();
 
 	Grid& getGrid();
-	
+
 	/* Access the scene */
 	const Scene& getScene();
 
 	virtual void onUpdate(float dT);
 };
-

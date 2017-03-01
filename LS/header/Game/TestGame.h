@@ -22,7 +22,7 @@ protected:
 	virtual void setupRI(RenderInfo &rI);
 public:
 
-	TestGame(Setting &setting, EventManager &events);
+	TestGame(Setting &setting, EventManager *events);
 	virtual ~TestGame();
 	virtual void initiate();
 	virtual void compose(RenderInfo &rI);

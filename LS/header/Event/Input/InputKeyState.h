@@ -9,9 +9,10 @@ class InputKeyState
 private:
 	int _keyAction;
 	int _listenKey;
+	EventManager *_eventManager;
 public:
 	bool _active;
-	InputKeyState(EventManager &manager, int key);
+	InputKeyState(EventManager *manager, int key);
 	void receive(const KeyboardEvent& event);
 	~InputKeyState();
 };

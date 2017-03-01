@@ -267,12 +267,12 @@ void Character::charKeyInput(const KeyboardEvent & event)
 	{
         if (event.getAction() == GLFW_PRESS)
         {
-            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
-            {
+            // if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
+            // {
                 //call endGameEvent
                 GameOverEvent event(true);
                 _eventManager->execute(event);
-            }
+            // }
         }
 	}
 	else if (event.getKey() == GLFW_KEY_Q)
@@ -458,8 +458,9 @@ int Character::amountOfGrenades()
 }
 
 Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade) :
-	GameObject(), _eventManager(manager)
+	GameObject()
 {
+	_eventManager = manager;
 	_state = CharState::character;
 	_lootValue = 0;
 	setPosition(pos);

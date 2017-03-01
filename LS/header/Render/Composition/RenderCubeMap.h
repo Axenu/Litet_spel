@@ -22,7 +22,7 @@ protected:
 	virtual void assignUniforms(RenderInfo &fD);
 
 public:
-	RenderCubeMap(const gl::RenderQuad& quad, EventManager &manager);
+	RenderCubeMap(const gl::RenderQuad& quad, EventManager *manager);
 	virtual ~RenderCubeMap();
 
 	/* Call on window size change

@@ -2,7 +2,7 @@
 #include "gui/Manager.h"
 
 namespace gui {
-    HUDView::HUDView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
+    HUDView::HUDView(EventManager* manager, float* fps) : _eventManager(manager), _fps(fps), View()
     {
         _name = "HUDView";
 
@@ -80,17 +80,17 @@ namespace gui {
         la->setPosition(0 - la->getTextWidth()*0.5f, -0.98f);
         addChild(la);
 
-        _manager->listen(this, &HUDView::gameStarted);
-        _manager->listen(this, &HUDView::gameOver);
-        _manager->listen(this, &HUDView::exitSquareTrigger);
-		_manager->listen(this, &HUDView::canClimb);
+        _eventManager->listen(this, &HUDView::gameStarted);
+        _eventManager->listen(this, &HUDView::gameOver);
+        _eventManager->listen(this, &HUDView::exitSquareTrigger);
+		_eventManager->listen(this, &HUDView::canClimb);
     }
     HUDView::~HUDView()
     {
-        _manager->unlisten(this, &HUDView::gameStarted);
-        _manager->unlisten(this, &HUDView::gameOver);
-        _manager->unlisten(this, &HUDView::exitSquareTrigger);
-		_manager->unlisten(this, &HUDView::canClimb);
+        _eventManager->unlisten(this, &HUDView::gameStarted);
+        _eventManager->unlisten(this, &HUDView::gameOver);
+        _eventManager->unlisten(this, &HUDView::exitSquareTrigger);
+		_eventManager->unlisten(this, &HUDView::canClimb);
         delete _font;
         delete _game;
     }
@@ -100,20 +100,21 @@ namespace gui {
     }
     void HUDView::onUpdate(float dt)
     {
+        _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
     }
     void HUDView::initiate()
     {
         if (_game != nullptr)
         {
-            std::cout << "delete game" << std::endl;
+            // std::cout << "delete game" << std::endl;
             delete _game;
         }
         //init game
         Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
     	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
-    	_game = new TestGame(setting, *_manager);
+    	_game = new TestGame(setting, _eventManager);
 
         /* Load game
     	*/
@@ -124,7 +125,7 @@ namespace gui {
         _grenadeCountLabel->updateStringComponent(0, new StringComponentInt(_game->getCharacter()->getGrenadeCountPointer()));
 		_grenadeCooldownCounter->updateStringComponent(0, new StringComponentFloat(_game->getCharacter()->getGrenadeCooldownTimer()));
         cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
-        _manager->execute(event);
+        _eventManager->execute(event);
 
     }
     void HUDView::gameStarted(const GameStartedEvent &event)
@@ -136,13 +137,13 @@ namespace gui {
         GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
         if (view == nullptr)
         {
-            view = new GameOverView(_manager, event);
+            view = new GameOverView(_eventManager, event);
             _parent->setView(view);
         }
         view->setScore(*_game->getCharacter()->getLootValuePointer());
         view->updateText(event);
-        delete _game;
-        _game = nullptr;
+        // delete _game;
+        // _game = nullptr;
     }
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {

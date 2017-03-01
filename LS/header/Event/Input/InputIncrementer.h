@@ -10,9 +10,8 @@ public:
 	/* If value loops during increment/decrement	*/
 	bool _loop;
 	int _value, _keyIncrement, _keyDecrement, _rangeMin, _rangeMax;
-	InputIncrementer(EventManager &manager, int incrementKey, int decrementKey, int min, int max);
+	EventManager *_eventManager;
+	InputIncrementer(EventManager *manager, int incrementKey, int decrementKey, int min, int max);
 	void receive(const KeyboardEvent& event);
 	~InputIncrementer();
 };
-
-

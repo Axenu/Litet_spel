@@ -2,9 +2,10 @@
 
 
 
-ObjectFactory::ObjectFactory(EventManager &events, const std::string &resourcePath, std::string modelPath)
-	: _path(resourcePath), _modelPath(modelPath), _meshShader(), _skinnedShader(), _models(),  _events(events)
+ObjectFactory::ObjectFactory(EventManager *events, const std::string &resourcePath, std::string modelPath)
+	: _path(resourcePath), _modelPath(modelPath), _meshShader(), _skinnedShader(), _models()
 {
+	_eventManager = events;
 }
 
 ObjectFactory::~ObjectFactory()
@@ -39,7 +40,7 @@ glm::vec3 ObjectFactory::calcRot(glm::ivec2 square)
 
 std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Level *&lvl)
 {
-	_level = new Level(_path + level, _events, _meshShader);
+	_level = new Level(_path + level, _eventManager, _meshShader);
 	lvl = _level;
 	_level->init();
 	std::unique_ptr<GameObject> ptr(_level);
@@ -52,7 +53,7 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), &_events,grenade);
+	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, grenade);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
@@ -69,7 +70,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, &_events, tmpModel, _level, walkingPoints);
+	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, walkingPoints);
 	guard->init();
 	_scene->add(guard, true);
 

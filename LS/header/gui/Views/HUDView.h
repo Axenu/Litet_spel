@@ -24,7 +24,7 @@ namespace gui
     class HUDView : public View
     {
     private:
-        EventManager* _manager;
+        EventManager* _eventManager;
         gui::Font *_font;
         Label *_tipDisplay;
         Label *_scoreLabel;

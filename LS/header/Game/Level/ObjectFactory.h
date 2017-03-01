@@ -56,13 +56,13 @@ private:
 	DefSkinnedMeshShader _skinnedShader;
 	ModelLoader _models;
 	Scene* _scene;
-	EventManager& _events;
+	EventManager* _eventManager;
 	Level* _level;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
 	glm::vec3 calcRot(glm::ivec2 square);
 
 public:
-	ObjectFactory(EventManager &events, const std::string &resourcePath = "", std::string modelPath = "");
+	ObjectFactory(EventManager *events, const std::string &resourcePath = "", std::string modelPath = "");
 	~ObjectFactory();
 
 	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);

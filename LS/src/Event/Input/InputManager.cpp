@@ -40,7 +40,7 @@ void InputManager::quitGame(const QuitGameEvent& event)
     glfwSetWindowShouldClose(_window, 1);
 }
 
-InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(window), _manager(manager)
+InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(window)
 {
     _cursorMode = GLFW_CURSOR_NORMAL;
     glfwSetWindowUserPointer(_window, this);
@@ -48,15 +48,17 @@ InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(
     glfwSetMouseButtonCallback(_window, mouse_key_callback);
     glfwSetCursorPosCallback(_window, cursorPosition_callback);
     glfwSetInputMode(_window, GLFW_CURSOR, _cursorMode);
-    _manager->listen(this, &InputManager::switchCursorMode);
-    _manager->listen(this, &InputManager::quitGame);
+    _eventManager = manager;
+    _eventManager->listen(this, &InputManager::switchCursorMode);
+    _eventManager->listen(this, &InputManager::quitGame);
 }
 InputManager::~InputManager()
 {
-
+    _eventManager->unlisten(this, &InputManager::switchCursorMode);
+    _eventManager->unlisten(this, &InputManager::quitGame);
 }
 
 EventManager* InputManager::getManager()
 {
-    return _manager;
+    return _eventManager;
 }

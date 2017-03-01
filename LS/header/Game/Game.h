@@ -12,7 +12,7 @@ class Game
 {
 protected:
 	Setting _setting;
-	EventManager &_event;
+	EventManager *_eventManager;
 	std::unique_ptr<Scene> _scene;
 	GraphicsResource _resource;
 	RenderDeferred _deferred;
@@ -29,7 +29,7 @@ protected:
 	virtual void compose(RenderInfo &rI);
 	virtual void setupRI(RenderInfo &rI) {};
 public:
-	Game(Setting &setting, EventManager &events);
+	Game(Setting &setting, EventManager *eventManager);
 	virtual ~Game();
 	virtual void initiate();
 

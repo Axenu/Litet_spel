@@ -20,6 +20,7 @@ namespace gui
     private:
         EventManager* _manager;
         gui::Font *_font;
+        Button *_playAgainButton;
         gui::Button* _quitButton;
         gui::Button* _mainMenuButton;
         gui::Label *_victoryLabel;
@@ -40,6 +41,7 @@ namespace gui
 
         void QuitGame(int action);
         void gotoMainMenu(int action);
+        void playAgain(int action);
 
         // void gameStarted(const GameStartedEvent &event);
         // void gameOver(const GameOverEvent &event);
