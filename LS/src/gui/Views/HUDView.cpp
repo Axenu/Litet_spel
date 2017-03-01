@@ -69,11 +69,14 @@ namespace gui {
         _grenadeCountLabel->setScale(0.75);
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         addChild(_grenadeCountLabel);
+
 		_grenadeCooldownCounter = new Label(_font);
-		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2"));
-		_grenadeCooldownCounter->setScale(0.4);
-		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f+0.85f, 0.9f);
+		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2.000"));
+        _grenadeCooldownCounter->addStringComponent(new StringComponentString(" s"));
+		_grenadeCooldownCounter->setScale(0.25);
+		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f, -0.82f);
 		addChild(_grenadeCooldownCounter);
+
         la = new Label(_font);
         la->addStringComponent(new StringComponentString("grenades"));
         la->setScale(0.25);
@@ -103,6 +106,15 @@ namespace gui {
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
         _lightPB->setValue(_game->getCharacter()->getLightAtPosition());
+        if (*(_game->getCharacter()->getGrenadeCooldownTimer()) > 0.0f)
+        {
+            _grenadeCooldownCounter->activate();
+            _grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f, -0.82f);
+        }
+        else
+        {
+            _grenadeCooldownCounter->deactivate();
+        }
     }
     void HUDView::initiate()
     {
@@ -124,6 +136,7 @@ namespace gui {
         _scoreLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
         //update grenade label
         _grenadeCountLabel->updateStringComponent(0, new StringComponentInt(_game->getCharacter()->getGrenadeCountPointer()));
+        //update cooldown label
 		_grenadeCooldownCounter->updateStringComponent(0, new StringComponentFloat(_game->getCharacter()->getGrenadeCooldownTimer()));
         cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
         _eventManager->execute(event);

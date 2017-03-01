@@ -17,7 +17,9 @@ namespace gui
     }
     std::string StringComponentFloat::getString()
     {
-        return std::to_string(*_value);
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(_precision) << *_value;
+        return stream.str();
     }
 
     StringComponentInt::StringComponentInt(int* value)
