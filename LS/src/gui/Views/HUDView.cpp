@@ -42,17 +42,17 @@ namespace gui {
         _scoreLabel->setZ(2);
         addChild(_scoreLabel);
 
-        ProgressBar *pb = new ProgressBar(0.5f, 0.1f);
-        pb->setPrimaryColor(PALLETPRIMARY);
-        pb->setSecondaryColor(PALLETHIGHLIGHT);
-        pb->setPosition(0.1, -0.95);
-        pb->setInverted(true);
-        addChild(pb);
-        pb = new ProgressBar(0.5f, 0.1f);
-        pb->setPrimaryColor(PALLETPRIMARY);
-        pb->setSecondaryColor(PALLETHIGHLIGHT);
-        pb->setPosition(-0.6, -0.95);
-        addChild(pb);
+        _soundPB = new ProgressBar(0.5f, 0.1f);
+        _soundPB->setPrimaryColor(PALLETPRIMARY);
+        _soundPB->setSecondaryColor(PALLETHIGHLIGHT);
+        _soundPB->setPosition(0.1, -0.95);
+        _soundPB->setInverted(true);
+        addChild(_soundPB);
+        _lightPB = new ProgressBar(0.5f, 0.1f);
+        _lightPB->setPrimaryColor(PALLETPRIMARY);
+        _lightPB->setSecondaryColor(PALLETHIGHLIGHT);
+        _lightPB->setPosition(-0.6, -0.95);
+        addChild(_lightPB);
 
         Label *la = new Label(_font);
         la->addStringComponent(new StringComponentString("light:"));
@@ -102,6 +102,7 @@ namespace gui {
     {
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
+        _lightPB->setValue(_game->getCharacter()->getLightAtPosition());
     }
     void HUDView::initiate()
     {

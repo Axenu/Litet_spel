@@ -30,6 +30,8 @@ namespace gui
         Label *_scoreLabel;
         Label *_grenadeCountLabel;
 		Label *_grenadeCooldownCounter;
+        ProgressBar *_lightPB;
+        ProgressBar *_soundPB;
         TestGame *_game = nullptr;
         float* _fps;
         bool _isAtExit = false;
