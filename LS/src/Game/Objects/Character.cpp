@@ -478,35 +478,35 @@ void Character::moveMouse(const MouseMoveEvent& event)
     if (_cursorMode == GLFW_CURSOR_DISABLED)
     {     
 		// Left / Right camera rotation.
-		float tilt = deltaPos.x * -RotationSpeed;
+		float rotate = deltaPos.x * -RotationSpeed;
 		switch (_state)
 		{
 		case CharState::guardVision:
-			_camTilt.x += tilt;
-
-			if (_camTilt.x > glm::pi<float>()*0.5f)
-				_camTilt.x = glm::pi<float>()*0.5f;
-			else if (_camTilt.x < glm::pi<float>()*-0.5f)
-				_camTilt.x = glm::pi<float>()*-0.5f;
-			else //Rotate
-				_currentScene->getCamera().rotateY(tilt);
+			//Rotate only to max angle
+			if (_camTilt.x + rotate > glm::pi<float>()*0.5f)
+				rotate = std::fmaxf(0.f, glm::pi<float>()*0.5f - _camTilt.x);
+			else if (_camTilt.x + rotate < glm::pi<float>()*-0.5f)
+				rotate = std::fminf(0.f, glm::pi<float>()*-0.5f - _camTilt.x);
+			//Rotate
+			_camTilt.x += rotate;
+			_currentScene->getCamera().rotateY(rotate);
 			break;
 		default:
-			rotateY(tilt);
+			rotateY(rotate);
 			break;
 		}
 
 
 		// Up / Down camera rotation.
-		tilt = deltaPos.y * RotationSpeed;
+		float tilt = deltaPos.y * RotationSpeed;
+		//Rotate only to max angle
+		if (_camTilt.y + tilt > glm::pi<float>()*0.5f)
+			tilt = std::fmaxf(0.f, glm::pi<float>()*0.5f - _camTilt.y);
+		else if (_camTilt.y + tilt < glm::pi<float>()*-0.5f)
+			tilt = std::fminf(0.f, glm::pi<float>()*-0.5f - _camTilt.y);
+		//Tilt
 		_camTilt.y += tilt;
-
-		if (_camTilt.y > glm::pi<float>()*0.5f)
-			_camTilt.y = glm::pi<float>()*0.5f;
-		else if (_camTilt.y < glm::pi<float>()*-0.5f)
-			_camTilt.y = glm::pi<float>()*-0.5f;
-		else //Rotate
-			_currentScene->getCamera().rotateX(tilt);
+		_currentScene->getCamera().rotateX(tilt);
     }
 }
 
