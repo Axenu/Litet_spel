@@ -64,6 +64,18 @@ namespace gui
         }
         _loadedViews.push_back(view);
     }
+    void Manager::resumeView(std::string name)
+    {
+        for (View* view : _loadedViews)
+        {
+            if (view->getName() == name)
+            {
+                _currentView = view;
+                return _currentView;
+            }
+        }
+        return nullptr;
+    }
     void Manager::setWindowSize(unsigned int width, unsigned int height)
     {
         _windowWidth = width;
@@ -79,12 +91,9 @@ namespace gui
             pos.y = (1 - (_lastCursorPos.y / (float)_windowHeight * 2));
             if (pos.x >= -1 && pos.y >= -1 && pos.x <= 1 && pos.y <= 1)
             {
-                // std::cout << "x: " << pos.x << " y: " << pos.y << std::endl;
-                // std::cout << "ds" << std::endl;
                 Element *e = _currentView->View::checkCollision(pos);
                 if (e != nullptr)
                 {
-                    // std::cout << "col" << std::endl;
                     if (_selectedElement == nullptr)
                     {
                         _selectedElement = e;

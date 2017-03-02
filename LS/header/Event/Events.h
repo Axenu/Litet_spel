@@ -85,3 +85,12 @@ public:
 	float _detection;
 	unsigned int _id;
 };
+
+class GuardVisionEvent : public Event
+{
+public:
+	GuardVisionEvent(bool started, float time);
+	~GuardVisionEvent();
+	bool _active;
+	float _duration;
+};

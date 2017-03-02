@@ -29,7 +29,7 @@ bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 	{
 		if ((*this)[trav.getSquare()] == gridType::wall)
 			return true;
-		
+
 		dist += trav.goNext();
 	} while (dist < viewDist);
 
@@ -50,7 +50,7 @@ bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDi
 		dist += trav.goNext();
 
 	} while (dist < viewDist);
-	
+
 	return false;
 }
 
@@ -419,7 +419,7 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 	std::vector<GLuint> floorIndices;
 
 	addQuad(floorPosition, floorNormal, floorIndices, k, glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE), glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
-	
+
 	meshes[0].setMesh(floorPosition, floorNormal, floorIndices);
 	k = 0;
 	///////
@@ -454,7 +454,7 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
-					else if (ROOFHEIGHT > 2.3 && _twodArray[j - 1][i].type == door)
+					else if (ROOFHEIGHT > 2.3f && _twodArray[j - 1][i].type == door)
 					{
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 2.3f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
@@ -536,7 +536,7 @@ void Grid::addQuad(std::vector<glm::vec3>& positionList, std::vector<glm::vec3>&
 	float len = glm::dot(upVector, minMax);
 	glm::vec3 topLeft(quadMin + len * upVector);
 	glm::vec3 bottomRight(quadMax - len * upVector);
-	
+
 	positionList.push_back(quadMax);
 	positionList.push_back(topLeft);
 	positionList.push_back(quadMin);
