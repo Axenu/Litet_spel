@@ -11,7 +11,8 @@ enum gridType
 	tresure = 3, 
 	loot = 4,
 	window = 5,
-	exiting = 6, 
+	exiting = 6,
+	door = 7,
 };
 
 /* Simple struct holding information of a grid square

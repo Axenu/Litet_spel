@@ -390,6 +390,10 @@ void Grid::loadingBmpPicture(const char* filename)
 			{
 				_twodArray[height - 1 - i][realj].type = window;
 			}
+			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 0, 255))
+			{
+				_twodArray[height - 1 - i][realj].type = door;
+			}
 			else
 			{
 				std::cout << "error" << std::endl;
@@ -450,6 +454,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
+					else if (ROOFHEIGHT > 2.3 && _twodArray[j - 1][i].type == door)
+					{
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 2.3f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 				if (j != _heightLength - 1)
 				{
@@ -461,6 +469,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 					{
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
+					else if (_twodArray[j + 1][i].type == door)
+					{
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 2.3f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
 				if (i != 0)
@@ -474,6 +486,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
+					else if (_twodArray[j][i + 1].type == door)
+					{
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 2.3f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 				if (i != _widthLength - 1)
 				{
@@ -485,6 +501,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 					{
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
+					else if (_twodArray[j][i - 1].type == door)
+					{
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 2.3f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
 			}
@@ -500,6 +520,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 			{
 				_twodArray[j][i].type = wall;
 				_windowData.push_back(glm::ivec2(i, j));
+			}
+			else if (_twodArray[j][i].type == door)
+			{
+				_twodArray[j][i].type = nothing;
 			}
 		}
 	}

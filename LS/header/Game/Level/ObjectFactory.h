@@ -75,6 +75,7 @@ private:
 	glm::vec3 calcRot(glm::ivec2 square);
 
 public:
+	void createRandomLoot(std::vector<lootData> loot, float totalValue);
 	ObjectFactory(EventManager *events, const std::string &resourcePath = "", std::string modelPath = "");
 	~ObjectFactory();
 

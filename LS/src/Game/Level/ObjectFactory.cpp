@@ -1,7 +1,5 @@
 #include "Game/Level/ObjectFactory.h"
 
-
-
 ObjectFactory::ObjectFactory(EventManager *events, const std::string &resourcePath, std::string modelPath)
 	: _path(resourcePath), _modelPath(modelPath), _meshShader(), _skinnedShader(), _models()
 {
@@ -9,6 +7,11 @@ ObjectFactory::ObjectFactory(EventManager *events, const std::string &resourcePa
 }
 
 ObjectFactory::~ObjectFactory()
+{
+
+}
+
+void ObjectFactory::createRandomLoot(std::vector<lootData> loot, float totalValue)
 {
 
 }
