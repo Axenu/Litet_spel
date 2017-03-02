@@ -53,8 +53,6 @@ void TestGame::initiate() {
 	for (unsigned int i = 0; i < guards.size(); i++)
 		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
 	_factory.createRandomLoot(loot, 20.f);
-	/*for (unsigned int i = 0; i < loot.size(); i++)
-		_factory.createLoot(loot[i].modelName, loot[i].pos, loot[i].rotation, loot[i].value);*/
 }
 
 
