@@ -114,6 +114,7 @@ namespace gui {
         _eventManager->listen(this, &HUDView::exitSquareTrigger);
 		_eventManager->listen(this, &HUDView::canClimb);
 		_eventManager->listen(this, &HUDView::guardAlert);
+        srand(time(NULL));
     }
     HUDView::~HUDView()
     {
@@ -135,7 +136,9 @@ namespace gui {
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
         _lightPB->setValue(_game->getCharacter()->getLightAtPosition());
-		//_soundPB->setValue(_game->getCharacter()->getNoise());
+        //make noise more living by adding a small random value
+        float randomNoise = (rand() % 100) * 0.0002f + -0.01f;
+		_soundPB->setValue(_game->getCharacter()->getNoise() + randomNoise);
         if (*(_game->getCharacter()->getGrenadeCooldownTimer()) > 0.0f)
         {
             _grenadeCooldownCounter->activate();

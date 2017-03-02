@@ -17,6 +17,8 @@
 #include "Game/Objects/CharacterEvents.h"
 #include "gui/ProgressBar.h"
 #include "staticVars.h"
+#include <time.h>
+#include <stdlib.h>
 
 
 namespace gui
