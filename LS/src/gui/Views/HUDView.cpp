@@ -45,19 +45,19 @@ namespace gui {
         _soundPB = new ProgressBar(0.5f, 0.1f);
         _soundPB->setPrimaryColor(PALLETPRIMARY);
         _soundPB->setSecondaryColor(PALLETHIGHLIGHT);
-        _soundPB->setPosition(0.1, -0.95);
+        _soundPB->setPosition(0.1f, -0.95f);
         _soundPB->setInverted(true);
         addChild(_soundPB);
         _lightPB = new ProgressBar(0.5f, 0.1f);
         _lightPB->setPrimaryColor(PALLETPRIMARY);
         _lightPB->setSecondaryColor(PALLETHIGHLIGHT);
-        _lightPB->setPosition(-0.6, -0.95);
+        _lightPB->setPosition(-0.6f, -0.95f);
         addChild(_lightPB);
 
         Label *la = new Label(_font);
         la->addStringComponent(new StringComponentString("light:"));
         la->setScale(0.25);
-        la->setPosition(-0.6, -0.83f);
+        la->setPosition(-0.6f, -0.83f);
         addChild(la);
         la = new Label(_font);
         la->addStringComponent(new StringComponentString("sound:"));

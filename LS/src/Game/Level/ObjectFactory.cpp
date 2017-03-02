@@ -132,10 +132,6 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 }
 LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value)
 {
-	Material tmpMat(&_meshShader);
-	tmpMat.setColor("diffuse", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	tmpMat.setColor("spec", glm::vec4(1.0f));
-	tmpMat.setFloat("shine", 20.0f);
 	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
 	LootObject* object = new LootObject(tmpModel, type::Doodad);
 
