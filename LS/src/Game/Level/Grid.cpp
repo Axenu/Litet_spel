@@ -33,6 +33,24 @@ bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 		dist += trav.goNext();
 	} while (dist < viewDist);
 
+}
+
+bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDist, gridType gridType)
+{
+	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
+	float dist = 0.f;
+	do
+	{
+		if ((*this)[trav.getSquare()] == gridType)
+		{
+			objectDist = dist;
+			return true;
+		}
+
+		dist += trav.goNext();
+
+	} while (dist < viewDist);
+	
 	return false;
 }
 

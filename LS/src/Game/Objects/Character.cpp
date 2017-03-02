@@ -177,7 +177,11 @@ void Character::testClimb()
 
 bool Character::guardVision()
 {
-	Guard* gPtr = dynamic_cast<Guard*>(_currentScene->pick(10.0f));
+	float objectDist = 10.f;
+	//Check distance to walls of the map
+	_currentLevel->getDist(_currentScene->getCamera().getWorldPos(), _currentScene->getCamera().getLookAt(), objectDist, objectDist, gridType::wall);
+	//Get closest pick object
+	Guard* gPtr = dynamic_cast<Guard*>(_currentScene->pick(objectDist));
 	if (gPtr)
 	{
 		_currentScene->getCamera().setParent(gPtr);

@@ -218,7 +218,7 @@ GameObject* Scene::pick(float pickDist)
 {
 	glm::vec3 lookAt = _cam->getLookAt();
 	glm::vec3 wPos = _cam->getWorldPos();
-	float minDist = FLT_MAX;
+	float minDist = pickDist;
 	GameObject* retPtr = nullptr;
 	//Search dynamic objects.
 	for (unsigned int i = 0; i < _dynamicObjects.size(); i++)

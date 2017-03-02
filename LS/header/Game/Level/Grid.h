@@ -69,6 +69,7 @@ public:
 	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
 
 	/* Get distance to closest object */
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDist,  gridType gridType);
 	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType);
 	/* Verify a grid square is represented in the grid
 	*/
