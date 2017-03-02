@@ -45,6 +45,7 @@ void Character::onUpdate(float dt)
 		LightGrenadeClock = 0;
 
 	_lightAtPos = calcLightOnPosition();
+	calcNoise();
 }
 
 void Character::init()
@@ -247,6 +248,31 @@ float Character::getLightAtPosition()
 	return _lightAtPos;
 }
 
+void Character::calcNoise()
+{
+	switch (_state)
+	{
+	case CharState::climbing:
+		_movmentNoise = climbingNoise;
+		break;
+	case CharState::guardVision:
+		_movmentNoise = 0.0f;
+		break;
+	default:
+		_movmentNoise = walkingNoise;
+		break;
+	}
+	if (_sneaking)
+	{
+		_movmentNoise *= sneakingModifier;
+	}
+
+}
+
+float Character::getNoise()
+{
+	return _movmentNoise;
+}
 
 void Character::onRender()
 {

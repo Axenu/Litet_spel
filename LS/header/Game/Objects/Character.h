@@ -15,6 +15,10 @@
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
 
+#define climbingNoise 0.6f
+#define walkingNoise 0.4f
+#define sneakingModifier 0.5f;
+
 
 class CollectLootEvent : public Event
 {
@@ -56,6 +60,7 @@ public:
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
+	float getNoise();
 	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade, float height);
 
     Character();
@@ -71,6 +76,7 @@ private:
 	void guardVisionKeyInput(const KeyboardEvent& event);
 	bool charMovement(const KeyboardEvent& event);
 	void gVisionTimerUpdate(float dt);
+	void calcNoise();
 	void returnVision();
 	CharState _state;
 	float _height;
@@ -109,4 +115,6 @@ private:
 	float _lightAtPos;
 	//GuardVision varable
 	float _guardVisDuraTimer;
+	//Noise variable
+	float _movmentNoise;
 };

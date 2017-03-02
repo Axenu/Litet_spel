@@ -108,6 +108,7 @@ namespace gui {
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
         _lightPB->setValue(_game->getCharacter()->getLightAtPosition());
+		//_soundPB->setValue(_game->getCharacter()->getNoise());
         if (*(_game->getCharacter()->getGrenadeCooldownTimer()) > 0.0f)
         {
             _grenadeCooldownCounter->activate();
