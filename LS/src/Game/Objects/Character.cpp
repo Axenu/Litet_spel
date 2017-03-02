@@ -29,7 +29,14 @@ void Character::onUpdate(float dt)
 		_eventManager->execute(squareEvent);
 		this->_gridSquare = newSquare;
 	}
-
+//	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
+//	{
+	
+//		if (_antiLightGrenade[i]->getExplodedGrenade())
+//		{
+//			_grenadeSound.PlaySource3DSoundOnce("Grenade.wav", false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward());
+//		}
+//	}
 	_timerForGrenade += dt;
 	if (_timerForGrenade > 10)
 	{
@@ -209,8 +216,16 @@ std::vector<GrenadeValues> Character::getGrenadeData()
 //	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
 	std::vector<GrenadeValues> _grenadevalues;
 	_grenadevalues.clear();
+
+
 	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
-		_grenadevalues.push_back( _antiLightGrenade[i]->getgrenadeData());
+	{
+		_grenadevalues.push_back(_antiLightGrenade[i]->getgrenadeData());
+		if (_antiLightGrenade[i]->getExplodedGrenade())
+		{
+			_grenadeSound.PlaySource3DSoundOnce("Grenade.wav", false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward());
+		}
+	}
 	return _grenadevalues;
 }
 

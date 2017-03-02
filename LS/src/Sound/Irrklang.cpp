@@ -27,7 +27,7 @@ void IrrKlang::PlaySource2DSound(std::string fileName,bool looping)
 	test = nullptr;
 }
 
-void IrrKlang::PlaySource3DSound(std::string fileName, bool looping, glm::vec3 playerPos, glm::vec3 guardPos, glm::vec3 lookDir,float dt)
+void IrrKlang::PlaySource3DSound(std::string fileName, bool looping, glm::vec3 playerPos, glm::vec3 objectPos, glm::vec3 lookDir,float dt)
 {
 	if (newSound == true)
 	{
@@ -35,11 +35,11 @@ void IrrKlang::PlaySource3DSound(std::string fileName, bool looping, glm::vec3 p
 		char * test = new char[fileName.length() + sizeof("Resources/")];
 		std::strcpy(test, fileName.c_str());
 
-		guardPos = glm::vec3(guardPos - playerPos);
+		objectPos = glm::vec3(objectPos - playerPos);
 
 	
 		_engine->setListenerPosition(vec3df(0.0f, 0.0f, 0.0f), -vec3df(lookDir.x, lookDir.y, lookDir.z));
-		_music = _engine->play3D(test, vec3df(guardPos.x, guardPos.y, guardPos.z), looping, false, true, ESM_AUTO_DETECT, true);
+		_music = _engine->play3D(test, vec3df(objectPos.x, objectPos.y, objectPos.z), looping, false, true, ESM_AUTO_DETECT, true);
 		delete test;
 		test = nullptr;
 		newSound = false;
@@ -55,6 +55,22 @@ void IrrKlang::PlaySource3DSound(std::string fileName, bool looping, glm::vec3 p
 		_timer = 0;
 	}
 	_timer += dt;
+}
+
+void IrrKlang::PlaySource3DSoundOnce(std::string fileName, bool looping, glm::vec3 playerPos, glm::vec3 objectPos, glm::vec3 lookDir)
+{
+	fileName = "Resources/" + fileName;
+	char * test = new char[fileName.length() + sizeof("Resources/")];
+	std::strcpy(test, fileName.c_str());
+
+	objectPos = glm::vec3(objectPos - playerPos);
+
+
+	_engine->setListenerPosition(vec3df(0.0f, 0.0f, 0.0f), -vec3df(lookDir.x, lookDir.y, lookDir.z));
+	_music = _engine->play3D(test, vec3df(objectPos.x, objectPos.y, objectPos.z), looping, false, true, ESM_AUTO_DETECT, true);
+	delete test;
+	test = nullptr;
+	newSound = false;
 }
 
 void IrrKlang::update(glm::vec3 lookDir)

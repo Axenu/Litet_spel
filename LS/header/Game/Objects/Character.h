@@ -11,7 +11,7 @@
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
-
+#include "Sound/Irrklang.h"
 #define RotationSpeed 0.005f
 
 
@@ -46,7 +46,6 @@ public:
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
-    Character(glm::vec3 pos, EventManager *manager);
 	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade);
 
     Character();
@@ -58,6 +57,7 @@ public:
 
 	float getLightAtPosition();
 private:
+	IrrKlang _grenadeSound;
 	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;

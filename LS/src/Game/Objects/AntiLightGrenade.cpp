@@ -27,6 +27,7 @@ GrenadeValues AntiLightGrenade::getgrenadeData()
 }
 void AntiLightGrenade::update(float dt)
 {
+	checkForSound = false;
 	_fallspeed = -0.02f;
 	_velocity = 5.f;
 	if (QBeenPressed == false && QbeenActivated == true)
@@ -44,6 +45,9 @@ void AntiLightGrenade::update(float dt)
 	//		QBeenPressed = true;
 			QbeenActivated = false;
 			TheBombHasBeenActivated = true;
+			checkForSound = true;
+			
+			
 		}
 
 	}
@@ -55,9 +59,14 @@ void AntiLightGrenade::setLevel(Grid *level)
 	this->_currentLevel = level;
 }
 
+bool AntiLightGrenade::getExplodedGrenade()
+{
+	return checkForSound;
+}
+
 void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::vec3 Direction)
 {
-
+	checkForSound = false;
 	if (QBeenPressed == true)
 	{
 		_direction = Direction;
