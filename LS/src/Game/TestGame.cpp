@@ -46,7 +46,7 @@ void TestGame::initiate() {
 	for (unsigned short int i = 0; i < doorList.size(); i++)
 	{
 		if (doorList[i].open)
-			_factory.createObject("Door.obj", doorList[i].pos, doorList[i].rotation, gridType::nothing, glm::vec3(0.f, 0.f, 0.f));
+			_factory.CreateDoor("Door.obj", doorList[i].pos, doorList[i].rotation);
 		//Add the closed door model here
 
 	}

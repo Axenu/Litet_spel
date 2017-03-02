@@ -106,6 +106,17 @@ AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & mod
 	return grenade;
 }
 
+Door * ObjectFactory::CreateDoor(const std::string & model, glm::ivec2 square, glm::vec3 rotation)
+{
+	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
+	Door* object = new Door(tmpModel, type::Door);
+	object->setPosition(calcPos(square, tmpModel.getBox()));
+	object->setRotEuler(rotation);
+	object->init();
+	_scene->add(object, false);
+	return object;
+}
+
 
 GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation, enum gridType type, glm::vec3 positionOffset)
 {

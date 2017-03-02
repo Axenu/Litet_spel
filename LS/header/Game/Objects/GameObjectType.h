@@ -8,6 +8,7 @@ namespace type {
 		Empty = 0,
 		Doodad = 1,
 		Static = 2,
+		Door = 3,
 		PointLight = 5
 	};
 }
