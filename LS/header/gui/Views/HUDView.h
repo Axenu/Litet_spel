@@ -37,9 +37,14 @@ namespace gui
         Label *_scoreLabel;
         Label *_grenadeCountLabel;
 		Label *_grenadeCooldownCounter;
-        // TexturedRectangle *_guardAlert;
+        Rectangle *_scoreBackground;
+        Label *_soundLabel;
+        Label *_lightLabel;
+        Label *_grenadeLabel;
         ProgressBar *_lightPB;
         ProgressBar *_soundPB;
+        ProgressBar *_guardVisionPB;
+        Label *_guardVisionLabel;
         TestGame *_game = nullptr;
         float* _fps;
         bool _isAtExit = false;
@@ -54,6 +59,7 @@ namespace gui
 
         virtual void initiate();
 
+        void switchToGuardVision(const GuardVisionEvent &event);
         void gameStarted(const GameStartedEvent &event);
         void gameOver(const GameOverEvent &event);
         void exitSquareTrigger(const CharacterSquareEvent &event);

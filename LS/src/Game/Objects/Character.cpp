@@ -190,6 +190,9 @@ bool Character::guardVision()
 		if (_state == CharState::normal)
 		{
 			_guardVisDuraTimer = 5.0f;
+			//vcall event
+			GuardVisionEvent event(true, _guardVisDuraTimer * 0.2f);
+			_eventManager->execute(event);
 		}
 		_state = CharState::guardVision;
 		return true;
@@ -209,11 +212,15 @@ void Character::returnVision()
 	_currentScene->getCamera().setForward(glm::vec3(0.0f, 0.0f, 1.0f));
 	_camTilt = glm::bvec2(0.0f);
 	_state = CharState::normal;
+	GuardVisionEvent event(false, 0.0f);
+	_eventManager->execute(event);
 }
 
 void Character::gVisionTimerUpdate(float dt)
 {
 	_guardVisDuraTimer -= dt;
+	GuardVisionEvent event(true, _guardVisDuraTimer * 0.2f);
+	_eventManager->execute(event);
 	if (_guardVisDuraTimer < 0.0f)
 		returnVision();
 }
@@ -496,7 +503,7 @@ bool Character::charMovement(const KeyboardEvent& event)
 /* Ensure rotation is within bounds
 rotation << total rotation
 amount << Frame rotation amount
-max, min << Boundaries 
+max, min << Boundaries
 */
 float maxRotation(float rotation, float amount, float max, float min)
 {
@@ -520,7 +527,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
     if (_cursorMode == GLFW_CURSOR_DISABLED)
-    {     
+    {
 		// Left / Right camera rotation.
 		float rotate = deltaPos.x * -RotationSpeed;
 		switch (_state)

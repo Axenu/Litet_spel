@@ -68,3 +68,12 @@ GuardAlertEvent::~GuardAlertEvent()
 {
 
 }
+GuardVisionEvent::GuardVisionEvent(bool started, float time)
+{
+	_duration = time;
+	_active = started;
+}
+GuardVisionEvent::~GuardVisionEvent()
+{
+
+}

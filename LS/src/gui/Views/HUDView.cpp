@@ -7,12 +7,15 @@ namespace gui {
         _name = "HUDView";
 
         _font = new gui::Font("Resources/fonts/arial");
-        // gui::Label *l = new gui::Label(_font);
-        // l->addStringComponent(new StringComponentString("FPS: "));
-        // l->addStringComponent(new StringComponentFloat(_fps));
-        // l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
-        // l->setScale(0.5);
-        // addChild(l);
+        if (sic::debug)
+        {
+            gui::Label *l = new gui::Label(_font);
+            l->addStringComponent(new StringComponentString("FPS: "));
+            l->addStringComponent(new StringComponentFloat(_fps));
+            l->setPosition(-1.0f, 0.8f-l->getSize().y/2.0f);
+            l->setScale(0.5);
+            addChild(l);
+        }
 
         _tipDisplay = new gui::Label(_font);
         _tipDisplay->addStringComponent(new StringComponentString("Temp string"));
@@ -27,12 +30,13 @@ namespace gui {
         glm::vec4 color(0, 0, 0, 1);
         rect->setColor(color);
         addChild(rect);
-        rect = new Rectangle(0.5f, 0.15f);
-        rect->setPosition(-1.f, 0.85f);
+        //score background
+        _scoreBackground = new Rectangle(0.5f, 0.15f);
+        _scoreBackground->setPosition(-1.f, 0.85f);
         color = PALLETPRIMARY;
         color.w = 0.6f;
-        rect->setColor(color);
-        addChild(rect);
+        _scoreBackground->setColor(color);
+        addChild(_scoreBackground);
 
         _scoreLabel= new gui::Label(_font);
         _scoreLabel->addStringComponent(new StringComponentString("Score: "));
@@ -48,22 +52,25 @@ namespace gui {
         _soundPB->setPosition(0.1f, -0.95f);
         _soundPB->setInverted(true);
         addChild(_soundPB);
+
         _lightPB = new ProgressBar(0.5f, 0.1f);
         _lightPB->setPrimaryColor(PALLETPRIMARY);
         _lightPB->setSecondaryColor(PALLETHIGHLIGHT);
         _lightPB->setPosition(-0.6f, -0.95f);
         addChild(_lightPB);
 
-        Label *la = new Label(_font);
-        la->addStringComponent(new StringComponentString("light:"));
-        la->setScale(0.25);
-        la->setPosition(-0.6f, -0.83f);
-        addChild(la);
-        la = new Label(_font);
-        la->addStringComponent(new StringComponentString("sound:"));
-        la->setScale(0.25);
-        la->setPosition(0.6f - la->getTextWidth(), -0.83f);
-        addChild(la);
+        _lightLabel = new Label(_font);
+        _lightLabel->addStringComponent(new StringComponentString("light:"));
+        _lightLabel->setScale(0.25);
+        _lightLabel->setPosition(-0.6f, -0.83f);
+        addChild(_lightLabel);
+
+        _soundLabel = new Label(_font);
+        _soundLabel->addStringComponent(new StringComponentString("sound:"));
+        _soundLabel->setScale(0.25);
+        _soundLabel->setPosition(0.6f - _soundLabel->getTextWidth(), -0.83f);
+        addChild(_soundLabel);
+
         _grenadeCountLabel = new Label(_font);
         _grenadeCountLabel->addStringComponent(new StringComponentString("2"));
         _grenadeCountLabel->setScale(0.75);
@@ -77,12 +84,31 @@ namespace gui {
 		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f, -0.82f);
 		addChild(_grenadeCooldownCounter);
 
-        la = new Label(_font);
-        la->addStringComponent(new StringComponentString("grenades"));
-        la->setScale(0.25);
-        la->setPosition(0 - la->getTextWidth()*0.5f, -0.98f);
-        addChild(la);
+        _grenadeLabel = new Label(_font);
+        _grenadeLabel->addStringComponent(new StringComponentString("grenades"));
+        _grenadeLabel->setScale(0.25);
+        _grenadeLabel->setPosition(0 - _grenadeLabel->getTextWidth()*0.5f, -0.98f);
+        addChild(_grenadeLabel);
 
+        //Guard Vision
+        _guardVisionPB = new ProgressBar(1.0f, 0.2f);
+        _guardVisionPB->setPrimaryColor(PALLETPRIMARY);
+        _guardVisionPB->setSecondaryColor(PALLETHIGHLIGHT);
+        _guardVisionPB->setPosition(-0.5f, -0.95f);
+        _guardVisionPB->setValue(1.0f);
+        _guardVisionPB->deactivate();
+        addChild(_guardVisionPB);
+
+        _guardVisionLabel = new Label(_font);
+		_guardVisionLabel->addStringComponent(new StringComponentFloatConst(0.0f, 3));
+		_guardVisionLabel->addStringComponent(new StringComponentString("s"));
+		_guardVisionLabel->setScale(0.5);
+		_guardVisionLabel->setPosition(0 - _guardVisionLabel->getTextWidth()*0.5f, -0.90f);
+        _guardVisionLabel->setZ(5);
+        _guardVisionLabel->deactivate();
+		addChild(_guardVisionLabel);
+
+        _eventManager->listen(this, &HUDView::switchToGuardVision);
         _eventManager->listen(this, &HUDView::gameStarted);
         _eventManager->listen(this, &HUDView::gameOver);
         _eventManager->listen(this, &HUDView::exitSquareTrigger);
@@ -91,6 +117,7 @@ namespace gui {
     }
     HUDView::~HUDView()
     {
+        _eventManager->unlisten(this, &HUDView::switchToGuardVision);
         _eventManager->unlisten(this, &HUDView::gameStarted);
         _eventManager->unlisten(this, &HUDView::gameOver);
         _eventManager->unlisten(this, &HUDView::exitSquareTrigger);
@@ -145,6 +172,40 @@ namespace gui {
         _eventManager->execute(event);
 
     }
+    void HUDView::switchToGuardVision(const GuardVisionEvent &event)
+    {
+        if (event._active)
+        {
+            _scoreLabel->deactivate();
+            _soundPB->deactivate();
+            _lightPB->deactivate();
+            _grenadeCountLabel->deactivate();
+            _grenadeCooldownCounter->deactivate();
+            _scoreBackground->deactivate();
+            _lightLabel->deactivate();
+            _soundLabel->deactivate();
+            _grenadeLabel->deactivate();
+            _guardVisionPB->activate();
+            _guardVisionLabel->activate();
+            _guardVisionPB->setValue(event._duration);
+            _guardVisionLabel->updateStringComponent(0, new StringComponentFloatConst(event._duration * 5.0f, 2));
+            _guardVisionLabel->setPosition(0 - _guardVisionLabel->getTextWidth()*0.5f, -0.90f);
+        }
+        else
+        {
+            _scoreLabel->activate();
+            _soundPB->activate();
+            _lightPB->activate();
+            _grenadeCountLabel->activate();
+            _grenadeCooldownCounter->activate();
+            _scoreBackground->activate();
+            _lightLabel->activate();
+            _soundLabel->activate();
+            _grenadeLabel->activate();
+            _guardVisionPB->deactivate();
+            _guardVisionLabel->deactivate();
+        }
+    }
     void HUDView::gameStarted(const GameStartedEvent &event)
     {
         std::cout << "game has started" << std::endl;
@@ -159,8 +220,6 @@ namespace gui {
         }
         view->setScore(*_game->getCharacter()->getLootValuePointer());
         view->updateText(event);
-        // delete _game;
-        // _game = nullptr;
     }
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {

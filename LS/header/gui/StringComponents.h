@@ -40,6 +40,15 @@ namespace gui
         StringComponentFloat(float* value);
         std::string getString();
     };
+    class StringComponentFloatConst : public StringComponent
+    {
+    private:
+        float _value;
+        int _precision;
+    public:
+        StringComponentFloatConst(float value, int precision);
+        std::string getString();
+    };
 
     class StringComponentInt : public StringComponent
     {

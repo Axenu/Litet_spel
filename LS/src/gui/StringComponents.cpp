@@ -21,6 +21,17 @@ namespace gui
         stream << std::fixed << std::setprecision(_precision) << *_value;
         return stream.str();
     }
+    StringComponentFloatConst::StringComponentFloatConst(float value, int precision)
+    {
+        _value = value;
+        _precision = precision;
+    }
+    std::string StringComponentFloatConst::getString()
+    {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(_precision) << _value;
+        return stream.str();
+    }
 
     StringComponentInt::StringComponentInt(int* value)
     {
