@@ -5,7 +5,15 @@ void Guard::update(float dt)
 {
 	
 	glm::vec3 pos = _position;
-	
+
+	if (glm::length(glm::vec3(_position - glm::vec3(_player->getWorldPos()))) < 5.0f) //&& _guardtimer > 2.f)
+	{
+		_guardSound.PlaySource3DSound("footSteps.wav", false, _player->getWorldPos(), _position, _player->getForward(),dt);
+//		_guardtimer = 0.0f;
+	}
+//	_guardSound.update(_player->getForward());
+//	_guardtimer += dt;
+
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
 		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());

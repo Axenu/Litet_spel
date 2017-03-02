@@ -11,14 +11,6 @@ model S 2 17 M Table.obj
 model S 3 17 M Table.obj
 guard S 14 2 
 path H 15 2
-guard S 14 3
-path H 15 3
-guard S 14 4
-path H 15 4
-guard S 14 5
-path H 15 5
-guard S 15 5
-path H 14 5 H 14 6 H 15 6
 loot S 3 3 R 0 0 0 V 1 M Chalice.obj
 loot S 4 4 R 90 0 0 V 2 M Chalice.obj
 loot S 5 5 R 0 90 0 V 4 M Chalice.obj

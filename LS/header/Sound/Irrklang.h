@@ -1,20 +1,28 @@
 #pragma once
 
-// #include <conio.h>
 #include <stdlib.h>
-#include "../include/irrklang/irrKlang.h"
+#include <irrklang/irrKlang.h>
 #include <iostream>
-#include <cstring>
-#include <string.h>
+#include <string>
 #include <glm/glm.hpp>
+
 #pragma warning(disable:4996)
+
+using namespace irrklang;
+
 class IrrKlang
 {
 public:
 	IrrKlang();
 	~IrrKlang();
-	void PlaySource2DSound(std::string fileName,bool looping); //FileName is the name of the file in resources, Looping is if it should loop or not
-	void PlaySource3DSound(std::string fileName, bool looping, glm::vec3 fromPlayerToGuard);
+	
+	/*FileName is the name of the file in resources, Looping is if it should loop or not*/
+	void PlaySource2DSound(std::string fileName,bool looping);
+	void PlaySource3DSound(std::string fileName, bool looping, glm::vec3 playerPos, glm::vec3 guardPos, glm::vec3 lookDir,float dt);
+	void update(glm::vec3 lookDir);
 private:
-	irrklang::ISoundEngine* engine;
+	ISoundEngine* _engine;
+	ISound* _music;
+	bool newSound;
+	float _timer;
 };

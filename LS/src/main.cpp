@@ -82,8 +82,8 @@ void setupWindow()
 	guiManager.setWindowSize(wWidth, wHeight);
 	guiManager.setView(guiScene);
 
-	IrrKlang backgroundMusic;
-	backgroundMusic.PlaySource2DSound("BackgroundMusic.ogg", true); //credits too Thief Deadly Shadows OST - South Quarter
+//	IrrKlang backgroundMusic;
+//	backgroundMusic.PlaySource2DSound("BackgroundMusic.ogg", true); //credits too Thief Deadly Shadows OST - South Quarter
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
