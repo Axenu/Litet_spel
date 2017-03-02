@@ -58,3 +58,13 @@ bool CanClimbEvent::canClimb() const
 {
 	return _canClimb;
 }
+
+GuardAlertEvent::GuardAlertEvent(glm::vec3 pos, float det)
+{
+	_position = pos;
+	_detection = det;
+}
+GuardAlertEvent::~GuardAlertEvent()
+{
+
+}

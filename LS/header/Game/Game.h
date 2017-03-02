@@ -35,4 +35,6 @@ public:
 
 	void update(float dT);
 	void draw();
+
+	Scene &getScene();
 };

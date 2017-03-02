@@ -10,7 +10,7 @@
 #include "Game/Level/Path.h"
 #include <memory>
 
-#define GUARDVIEWDISTANCE 10.f
+#define GUARDVIEWDISTANCE 30.f
 #define GUARDFOV 45.0f * M_PIf / 180.f
 
 class Guard : public GameObject
@@ -35,5 +35,5 @@ public:
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
 	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>& walkingPoints);
+	unsigned int _id;
 };
-

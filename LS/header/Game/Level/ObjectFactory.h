@@ -70,6 +70,7 @@ private:
 	Scene* _scene;
 	EventManager* _eventManager;
 	Level* _level;
+	unsigned int _guardCount = 0;
 	glm::vec3 calcPos(glm::ivec2 square, const AABB &box);
 	glm::vec3 calcRot(glm::ivec2 square);
 

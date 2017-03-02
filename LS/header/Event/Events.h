@@ -75,3 +75,13 @@ public:
 	~CanClimbEvent();
 	bool canClimb() const;
 };
+
+class GuardAlertEvent : public Event
+{
+public:
+	GuardAlertEvent(glm::vec3 pos, float det);
+	~GuardAlertEvent();
+	glm::vec3 _position;
+	float _detection;
+	unsigned int _id;
+};

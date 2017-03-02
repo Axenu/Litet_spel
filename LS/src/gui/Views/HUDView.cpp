@@ -87,6 +87,7 @@ namespace gui {
         _eventManager->listen(this, &HUDView::gameOver);
         _eventManager->listen(this, &HUDView::exitSquareTrigger);
 		_eventManager->listen(this, &HUDView::canClimb);
+		_eventManager->listen(this, &HUDView::guardAlert);
     }
     HUDView::~HUDView()
     {
@@ -94,6 +95,7 @@ namespace gui {
         _eventManager->unlisten(this, &HUDView::gameOver);
         _eventManager->unlisten(this, &HUDView::exitSquareTrigger);
 		_eventManager->unlisten(this, &HUDView::canClimb);
+        _eventManager->unlisten(this, &HUDView::guardAlert);
         delete _font;
         delete _game;
     }
@@ -177,7 +179,7 @@ namespace gui {
         {
             if (_isAtExit)
             {
-                std::cout << "player left exit" << std::endl;
+                // std::cout << "player left exit" << std::endl;
                 _tipDisplay->deactivate();
                 _isAtExit = false;
             }
@@ -197,4 +199,69 @@ namespace gui {
 			_tipDisplay->deactivate();
 		}
 	}
+    void HUDView::guardAlert(const GuardAlertEvent &event)
+    {
+        bool found = false;
+        TexturedRectangle *alert = nullptr;
+        // test if there already exist an alert for this guard based on id
+        for (size_t i = 0; i < _alerts.size(); i++)
+        {
+            if (_alerts[i]._id == event._id)
+            {
+                //store result
+                alert = _alerts[i]._rect;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            //Create new alert if none was found
+            alert = new TexturedRectangle(0.1f, 0.075f, "Resources/textures/GuardAlertV2.png");
+            glm::vec4 color(0.92578125f, 0.26171875f, 0.21484375f, event._detection);
+            alert->setColor(color);
+            alert->setZ(4);
+            addChild(alert);
+            AlertStruct a;
+            a._id = event._id;
+            a._rect = alert;
+            a._detection = event._detection;
+            _alerts.push_back(a);
+        }
+        if (event._detection > 0.0f)
+        {
+            //calculate position of the alert
+            glm::vec4 pos = glm::vec4(event._position.x, 1.3f, event._position.z, 1.0f);
+            pos = _game->getScene().getCamera().VPMatrix * pos;
+            glm::vec3 posS = glm::vec3(pos.x/pos.w, pos.y/pos.w, pos.z);
+            if (posS.z < -0.2f)
+            {
+                posS.x = -posS.x;
+                if (posS.x < 1.0f || posS.x > -1.0f)
+                {
+                    if (posS.y > 0.0f)
+                    {
+                        posS.y *= -1;
+                    }
+                    float length = std::sqrt(posS.x*posS.x+posS.y*posS.y);
+                    posS.x /= length;
+                    posS.y /= length;
+                }
+            }
+            posS.x = std::min(posS.x, 1.0f - alert->getSize().x * 0.5f);
+            posS.x = std::max(posS.x, -1.0f + alert->getSize().x * 0.5f);
+            posS.y = std::min(posS.y, 1.0f - alert->getSize().y);
+            posS.y = std::max(posS.y, -1.0f);
+            alert->setPosition(posS.x - alert->getSize().x*0.5f, posS.y);
+            alert->activate();
+            //set opacity to indicate level of detection
+            alert->setOpacity(event._detection);
+            alert->update(0.0f);
+        }
+        else
+        {
+            //if the guard no longer notices the player, hide it.
+            alert->deactivate();
+        }
+    }
 }

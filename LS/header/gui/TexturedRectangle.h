@@ -40,6 +40,9 @@ namespace gui
 
         void onUpdate(float dt);
 
+        void setColor(glm::vec4& color);
+        void setOpacity(float opacity);
+
     };
 
 }

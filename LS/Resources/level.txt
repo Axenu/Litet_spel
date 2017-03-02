@@ -9,7 +9,7 @@ model S 2 11 M Table.obj
 model S 10 11 M Table.obj
 model S 2 17 M Table.obj
 model S 3 17 M Table.obj
-guard S 14 2 
+guard S 14 2
 path H 15 2
 guard S 14 3
 path H 15 3
@@ -18,12 +18,11 @@ path H 15 4
 guard S 14 5
 path H 15 5
 guard S 15 5
-path H 14 5 H 14 6 H 15 6
 loot S 3 3 R 0 0 0 V 1 M Chalice.obj
 loot S 4 4 R 90 0 0 V 2 M Chandilier.obj
 loot S 5 5 R 0 90 0 V 4 M GoldBar.obj
 loot S 6 6 R 0 0 90 V 8 M Diamond.obj
-doors D 5 10 D 10 5 D 15 10 D 19 5 D 24 10 
-doorList 
-doors D 5 13 D 10 17 D 15 13 
-doorList 
+doors D 5 10 D 10 5 D 15 10 D 19 5 D 24 10
+doorList
+doors D 5 13 D 10 17 D 15 13
+doorList

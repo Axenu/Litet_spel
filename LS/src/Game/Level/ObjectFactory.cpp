@@ -87,6 +87,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	Model tmpModel = _models.GetModel(_modelPath + model, mat);
 	glm::vec3 pos = calcPos(square, tmpModel.getBox());
 	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, walkingPoints);
+	guard->_id = _guardCount++;
 	guard->init();
 	_scene->add(guard, true);
 

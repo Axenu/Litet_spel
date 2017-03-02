@@ -72,3 +72,8 @@ void Game::compose(RenderInfo &rI) {
 	gl::CheckGLErrors("Render stage failed: Composition");
 
 }
+
+Scene &Game::getScene()
+{
+	return *_scene;
+}

@@ -42,6 +42,7 @@ namespace gui
             {
                 _currentView = view;
                 _currentView->initiate();
+                _currentView->update(0.0f);
                 return _currentView;
             }
         }
@@ -52,6 +53,7 @@ namespace gui
         _currentView = view;
         _currentView->setParent(this);
         _currentView->initiate();
+        _currentView->update(0.0f);
         //add if not existing
         for (View* v : _loadedViews)
         {

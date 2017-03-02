@@ -69,4 +69,13 @@ namespace gui
     {
 
     }
+    //setters
+    void TexturedRectangle::setColor(glm::vec4& color)
+    {
+        _color = color;
+    }
+    void TexturedRectangle::setOpacity(float opacity)
+    {
+        _color.a = opacity;
+    }
 }

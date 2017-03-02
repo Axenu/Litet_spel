@@ -39,17 +39,32 @@ void Guard::update(float dt)
 
 		if (_detectionScore < 0.0f)
 		{
-			std::cout << "Detected" << std::endl;
-
-			_detectionScore = 0.3f;
+			//Game over
+			GameOverEvent event(false);
+			_eventManager->execute(event);
 		}
 		else
 		{
+			// std::cout << "detection" << std::endl;
+			GuardAlertEvent event(pos, 1.0f - _detectionScore * 3.3333333333f);
+			event._id = _id;
+			_eventManager->execute(event);
 			// ALmost detected
 			// call event
 			// use detection value
 			// use pos
 			// use VP-Matrix?
+		}
+	}
+	else
+	{
+		if (_detectionScore <= 0.3f)
+		{
+			// std::cout << _detectionScore << std::endl;
+			_detectionScore += dt*0.1f;
+			GuardAlertEvent event(pos, 1.0f - _detectionScore * 3.3333333333f);
+			event._id = _id;
+			_eventManager->execute(event);
 		}
 	}
 

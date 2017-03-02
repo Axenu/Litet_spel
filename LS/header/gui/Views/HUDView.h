@@ -18,9 +18,16 @@
 #include "gui/ProgressBar.h"
 #include "staticVars.h"
 
+
 namespace gui
 {
 
+    struct AlertStruct
+    {
+        TexturedRectangle *_rect;
+        float _detection;
+        unsigned int _id;
+    };
     class HUDView : public View
     {
     private:
@@ -30,11 +37,13 @@ namespace gui
         Label *_scoreLabel;
         Label *_grenadeCountLabel;
 		Label *_grenadeCooldownCounter;
+        // TexturedRectangle *_guardAlert;
         ProgressBar *_lightPB;
         ProgressBar *_soundPB;
         TestGame *_game = nullptr;
         float* _fps;
         bool _isAtExit = false;
+        std::vector<AlertStruct> _alerts;
 
     public:
         HUDView(EventManager* manager, float* fps);
@@ -49,6 +58,7 @@ namespace gui
         void gameOver(const GameOverEvent &event);
         void exitSquareTrigger(const CharacterSquareEvent &event);
 		void canClimb(const CanClimbEvent &event);
+        void guardAlert(const GuardAlertEvent &event);
 
         // void endGame(int action);
 
