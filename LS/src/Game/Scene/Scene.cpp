@@ -214,7 +214,12 @@ int Scene::loot(float pickDist)
 	return value;
 }
 
-GameObject* Scene::pick(float pickDist)
+GameObject * Scene::pick(float pickDist)
+{
+	return pick(pickDist, nullptr);
+}
+
+GameObject* Scene::pick(float pickDist, Node *ignoreNode)
 {
 	glm::vec3 lookAt = _cam->getLookAt();
 	glm::vec3 wPos = _cam->getWorldPos();
@@ -229,30 +234,39 @@ GameObject* Scene::pick(float pickDist)
 			//Test to see if it is a pointLight.
 			continue;
 		}
-		GameObject* ptr = _dynamicObjects[i];
-		float dist;
-		//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
-		if (AABBIntersect(_dynamicObjects[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+		Node *nodePtr = _dynamicObjects[i];
+		if (nodePtr != ignoreNode)//Test so it isn't the object we should ignore.
 		{
-			retPtr = ptr;
-			minDist = dist;
+			GameObject* ptr = _dynamicObjects[i];
+			float dist;
+			//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
+			if (AABBIntersect(_dynamicObjects[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+			{
+				retPtr = ptr;
+				minDist = dist;
+			}
 		}
+
 	}
 	//Search quadTree.
 	std::vector<GameObject*> pickList;
 	_quadTree.QuadTreeTest(pickList, lookAt, wPos, pickDist);
 	for (unsigned int i = 0; i < pickList.size(); i++)
 	{
-		GameObject* ptr = pickList[i];
-		float dist;
-		//Check so it is not a doorway.
-		if (ptr->_type != type::GameObjectType::Door)
+		Node* nodePtr = pickList[i];
+		if (nodePtr != ignoreNode) //Test so it isn't the object we should ignore.
 		{
-			//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
-			if (AABBIntersect(pickList[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+			GameObject* ptr = pickList[i];
+			float dist;
+			//Check so it is not a doorway.
+			if (ptr->_type != type::GameObjectType::Door)
 			{
-				retPtr = ptr;
-				minDist = dist;
+				//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
+				if (AABBIntersect(pickList[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+				{
+					retPtr = ptr;
+					minDist = dist;
+				}
 			}
 		}
 
