@@ -5,10 +5,6 @@
 #include "Event/Input/InputIncrementer.h"
 
 
-	/* The shader implementation rendering the pre-generated
-	deferred buffers and other shading data (shadowmaps) for the final composition.
-
-	*/
 class RenderCubeMap :
 	public QuadShader
 {
