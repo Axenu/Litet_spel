@@ -47,8 +47,8 @@ void TestGame::initiate() {
 	{
 		if (doorList[i].open)
 			_factory.CreateDoor("Door.obj", doorList[i].pos, doorList[i].rotation);
-		//Add the closed door model here
-
+		else
+			_factory.CreateDoor("Door_Closed.obj", doorList[i].pos, doorList[i].rotation);
 	}
 	for (unsigned int i = 0; i < guards.size(); i++)
 		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
