@@ -12,6 +12,7 @@
 #include "Game/Objects/Character.h"
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/AntiLightGrenade.h"
+#include "Game/Objects/Door.h"
 
 
 struct worldData {
@@ -77,10 +78,10 @@ public:
 	~ObjectFactory();
 
 	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);
-	Character* createCharacter(glm::ivec2 square, float height);
 	Character* createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *>grenade);
 	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
 	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
+	Door* CreateDoor(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
 	/* Create a scene object
 	model << Model to load
 	*/
