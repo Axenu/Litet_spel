@@ -245,12 +245,17 @@ GameObject* Scene::pick(float pickDist)
 	{
 		GameObject* ptr = pickList[i];
 		float dist;
-		//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
-		if (AABBIntersect(pickList[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+		//Check so it is not a doorway.
+		if (ptr->_type != type::GameObjectType::Door)
 		{
-			retPtr = ptr;
-			minDist = dist;
+			//If ray hits the object and is closer than the pick distance and the last hit object, set as new closest object.
+			if (AABBIntersect(pickList[i]->getAABB(), lookAt, wPos, dist) && dist < pickDist && dist < minDist)
+			{
+				retPtr = ptr;
+				minDist = dist;
+			}
 		}
+
 	}
 
 	return retPtr;
