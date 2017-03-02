@@ -71,6 +71,7 @@ public:
 	std::vector<GameObject*> fetchStaticObjects(const AABB& aabb, bool *(compFunc)(GameObject* obj));
 	int loot(float pickDist);
 	GameObject* pick(float pickDist);
+	GameObject* pick(float pickDist, Node *ignoreNode);
 	bool takeOverGuard(float maxDist);
 	void getDynObjects(std::vector<GameObject*> &list, const glm::mat4 & mat);
 	//get dynamic objects for a ligth source

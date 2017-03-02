@@ -38,8 +38,11 @@ public:
 	/* Render the frame
 	*/
 	void render(RenderInfo &rI);
-	void renderMeshOnly(GLint matrixLocation);
+	/* Render all meshes in the drawframe with the specific shader,  not using any material links */
+	void renderMeshOnly(RenderInfo &rI, MeshShader* shader);
+	/* Render all meshes without skeleton animations in the drawframe with the specific shader, not using linked material links */
 	void renderNonAnimatedMeshes(RenderInfo &rI, MeshShader* shader);
+	/* Render all meshes with skelton animations in the drawframe with the specific shader, not using linked material links */
 	void renderAnimatedMeshes(RenderInfo &rI, MeshShader* shader);
 	void cullLightsByDistance(glm::vec3 &pos);
 	/* Get batched light info for the frame

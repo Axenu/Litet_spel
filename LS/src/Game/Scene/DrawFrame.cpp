@@ -29,10 +29,10 @@ void DrawFrame::render(RenderInfo &fD) {
 	}
 }
 
-void DrawFrame::renderMeshOnly(GLint matrixLocation) {
+void DrawFrame::renderMeshOnly(RenderInfo &rI, MeshShader* shader) {
 	for (unsigned int i = 0; i < _meshes.size(); i++) {
 		const MeshDrawable &ref = _meshes[i];
-		glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, &(*ref._transform)[0][0]);
+		shader->assignUniforms(rI, *_meshes[i]._part, *ref._transform, nullptr);
 		ref._part->renderMeshOnly();
 	}
 }
