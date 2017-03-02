@@ -37,7 +37,7 @@ namespace gui
 
         View *setView(std::string name);
         void setView(View* view);
-        void resumeView(std::string name);
+        View *resumeView(std::string name);
         void setWindowSize(unsigned int width, unsigned int height);
 
         unsigned int getWindowWidth();

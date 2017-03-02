@@ -11,37 +11,34 @@
 #include "gui/Button.h"
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
-#include "gui/Views/HUDView.h"
 #include "staticVars.h"
-#include "gui/ProgressBar.h"
 
 namespace gui
 {
 
-    class MainMenuView : public View
+    class PauseView : public View
     {
     private:
-        EventManager* _manager;
+        EventManager* _eventManager;
         gui::Font *_font = nullptr;
-        gui::Button* _startButton;
-        gui::Button* _settingsButton;
-        gui::Button* _creditsButton;
+        gui::Button* _resumeButton;
+        gui::Button* _mainMenuButton;
         gui::Button* _quitButton;
-        float* _fps;
 
     public:
-        MainMenuView(EventManager* manager, float* fps);
-        virtual ~MainMenuView();
+        PauseView(EventManager* manager);
+        virtual ~PauseView();
 
         void onRender();
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}
-        
+
         virtual void initiate();
 
-        void QuitGame(int action);
-        void StartGame(int action);
+        void quitGame(int action);
+        void mainMenu(int action);
+        void resumeGame(int action);
     };
 
 }

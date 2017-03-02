@@ -58,11 +58,13 @@ namespace gui
 
         void onRender();
         void onUpdate(float dt);
+        void pauseView();
+        void resumeView();
 
         virtual void initiate();
 
+        void KeyboardPressed(const KeyboardEvent &event);
         void switchToGuardVision(const GuardVisionEvent &event);
-        void gameStarted(const GameStartedEvent &event);
         void gameOver(const GameOverEvent &event);
         void exitSquareTrigger(const CharacterSquareEvent &event);
 		void canClimb(const CanClimbEvent &event);

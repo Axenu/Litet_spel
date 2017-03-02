@@ -61,6 +61,8 @@ public:
 	float* getGrenadeCooldownTimer();
 	int amountOfGrenades();
 	float getNoise();
+	void pause();
+	void resume();
 	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade, float height);
 
     Character();
@@ -117,4 +119,6 @@ private:
 	float _guardVisDuraTimer;
 	//Noise variable
 	float _movmentNoise;
+	//pausing
+	bool _isPaused;
 };

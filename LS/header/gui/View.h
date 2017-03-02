@@ -29,6 +29,8 @@ namespace gui
         void onUpdate(float dt);
 
         virtual void initiate() = 0;
+        virtual void pauseView() = 0;
+        virtual void resumeView() = 0;
 
         std::string getName();
 

@@ -40,6 +40,8 @@ namespace gui
         {
             if (view->getName() == name)
             {
+                if (_currentView != nullptr)
+                    _currentView->pauseView();
                 _currentView = view;
                 _currentView->initiate();
                 _currentView->update(0.0f);
@@ -50,6 +52,8 @@ namespace gui
     }
     void Manager::setView(View* view)
     {
+        if (_currentView != nullptr)
+            _currentView->pauseView();
         _currentView = view;
         _currentView->setParent(this);
         _currentView->initiate();
@@ -64,13 +68,16 @@ namespace gui
         }
         _loadedViews.push_back(view);
     }
-    void Manager::resumeView(std::string name)
+    View *Manager::resumeView(std::string name)
     {
         for (View* view : _loadedViews)
         {
             if (view->getName() == name)
             {
+                if (_currentView != nullptr)
+                    _currentView->pauseView();
                 _currentView = view;
+                _currentView->resumeView();
                 return _currentView;
             }
         }

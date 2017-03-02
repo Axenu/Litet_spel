@@ -4,16 +4,9 @@
 // GLFW key callbacks.
 void key_callback(GLFWwindow* win, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_ESCAPE)
-    {
-         glfwSetWindowShouldClose(win, 1);
-    }
-    else
-    {
-        InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-        KeyboardEvent event(key, action);
-        iManager->getManager()->execute(event);
-    }
+    InputManager* iManager = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+    KeyboardEvent event(key, action);
+    iManager->getManager()->execute(event);
 }
 
 void mouse_key_callback(GLFWwindow* win, int key, int action, int mods)

@@ -523,6 +523,8 @@ void Character::moveMouse(const MouseMoveEvent& event)
         _lastCursorPos = event.getPos();
         return;
     }
+	if (_isPaused)
+		return;
     glm::vec2 currentCurserPos = event.getPos();
     glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
     _lastCursorPos = currentCurserPos;
@@ -571,7 +573,19 @@ int Character::amountOfGrenades()
 {
 	return _antiLightGrenade.size();
 }
-
+void Character::pause()
+{
+    _eventManager->unlisten(this, &Character::moveCharacter);
+    _eventManager->unlisten(this, &Character::moveMouse);
+	_isPaused = true;
+}
+void Character::resume()
+{
+	_eventManager->listen(this, &Character::moveCharacter);
+	_eventManager->listen(this, &Character::moveMouse);
+	_hasMoved = false;
+	_isPaused = false;
+}
 Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade, float height) :
 	GameObject()
 {
@@ -599,6 +613,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLight
 	_timerForGrenade = 0;
 	noMoreGrenadeCount = true;
 	_lightAtPos = 1.0f;
+	_isPaused = false;
 }
 
 Character::Character()

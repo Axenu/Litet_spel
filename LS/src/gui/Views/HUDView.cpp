@@ -1,5 +1,6 @@
 #include "gui/Views/HUDView.h"
 #include "gui/Manager.h"
+#include "gui/Views/PauseView.h"
 
 namespace gui {
     HUDView::HUDView(EventManager* manager, float* fps) : _eventManager(manager), _fps(fps), View()
@@ -37,8 +38,8 @@ namespace gui {
         color.w = 0.6f;
         _scoreBackground->setColor(color);
         addChild(_scoreBackground);
-
-        _scoreLabel= new gui::Label(_font);
+        //Display player score
+        _scoreLabel = new gui::Label(_font);
         _scoreLabel->addStringComponent(new StringComponentString("Score: "));
         _scoreLabel->addStringComponent(new StringComponentString(""));
         _scoreLabel->setPosition(-0.98f, 0.97f-_scoreLabel->getSize().y*0.5f);
@@ -46,6 +47,7 @@ namespace gui {
         _scoreLabel->setZ(2);
         addChild(_scoreLabel);
 
+        //progressbars for displaying soundlevel and lightlevel
         _soundPB = new ProgressBar(0.5f, 0.1f);
         _soundPB->setPrimaryColor(PALLETPRIMARY);
         _soundPB->setSecondaryColor(PALLETHIGHLIGHT);
@@ -59,6 +61,7 @@ namespace gui {
         _lightPB->setPosition(-0.6f, -0.95f);
         addChild(_lightPB);
 
+        //labels describing the progressbars
         _lightLabel = new Label(_font);
         _lightLabel->addStringComponent(new StringComponentString("light:"));
         _lightLabel->setScale(0.25);
@@ -71,6 +74,7 @@ namespace gui {
         _soundLabel->setPosition(0.6f - _soundLabel->getTextWidth(), -0.83f);
         addChild(_soundLabel);
 
+        //Grenade information
         _grenadeCountLabel = new Label(_font);
         _grenadeCountLabel->addStringComponent(new StringComponentString("2"));
         _grenadeCountLabel->setScale(0.75);
@@ -109,21 +113,22 @@ namespace gui {
 		addChild(_guardVisionLabel);
 
         _eventManager->listen(this, &HUDView::switchToGuardVision);
-        _eventManager->listen(this, &HUDView::gameStarted);
         _eventManager->listen(this, &HUDView::gameOver);
         _eventManager->listen(this, &HUDView::exitSquareTrigger);
 		_eventManager->listen(this, &HUDView::canClimb);
 		_eventManager->listen(this, &HUDView::guardAlert);
+        _eventManager->listen(this, &HUDView::KeyboardPressed);
         srand(time(NULL));
+        _isActive = true;
     }
     HUDView::~HUDView()
     {
         _eventManager->unlisten(this, &HUDView::switchToGuardVision);
-        _eventManager->unlisten(this, &HUDView::gameStarted);
         _eventManager->unlisten(this, &HUDView::gameOver);
         _eventManager->unlisten(this, &HUDView::exitSquareTrigger);
 		_eventManager->unlisten(this, &HUDView::canClimb);
         _eventManager->unlisten(this, &HUDView::guardAlert);
+        _eventManager->unlisten(this, &HUDView::KeyboardPressed);
         delete _font;
         delete _game;
     }
@@ -149,11 +154,22 @@ namespace gui {
             _grenadeCooldownCounter->deactivate();
         }
     }
+    void HUDView::pauseView()
+    {
+        _game->getCharacter()->pause();
+        _isActive = false;
+    }
+    void HUDView::resumeView()
+    {
+        _game->getCharacter()->resume();
+        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
+        _eventManager->execute(event);
+        _isActive = true;
+    }
     void HUDView::initiate()
     {
         if (_game != nullptr)
         {
-            // std::cout << "delete game" << std::endl;
             delete _game;
         }
         //init game
@@ -173,6 +189,7 @@ namespace gui {
 		_grenadeCooldownCounter->updateStringComponent(0, new StringComponentFloat(_game->getCharacter()->getGrenadeCooldownTimer()));
         cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
         _eventManager->execute(event);
+        _isActive = true;
 
     }
     void HUDView::switchToGuardVision(const GuardVisionEvent &event)
@@ -209,10 +226,35 @@ namespace gui {
             _guardVisionLabel->deactivate();
         }
     }
-    void HUDView::gameStarted(const GameStartedEvent &event)
+    void HUDView::KeyboardPressed(const KeyboardEvent &event)
     {
-        std::cout << "game has started" << std::endl;
+        if (event.getKey() == GLFW_KEY_ESCAPE)
+        {
+            if (event.getAction() == GLFW_PRESS)
+            {
+                if (_isActive)
+                {
+                    //switch scene to pause menu
+                    View *view = _parent->setView("PauseView");
+                    if (view == nullptr)
+                    {
+                        view = new PauseView(_eventManager);
+                        _parent->setView(view);
+                    }
+                }
+                else
+                {
+                    //switch scene to this
+                    View *view = _parent->resumeView("HUDView");
+                    if (view == nullptr)
+                    {
+                        std::cout << "Should already exist! Not possible in HUDView.cpp" << std::endl;
+                    }
+                }
+            }
+        }
     }
+    //Handle game ended events
     void HUDView::gameOver(const GameOverEvent &event)
     {
         GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
@@ -224,6 +266,7 @@ namespace gui {
         view->setScore(*_game->getCharacter()->getLootValuePointer());
         view->updateText(event);
     }
+    //Display information when player reaches exit
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)
     {
         if (event._square._grid == gridType::exiting)
@@ -248,6 +291,7 @@ namespace gui {
             }
         }
     }
+    //Display information when player can climb
 	void HUDView::canClimb(const CanClimbEvent & event)
 	{
 		if (event.canClimb())
@@ -262,6 +306,7 @@ namespace gui {
 			_tipDisplay->deactivate();
 		}
 	}
+    //Display guard alert sprite
     void HUDView::guardAlert(const GuardAlertEvent &event)
     {
         bool found = false;

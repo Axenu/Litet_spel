@@ -33,6 +33,8 @@ namespace gui
 
         void onRender();
         void onUpdate(float dt);
+        void pauseView() {}
+        void resumeView() {}
 
         virtual void initiate();
         void updateText(const GameOverEvent &event);
