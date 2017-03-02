@@ -391,64 +391,30 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 	std::vector<GLuint> indices;
 	GLint k = 0;
 
+	//Floor
 	std::vector<glm::vec3> floorPosition;
 	std::vector<glm::vec3> floorNormal;
 	std::vector<GLuint> floorIndices;
 
-	// Position
-	floorPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f));
-	floorPosition.push_back(glm::vec3(0.f, 0.f, 0.f));
-	floorPosition.push_back(glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE));
-	floorPosition.push_back(glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE));
-	floorPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, _heightLength * GRIDSPACE));
-	floorPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f));
-	// Normals
-	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	floorNormal.push_back(glm::vec3(0.f, 1.f, 0.f));
-	// Index
-	floorIndices.push_back(0);
-	floorIndices.push_back(1);
-	floorIndices.push_back(2);
-	floorIndices.push_back(3);
-	floorIndices.push_back(4);
-	floorIndices.push_back(5);
-
+	addQuad(floorPosition, floorNormal, floorIndices, k, glm::vec3(0.f, 0.f, _heightLength * GRIDSPACE), glm::vec3(_widthLength * GRIDSPACE, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
+	
 	meshes[0].setMesh(floorPosition, floorNormal, floorIndices);
+	k = 0;
+	///////
 
-	// Roof
 
+	//Roof
 	std::vector<glm::vec3> roofPosition;
 	std::vector<glm::vec3> roofNormal;
 	std::vector<GLuint> roofIndices;
 
-	// Position
-	roofPosition.push_back(glm::vec3(0.f, ROOFHEIGHT, 0.f));
-	roofPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, 0.f));
-	roofPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
-	roofPosition.push_back(glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE));
-	roofPosition.push_back(glm::vec3(0.f, ROOFHEIGHT, _heightLength * GRIDSPACE));
-	roofPosition.push_back(glm::vec3(0.f, ROOFHEIGHT, 0.f));
-	// Normals
-	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	roofNormal.push_back(glm::vec3(0.f, -1.f, 0.f));
-	// Index
-	roofIndices.push_back(0);
-	roofIndices.push_back(1);
-	roofIndices.push_back(2);
-	roofIndices.push_back(3);
-	roofIndices.push_back(4);
-	roofIndices.push_back(5);
+	addQuad(roofPosition, roofNormal, roofIndices, k, glm::vec3(_widthLength * GRIDSPACE, ROOFHEIGHT, _heightLength * GRIDSPACE), glm::vec3(0.f, ROOFHEIGHT, 0.f), glm::vec3(0.f, 0.f, -1.f));
 
 	meshes[1].setMesh(roofPosition, roofNormal, roofIndices);
+	k = 0;
+	//////
 
+	//walls
 	for (int j = 0; j < _heightLength; j++)
 	{
 		for (int i = 0; i < _widthLength; i++)
@@ -459,36 +425,11 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 				{
 					if (_twodArray[j - 1][i].type == wall)
 					{
-						// Positions
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
-						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
-						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , j * GRIDSPACE));
-						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , j * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , j * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE));
-						// Normals
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, 1.f));
-						// Index
-						indices.push_back(k);
-						indices.push_back(k + 1);
-						indices.push_back(k + 2);
-						indices.push_back(k + 3);
-						indices.push_back(k + 4);
-						indices.push_back(k + 5);
-						k += 6;
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 					else if (_twodArray[j - 1][i].type == window)
 					{
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3(0.f, 0.f, 1.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE - windowDepth * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 0.f, -1.f));
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
@@ -496,36 +437,11 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 				{
 					if (_twodArray[j + 1][i].type == wall)
 					{
-						// Positions
-						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3( i      * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3( i      * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						// Normals
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						normal.push_back(glm::vec3(0.f, 0.f, -1.f));
-						// Index
-						indices.push_back(k);
-						indices.push_back(k + 1);
-						indices.push_back(k + 2);
-						indices.push_back(k + 3);
-						indices.push_back(k + 4);
-						indices.push_back(k + 5);
-						k += 6;
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 					else if (_twodArray[j + 1][i].type == window)
 					{
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(0.f, 0.f, -1.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE + windowDepth * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 0.f, 1.f));
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
@@ -533,36 +449,11 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 				{
 					if (_twodArray[j][i + 1].type == wall)
 					{
-						// Positions
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						// Normals
-						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(-1.f, 0.f, 0.f));
-						// Index
-						indices.push_back(k);
-						indices.push_back(k + 1);
-						indices.push_back(k + 2);
-						indices.push_back(k + 3);
-						indices.push_back(k + 4);
-						indices.push_back(k + 5);
-						k += 6;
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 					else if (_twodArray[j][i + 1].type == window)
 					{
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 0.f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(1.f, 0.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE + windowDepth * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(-1.f, 0.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
@@ -570,42 +461,19 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 				{
 					if (_twodArray[j][i - 1].type == wall)
 					{
-						// Positions
-						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       , (j + 1) * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, 0.f       ,  j      * GRIDSPACE));
-						position.push_back(glm::vec3(i * GRIDSPACE, ROOFHEIGHT,  j      * GRIDSPACE));
-						// Normals
-						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
-						normal.push_back(glm::vec3(1.f, 0.f, 0.f));
-						// Index
-						indices.push_back(k);
-						indices.push_back(k + 1);
-						indices.push_back(k + 2);
-						indices.push_back(k + 3);
-						indices.push_back(k + 4);
-						indices.push_back(k + 5);
-						k += 6;
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 					else if (_twodArray[j][i - 1].type == window)
 					{
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 0.f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(-1.f, 0.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMin, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMin, j * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
-						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE - windowDepth * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, windowMax, j * GRIDSPACE), glm::vec3(1.f, 0.f, 0.f));
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, windowMax, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
 			}
 		}
 	}
+
+	// Change all window types to walls such that the collision will treath the windows as walls
 	for (int j = 0; j < _heightLength; j++)
 	{
 		for (int i = 0; i < _widthLength; i++)
