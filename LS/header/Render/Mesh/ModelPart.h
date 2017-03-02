@@ -25,7 +25,11 @@ public:
 	void renderMeshOnly() const;
 	const Mesh& getMesh() const;
 	void setMaterial(Material &mat);
+	/* Get the reference to the skeleton if there is one */
 	const AnimatedSkeleton* getSkeleton() const;
+	/* Set a skeleton reference telling that the part is animated */
 	void setSkeleton(AnimatedSkeleton *skel);
+	/* Get if the modelpart is animated by checking if it's linke to a skeleton */
+	bool hasSkeleton() const;
 	const AABB& getBox();
 };

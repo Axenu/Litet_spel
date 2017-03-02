@@ -37,6 +37,29 @@ void DrawFrame::renderMeshOnly(GLint matrixLocation) {
 	}
 }
 
+void DrawFrame::renderNonAnimatedMeshes(RenderInfo &rI, MeshShader* shader) {
+	for (unsigned int i = 0; i < _meshes.size(); i++) {
+		const MeshDrawable &ref = _meshes[i];
+		if (!ref._part->hasSkeleton())
+		{
+			shader->assignUniforms(rI, *_meshes[i]._part, *ref._transform, nullptr);
+			ref._part->renderMeshOnly();
+		}
+	}
+}
+
+void DrawFrame::renderAnimatedMeshes(RenderInfo &rI, MeshShader* shader) {
+	for (unsigned int i = 0; i < _meshes.size(); i++) {
+		const MeshDrawable &ref = _meshes[i];
+		if (ref._part->hasSkeleton())
+		{
+			shader->assignUniforms(rI, *_meshes[i]._part, *ref._transform, nullptr);
+			ref._part->renderMeshOnly();
+		}
+	}
+}
+
+
 
 /* Get batched light info for the frame
 */

@@ -1,11 +1,11 @@
 #include"Render/Mesh/ModelPart.h"
 
 ModelPart::ModelPart()
-	: _mesh(nullptr), _material(nullptr), _box() {
+	: _mesh(nullptr), _skeleton(nullptr), _material(nullptr), _box() {
 }
 
 ModelPart::ModelPart(Mesh *mesh, Material &mat)
-	: _mesh(mesh), _material(mat), _box(mesh->getBox()) 
+	: _mesh(mesh), _skeleton(nullptr), _material(mat), _box(mesh->getBox())
 {
 }
 
@@ -37,7 +37,10 @@ void ModelPart::setSkeleton(AnimatedSkeleton *skel) {
 const AnimatedSkeleton* ModelPart::getSkeleton() const {
 	return _skeleton;
 }
-
+bool ModelPart::hasSkeleton() const
+{
+	return _skeleton != nullptr;
+}
 const AABB & ModelPart::getBox()
 {
 	return _box;

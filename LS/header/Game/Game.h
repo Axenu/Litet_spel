@@ -1,10 +1,14 @@
 #pragma once
+#define DEBUG
+
 #include"Game/Scene/Scene.h"
 #include"Render/Composition/RenderDeferred.h"
 #include "Event/EventManager.h"
 #include"Setting.h"
 #include"camera.h"
 #include "Level/ObjectFactory.h"
+#include "Render/Mesh/Shader/ShadowCubeShader.h"
+#include "Render/Mesh/Shader/SkinnedShadowCubeShader.h"
 
 /* The game
 */
@@ -17,14 +21,9 @@ protected:
 	GraphicsResource _resource;
 	RenderDeferred _deferred;
 	ObjectFactory _factory;
-	Shader _shadowMapShader;
 
-	//TODO move?
-	GLint _modelMatrixLocation;
-	GLint _shadowMatricesLocation;
-	GLint _lightPosLocation;
-	GLint _farPlaneLocation;
-	glm::mat4 _shadowProj;
+	ShadowCubeShader _shadowShader;
+	SkinnedShadowCubeShader _skinnedShadowShader;
 
 	virtual void compose(RenderInfo &rI);
 	virtual void setupRI(RenderInfo &rI) {};

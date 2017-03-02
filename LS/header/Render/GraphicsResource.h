@@ -4,7 +4,6 @@
 #include"gl/DefferedSettings.h"
 #include"gl/RenderQuad.h"
 
-
 	/* Class holding the graphical resources used for rendering.
 	 * Not designed to hold assets?
 	 */

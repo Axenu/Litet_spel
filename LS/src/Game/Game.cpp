@@ -4,13 +4,9 @@
 
 Game::Game(Setting &setting, EventManager *eventManager)
 	: _setting(setting), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()),
-	_factory(eventManager, "Resources/", "Resources/models/"), _shadowMapShader("shadow_cube_map","shadow_cube_map","shadow_cube_map")
+	_factory(eventManager, "Resources/", "Resources/models/"), _shadowShader(), _skinnedShadowShader()
 {
 	_eventManager = eventManager;
-	_modelMatrixLocation = _shadowMapShader.getUniform("model");
-	_shadowMatricesLocation = _shadowMapShader.getUniform("shadowMatrices");
-	_lightPosLocation = _shadowMapShader.getUniform("lightPos");
-	_farPlaneLocation = _shadowMapShader.getUniform("far_plane");
 }
 
 
@@ -47,18 +43,25 @@ void Game::draw() {
 		AABB lightAABB(glm::vec3(-fadeDist) + rI._pLightInfo[i]._pos, glm::vec3(fadeDist) + rI._pLightInfo[i]._pos);
 		_scene->fetchDrawables(tempDF, lightAABB);
 		_resource.getCubeMap(i).bindDraw();
-		_shadowMapShader.bind();
-		glUniformMatrix4fv(_shadowMatricesLocation, 6, GL_FALSE, &rI._pLightInfo[i]._shadowMatrices[0][0][0]);
-		glUniform3fv(_lightPosLocation, 1, &rI._pLightInfo[i]._pos[0]);
-		glUniform1f(_farPlaneLocation, rI._pLightInfo[i]._fadeDist);
-		tempDF.renderMeshOnly(_modelMatrixLocation);
+
+		//Render meshes
+		_shadowShader.setUp(rI._pLightInfo[i]);
+		tempDF.renderNonAnimatedMeshes(rI, &_shadowShader);
+		//Render skinned meshes
+		_skinnedShadowShader.setUp(rI._pLightInfo[i]);
+		tempDF.renderAnimatedMeshes(rI, &_skinnedShadowShader);
+#ifdef DEBUG
 		gl::CheckGLErrors("Render stage failed: CubeMap");
+#endif
+
 	}
 	glEnable(GL_CULL_FACE);
 
 	_resource.getDeffered().bindDraw();
 	dF.render(rI);
+#ifdef DEBUG
 	gl::CheckGLErrors("Render stage failed: Mesh");
+#endif
 	/*	Render to backbuffer:
 	*/
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -69,7 +72,9 @@ void Game::draw() {
 void Game::compose(RenderInfo &rI) {
 	//Render
 	_deferred.render(rI);
+#ifdef DEBUG
 	gl::CheckGLErrors("Render stage failed: Composition");
+#endif
 
 }
 

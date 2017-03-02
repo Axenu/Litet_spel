@@ -37,8 +37,10 @@ public:
 	void add(const PointLight &light);
 	/* Render the frame
 	*/
-	void render(RenderInfo &fD);
+	void render(RenderInfo &rI);
 	void renderMeshOnly(GLint matrixLocation);
+	void renderNonAnimatedMeshes(RenderInfo &rI, MeshShader* shader);
+	void renderAnimatedMeshes(RenderInfo &rI, MeshShader* shader);
 	void cullLightsByDistance(glm::vec3 &pos);
 	/* Get batched light info for the frame
 	*/

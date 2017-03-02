@@ -197,6 +197,7 @@
     <ClCompile Include="src\gui\Views\HUDView.cpp" />
     <ClCompile Include="src\gui\Views\MainMenuView.cpp" />
     <ClCompile Include="src\Game\Objects\PointLightObject.cpp" />
+    <ClCompile Include="src\Render\Mesh\Shader\ShadowCubeShader.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\DefSkinnedMeshShader.cpp" />
     <ClCompile Include="src\Render\Mesh\ModelLoader.cpp" />
     <ClCompile Include="src\Render\Composition\RenderDefBuffers.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="src\Render\Mesh\Shader\MeshShader.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\DeferredMeshShader.cpp" />
     <ClCompile Include="src\Game\Objects\Character.cpp" />
+    <ClCompile Include="src\Render\Mesh\Shader\SkinnedShadowCubeShader.cpp" />
     <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />
@@ -248,6 +250,7 @@
     <ClInclude Include="header\Game\Level\Path.h" />
     <ClInclude Include="header\gl\CubeMapBuffer.h" />
     <ClInclude Include="header\Render\Composition\RenderCubeMap.h" />
+    <ClInclude Include="header\Render\Mesh\Shader\SkinnedShadowCubeShader.h" />
     <ClInclude Include="header\Render\Mesh\Animation\BoneFrame.h" />
     <ClInclude Include="header\Render\Mesh\Animation\Channel.h" />
     <ClInclude Include="header\Game\Objects\AntiLightGrenade.h" />
@@ -273,6 +276,7 @@
     <ClInclude Include="header\gui\Views\MainMenuView.h" />
     <ClInclude Include="header\Render\Mesh\Shader\DefSkinnedMeshShader.h" />
     <ClInclude Include="header\Render\Mesh\ModelPart.h" />
+    <ClInclude Include="header\Render\Mesh\Shader\ShadowCubeShader.h" />
     <ClInclude Include="header\StaticVars.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\StringComponents.h" />
