@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="src\Game\Objects\Door.cpp" />
     <ClCompile Include="src\gui\ProgressBar.cpp" />
+    <ClCompile Include="src\gui\Views\PauseView.cpp" />
     <ClCompile Include="src\math\GridTraveler.cpp" />
     <ClCompile Include="src\math\AARect.cpp" />
     <ClCompile Include="src\math\MathFunctions.cpp" />
@@ -245,6 +246,7 @@
   <ItemGroup>
     <ClInclude Include="header\Game\Objects\Door.h" />
     <ClInclude Include="header\gui\ProgressBar.h" />
+    <ClInclude Include="header\gui\Views\PauseView.h" />
     <ClInclude Include="header\math\GridTraveler.h" />
     <ClInclude Include="header\math\AARect.h" />
     <ClInclude Include="header\Game\Level\Path.h" />
