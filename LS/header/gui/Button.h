@@ -52,6 +52,7 @@ namespace gui
         glm::vec4 _primaryColor;
         glm::vec4 _secondaryColor;
         glm::vec4 _textColor;
+        bool _cursorInside;
 
         glm::vec2 _padding;
 
@@ -66,8 +67,8 @@ namespace gui
         template <class T>
     	void listen(T* obj, void (T::*memFn)(int))
         {
-			// if (_callback)
-			// 	delete _callback;
+			if (_callback)
+				delete _callback;
             _callback = new gui::ButtonHandler<T>(obj, memFn);
         }
         void execute(int action);

@@ -18,6 +18,7 @@ namespace gui
         _isReactive = true;
         addChild(_rect);
         addChild(_label);
+        _cursorInside = false;
     }
     Button::Button(float width, float height) : Button()
     {
@@ -38,24 +39,25 @@ namespace gui
     }
     void Button::onUpdate(float dt)
     {
-        // _rect->setScale(_label->getTextWidth() + _padding.x * 2, _label->getTextHeight() + _padding.y * 2);
-        // setSize(_label->getTextWidth() + _padding.x * 2, _label->getTextHeight() + _padding.y * 2);
         _label->setPosition((_size.x - _label->getTextWidth())*0.5f,(_size.y-_label->getTextHeight())*0.5f);
     }
     // setters
     void Button::setPrimaryColor(glm::vec4 color)
     {
         _primaryColor = color;
-        _rect->setColor(color);
+        if (!_cursorInside)
+            _rect->setColor(color);
     }
     void Button::setSecondaryColor(glm::vec4 color)
     {
         _secondaryColor = color;
+        if (!_cursorInside)
+            _rect->setColor(color);
     }
     void Button::setTextColor(glm::vec4 color)
     {
         _textColor = color;
-        // _label->setColor(color);
+        _label->setColor(color);
     }
     void Button::setPadding(float x, float y)
     {
@@ -68,13 +70,13 @@ namespace gui
     }
     void Button::cursorDidEnter()
     {
-        // std::cout << "enter" << std::endl;
         _rect->setColor(_secondaryColor);
+        _cursorInside = true;
     }
     void Button::cursorDidExit()
     {
-        // std::cout << "exit" << std::endl;
         _rect->setColor(_primaryColor);
+        _cursorInside = false;
     }
     bool Button::handleClick(int action)
     {

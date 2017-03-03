@@ -32,7 +32,7 @@ bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
 
 		dist += trav.goNext();
 	} while (dist < viewDist);
-
+	return false; //??
 }
 
 bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDist, gridType gridType)
@@ -76,7 +76,7 @@ bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playe
 		return false;
 	}
 
-	return true;;
+	return true;
 }
 
 #pragma region Grid Square

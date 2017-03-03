@@ -92,10 +92,6 @@ void setupWindow()
 	    lastTime = currentTime;
 		FPS = 1.0f / dT;
 		dT = std::fminf(dT, 0.1f); //Can't have to large dt!
-		//Update game logic
-		// game.update(dT);
-		//Draw game drawables
-		// game.draw();
 
 		guiManager.update(dT);
 		guiManager.render();

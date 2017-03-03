@@ -62,3 +62,10 @@ const std::vector<glm::mat4>& AnimatedSkeleton::getSkin() const {
 unsigned int AnimatedSkeleton::boneCount() const {
 	return _pose.size();
 }
+
+/* Get the world matrix of a bone
+*/
+glm::mat4 AnimatedSkeleton::getBoneWorld(unsigned int bone)
+{
+	return _root.getModelMatrix() * _pose[bone];
+}

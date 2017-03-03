@@ -273,7 +273,6 @@ namespace gui {
         {
             if (!_isAtExit)
             {
-                std::cout << "player entered exit" << std::endl;
                 _tipDisplay->updateStringComponent(0, new StringComponentString("Press G to finish."));
                 _tipDisplay->activate();
                 _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
@@ -285,7 +284,6 @@ namespace gui {
         {
             if (_isAtExit)
             {
-                // std::cout << "player left exit" << std::endl;
                 _tipDisplay->deactivate();
                 _isAtExit = false;
             }

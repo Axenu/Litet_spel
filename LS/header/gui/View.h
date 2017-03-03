@@ -21,6 +21,7 @@ namespace gui
     protected:
         std::string _name;
         Manager* _parent;
+        bool _isActive;
     public:
         View();
 		virtual ~View();
