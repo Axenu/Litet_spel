@@ -98,7 +98,7 @@
 		//GrenadeStuff
 		glm::vec3 antiLightPos[MAXNADECOUNT];	//	glm::vec3 antiLightPos[rI._arraysize];
 		glm::vec2 ExpansionAndFading[MAXNADECOUNT];
-		for (int i = 0; i < numNades; i++)
+		for (unsigned int i = 0; i < numNades; i++)
 		{
 			antiLightPos[i] = rI._V *  glm::vec4(rI._aLightInfo[i]._pos, 1.f);
 			ExpansionAndFading[i] = rI._aLightInfo[i]._params;

@@ -10,8 +10,18 @@
 #include "Game/Level/Path.h"
 #include <memory>
 
-#define GUARDVIEWDISTANCE 30.f
+#define GUARDVIEWDISTANCE 20.f
+#define GUARDHEARDISTANCE 10.f
+#define LOOKNOISEINTRESTTIME 2.f
 #define GUARDFOV 45.0f * M_PIf / 180.f
+
+enum GuardState
+{
+	pathing = 0,
+	looking
+};
+
+
 
 class Guard : public GameObject
 {
@@ -23,11 +33,18 @@ private:
 	float _distLength;
 	unsigned int _whatPathToLoad;
 	float _detectionScore;
+	float _noiseDetVal;
+	float _interestTime;
+	glm::vec3 _pointOfInterest;
+	GuardState _state;
 
 	//Field of view in cosine
 	float _detectFov;
 	Level *_currentLevel;
 	float _currentGridSpace;
+	GuardState calcState(float dt);
+	void noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer);
+	void visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer);
 	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);
 	std::vector<glm::vec2> _walkingPoints;
 public:

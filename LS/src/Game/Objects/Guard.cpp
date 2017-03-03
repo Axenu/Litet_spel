@@ -5,27 +5,120 @@ void Guard::update(float dt)
 {
 
 	glm::vec3 pos = _position;
+	glm::vec3 dirToPlayer;
+	float playerDist;
 
-	if (_path->walkOnPath(&pos, _speed, dt))
+	_state = calcState(dt);
+
+	switch (_state)
 	{
-		glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-		if (_walkingPoints.size() == 0)
-			_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
-		else
-			_path = _currentLevel->getGrid().generatePath(start, getNextPosition());
+	case GuardState::pathing:
+		if (_path->walkOnPath(&pos, _speed, dt))
+		{
+			glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
+			if (_walkingPoints.size() == 0)
+				_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
+			else
+				_path = _currentLevel->getGrid().generatePath(start, getNextPosition());
+		}
+		if (pos.x < 0 || pos.z < 0)
+			int a = 0;
+		setPosition(pos);
+		face(_path->movingTo());
+		
+		break;
+	case GuardState::looking:
+		face(_pointOfInterest);
+		break;
 	}
-	if (pos.x < 0 || pos.z < 0)
-		int a = 0;
-	setPosition(pos);
-	face(_path->movingTo());
 
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
-	//Get direction vector and distance to player
-	glm::vec3 dirToPlayer = _player->getWorldPos() - this->getWorldPos();
-	float playerDist = glm::length(dirToPlayer);
+							//Get direction vector and distance to player
+	dirToPlayer = _player->getWorldPos() - this->getWorldPos();
+	playerDist = glm::length(dirToPlayer);
 	dirToPlayer = glm::normalize(dirToPlayer);
+	visionDetection(pos, dt, playerDist, dirToPlayer);
+	noiseDetection(pos, playerDist, dirToPlayer);
+}
 
+glm::vec2 Guard::getNextPosition()
+{
+	_whatPathToLoad += 1;
+	if (_whatPathToLoad >= _walkingPoints.size())
+		_whatPathToLoad = 0;
+	return(_walkingPoints[_whatPathToLoad]);
+}
+
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>& walkingPoints) :
+	GameObject(m), _player(player), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
+{
+	_eventManager = event;
+	_whatPathToLoad = 0;
+
+	setPosition(position);
+	_detectFov = std::cos(GUARDFOV);
+
+	glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
+	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
+
+	_speed = 0.4f;
+
+	_detectionScore = 0.3f;
+
+	_noiseDetVal = 0.0f;
+
+	_state = GuardState::pathing;
+}
+
+Guard::~Guard()
+{
+}
+
+GuardState Guard::calcState(float dt)
+{
+	switch (_state)
+	{
+	case GuardState::pathing:
+		if (_noiseDetVal > 0.00001f)
+		{
+			return GuardState::looking;
+		}
+		break;
+	case GuardState::looking:
+		_interestTime -= dt;
+		if (_noiseDetVal < 0.00001f)
+		{
+			if(_interestTime < 0.0f)
+				return GuardState::pathing;
+		}
+		else
+		{
+			_interestTime = LOOKNOISEINTRESTTIME;
+		}
+		break;
+	default:
+		return GuardState::pathing;
+	}
+	return _state;
+}
+
+void Guard::noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer)
+{
+	float guardHearDist = _player->getNoise() * GUARDHEARDISTANCE;
+	if (playerDist < guardHearDist)
+	{
+		_noiseDetVal = (guardHearDist - playerDist) / guardHearDist;
+		_pointOfInterest = _player->getWorldPos();
+	}
+	else
+	{
+		_noiseDetVal = 0.0f;
+	}
+}
+
+void Guard::visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer)
+{
 	//Get the distance that the guard can see the player based on light and obscuring objects
 	float detectionDist = GUARDVIEWDISTANCE * DetectedPlayer(playerDist, dirToPlayer);
 
@@ -67,36 +160,6 @@ void Guard::update(float dt)
 			_eventManager->execute(event);
 		}
 	}
-
-}
-
-glm::vec2 Guard::getNextPosition()
-{
-	_whatPathToLoad += 1;
-	if (_whatPathToLoad >= _walkingPoints.size())
-		_whatPathToLoad = 0;
-	return(_walkingPoints[_whatPathToLoad]);
-}
-
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>& walkingPoints) :
-	GameObject(m), _player(player), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
-{
-	_eventManager = event;
-	_whatPathToLoad = 0;
-
-	setPosition(position);
-	_detectFov = std::cos(GUARDFOV);
-
-	glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
-
-	_speed = 0.4f;
-
-	_detectionScore = 0.3f;
-}
-
-Guard::~Guard()
-{
 }
 
 float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
@@ -110,7 +173,7 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 	if (playerDist < 1.2f)
 		return 1.0f;
 
-	if (glm::dot(dirToPlayer, glm::vec3(0.0f, 0.0f, 1.0f)) > _detectFov)
+	if (glm::dot(dirToPlayer, getForward()) > _detectFov)
 	{
 		//Get light at position
 		float playerLight = _player->getLightAtPosition();
