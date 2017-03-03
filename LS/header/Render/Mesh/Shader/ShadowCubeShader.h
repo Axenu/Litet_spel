@@ -8,10 +8,10 @@ class ShadowCubeShader
 {
 private:
 
-	void acquireUniforms();
-protected:
 	/* Model matrix */
 	GLint _mmUniform;
+	void acquireUniforms();
+protected:
 	GLint _shadowMatricesLocation, _lightPosLocation, _farPlaneLocation;
 public:
 	ShadowCubeShader();

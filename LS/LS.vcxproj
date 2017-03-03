@@ -223,6 +223,7 @@
     <ClCompile Include="src\Render\Mesh\Shader\DeferredMeshShader.cpp" />
     <ClCompile Include="src\Game\Objects\Character.cpp" />
     <ClCompile Include="src\Render\Mesh\Shader\SkinnedShadowCubeShader.cpp" />
+    <ClCompile Include="src\Render\PointLight.cpp" />
     <ClCompile Include="src\Render\QuadShader.cpp" />
     <ClCompile Include="src\gl\FrameBuffer.cpp" />
     <ClCompile Include="src\gl\DeferredBuffer.cpp" />

@@ -88,9 +88,8 @@ public:
 	model << Model to load
 	*/
 	GameObject* createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation, enum gridType type, glm::vec3 positionOffset);
-	PointLightObject* createLight(PointLight light, glm::vec3 position);
 	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
-	PointLightObject* createLight(PointLight light, Node *parent = nullptr);
+	PointLightObject* createLight(PointLightValue light, Node *parent = nullptr);
 	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<doorData> &doorList);
 	MeshShader& getShader();
 };

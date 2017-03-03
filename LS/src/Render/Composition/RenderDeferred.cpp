@@ -73,11 +73,12 @@
 		rI._resource.getDeffered().bindTextures();
 		for (unsigned int i = 0; i < numLights; i++)
 		{
+			const PointLightValue& light = lights[i]._light;
 			//Transform positions in to viewspace
-			POS[i] = rI._V *glm::vec4(lights[i]._pos, 1.0f);
-			DIF[i] = lights[i]._diffuse;
-			SPEC[i] = lights[i]._specular;
-			FADE[i] = lights[i]._fadeDist;
+			POS[i] = rI._V *glm::vec4(light._pos, 1.0f);
+			DIF[i] = light._diffuse;
+			SPEC[i] = light._specular;
+			FADE[i] = light._fadeDist;
 			rI._resource.getCubeMap(i).bindTextures(texturePos+i);
 		}
 		//cam uniform

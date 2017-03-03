@@ -6,31 +6,24 @@ PointLightObject::PointLightObject()
 	: GameObject(), _lightInfo()
 {
 }
-
-PointLightObject::PointLightObject(const PointLight &light)
-	: PointLightObject(light, nullptr) {
-}
-PointLightObject::PointLightObject(const PointLight &light, Node *parent)
+PointLightObject::PointLightObject(const PointLightValue &light, Node *parent)
 	: GameObject(parent, light._pos, type::PointLight), _lightInfo(light) {
 
 }
 
-PointLightObject::~PointLightObject() {
-}
+PointLightObject::~PointLightObject() {}
 
 void PointLightObject::update(float dT) {
 	Node::update(dT);
-	AABB aabb = AABB(glm::vec3(-_lightInfo._fadeDist), glm::vec3(_lightInfo._fadeDist));
-	GameObject::setModelAABB(aabb.transform(_modelMatrix));
-	_lightInfo._pos = _modelMatrix[3];
+	_lightInfo._light._pos = _modelMatrix[3];
+	GameObject::setModelAABB(_lightInfo.generateAABB());
 }
 
 void PointLightObject::init()
 {
 	Node::init();
-	AABB aabb = AABB(glm::vec3(-_lightInfo._fadeDist), glm::vec3(_lightInfo._fadeDist));
-	GameObject::setModelAABB(aabb.transform(_modelMatrix));
-	_lightInfo._pos = _modelMatrix[3];
+	_lightInfo._light._pos = _modelMatrix[3];
+	GameObject::setModelAABB(_lightInfo.generateAABB());
 	_lightInfo.updateMatrices();
 }
 
@@ -43,6 +36,6 @@ void PointLightObject::addToFrame(DrawFrame &dF) {
 
 /* Get the light information
 */
-const PointLight& PointLightObject::getLightInfo() {
-	return _lightInfo;
+const PointLightValue& PointLightObject::getLightInfo() {
+	return _lightInfo._light;
 }

@@ -38,8 +38,7 @@ void Game::draw() {
 	for (size_t i = 0; i < numLights; i++)
 	{
 		DrawFrame tempDF;
-		float fadeDist = rI._pLightInfo[i]._fadeDist;
-		AABB lightAABB(glm::vec3(-fadeDist) + rI._pLightInfo[i]._pos, glm::vec3(fadeDist) + rI._pLightInfo[i]._pos);
+		AABB lightAABB = rI._pLightInfo[i].generateAABB();
 		_scene->fetchDrawables(tempDF, lightAABB);
 		_resource.getCubeMap(i).bindDraw();
 
