@@ -46,7 +46,7 @@ vec3 shadowTest(in uint i, in vec3 pos, in vec3 color);
 vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess, in vec3 pLightPos, in float pLightFade, in vec3 pLightDif, in vec3 pLightSpec);
 float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, out float lambertian);
 
-vec3 antiLightGrenadeCal(in vec3 GrenadePosition, in vec3 pos, in vec3 diffuseCol, in vec2 fadeParams);
+float antiLightGrenadeCal(in vec3 GrenadePosition, in vec3 pos, in vec3 diffuseCol, in vec2 fadeParams);
 
 /* Composition main function
 */
@@ -87,7 +87,7 @@ vec2 calcFrameCoord(){
 
 /* AntiLightgrenade light multiplier calc
 */
-vec3 antiLightGrenadeCal(in vec3 GrenadePosition, in vec3 pos, in vec3 diffuseCol, in vec2 fadeParams)
+float antiLightGrenadeCal(in vec3 GrenadePosition, in vec3 pos, in vec3 diffuseCol, in vec2 fadeParams)
 {
 	return fadeParams.x > length(GrenadePosition - pos) ? fadeParams.y : 1.f;
 }
