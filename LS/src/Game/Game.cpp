@@ -26,7 +26,6 @@ void Game::update(float dT) {
 
 }
 void Game::draw() {
-
 	DrawFrame dF;
 	_scene->fetchDrawables(dF);
 	glm::vec3 camPos = _scene->getCamera().getWorldPos();

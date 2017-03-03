@@ -35,7 +35,7 @@ namespace gui
     public:
 
         TexturedRectangle(float width, float height, std::string path);
-        ~TexturedRectangle();
+       virtual ~TexturedRectangle();
 
         void onRender();
 
