@@ -153,6 +153,11 @@ namespace gui
         return _size;
     }
 
+    //setters
+    void Label::setColor(glm::vec4 &color)
+    {
+        _color = color;
+    }
 
 
 

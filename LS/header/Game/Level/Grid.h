@@ -16,7 +16,7 @@
 #include "math/AARect.h"
 #include "Game/Level/Path.h"
 #include <memory>
-#include <math.h> 
+#include <math.h>
 #include <cmath>
 
 #define WalkHeight 0.25f
@@ -36,8 +36,6 @@ struct gridNode {
 class Grid {
 
 private:
-	float _gridSpace;
-	float _roofHeight;
 	int _heightLength;
 	int _widthLength;
 	gridValues** _twodArray;

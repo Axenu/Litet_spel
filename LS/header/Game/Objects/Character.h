@@ -19,7 +19,6 @@
 #define walkingNoise 0.4f
 #define sneakingModifier 0.5f;
 
-
 class CollectLootEvent : public Event
 {
 public:
@@ -119,6 +118,4 @@ private:
 	float _guardVisDuraTimer;
 	//Noise variable
 	float _movmentNoise;
-	//pausing
-	bool _isPaused;
 };

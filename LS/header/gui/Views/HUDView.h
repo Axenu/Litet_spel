@@ -34,7 +34,7 @@ namespace gui
     {
     private:
         EventManager* _eventManager;
-        gui::Font *_font;
+        Font *_font;
         Label *_tipDisplay;
         Label *_scoreLabel;
         Label *_grenadeCountLabel;

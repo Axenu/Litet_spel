@@ -49,6 +49,7 @@ namespace gui
 
         //setters
         void addStringComponent(StringComponent* sc);
+        void setColor(glm::vec4 &color);
 
         //getters
         float getTextWidth();
