@@ -34,7 +34,7 @@ namespace gui
     {
     private:
         EventManager* _eventManager;
-        Font *_font;
+        //owned and deleted by subclass View -> Element
         Label *_tipDisplay;
         Label *_scoreLabel;
         Label *_grenadeCountLabel;
@@ -47,8 +47,11 @@ namespace gui
         ProgressBar *_soundPB;
         ProgressBar *_guardVisionPB;
         Label *_guardVisionLabel;
-        TestGame *_game = nullptr;
+        //owned by this
+        std::unique_ptr<TestGame> _game;
+        //pointer to float not owned by this
         float* _fps;
+
         bool _isAtExit = false;
         std::vector<AlertStruct> _alerts;
 
@@ -69,11 +72,6 @@ namespace gui
         void exitSquareTrigger(const CharacterSquareEvent &event);
 		void canClimb(const CanClimbEvent &event);
         void guardAlert(const GuardAlertEvent &event);
-
-        // void endGame(int action);
-
-        // void QuitGame(int action);
-        // void StartGame(int action);
     };
 
 }

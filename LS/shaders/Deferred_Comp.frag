@@ -61,16 +61,16 @@ void main () {
 	vec3 position = positionFromDepth(depth, frameCoord);
 
 	//Calc light
-	ColorOut = vec4(color * 0.2f, 1.0f); //Add ambient
+	ColorOut = vec4(color * 0.25f, 1.0f); //Add ambient
 
 	//player light
-	ColorOut.xyz += pointLightCalc(position, normal, color, specular.xyz, specular.w, vec3(0,0,0), 2.5f, vec3(0.5,0.5,0.5), vec3(0,0,0));
+	ColorOut.xyz += pointLightCalc(position, normal, color, specular.xyz, specular.w, vec3(0,0,0), 3.f, vec3(0.55, 0.55, 0.55), vec3(0.1f, 0.1f, 0.1f));
 
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
 
-	for(uint i = 0;i<3;i++)
-	ColorOut.xyz=antiLightGrenadeCal(viewGrenadePosition[i],position,color,ColorOut.xyz,GrenadeExpansionFading[i]);
+	for(uint i = 0; i < 3; i++)
+		ColorOut.xyz = antiLightGrenadeCal(viewGrenadePosition[i],position,color,ColorOut.xyz,GrenadeExpansionFading[i]);
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)

@@ -10,8 +10,8 @@ Level::Level(const std::string &level, EventManager *eventManager, MeshShader &s
 	std::vector<ModelPart> parts;
 
 	Material floorMat(&shader);
-	floorMat.setColor("diffuse", glm::vec4(0.1f));
-	floorMat.setColor("spec", glm::vec4(0.2f));
+	floorMat.setColor("diffuse", glm::vec4(0.15f));
+	floorMat.setColor("spec", glm::vec4(0.3f));
 	floorMat.setFloat("shine", 5.f);
 
 	Material wallMat(&shader);

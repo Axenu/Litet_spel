@@ -4,7 +4,7 @@ namespace gui
 {
     Button::Button() : Element()
     {
-        _font = new Font("Resources/fonts/arial");
+        _font = Factory::getInstance().getFont("Resources/fonts/arial");
         _label = new Label(_font);
         _label->setZ(51);
         _padding = glm::vec2(0.05f);
@@ -30,8 +30,6 @@ namespace gui
     {
 		if (_callback)
 			delete _callback;
-		if (_font)
-			delete _font;
     }
     void Button::onRender()
     {

@@ -19,13 +19,13 @@ namespace gui
     {
     private:
         EventManager* _manager;
-        gui::Font *_font;
+        //owned and deleted by subclass View -> Element
         Button *_playAgainButton;
-        gui::Button* _quitButton;
-        gui::Button* _mainMenuButton;
-        gui::Label *_victoryLabel;
+        Button* _quitButton;
+        Button* _mainMenuButton;
+        Label *_victoryLabel;
+
         int _score;
-        // float* _fps;
 
     public:
         GameOverView(EventManager* manager, const GameOverEvent &event);

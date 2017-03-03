@@ -1,4 +1,5 @@
 #include "Game/Level/ObjectFactory.h"
+#include "math/MathFunctions.h"
 
 ObjectFactory::ObjectFactory(EventManager *events, const std::string &resourcePath, std::string modelPath)
 	: _path(resourcePath), _modelPath(modelPath), _meshShader(), _skinnedShader(), _models()
@@ -150,16 +151,7 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 squar
 	_scene->add(object, false);
 	return object;
 }
-PointLightObject* ObjectFactory::createLight(PointLight light, glm::vec3 position)
-{
-	light._pos += position;
-	PointLightObject* object = new PointLightObject(light, nullptr);
-	// Model tmpModel = _models.GetModel(_path + "", &_meshShader);
-	object->init();
-	_scene->add(object, true);
-	return object;
-}
-PointLightObject* ObjectFactory::createLight(PointLight light, Node *parent)
+PointLightObject* ObjectFactory::createLight(PointLightValue light, Node *parent)
 {
 	PointLightObject* object = new PointLightObject(light, parent);
 	object->init();
@@ -172,22 +164,22 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 	std::ifstream file;
   	file.open(_path + path);
 	std::string line;
-	PointLight l(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
+	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	glm::vec2 walkP;
-	std::vector<glm::ivec2> doorLocations;
 	while (std::getline(file, line))
 	{
 		// std::cout << line << std::endl;
 		std::istringstream iss(line);
 		std::string type;
 		iss >> type;
-
+		//If begins with 'list'
+		bool isList = type.compare(0, 4, "list") == 0;
 		//Data items to fill on each line
 		glm::ivec2 square(0);
+		std::vector<glm::ivec2> squareList;
 		glm::vec3 pos(0.f), rot(0.f);
 		float value = 0.f;
 		std::string modelName;
-		glm::ivec2 door;
 		//Switch statement readin next data type
 		while (iss.peek() != EOF)
 		{
@@ -201,6 +193,8 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 				break;
 			case 'S': //Square
 				iss >> square.x >> square.y;
+				if (isList)
+					squareList.push_back(square);
 				break;
 			case 'M': //Model
 				iss >> modelName;
@@ -208,14 +202,17 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			case 'V': //Value, custom
 				iss >> value;
 				break;
+			case 'D': //Light diffuse
+				iss >> light._diffuse.x >> light._diffuse.y >> light._diffuse.z;
+				break;
+			case 's': //Light Spec
+				iss >> light._specular.x >> light._specular.y >> light._specular.z;
+				break;
 			case 'H':
 				iss >> walkP.x >> walkP.y;
 				if (guards.size() > 0)
 					guards.back().walkingPoints.push_back(walkP);
 				break;
-			case 'D':
-				iss >> door.x >> door.y;
-				doorLocations.push_back(door);
 			default:
 				break;
 			}
@@ -223,32 +220,28 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		if (type == "model")
 			createObject(modelName, square, rot, gridType::object, glm::vec3(0.f, 0.f, 0.f));
 		else if (type == "light")
-			createLight(l, pos);
+		{
+			light._pos = pos;
+			if (value > 0.f)
+				light._fadeDist = value;
+			createLight(light);
+		}
+		else if (type == "listDoors")
+		{
+			//Generate open doors
+			for (unsigned short int i = 0; i < squareList.size(); i++)
+				doorList.push_back(doorData(squareList[i], calcRot(squareList[i]), true));
+			//Close some doors, might close same door twice but... don't care?
+			int closeCount = std::max((int)value, 1);
+			for (unsigned int i = 0; i < closeCount; i++)
+				doorList[getRand(squareList.size())].open = false;
+		}
 		else if (type == "loot")
 			loot.push_back(lootData(square, rot, modelName, (int)value ));
 		else if (type == "guard")
 		{
 			guards.push_back({ std::vector<glm::vec2>(), square });
 		}
-		else if (type == "doorList")
-		{
-			srand((unsigned int)time(NULL));
-			int randomNumber = rand() % doorLocations.size();
-			//doorLocations.erase(doorLocations.begin() + rand() % doorLocations.size());
-			for (unsigned short int i = 0; i < doorLocations.size(); i++)
-			{
-				if (i == randomNumber)
-					doorList.push_back(doorData(doorLocations[i], calcRot(doorLocations[i]), false));
-				else
-					doorList.push_back(doorData(doorLocations[i], calcRot(doorLocations[i]), true));
-			}
-			doorLocations.clear();
-		}
-		//else if (type == "path")
-		// int a, b;
-		// if (!(iss >> a >> b)) { break; } // error
-
-		// process pair (a,b)
 	}
 }
 

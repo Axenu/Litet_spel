@@ -10,8 +10,7 @@ private:
 	PointLight _lightInfo;
 public:
 	PointLightObject();
-	PointLightObject(const PointLight &light);
-	PointLightObject(const PointLight &light, Node *parent);
+	PointLightObject(const PointLightValue &light, Node *parent = nullptr);
 	virtual ~PointLightObject();
 
 	virtual void update(float dT);
@@ -25,6 +24,6 @@ public:
 
 	/* Get the light information
 	*/
-	const PointLight &getLightInfo();
+	const PointLightValue &getLightInfo();
 };
 

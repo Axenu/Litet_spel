@@ -112,5 +112,7 @@ int main()
 	// std::cout << "Init window!" << std::endl;
 	setupWindow();
 
+	// getchar();
+
     return 0;
 }

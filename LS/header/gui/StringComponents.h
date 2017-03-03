@@ -24,8 +24,8 @@ namespace gui
     private:
         std::string _value;
     public:
-		~StringComponentString() {};
         StringComponentString(std::string value);
+		virtual ~StringComponentString() {};
         std::string getString();
     };
 
@@ -36,8 +36,8 @@ namespace gui
     public:
         int _precision = 3;
 
-		~StringComponentFloat() {};
         StringComponentFloat(float* value);
+		virtual ~StringComponentFloat() {};
         std::string getString();
     };
     class StringComponentFloatConst : public StringComponent
@@ -47,6 +47,7 @@ namespace gui
         int _precision;
     public:
         StringComponentFloatConst(float value, int precision);
+		virtual ~StringComponentFloatConst() {};
         std::string getString();
     };
 
@@ -55,8 +56,8 @@ namespace gui
     private:
         int* _value;
     public:
-		~StringComponentInt() {};
         StringComponentInt(int* value);
+		virtual ~StringComponentInt() {};
         std::string getString();
     };
 
@@ -65,8 +66,8 @@ namespace gui
     private:
         glm::vec3* _value;
     public:
-		~StringComponentVec3() {};
         StringComponentVec3(glm::vec3* value);
+		virtual ~StringComponentVec3() {};
         std::string getString();
     };
 

@@ -10,6 +10,7 @@
 #include "gl/GLFunctions.h"
 #include "gui/Element.h"
 #include "Render/Shader.h"
+#include "Factory.h"
 
 namespace gui
 {
@@ -34,7 +35,7 @@ namespace gui
     public:
 
         TexturedRectangle(float width, float height, std::string path);
-        ~TexturedRectangle();
+       virtual ~TexturedRectangle();
 
         void onRender();
 

@@ -16,6 +16,10 @@ Factory::~Factory()
     {
         delete it->second;
     }
+    for (std::map<std::string,gui::Font*>::iterator it = _fonts.begin(); it != _fonts.end(); it++)
+    {
+        delete it->second;
+    }
 }
 Shader* Factory::getShader(std::string name)
 {
@@ -32,4 +36,15 @@ Shader* Factory::getShader(std::string vert, std::string frag)
     Shader *s = new Shader(vert, frag);
     _shaders[name] = s;
     return s;
+}
+gui::Font *Factory::getFont(std::string path)
+{
+    std::map<std::string,gui::Font*>::iterator it = _fonts.find(path);
+    if (it != _fonts.end())
+    {
+        return it->second;
+    }
+    gui::Font *f = new gui::Font(path);
+    _fonts[path] = f;
+    return f;
 }

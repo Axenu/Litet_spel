@@ -28,8 +28,8 @@ void ShadowCubeShader::setUp(const PointLight &pointL)
 {
 	_shader.bind();
 	glUniformMatrix4fv(_shadowMatricesLocation, 6, GL_FALSE, &pointL._shadowMatrices[0][0][0]);
-	glUniform3fv(_lightPosLocation, 1, &pointL._pos[0]);
-	glUniform1f(_farPlaneLocation, pointL._fadeDist);
+	glUniform3fv(_lightPosLocation, 1, &pointL._light._pos[0]);
+	glUniform1f(_farPlaneLocation, pointL._light._fadeDist);
 
 }
 

@@ -19,8 +19,9 @@ namespace gui
     class PauseView : public View
     {
     private:
+        //passed from main
         EventManager* _eventManager;
-        gui::Font *_font = nullptr;
+        //owned and deleted by subclass View -> Element
         gui::Button* _resumeButton;
         gui::Button* _mainMenuButton;
         gui::Button* _quitButton;

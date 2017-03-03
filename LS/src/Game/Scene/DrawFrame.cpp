@@ -75,10 +75,10 @@ void DrawFrame::cullLightsByDistance(glm::vec3 &pos)
 		for (size_t i = 0; i < count; i++)
 		{
 			int largest = 0;
-			float dist = glm::distance(pos, _lightInfo[0]._pos);
+			float dist = glm::distance(pos, _lightInfo[0]._light._pos);
 			for (size_t j = 1; j < _lightInfo.size(); j++)
 			{
-				float d = glm::distance(pos, _lightInfo[j]._pos);
+				float d = glm::distance(pos, _lightInfo[j]._light._pos);
 				if (d > dist)
 				{
 					dist = d;
