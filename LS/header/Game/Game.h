@@ -1,11 +1,11 @@
 #pragma once
 #define DEBUG
 
-#include"Game/Scene/Scene.h"
-#include"Render/Composition/RenderDeferred.h"
+#include "Game/Scene/Scene.h"
+#include "Render/Composition/RenderDeferred.h"
 #include "Event/EventManager.h"
-#include"Setting.h"
-#include"camera.h"
+#include "Setting.h"
+#include "camera.h"
 #include "Level/ObjectFactory.h"
 #include "Render/Mesh/Shader/ShadowCubeShader.h"
 #include "Render/Mesh/Shader/SkinnedShadowCubeShader.h"

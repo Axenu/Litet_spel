@@ -13,6 +13,8 @@ ObjectFactory::~ObjectFactory()
 
 void ObjectFactory::createRandomLoot(std::vector<lootData> loot, float totalValue)
 {
+	for (unsigned int i = 0; i < loot.size(); i++)
+		createLoot(loot[i].modelName, loot[i].pos, loot[i].rotation, loot[i].value);
 
 }
 

@@ -10,6 +10,8 @@ model S 2 11 M Table.obj
 model S 10 11 M Table.obj
 model S 2 17 M Table.obj
 model S 3 17 M Table.obj
+model S 6 2 M Bookcase_Empty.obj R 0 90 0
+model S 7 2 M Bookcase_Empty.obj R 0 -90 0
 guard S 14 2
 path H 15 2
 guard S 14 3
