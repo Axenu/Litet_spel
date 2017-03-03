@@ -586,7 +586,7 @@ void Grid::print2darraydata()
 
 #pragma region ToBeMoved/Improved
 /* Move */
-bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff)
+bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff, float charHeight)
 {
 	glm::ivec2 moveVec;
 
@@ -618,13 +618,16 @@ bool Grid::testForClimb(glm::vec3 & pos, glm::vec3 &dir, float &heightDiff)
 	{
 		if (_twodArray[iPos.y][iPos.x].type != gridType::wall)
 		{
-			heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
-			heightDiff = std::abs(heightDiff);
-			if (heightDiff > WalkHeight)
+			if ((_twodArray[iPos.y][iPos.x].height + charHeight) < ROOFHEIGHT)
 			{
-				pos = getCenter(iPos);
-				pos.y = _twodArray[iPos.y][iPos.x].height;
-				return true;
+				heightDiff = _twodArray[iPos.y][iPos.x].height - pos.y;
+				heightDiff = std::abs(heightDiff);
+				if (heightDiff > WalkHeight)
+				{
+					pos = getCenter(iPos);
+					pos.y = _twodArray[iPos.y][iPos.x].height;
+					return true;
+				}
 			}
 		}
 	}
