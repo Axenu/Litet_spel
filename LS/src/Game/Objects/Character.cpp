@@ -155,7 +155,7 @@ void Character::testClimb()
 	{
 		_animEndPos = glm::vec3(getWorldPos());
 		glm::vec3 dir = glm::vec3(_currentScene->getCamera().getLookAt());
-		if (_currentLevel->testForClimb(_animEndPos, dir, _heightDiff))
+		if (_currentLevel->testForClimb(_animEndPos, dir, _heightDiff, _height))
 		{
 			if (!_canClimb)
 			{

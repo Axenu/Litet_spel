@@ -97,7 +97,7 @@ public:
 
 	//These funcs should not be in grid: /Mattias
 
-	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff);
+	bool testForClimb(glm::vec3 &pos, glm::vec3 &dir, float &heightDiff, float charHeight);
 	glm::vec3 wallCollission(glm::vec3 position, glm::vec3 velocity);
 	bool wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity);
 };
