@@ -33,7 +33,7 @@ void TestGame::initiate() {
 	std::vector<AntiLightGrenade*> grenade;
 	for(int i = 0;i<_amountOfGrenades;i++)
 	 grenade.push_back(_factory.createAntiLightGrenade("grenade.obj", glm::ivec2(2, 2)));
-	Character* player = _factory.createCharacter(glm::ivec2(3, 5), 1.3f, grenade);
+	Character* player = _factory.createCharacter(glm::ivec2(2, 2), 1.3f, grenade);
 	_player = player;
 
 
