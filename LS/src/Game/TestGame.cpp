@@ -8,7 +8,7 @@ TestGame::TestGame(Setting &setting, EventManager *events)
 }
 TestGame::~TestGame()
 {
-
+	std::cout << "delete game" << std::endl;
 }
 
 void TestGame::setupRI(RenderInfo &rI) {

@@ -22,11 +22,12 @@ namespace gui
     {
     private:
         EventManager* _manager;
-        gui::Font *_font = nullptr;
+        //owned and deleted by subclass View -> Element
         gui::Button* _startButton;
         gui::Button* _settingsButton;
         gui::Button* _creditsButton;
         gui::Button* _quitButton;
+        //pointer to float not owned by this
         float* _fps;
 
     public:
@@ -37,7 +38,7 @@ namespace gui
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}
-        
+
         virtual void initiate();
 
         void QuitGame(int action);

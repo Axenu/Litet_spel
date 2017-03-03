@@ -8,8 +8,8 @@ namespace gui {
         _score = 0;
         _name = "GameOverView";
 
-        _font = new gui::Font("Resources/fonts/arial");
-        _victoryLabel = new gui::Label(_font);
+        gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
+        _victoryLabel = new gui::Label(font);
         if (event.hasWon())
         {
             _victoryLabel->addStringComponent(new StringComponentString("Success"));
@@ -21,7 +21,7 @@ namespace gui {
         _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.4f);
         addChild(_victoryLabel);
 
-        gui::Label *l = new gui::Label(_font);
+        gui::Label *l = new gui::Label(font);
         l->addStringComponent(new StringComponentString("Score: "));
         l->addStringComponent(new StringComponentInt(&_score));
         l->setScale(0.5f);
@@ -58,7 +58,6 @@ namespace gui {
     }
     GameOverView::~GameOverView()
     {
-        delete _font;
     }
     void GameOverView::onRender()
     {

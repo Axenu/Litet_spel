@@ -28,10 +28,10 @@ namespace gui
     {
         _name = "MainMenuView";
 
-        _font = new gui::Font("Resources/fonts/arial");
+        gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
         if (sic::debug)
         {
-            gui::Label *l = new gui::Label(_font);
+            gui::Label *l = new gui::Label(font);
             l->addStringComponent(new StringComponentString("FPS: "));
             l->addStringComponent(new StringComponentFloat(_fps));
             l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
@@ -78,10 +78,10 @@ namespace gui
     }
     MainMenuView::~MainMenuView()
     {
-        if (_font)
-        {
-            delete _font;
-        }
+        // if (font)
+        // {
+        //     delete font;
+        // }
         // std::cout << "gui scene destructor" << std::endl;
     }
     void MainMenuView::onRender()

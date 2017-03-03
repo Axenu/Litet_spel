@@ -2,6 +2,7 @@
 
 #include <map>
 #include "Render/Shader.h"
+#include "gui/Font.h"
 
 class Factory
 {
@@ -14,7 +15,9 @@ public:
 
     Shader* getShader(std::string name);
     Shader* getShader(std::string vert, std::string frag);
+    gui::Font *getFont(std::string path);
 
 private:
     std::map<std::string, Shader*> _shaders;
+    std::map<std::string, gui::Font*> _fonts;
 };

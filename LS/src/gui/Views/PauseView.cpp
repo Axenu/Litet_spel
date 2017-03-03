@@ -41,9 +41,9 @@ namespace gui
     {
         _name = "PauseView";
 
-        _font = new gui::Font("Resources/fonts/arial");
+        gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
 
-        Label *l = new Label(_font);
+        Label *l = new Label(font);
         l->addStringComponent(new StringComponentString("Paused"));
         l->setPosition(-l->getSize().x * 0.5f, 0.5f);
         addChild(l);
@@ -78,10 +78,6 @@ namespace gui
     }
     PauseView::~PauseView()
     {
-        if (_font)
-        {
-            delete _font;
-        }
     }
     void PauseView::onRender()
     {

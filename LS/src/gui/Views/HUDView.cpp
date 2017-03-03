@@ -7,10 +7,10 @@ namespace gui {
     {
         _name = "HUDView";
 
-        _font = new Font("Resources/fonts/arial");
+        gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
         if (sic::debug)
         {
-            gui::Label *l = new gui::Label(_font);
+            gui::Label *l = new gui::Label(font);
             l->addStringComponent(new StringComponentString("FPS: "));
             l->addStringComponent(new StringComponentFloat(_fps));
             l->setPosition(-1.0f, 0.8f-l->getSize().y/2.0f);
@@ -18,7 +18,7 @@ namespace gui {
             addChild(l);
         }
 
-        _tipDisplay = new gui::Label(_font);
+        _tipDisplay = new gui::Label(font);
         _tipDisplay->addStringComponent(new StringComponentString("Temp string"));
         _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
         _tipDisplay->setScale(0.5);
@@ -39,7 +39,7 @@ namespace gui {
         _scoreBackground->setColor(color);
         addChild(_scoreBackground);
         //Display player score
-        _scoreLabel = new gui::Label(_font);
+        _scoreLabel = new gui::Label(font);
         _scoreLabel->addStringComponent(new StringComponentString("Score: "));
         _scoreLabel->addStringComponent(new StringComponentString(""));
         _scoreLabel->setPosition(-0.98f, 0.97f-_scoreLabel->getSize().y*0.5f);
@@ -62,33 +62,33 @@ namespace gui {
         addChild(_lightPB);
 
         //labels describing the progressbars
-        _lightLabel = new Label(_font);
+        _lightLabel = new Label(font);
         _lightLabel->addStringComponent(new StringComponentString("light:"));
         _lightLabel->setScale(0.25);
         _lightLabel->setPosition(-0.6f, -0.83f);
         addChild(_lightLabel);
 
-        _soundLabel = new Label(_font);
+        _soundLabel = new Label(font);
         _soundLabel->addStringComponent(new StringComponentString("sound:"));
         _soundLabel->setScale(0.25);
         _soundLabel->setPosition(0.6f - _soundLabel->getTextWidth(), -0.83f);
         addChild(_soundLabel);
 
         //Grenade information
-        _grenadeCountLabel = new Label(_font);
+        _grenadeCountLabel = new Label(font);
         _grenadeCountLabel->addStringComponent(new StringComponentString("2"));
         _grenadeCountLabel->setScale(0.75);
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         addChild(_grenadeCountLabel);
 
-		_grenadeCooldownCounter = new Label(_font);
+		_grenadeCooldownCounter = new Label(font);
 		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2.000"));
         _grenadeCooldownCounter->addStringComponent(new StringComponentString(" s"));
 		_grenadeCooldownCounter->setScale(0.25);
 		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f, -0.82f);
 		addChild(_grenadeCooldownCounter);
 
-        _grenadeLabel = new Label(_font);
+        _grenadeLabel = new Label(font);
         _grenadeLabel->addStringComponent(new StringComponentString("grenades"));
         _grenadeLabel->setScale(0.25);
         _grenadeLabel->setPosition(0 - _grenadeLabel->getTextWidth()*0.5f, -0.98f);
@@ -103,7 +103,7 @@ namespace gui {
         _guardVisionPB->deactivate();
         addChild(_guardVisionPB);
 
-        _guardVisionLabel = new Label(_font);
+        _guardVisionLabel = new Label(font);
 		_guardVisionLabel->addStringComponent(new StringComponentFloatConst(0.0f, 3));
 		_guardVisionLabel->addStringComponent(new StringComponentString("s"));
 		_guardVisionLabel->setScale(0.5);
@@ -120,6 +120,11 @@ namespace gui {
         _eventManager->listen(this, &HUDView::KeyboardPressed);
         srand(time(NULL));
         _isActive = true;
+
+        // Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
+    	// setting._renderSetting._textureSetup[2] = GL_RGBA;
+        // _g = std::unique_ptr<TestGame>(new TestGame(setting, _eventManager));
+
     }
     HUDView::~HUDView()
     {
@@ -129,8 +134,6 @@ namespace gui {
 		_eventManager->unlisten(this, &HUDView::canClimb);
         _eventManager->unlisten(this, &HUDView::guardAlert);
         _eventManager->unlisten(this, &HUDView::KeyboardPressed);
-        delete _font;
-        delete _game;
     }
     void HUDView::onRender()
     {
@@ -168,15 +171,11 @@ namespace gui {
     }
     void HUDView::initiate()
     {
-        if (_game != nullptr)
-        {
-            delete _game;
-        }
         //init game
         Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
     	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
-    	_game = new TestGame(setting, _eventManager);
+    	_game = std::unique_ptr<TestGame>(new TestGame(setting, _eventManager));
 
         /* Load game
     	*/
