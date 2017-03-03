@@ -52,7 +52,7 @@ namespace gui
         glm::vec4 _primaryColor;
         glm::vec4 _secondaryColor;
         glm::vec4 _textColor;
-        bool _cursorInside;
+        bool _cursorInside = false;
 
         glm::vec2 _padding;
 

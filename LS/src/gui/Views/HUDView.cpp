@@ -7,7 +7,7 @@ namespace gui {
     {
         _name = "HUDView";
 
-        _font = new gui::Font("Resources/fonts/arial");
+        _font = new Font("Resources/fonts/arial");
         if (sic::debug)
         {
             gui::Label *l = new gui::Label(_font);

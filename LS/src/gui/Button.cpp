@@ -51,7 +51,7 @@ namespace gui
     void Button::setSecondaryColor(glm::vec4 color)
     {
         _secondaryColor = color;
-        if (!_cursorInside)
+        if (_cursorInside)
             _rect->setColor(color);
     }
     void Button::setTextColor(glm::vec4 color)

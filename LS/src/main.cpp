@@ -66,7 +66,6 @@ void setupWindow()
 
 	EventManager eventManager;
 	InputManager iManager(window, &eventManager);
-	bool windowalive=false;
 
 	//init dt calculation
 	float lastTime = (float)glfwGetTime();
@@ -98,7 +97,7 @@ void setupWindow()
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
-		//unlock fps
+		// unlock fps
 		// glfwSwapInterval(0);
 
         /* Poll for and process events */
