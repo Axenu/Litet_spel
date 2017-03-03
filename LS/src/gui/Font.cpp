@@ -9,7 +9,6 @@ namespace gui {
 
 	Font::Font(std::string path)
 	{
-
 		std::ifstream fontFile;
 		fontFile.open(path + ".fnt");
 		if (!fontFile.is_open()) {

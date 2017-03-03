@@ -10,6 +10,7 @@
 #include "gl/GLFunctions.h"
 #include "gui/Element.h"
 #include "Render/Shader.h"
+#include "Factory.h"
 
 namespace gui
 {
