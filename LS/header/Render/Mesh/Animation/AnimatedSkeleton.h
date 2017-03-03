@@ -34,6 +34,14 @@ public:
 	void updateSkeleton();
 	/* Set the animation from the name, returns true if animation found */
 	bool setAnim(const std::string& name);
+	/* Get skin matrixes
+	*/
 	const std::vector<glm::mat4>& getSkin() const;
+	/* Get the number of bones
+	*/
 	unsigned int boneCount() const;
+
+	/* Get the world matrix of a bone
+	*/
+	glm::mat4 getBoneWorld(unsigned int bone);
 };
