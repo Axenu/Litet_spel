@@ -11,7 +11,7 @@
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
-#include "Sound/Irrklang.h"
+#include "Sound/Sound.h"
 #define RotationSpeed 0.005f
 
 
@@ -53,11 +53,12 @@ public:
 
 	glm::vec3 getEyePos();
 
-	float calcLightOnPosition();
+	float calcLightAtPosition();
 
 	float getLightAtPosition();
 private:
-	IrrKlang _grenadeSound;
+	Sound* _grenadeSound;
+	ISoundSource* _soundSource;
 	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;

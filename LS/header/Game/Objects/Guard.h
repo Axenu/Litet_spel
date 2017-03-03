@@ -9,7 +9,7 @@
 #include <time.h>
 #include "Game/Level/Path.h"
 #include <memory>
-#include "Sound/Irrklang.h"
+#include "Sound/Sound.h"
 
 #define GUARDVIEWDISTANCE 10.f
 #define GUARDFOV 45.0f * M_PIf / 180.f
@@ -25,7 +25,8 @@ private:
 	unsigned int _whatPathToLoad;
 	float _detectionScore;
 	float _guardtimer;
-	IrrKlang _guardSound;
+	Sound* _sound;
+	ISoundSource* _soundSource;
 	//Field of view in cosine
 	float _detectFov;
 	Level *_currentLevel;

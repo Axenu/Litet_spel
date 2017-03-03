@@ -29,14 +29,7 @@ void Character::onUpdate(float dt)
 		_eventManager->execute(squareEvent);
 		this->_gridSquare = newSquare;
 	}
-//	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
-//	{
-	
-//		if (_antiLightGrenade[i]->getExplodedGrenade())
-//		{
-//			_grenadeSound.PlaySource3DSoundOnce("Grenade.wav", false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward());
-//		}
-//	}
+
 	_timerForGrenade += dt;
 	if (_timerForGrenade > 10)
 	{
@@ -47,7 +40,7 @@ void Character::onUpdate(float dt)
 	else
 		LightGrenadeClock = 0;
 
-	_lightAtPos = calcLightOnPosition();
+	_lightAtPos = calcLightAtPosition();
 }
 
 void Character::move(float dt) {
@@ -178,7 +171,7 @@ int Character::getGrenadeID()
 	return _grenadeID;
 }
 
-float Character::calcLightOnPosition()
+float Character::calcLightAtPosition()
 {
 	glm::vec4 posLight(0.0f);
 	glm::vec3 pos(this->getWorldPos());
@@ -213,7 +206,6 @@ void Character::onRender()
 
 std::vector<GrenadeValues> Character::getGrenadeData()
 {
-//	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
 	std::vector<GrenadeValues> _grenadevalues;
 	_grenadevalues.clear();
 
@@ -223,7 +215,7 @@ std::vector<GrenadeValues> Character::getGrenadeData()
 		_grenadevalues.push_back(_antiLightGrenade[i]->getgrenadeData());
 		if (_antiLightGrenade[i]->getExplodedGrenade())
 		{
-			_grenadeSound.PlaySource3DSoundOnce("Grenade.wav", false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward());
+			_grenadeSound->PlaySource3DSound(_soundSource, false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward(), this->getUp(), 0.0f);
 		}
 	}
 	return _grenadevalues;
@@ -430,6 +422,10 @@ Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLight
 	_timerForGrenade = 0;
 	noMoreGrenadeCount = true;
 	_lightAtPos = 1.0f;
+
+	_grenadeSound = new Sound("Resources/Grenade.wav");
+
+	_soundSource = _grenadeSound->GetSoundSource("Resources/Grenade.wav");
 }
 
 Character::Character()

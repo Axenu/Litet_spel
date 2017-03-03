@@ -8,11 +8,8 @@ void Guard::update(float dt)
 
 	if (glm::length(glm::vec3(_position - glm::vec3(_player->getWorldPos()))) < 5.0f) //&& _guardtimer > 2.f)
 	{
-		_guardSound.PlaySource3DSound("footSteps.wav", false, _player->getWorldPos(), _position, _player->getForward(),dt);
-//		_guardtimer = 0.0f;
+		_sound->PlaySource3DSound(_soundSource, false, _player->getWorldPos(), _position, _player->getForward(), _player->getUp(), dt);
 	}
-//	_guardSound.update(_player->getForward());
-//	_guardtimer += dt;
 
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
@@ -78,10 +75,15 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_speed = 0.4f;
 
 	_detectionScore = 0.3f;
+	
+	_sound = new Sound("Resources/footSteps.wav");
+
+	_soundSource = _sound->GetSoundSource("Resources/footSteps.wav");
 }
 
 Guard::~Guard()
 {
+
 }
 
 float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)

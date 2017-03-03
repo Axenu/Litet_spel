@@ -16,23 +16,23 @@ struct GrenadeValues {
 class AntiLightGrenade : public GameObject
 {
 private:
-float _fallspeed;
-float _velocity;
-glm::vec3 _direction;
-bool QBeenPressed = true;
-bool QbeenActivated = false;
-bool TheBombHasBeenActivated = false;
-bool checkForSound = false;
-float timer = 0;
-glm::vec3 _movement;
-GrenadeValues _grenadeValue;
-Grid *_currentLevel;
+	float _fallspeed;
+	float _velocity;
+	glm::vec3 _direction;
+	bool _qBeenPressed;
+	bool _qbeenActivated;
+	bool _theBombHasBeenActivated;
+	bool _checkForSound;
+	float _timer;
+	glm::vec3 _movement;
+	GrenadeValues _grenadeValue;
+	Grid *_currentLevel;
 public:
-void setLevel(Grid *level);
-bool getExplodedGrenade();
-GrenadeValues getgrenadeData();
-virtual	void update(float dt);
-AntiLightGrenade(Model & m);
-~AntiLightGrenade();
-void ThrowTheLightgrenade(glm::vec3 CharacterPositions,glm::vec3 Direction);
+	void setLevel(Grid *level);
+	bool getExplodedGrenade();
+	GrenadeValues getgrenadeData();
+	virtual	void update(float dt);
+	AntiLightGrenade(Model & m);
+	~AntiLightGrenade();
+	void ThrowTheLightgrenade(glm::vec3 CharacterPositions,glm::vec3 Direction);
 };

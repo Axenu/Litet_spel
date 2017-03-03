@@ -14,7 +14,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
-#include "Sound/Irrklang.h"
+#include "Sound/Sound.h"
 void setupWindow()
 {
 #ifndef __APPLE__
@@ -82,7 +82,7 @@ void setupWindow()
 	guiManager.setWindowSize(wWidth, wHeight);
 	guiManager.setView(guiScene);
 
-//	IrrKlang backgroundMusic;
+//	Sound backgroundMusic;
 //	backgroundMusic.PlaySource2DSound("BackgroundMusic.ogg", true); //credits too Thief Deadly Shadows OST - South Quarter
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
