@@ -38,5 +38,5 @@ void PointLight::updateMatrices()
 
 AABB PointLight::generateAABB()
 {
-	return AABB(glm::vec3(-_light._fadeDist) + _light._pos, glm::vec3(_light._fadeDist) + _light._pos);
+	return AABB(_light._pos, _light._fadeDist);
 }

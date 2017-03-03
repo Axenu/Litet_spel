@@ -5,6 +5,7 @@
 #include"Render/Mesh/Model.h"
 #include"Render/RenderInfo.h"
 #include"Render/PointLight.h"
+#include"Render/AntiLightValues.h"
 
 /* Struct holding drawables rendered for a frame
 */
@@ -25,6 +26,7 @@ protected:
 	*/
 	std::vector<MeshDrawable> _meshes;
 	std::vector<PointLight> _lightInfo;
+	std::vector<AntiLightValues> _grenadeInfo;
 public:
 	DrawFrame();
 	~DrawFrame();
@@ -35,6 +37,9 @@ public:
 	/* Add a point point light to be rendered
 	*/
 	void add(const PointLight &light);
+	/* Add a grenade to be rendered
+	*/
+	void add(const AntiLightValues &grenade);
 	/* Render the frame
 	*/
 	void render(RenderInfo &rI);
@@ -48,4 +53,7 @@ public:
 	/* Get batched light info for the frame
 	*/
 	std::vector<PointLight>& getLightInfo();
+	/* Get batched grenade info for the frame
+	*/
+	std::vector<AntiLightValues>& getGrenadeInfo();
 };

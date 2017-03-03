@@ -5,6 +5,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/mat4x4.hpp>
 #include "Render/PointLight.h"
+#include "Render/AntiLightValues.h"
 #include "StaticVars.h"
 /* Forward Declare
 */
@@ -22,15 +23,8 @@ public:
 	glm::mat4 _V, _VP;
 	glm::vec3 _eye;
 	std::vector<PointLight> _pLightInfo;
+	std::vector<AntiLightValues> _aLightInfo;
 
-	/* Minor
-	*/
-	
-	glm::vec3 _lightGrenadePos[GrenadeAmountFromCharacter];
-	glm::vec2 _lightGrenadeExpansionAndFading[GrenadeAmountFromCharacter];
-	int _arraysize=0;
-	int _grenadeID = 0;
-
-	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights);
+	RenderInfo(const GraphicsResource& resource, const Camera &cam, std::vector<PointLight> &pLights, std::vector<AntiLightValues> &aLightInfo);
 	~RenderInfo();
 };

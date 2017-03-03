@@ -9,14 +9,18 @@ ObjectFactory::ObjectFactory(EventManager *events, const std::string &resourcePa
 
 ObjectFactory::~ObjectFactory()
 {
-
 }
 
+/* Preload a model not created at start
+*/
+void ObjectFactory::preLoadModel(const std::string &model)
+{
+	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
+}
 void ObjectFactory::createRandomLoot(std::vector<lootData> loot, float totalValue)
 {
 	for (unsigned int i = 0; i < loot.size(); i++)
 		createLoot(loot[i].modelName, loot[i].pos, loot[i].rotation, loot[i].value);
-
 }
 
 glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box)
@@ -72,10 +76,10 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 	return scene;
 }
 
-Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *> grenade)
+Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, grenade, height);
+	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, 10, height);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
@@ -83,6 +87,19 @@ Character* ObjectFactory::createCharacter(glm::ivec2 square, float height, std::
 	_scene->getCamera().setPositionY(height);
 	_scene->add(player,true);
 	return player;
+}
+
+AntiLightGrenade* ObjectFactory::createLightGrenade(const std::string &model, glm::vec3 pos, glm::vec3 dir)
+{
+	Material mat(&_meshShader);
+
+	mat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	Model tmpModel = _models.GetModel(_modelPath + model, mat);
+	AntiLightGrenade* grenade = new AntiLightGrenade(*_eventManager, tmpModel, pos, dir);
+	grenade->setLevel(&_level->getGrid());
+	grenade->setScale((float)0.0675);
+	_scene->add(grenade, true);
+	return grenade;
 }
 
 
@@ -100,18 +117,6 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	return guard;
 }
 
-AntiLightGrenade * ObjectFactory::createAntiLightGrenade(const std::string & model, glm::ivec2 square)
-{
-	Material mat(&_meshShader);
-
-	mat.setColor("diffuse", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	Model tmpModel = _models.GetModel(_modelPath + model, mat);
-	AntiLightGrenade* grenade = new AntiLightGrenade(tmpModel);
-	grenade->setLevel(&_level->getGrid());
-	grenade->setScale((float)0.0675);
-	_scene->add(grenade, true);
-	return grenade;
-}
 
 Door * ObjectFactory::CreateDoor(const std::string & model, glm::ivec2 square, glm::vec3 rotation)
 {
@@ -233,7 +238,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 				doorList.push_back(doorData(squareList[i], calcRot(squareList[i]), true));
 			//Close some doors, might close same door twice but... don't care?
 			int closeCount = std::max((int)value, 1);
-			for (unsigned int i = 0; i < closeCount; i++)
+			for (int i = 0; i < closeCount; i++)
 				doorList[getRand(squareList.size())].open = false;
 		}
 		else if (type == "loot")

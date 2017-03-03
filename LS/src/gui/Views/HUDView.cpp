@@ -1,6 +1,7 @@
 #include "gui/Views/HUDView.h"
 #include "gui/Manager.h"
 #include "gui/Views/PauseView.h"
+#include "math/MathFunctions.h"
 
 namespace gui {
     HUDView::HUDView(EventManager* manager, float* fps) : _eventManager(manager), _fps(fps), View()
@@ -118,7 +119,6 @@ namespace gui {
 		_eventManager->listen(this, &HUDView::canClimb);
 		_eventManager->listen(this, &HUDView::guardAlert);
         _eventManager->listen(this, &HUDView::KeyboardPressed);
-        srand(time(NULL));
         _isActive = true;
 
         // Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
@@ -145,7 +145,7 @@ namespace gui {
         _game->update(dt);
         _lightPB->setValue(_game->getCharacter()->getLightAtPosition());
         //make noise more living by adding a small random value
-        float randomNoise = (rand() % 100) * 0.0002f + -0.01f;
+        float randomNoise = (getRand(100)) * 0.0002f + -0.01f;
 		_soundPB->setValue(_game->getCharacter()->getNoise() + randomNoise);
         if (*(_game->getCharacter()->getGrenadeCooldownTimer()) > 0.0f)
         {

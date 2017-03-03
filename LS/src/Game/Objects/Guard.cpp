@@ -115,10 +115,6 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		//Get light at position
 		float playerLight = _player->getLightAtPosition();
 
-		//Account light for Anti-L Grenade
-		if (glm::length(playerPos - glm::vec3(_player->getGrenadeData()[0]._grenadePositionWhenLanded)) < _player->getGrenadeData()[0].expanding)
-			playerLight *= _player->getGrenadeData()[0].fading;
-
 		//If player behind wall or obscuring object, not detected
 		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
 		{

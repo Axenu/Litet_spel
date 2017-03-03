@@ -35,8 +35,9 @@
 		_pLightFade = _shader.getUniform("pLightFade");
 
 		//lightGrenade
-		_lightNade = _shader.getUniform("viewGrenadePosition");
-		_LightNadeExpansionFading = _shader.getUniform("GrenadeExpansionFading");
+		_lightNadePos = _shader.getUniform("grenadePos");
+		_lightNadeParams = _shader.getUniform("grenadeParams");
+		_lightNadeNum = _shader.getUniform("numGrenade");
 
 
 		//Bind samplers
@@ -93,22 +94,19 @@
 		glUniform1fv(_pLightFade, numLights, (const GLfloat*)&FADE[0]);
 
 
+		unsigned int numNades = rI._aLightInfo.size() < MAXNADECOUNT ? rI._aLightInfo.size() : MAXNADECOUNT;
 		//GrenadeStuff
-		glm::vec3 antiLightPos[3];	//	glm::vec3 antiLightPos[rI._arraysize];
-		glm::vec2 ExpansionAndFading[3];
-		for(int i = 0;i<3;i++)
+		glm::vec3 antiLightPos[MAXNADECOUNT];	//	glm::vec3 antiLightPos[rI._arraysize];
+		glm::vec2 ExpansionAndFading[MAXNADECOUNT];
+		for (int i = 0; i < numNades; i++)
 		{
-		if (rI._grenadeID - i < 0)
-		{
-			rI._grenadeID = rI._arraysize;
+			antiLightPos[i] = rI._V *  glm::vec4(rI._aLightInfo[i]._pos, 1.f);
+			ExpansionAndFading[i] = rI._aLightInfo[i]._params;
 		}
-		antiLightPos[i] = rI._V *  glm::vec4(rI._lightGrenadePos[rI._grenadeID - i], 1.f);
-		ExpansionAndFading[i] = rI._lightGrenadeExpansionAndFading[rI._grenadeID - i];
-		}
-
-
-		glUniform3fv(_lightNade,sizeof(antiLightPos), (float*)antiLightPos);
-		glUniform2fv(_LightNadeExpansionFading, sizeof(ExpansionAndFading),(float*)ExpansionAndFading);
+		
+		glUniform1ui(_lightNadeNum, numNades);
+		glUniform3fv(_lightNadePos, numNades, reinterpret_cast<float*>(antiLightPos));
+		glUniform2fv(_lightNadeParams, numNades, reinterpret_cast<float*>(ExpansionAndFading));
 
 	}
 

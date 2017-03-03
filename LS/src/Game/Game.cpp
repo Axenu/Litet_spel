@@ -3,7 +3,7 @@
 
 
 Game::Game(Setting &setting, EventManager *eventManager)
-	: _setting(setting), _scene(), _resource(setting._renderSetting), _deferred(_resource.getQuad()),
+	: _setting(setting), _resource(setting._renderSetting), _deferred(_resource.getQuad()), _scene(),
 	_factory(eventManager, "Resources/", "Resources/models/"), _shadowShader(), _skinnedShadowShader()
 {
 	_eventManager = eventManager;
@@ -17,7 +17,8 @@ Game::~Game()
 
 
 void Game::initiate() {
-
+	_scene = spawnScene();
+	_sceneManager = std::unique_ptr<SceneEventManager>(new SceneEventManager(*_eventManager, _factory, *_scene));
 }
 
 
@@ -30,8 +31,7 @@ void Game::draw() {
 	_scene->fetchDrawables(dF);
 	glm::vec3 camPos = _scene->getCamera().getWorldPos();
 	dF.cullLightsByDistance(camPos);
-	RenderInfo rI(_resource, _scene->getCamera(), dF.getLightInfo());
-	setupRI(rI);
+	RenderInfo rI(_resource, _scene->getCamera(), dF.getLightInfo(), dF.getGrenadeInfo());
 
 	glDisable(GL_CULL_FACE);
 	size_t numLights = rI._pLightInfo.size();
@@ -73,7 +73,8 @@ void Game::compose(RenderInfo &rI) {
 #ifdef DEBUG
 	gl::CheckGLErrors("Render stage failed: Composition");
 #endif
-
+	//Cleanup objects to remove
+	_sceneManager->endFrame();
 }
 
 Scene &Game::getScene()

@@ -1,6 +1,7 @@
 #include "Game/Objects/Character.h"
 #include "StaticVars.h"
 #include "Game/Objects/CharacterEvents.h"
+#include "Event/SceneEvents/CreateEvents.h"
 #include "Game/Objects/Guard.h"
 
 void Character::onUpdate(float dt)
@@ -34,15 +35,9 @@ void Character::onUpdate(float dt)
 		this->_gridSquare = newSquare;
 	}
 
-	_timerForGrenade += dt;
-	if (_timerForGrenade > 10)
-	{
-		_timerForGrenade = 6;
-	}
-	if (_timerForGrenade < 2 && noMoreGrenadeCount)
-		LightGrenadeClock = 2 - _timerForGrenade;
-	else
-		LightGrenadeClock = 0;
+	_grenadeTimer -= dt;
+	if (_grenadeTimer <= 0 || _lightGrenadeCount == 0)
+		_grenadeTimer = 0.f;
 
 	_lightAtPos = calcLightOnPosition();
 	calcNoise();
@@ -225,10 +220,6 @@ void Character::gVisionTimerUpdate(float dt)
 		returnVision();
 }
 
-int Character::getGrenadeID()
-{
-	return _grenadeID;
-}
 
 float Character::calcLightOnPosition()
 {
@@ -247,6 +238,15 @@ float Character::calcLightOnPosition()
 	}
 	intensity = std::max(intensity, 0.2f); //ambient
 	intensity = std::min(intensity, 1.0f); //Cant be too bright
+
+	std::vector<AntiLightGrenade*> nades = _currentScene->fetchDynamicObjects<AntiLightGrenade>(playerBox);
+	for (unsigned int i = 0; i < nades.size(); i++)
+	{
+		GrenadeValues val = nades[i]->getgrenadeData();
+		//Account light for Anti-L Grenade
+		if (glm::length(pos - glm::vec3(nades[i]->getWorldPos())) < val.expanding)
+			intensity *= val.fading;
+	}
 	return intensity;
 }
 
@@ -286,16 +286,6 @@ void Character::onRender()
 
 }
 
-std::vector<GrenadeValues> Character::getGrenadeData()
-{
-//	std::cout << "antilightGrenade" << _antiLightGrenade->getgrenadePositionWhenlanded().x << "," << _antiLightGrenade->getgrenadePositionWhenlanded().y << "," << _antiLightGrenade->getgrenadePositionWhenlanded().z << std::endl;
-	std::vector<GrenadeValues> _grenadevalues;
-	_grenadevalues.clear();
-	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
-		_grenadevalues.push_back( _antiLightGrenade[i]->getgrenadeData());
-	return _grenadevalues;
-}
-
 int* Character::getLootValuePointer()
 {
     return &_lootValue;
@@ -308,7 +298,7 @@ int* Character::getGrenadeCountPointer()
 
 float * Character::getGrenadeCooldownTimer()
 {
-	return &LightGrenadeClock;
+	return &_grenadeTimer;
 }
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -363,22 +353,12 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			//	std::cout << this->getWorldPos().x << this->getWorldPos().y << this->getWorldPos().z << std::endl;
-			if (_timerForGrenade > 2)
+			if (_lightGrenadeCount > 0 && _grenadeTimer <= 0)
 			{
-				_antiLightGrenade[_grenadeCount]->ThrowTheLightgrenade(this->getWorldPos(), _currentScene->getCamera().getLookAt());
-				_timerForGrenade = 0;
-				if (_lightGrenadeCount > 0)
-				{
-					_lightGrenadeCount--;
-				}
-				_grenadeID++;
-				_grenadeCount++;
-				if (_grenadeCount == (int)_antiLightGrenade.size())
-				{
-					_grenadeCount = 0;
-					noMoreGrenadeCount = false;
-				}
+				CreateLightGrenade e("grenade.obj", this->getWorldPos(), _currentScene->getCamera().getLookAt());
+				_eventManager->execute(e);
+				_grenadeTimer = _grenadeCooldown;
+				_lightGrenadeCount--;
 			}
 
 		}
@@ -567,10 +547,6 @@ void Character::setScene(Scene * scene)
 	_currentScene = scene;
 }
 
-int Character::amountOfGrenades()
-{
-	return _antiLightGrenade.size();
-}
 void Character::pause()
 {
     _eventManager->unlisten(this, &Character::moveCharacter);
@@ -582,7 +558,7 @@ void Character::resume()
 	_eventManager->listen(this, &Character::moveMouse);
 	_hasMoved = false;
 }
-Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade*> grenade, float height) :
+Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, float height) :
 	GameObject()
 {
 	_eventManager = manager;
@@ -603,11 +579,8 @@ Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLight
 	_animTime = 0.0f;
 	_animEndTime = 0.0f;
 	_heightDiff = 0.0f;
-	_antiLightGrenade = grenade;
-	_lightGrenadeCount = GrenadeAmountFromCharacter;
-	_grenadeID = -1;
-	_timerForGrenade = 0;
-	noMoreGrenadeCount = true;
+	_lightGrenadeCount = grenadeCount;
+	_grenadeTimer = 0;
 	_lightAtPos = 1.0f;
 }
 

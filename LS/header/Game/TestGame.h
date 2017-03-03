@@ -19,12 +19,11 @@ protected:
 	InputKeyState _cubeMapBufferKey;
 	Character *_player;
 
-	virtual void setupRI(RenderInfo &rI);
 public:
 
 	TestGame(Setting &setting, EventManager *events);
 	virtual ~TestGame();
-	virtual void initiate();
+	virtual std::unique_ptr<Scene> spawnScene();
 	virtual void compose(RenderInfo &rI);
 	Character *getCharacter();
 };

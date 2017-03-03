@@ -11,6 +11,7 @@
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
+#include "Game/Level/IObjectFactory.h"
 
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
@@ -43,7 +44,6 @@ public:
     virtual void onUpdate(float dt);
 	virtual void init();
     void onRender();
-	std::vector<GrenadeValues> getGrenadeData();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
 
@@ -54,15 +54,13 @@ public:
 	void tryClimb();
 	void testClimb();
 	bool guardVision();
-	int getGrenadeID();
 	int* getLootValuePointer();
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
-	int amountOfGrenades();
 	float getNoise();
 	void pause();
 	void resume();
-	Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLightGrenade *> grenade, float height);
+	Character(glm::vec3 pos, EventManager *manager, int grenadeCount, float height);
 
     Character();
     virtual ~Character();
@@ -81,7 +79,7 @@ private:
 	void returnVision();
 	CharState _state;
 	float _height;
-	int _grenadeID;
+
 	Grid *_currentLevel;
 	Scene *_currentScene;
     EventManager *_eventManager;
@@ -91,9 +89,6 @@ private:
 	/* Camera relative move dir. X: Right, Y: Forward */
 	glm::vec2 _moveDir;
 	glm::vec2 _camTilt;
-	int _grenadeCount=0;
-	float _timerForGrenade=6;
-	std::vector<AntiLightGrenade*> _antiLightGrenade;
     float _speed;
     float _isMoving;
     int _lootValue;
@@ -109,9 +104,9 @@ private:
 	float _animEndTime;
 	float _heightDiff;
 	//AntiLightGranade  varables
+	float _grenadeCooldown = 2;
+	float _grenadeTimer = 6;
 	int _lightGrenadeCount = 0;
-	float LightGrenadeClock= 0;
-	bool noMoreGrenadeCount;
 	//Light variable
 	float _lightAtPos;
 	//GuardVision varable

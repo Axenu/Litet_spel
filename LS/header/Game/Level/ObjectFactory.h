@@ -13,7 +13,7 @@
 #include "Game/Objects/Guard.h"
 #include "Game/Objects/AntiLightGrenade.h"
 #include "Game/Objects/Door.h"
-
+#include "IObjectFactory.h"
 
 struct worldData {
 	worldData(glm::ivec2 pos, glm::vec3 rotation)
@@ -58,6 +58,7 @@ struct doorData : worldData {
 /* Factory creating game objects
 */
 class ObjectFactory
+	: public IObjectFactory
 {
 private:
 	/* Resource path */
@@ -79,17 +80,23 @@ public:
 	ObjectFactory(EventManager *events, const std::string &resourcePath = "", std::string modelPath = "");
 	~ObjectFactory();
 
+	/* Preload a model not created at start
+	*/
+	void preLoadModel(const std::string &model);
+
 	std::unique_ptr<Scene> createLevel(const std::string &level, Level *&outLevel);
-	Character* createCharacter(glm::ivec2 square, float height, std::vector<AntiLightGrenade *>grenade);
-	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
-	AntiLightGrenade* createAntiLightGrenade(const std::string &model, glm::ivec2 square);
-	Door* CreateDoor(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
+
+	virtual LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
+	virtual PointLightObject* createLight(PointLightValue light, Node *parent = nullptr);
 	/* Create a scene object
-	model << Model to load
+		model << Model to load
 	*/
 	GameObject* createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation, enum gridType type, glm::vec3 positionOffset);
-	LootObject* createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value);
-	PointLightObject* createLight(PointLightValue light, Node *parent = nullptr);
+
+	Character* createCharacter(glm::ivec2 square, float height);
+	virtual AntiLightGrenade* createLightGrenade(const std::string &model, glm::vec3 pos, glm::vec3 dir);
+	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
+	Door* CreateDoor(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
 	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<doorData> &doorList);
 	MeshShader& getShader();
 };

@@ -11,8 +11,6 @@ uniform sampler2D colBuffer;
 uniform sampler2D norBuffer;
 uniform sampler2D specBuffer;
 uniform sampler2D depthBuffer;
-uniform vec3 viewGrenadePosition[3];
-uniform vec2 GrenadeExpansionFading[3];
 uniform samplerCube shadowMap[8];
 
 //X: 1 / width  Y : 1 / height
@@ -33,6 +31,11 @@ uniform vec3 pLightDif[8];
 uniform vec3 pLightSpec[8];
 uniform float pLightFade[8];
 
+//Light grenade
+uniform uint numGrenade;
+uniform vec3 grenadePos[3];
+uniform vec2 grenadeParams[3];
+
 /*Calculate the frame coordinate. (Texture coordinate of the window)
 return	>>	The texture coordinate of the window
 */
@@ -43,7 +46,7 @@ vec3 shadowTest(in uint i, in vec3 pos, in vec3 color);
 vec3 pointLightCalc(in vec3 pos, in vec3 nor, in vec3 diffuseCol, in vec3 specularCol, in float shininess, in vec3 pLightPos, in float pLightFade, in vec3 pLightDif, in vec3 pLightSpec);
 float lightCalc(in vec3 lightDir, in vec3 pos, in vec3 nor, in float shininess, out float lambertian);
 
-vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,in vec3 color,in vec2 GrenadeExpansionFading);
+vec3 antiLightGrenadeCal(in vec3 GrenadePosition, in vec3 pos, in vec3 diffuseCol, in vec2 fadeParams);
 
 /* Composition main function
 */
@@ -69,8 +72,8 @@ void main () {
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
 
-	for(uint i = 0; i < 3; i++)
-		ColorOut.xyz = antiLightGrenadeCal(viewGrenadePosition[i],position,color,ColorOut.xyz,GrenadeExpansionFading[i]);
+	for(uint i = 0; i < numGrenade; i++)
+		ColorOut.xyz *= antiLightGrenadeCal(grenadePos[i], position, color, grenadeParams[i]);
 }
 
 /*Calculate the frame coordinate. (Texture coordinate of the window)
@@ -82,17 +85,11 @@ vec2 calcFrameCoord(){
 				gl_FragCoord.y * screenInv.y);
 }
 
-/*
-AntiLightgrenade Setting the color to diffured in a set space
+/* AntiLightgrenade light multiplier calc
 */
-vec3 antiLightGrenadeCal(in vec3 GrenadePosition,in vec3 pos,in vec3 diffuseCol,in vec3 color,in vec2 GrenadeExpansionFading)
+vec3 antiLightGrenadeCal(in vec3 GrenadePosition, in vec3 pos, in vec3 diffuseCol, in vec2 fadeParams)
 {
-	float Distance = length(GrenadePosition - pos);
-	if(GrenadeExpansionFading.x>Distance)
-	{
-		return color * GrenadeExpansionFading.y;
-	}
-	return color;
+	return fadeParams.x > length(GrenadePosition - pos) ? fadeParams.y : 1.f;
 }
 
 vec3 shadowTest(in uint i, in vec3 pos, in vec3 color)

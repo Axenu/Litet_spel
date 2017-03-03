@@ -19,6 +19,11 @@ void DrawFrame::add(const Model &m, const glm::mat4 &modelMatrix) {
 void DrawFrame::add(const PointLight &light) {
 	_lightInfo.push_back(light);
 }
+/* Add a grenade to be rendered
+*/
+void DrawFrame::add(const AntiLightValues &grenade) {
+	_grenadeInfo.push_back(grenade);
+}
 
 /* Render the frame
 */
@@ -65,6 +70,11 @@ void DrawFrame::renderAnimatedMeshes(RenderInfo &rI, MeshShader* shader) {
 */
 std::vector<PointLight>& DrawFrame::getLightInfo() {
 	return _lightInfo;
+}
+/* Get batched grenade info for the frame
+*/
+std::vector<AntiLightValues>& DrawFrame::getGrenadeInfo() {
+	return _grenadeInfo;
 }
 
 void DrawFrame::cullLightsByDistance(glm::vec3 &pos)

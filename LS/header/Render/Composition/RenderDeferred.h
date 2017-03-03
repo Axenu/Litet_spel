@@ -15,15 +15,14 @@ class RenderDeferred :
 	/* Maximum number of lights available to render.
 	*/
 	const static unsigned int MAXLIGHTCOUNT = 8;
+	const static unsigned int MAXNADECOUNT = 3;
 
 	//Calculation uniforms:
 	GLint _screenInv, _near, _far, _right, _top, _viewMatrixLocation, _camPosLocation;
 	//Light uniforms
 	GLint _pNumLights, _pLightPos, _pLightFade, _pLightSpecCol, _pLightDiffCol;
 	//AntiLightGrenade
-	GLint _lightNade;
-	GLint _LightNadeExpansionFading;
-	GLint _LightNadeAmount;
+	GLint _lightNadePos, _lightNadeParams, _lightNadeNum;
 
 protected:
 
