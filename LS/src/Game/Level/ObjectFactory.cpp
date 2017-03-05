@@ -17,10 +17,27 @@ void ObjectFactory::preLoadModel(const std::string &model)
 {
 	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
 }
-void ObjectFactory::createRandomLoot(std::vector<lootData> loot, float totalValue)
+
+void ObjectFactory::createRandomLoot(std::vector<lootData> loot, int totalValue)
 {
-	for (unsigned int i = 0; i < loot.size(); i++)
-		createLoot(loot[i].modelName, loot[i].pos, loot[i].rotation, loot[i].value);
+	seed(time(NULL));
+	int currentValue = 0;
+	int randNumber;
+	while (loot.size() != 0)
+	{
+		randNumber = getRand(loot.size());
+		if (loot[randNumber].value + currentValue >= totalValue)
+		{
+			createLoot(loot[randNumber].modelName, loot[randNumber].pos, loot[randNumber].rotation, totalValue - currentValue);
+			return;
+		}
+		else
+		{
+			currentValue += loot[randNumber].value;
+			createLoot(loot[randNumber].modelName, loot[randNumber].pos, loot[randNumber].rotation, loot[randNumber].value);
+		}
+		loot.erase(loot.begin() + randNumber);
+	}
 }
 
 glm::vec3 ObjectFactory::calcPos(glm::ivec2 square, const AABB &box)
