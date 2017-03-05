@@ -273,6 +273,7 @@ void Character::calcNoise()
 	{
 		_movmentNoise *= sneakingModifier;
 	}
+	_movmentNoise *= _isMoving;
 
 }
 
