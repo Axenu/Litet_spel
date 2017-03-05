@@ -71,6 +71,8 @@ void setupWindow()
 	float lastTime = (float)glfwGetTime();
 	float currentTime;
 	float dT;
+	float passedFrames = 0.0f;
+	float passedTime = 0.0f;
 	float FPS;
 
 	gui::MainMenuView* guiScene = new gui::MainMenuView(&eventManager, &FPS);
@@ -89,7 +91,15 @@ void setupWindow()
 		currentTime = (float)glfwGetTime();
 		dT = currentTime - lastTime;
 	    lastTime = currentTime;
-		FPS = 1.0f / dT;
+		passedTime += dT;
+		passedFrames += 1;
+		if (passedTime > 0.2f)
+		{
+			FPS = 1.0f / (passedTime/passedFrames);
+			passedTime = 0.0f;
+			passedFrames = 0.0f;
+		}
+		// FPS = 1.0f / dT;
 		dT = std::fminf(dT, 0.1f); //Can't have to large dt!
 
 		guiManager.update(dT);
@@ -98,7 +108,7 @@ void setupWindow()
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 		// unlock fps
-		// glfwSwapInterval(0);
+		glfwSwapInterval(0);
 
         /* Poll for and process events */
         glfwPollEvents();

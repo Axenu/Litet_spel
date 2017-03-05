@@ -398,7 +398,12 @@ void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, AABB &aab
 	{
 		for (unsigned int i = 0; i < _objectData.size(); i++)
 		{
-			gameObjects.push_back(_objectData[i]);
+			//test if collide with aabb
+			if (AABBvAABB(_objectData[i]->getAABB(), aabb))
+			{
+				// std::cout << "adding cornercase object" << std::endl;
+				gameObjects.push_back(_objectData[i]);
+			}
 		}
 		if (_children[0] != nullptr)
 		{
