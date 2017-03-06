@@ -11,8 +11,11 @@
 #include <memory>
 
 #define GUARDVIEWDISTANCE 20.f
-#define GUARDHEARDISTANCE 10.f
+#define GUARDHEARDISTANCE 20.f
+
 #define LOOKNOISEINTRESTTIME 2.f
+#define LOOKNOISELIMIT 0.4f
+
 #define GUARDFOV 45.0f * M_PIf / 180.f
 
 enum GuardState
@@ -45,7 +48,7 @@ private:
 	GuardState checkState(float dt);
 	void setLookingState();
 	void setPathingState();
-	void noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer);
+	void noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos);
 	void visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer);
 	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);
 	std::vector<glm::vec2> _walkingPoints;

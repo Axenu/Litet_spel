@@ -16,9 +16,9 @@
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
 
-#define climbingNoise 0.6f
-#define walkingNoise 0.4f
-#define sneakingModifier 0.5f;
+#define CLIMBINGNOISE 0.6f
+#define WALKINGNOISE 0.4f
+#define SNEAKINGMODIFIER 0.4f
 
 class CollectLootEvent : public Event
 {

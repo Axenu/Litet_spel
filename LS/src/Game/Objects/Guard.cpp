@@ -38,7 +38,7 @@ void Guard::update(float dt)
 	playerDist = glm::length(dirToPlayer);
 	dirToPlayer = glm::normalize(dirToPlayer);
 	visionDetection(pos, dt, playerDist, dirToPlayer);
-	noiseDetection(pos, playerDist, dirToPlayer);
+	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
 }
 
 glm::vec2 Guard::getNextPosition()
@@ -79,14 +79,14 @@ GuardState Guard::checkState(float dt)
 	switch (_state)
 	{
 	case GuardState::pathing:
-		if (_noiseDetVal > 0.00001f)
+		if (_noiseDetVal > LOOKNOISELIMIT)
 		{
 			setLookingState();
 		}
 		break;
 	case GuardState::looking:
 		_interestTime -= dt;
-		if (_noiseDetVal < 0.00001f)
+		if (_noiseDetVal < LOOKNOISELIMIT)
 		{
 			if (_interestTime < 0.0f)
 			{
@@ -119,17 +119,29 @@ void Guard::setPathingState()
 	_animatedSkel->setAnim("");
 }
 
-void Guard::noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer)
+void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos)
 {
-	float guardHearDist = _player->getNoise() * GUARDHEARDISTANCE;
-	if (playerDist < guardHearDist)
+	glm::vec3 dirToNoise = noisePos - this->getWorldPos();
+	float noiseDist = glm::length(dirToNoise);
+	//dirToNoise = glm::normalize(dirToNoise);
+	float guardHearDist = noise * GUARDHEARDISTANCE;
+
+	if (noiseDist < guardHearDist)
 	{
-		_noiseDetVal = (guardHearDist - playerDist) / guardHearDist;
-		_pointOfInterest = _player->getWorldPos();
+		float noiseVal = (guardHearDist - noiseDist) / guardHearDist; // make between 0 - 1
+		noiseVal = 2.0f * noiseVal - (noiseVal * noiseVal); // 2*x - x^2
+		noiseVal *= dt * noise;
+		_noiseDetVal += noiseVal;
+		_noiseDetVal = std::fmin(_noiseDetVal, 1.0f); //clamp value to not be over 1.
+		_pointOfInterest = noisePos;
 	}
 	else
 	{
-		_noiseDetVal = 0.0f;
+		if (_noiseDetVal > 0.0f)
+		{
+			_noiseDetVal -= dt * 0.1f;
+		}
+
 	}
 }
 

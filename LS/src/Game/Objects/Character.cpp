@@ -260,18 +260,18 @@ void Character::calcNoise()
 	switch (_state)
 	{
 	case CharState::climbing:
-		_movmentNoise = climbingNoise;
+		_movmentNoise = CLIMBINGNOISE;
 		break;
 	case CharState::guardVision:
 		_movmentNoise = 0.0f;
 		break;
 	default:
-		_movmentNoise = walkingNoise;
+		_movmentNoise = WALKINGNOISE;
 		break;
 	}
 	if (_sneaking)
 	{
-		_movmentNoise *= sneakingModifier;
+		_movmentNoise *= SNEAKINGMODIFIER;
 	}
 	_movmentNoise *= _isMoving;
 
