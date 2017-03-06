@@ -15,8 +15,10 @@ PointLightObject::~PointLightObject() {}
 
 void PointLightObject::update(float dT) {
 	Node::update(dT);
+	// std::cout << "plight update" << std::endl;
 	_lightInfo._light._pos = _modelMatrix[3];
 	GameObject::setModelAABB(_lightInfo.generateAABB());
+	_lightInfo.updateMatrices();
 }
 
 void PointLightObject::init()

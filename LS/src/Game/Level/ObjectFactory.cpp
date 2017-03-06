@@ -130,6 +130,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, C
 	guard->_id = _guardCount++;
 	guard->init();
 	_scene->add(guard, true);
+	_scene->add(guard->getLight(), true);
 
 	return guard;
 }
@@ -186,7 +187,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 	std::ifstream file;
   	file.open(_path + path);
 	std::string line;
-	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 0.1f);
+	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	glm::vec2 walkP;
 	while (std::getline(file, line))
 	{

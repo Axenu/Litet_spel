@@ -40,6 +40,7 @@ private:
 	float _interestTime;
 	glm::vec3 _pointOfInterest;
 	GuardState _state;
+	PointLightObject *_lantern;
 
 	//Field of view in cosine
 	float _detectFov;
@@ -56,6 +57,7 @@ public:
 	virtual ~Guard();
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
+	PointLightObject *getLight();
 	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>& walkingPoints);
 	unsigned int _id;
 };
