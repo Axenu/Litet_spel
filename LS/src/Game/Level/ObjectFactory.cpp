@@ -20,7 +20,7 @@ void ObjectFactory::preLoadModel(const std::string &model)
 
 void ObjectFactory::createRandomLoot(std::vector<lootData> loot, int totalValue)
 {
-	seed(time(NULL));
+	seed((unsigned int)time(NULL));
 	int currentValue = 0;
 	int randNumber;
 	while (loot.size() != 0)
