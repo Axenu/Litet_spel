@@ -48,6 +48,17 @@ bool AnimatedSkeleton::setAnim(const std::string& name) {
 	return _animation != nullptr;
 }
 
+/* Pose the skeleton at the specific point of an specified animation */
+void AnimatedSkeleton::setAnimPose(const std::string& name, float time)
+{
+
+}
+/* Freeze the current animation */
+void AnimatedSkeleton::stopAnimation()
+{
+
+}
+
 /* Recalculates the end time when animation is looped */
 void AnimatedSkeleton::loopRefit(){
 	_elapAnimTime = (float)fmod((double)_elapAnimTime, (double)_animation->_duration); //loop
