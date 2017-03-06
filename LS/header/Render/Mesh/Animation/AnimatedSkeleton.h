@@ -34,6 +34,10 @@ public:
 	void updateSkeleton();
 	/* Set the animation from the name, returns true if animation found */
 	bool setAnim(const std::string& name);
+	/* Pose the animation at the current*/
+	void setAnimPose(const std::string& name, float time);
+	/* Freeze the current animation */
+	void stopAnimation();
 	/* Get skin matrixes
 	*/
 	const std::vector<glm::mat4>& getSkin() const;

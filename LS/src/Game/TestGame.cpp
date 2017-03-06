@@ -35,7 +35,7 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 		if (doorList[i].open)
 			_factory.CreateDoor("Door.obj", doorList[i].pos, doorList[i].rotation);
 		else
-			_factory.CreateDoor("Door_Closed.obj", doorList[i].pos, doorList[i].rotation);
+			_factory.createObject("Door_Closed.obj", doorList[i].pos, doorList[i].rotation, gridType::object, glm::vec3(0.f, 0.f, 0.f));
 	}
 	for (unsigned int i = 0; i < guards.size(); i++)
 		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);

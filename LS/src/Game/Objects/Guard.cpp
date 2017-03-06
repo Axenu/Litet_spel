@@ -8,7 +8,7 @@ void Guard::update(float dt)
 	glm::vec3 dirToPlayer;
 	float playerDist;
 
-	_state = calcState(dt);
+	checkState(dt);
 
 	switch (_state)
 	{
@@ -25,7 +25,6 @@ void Guard::update(float dt)
 			int a = 0;
 		setPosition(pos);
 		face(_path->movingTo());
-		
 		break;
 	case GuardState::looking:
 		face(_pointOfInterest);
@@ -75,22 +74,25 @@ Guard::~Guard()
 {
 }
 
-GuardState Guard::calcState(float dt)
+GuardState Guard::checkState(float dt)
 {
 	switch (_state)
 	{
 	case GuardState::pathing:
 		if (_noiseDetVal > 0.00001f)
 		{
-			return GuardState::looking;
+			setLookingState();
 		}
 		break;
 	case GuardState::looking:
 		_interestTime -= dt;
 		if (_noiseDetVal < 0.00001f)
 		{
-			if(_interestTime < 0.0f)
-				return GuardState::pathing;
+			if (_interestTime < 0.0f)
+			{
+				setPathingState();
+			}
+
 		}
 		else
 		{
@@ -98,9 +100,23 @@ GuardState Guard::calcState(float dt)
 		}
 		break;
 	default:
-		return GuardState::pathing;
+		setLookingState();
 	}
 	return _state;
+}
+
+void Guard::setLookingState()
+{
+	_state = GuardState::looking;
+	//Set properate animation
+	_animatedSkel->setAnim("None");
+}
+
+void Guard::setPathingState()
+{
+	_state = GuardState::pathing;
+	//Set properate animation
+	_animatedSkel->setAnim("");
 }
 
 void Guard::noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer)

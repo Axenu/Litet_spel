@@ -42,10 +42,30 @@ void AnimatedSkeleton::updateSkeleton()
 bool AnimatedSkeleton::setAnim(const std::string& name) {
 	//Change animation, it may fail
 	_animation = _ref.getAnimation(name);
-	for (unsigned int i = 0; i < _channel.size(); i++)
-		_channel[i].newAnimation(_elapAnimTime, &_animation->operator[](i), _animation->_duration);
+	if (_animation)
+	{
+		for (unsigned int i = 0; i < _channel.size(); i++)
+			_channel[i].newAnimation(_elapAnimTime, &_animation->operator[](i), _animation->_duration);
+	}
+	else
+	{
+		//If no animation was found stop the old one
+		for (unsigned int i = 0; i < _channel.size(); i++)
+			_channel[i].newAnimation(_elapAnimTime, nullptr, 0.f);
+	}
 	_elapAnimTime = 0.f;
 	return _animation != nullptr;
+}
+
+/* Pose the skeleton at the specific point of an specified animation */
+void AnimatedSkeleton::setAnimPose(const std::string& name, float time)
+{
+
+}
+/* Freeze the current animation */
+void AnimatedSkeleton::stopAnimation()
+{
+
 }
 
 /* Recalculates the end time when animation is looped */
