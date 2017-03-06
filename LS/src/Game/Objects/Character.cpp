@@ -198,7 +198,6 @@ float Character::getLightAtPosition()
 	return _lightAtPos;
 }
 
-
 void Character::onRender()
 {
 
@@ -208,7 +207,6 @@ std::vector<GrenadeValues> Character::getGrenadeData()
 {
 	std::vector<GrenadeValues> _grenadevalues;
 	_grenadevalues.clear();
-
 
 	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
 	{

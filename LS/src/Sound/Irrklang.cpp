@@ -19,9 +19,9 @@ IrrKlang::~IrrKlang()
 	}
 }
 
-void IrrKlang::PlaySource2DSound(char* filename, bool loop)
+void IrrKlang::PlaySource2DSound(ISoundSource* source, bool loop)
 {
-	_engine->play2D(filename, loop);
+	_engine->play2D(source, loop);
 }
 
 void IrrKlang::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt)

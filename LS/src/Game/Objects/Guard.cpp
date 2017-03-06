@@ -6,7 +6,7 @@ void Guard::update(float dt)
 	
 	glm::vec3 pos = _position;
 
-	if (glm::length(glm::vec3(_position - glm::vec3(_player->getWorldPos()))) < 5.0f) //&& _guardtimer > 2.f)
+	if (this->getDistance(_player->getWorldPos()) < 5.0f)
 	{
 		sound.PlaySource3DSound(sound.GetSound("Resources/footSteps.wav"), false, _player->getWorldPos(), _position, _player->getForward(), _player->getUp(), dt);
 	}
