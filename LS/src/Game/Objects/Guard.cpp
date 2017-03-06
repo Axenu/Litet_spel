@@ -109,14 +109,14 @@ void Guard::setLookingState()
 {
 	_state = GuardState::looking;
 	//Set properate animation
-	_animatedSkel->setAnim("None");
+	_animatedSkel->stopAnimation();
 }
 
 void Guard::setPathingState()
 {
 	_state = GuardState::pathing;
 	//Set properate animation
-	_animatedSkel->setAnim("");
+	_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
 }
 
 void Guard::noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer)
