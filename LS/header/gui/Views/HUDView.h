@@ -33,6 +33,7 @@ namespace gui
     class HUDView : public View
     {
     private:
+        //passed from main
         EventManager* _eventManager;
         //owned and deleted by subclass View -> Element
         Label *_tipDisplay;
