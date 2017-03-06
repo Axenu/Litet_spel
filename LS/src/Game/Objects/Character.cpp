@@ -399,6 +399,14 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 			guardVision();
 		}
 	}
+	else if (event.getKey() == GLFW_KEY_P)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			glm::ivec2 pos = _currentLevel->getSquare(this->getWorldPos());
+			std::cout << "(" << pos.x << ", " << pos.y << ")" << std::endl;
+		}
+	}
 }
 
 void Character::guardVisionKeyInput(const KeyboardEvent & event)

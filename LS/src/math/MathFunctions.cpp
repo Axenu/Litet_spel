@@ -13,3 +13,13 @@ glm::ivec2 randIVec2(unsigned int maxX, unsigned int maxY)
 {
 	return glm::ivec2(getRand(maxX), getRand(maxY));
 }
+
+int clampInt(int value, int min, int max)
+{
+	if (value < min)
+		return min;
+	else if (value > max)
+		return max;
+	else
+		return value;
+}
