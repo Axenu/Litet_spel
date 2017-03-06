@@ -1,47 +1,52 @@
 #include "Sound/Irrklang.h"
 
-IrrKlang::IrrKlang()
+Sound::Sound()
 {
 	_engine = createIrrKlangDevice();
 
 	if (!_engine)
 		return;
 
-	_timer = 0.0f;
+	_sound = nullptr;
 }
 
-IrrKlang::~IrrKlang()
+Sound::~Sound()
 {
 	if (_engine)
 	{
 		_engine->drop();
 		_engine = nullptr;
 	}
+
+	if (_sound)
+	{
+		_sound->drop();
+		_sound = nullptr;
+	}
 }
 
-void IrrKlang::PlaySource2DSound(ISoundSource* source, bool loop)
+void Sound::PlaySource2DSound(ISoundSource* source, bool loop)
 {
 	_engine->play2D(source, loop);
 }
 
-void IrrKlang::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt)
+void Sound::PlaySource3DSound(ISoundSource * source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt, bool update)
 {
 	origin = glm::vec3(origin - listenerPos);
- 
-	if (_timer < (source->getPlayLength() / 1000.f))
+
+	if (_sound == nullptr || _sound->isFinished())
 	{
-		_engine->setListenerPosition(vec3df(0.0f, 0.0f, 0.0f), -vec3df(lookDir.x, lookDir.y, lookDir.z), vec3df(0.0f, 0.0f, 0.0f), vec3df(up.x, up.y, up.z));
+		_sound = _engine->play3D(source, vec3df(origin.x, origin.y, origin.z), loop, false, true, true);
 	}
 	else
 	{
-		_engine->play3D(source, vec3df(origin.x, origin.y, origin.z), loop, false, false, false);
-		_timer = 0.0f;
+		_sound->setIsPaused(update);
+		_engine->setListenerPosition(vec3df(0.0f, 0.0f, 0.0f), -vec3df(lookDir.x, lookDir.y, lookDir.z), vec3df(0.0f, 0.0f, 0.0f), vec3df(up.x, up.y, up.z));
 	}
 
-	_timer += dt;
 }
 
-void IrrKlang::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up)
+void Sound::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up)
 {
 	origin = glm::vec3(origin - listenerPos);
 
@@ -49,7 +54,8 @@ void IrrKlang::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 list
 	_engine->play3D(source, vec3df(origin.x, origin.y, origin.z), loop, false, false, false);
 }
 
-ISoundSource* IrrKlang::GetSound(char* filename)
+ISoundSource* Sound::GetSound(char* filename)
 {
 	return _engine->getSoundSource(filename);
 }
+

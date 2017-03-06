@@ -9,6 +9,7 @@ namespace gui
         {
             QuitGameEvent event;
             _manager->execute(event);
+			_backgroundMusic->setDefaultVolume(0.f);
         }
     }
     void MainMenuView::StartGame(int action)
@@ -20,12 +21,15 @@ namespace gui
                 // std::cout << "scene not found \n Creating new..." << std::endl;
                 _parent->setView(new HUDView(_manager, _fps));
             }
+			_backgroundMusic->setDefaultVolume(0.1f);
+			sound.PlaySource2DSound(_backgroundMusic, true); //credits too Thief Deadly Shadows OST - South Quarter
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
             _manager->execute(event);
         }
     }
     MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
     {
+		_backgroundMusic = sound.GetSound("Resources/BackgroundMusic.ogg");
         _name = "MainMenuView";
 
         _font = new gui::Font("Resources/fonts/arial");

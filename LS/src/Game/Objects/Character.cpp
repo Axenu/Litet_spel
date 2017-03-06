@@ -5,6 +5,7 @@
 
 void Character::onUpdate(float dt)
 {
+
 	if (_climbing)
 	{
 		climb(dt);
@@ -14,7 +15,6 @@ void Character::onUpdate(float dt)
 		move(dt);
 		testClimb();
 	}
-
 	GridSquare newSquare = _currentLevel->operator[](glm::vec3(getWorldPos()));
 	//Character moved on a square
 	if (newSquare._square != _gridSquare._square) {
@@ -65,11 +65,14 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
+
+		sound.PlaySource3DSound(sound.GetSound("Resources/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false);
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
+		sound.PlaySource3DSound(sound.GetSound("Resources/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -211,10 +214,6 @@ std::vector<GrenadeValues> Character::getGrenadeData()
 	for (size_t i = 0; i < _antiLightGrenade.size(); i++)
 	{
 		_grenadevalues.push_back(_antiLightGrenade[i]->getgrenadeData());
-		if (_antiLightGrenade[i]->getExplodedGrenade())
-		{
-			sound.PlaySource3DSound(sound.GetSound("Resources/Grenade.wav"), false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward(), this->getUp());
-		}
 	}
 	return _grenadevalues;
 }

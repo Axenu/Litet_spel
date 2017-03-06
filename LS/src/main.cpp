@@ -82,9 +82,6 @@ void setupWindow()
 	guiManager.setWindowSize(wWidth, wHeight);
 	guiManager.setView(guiScene);
 
-	ISoundSource* source = sound.GetSound("Resources/BackgroundMusic.ogg");
-	source->setDefaultVolume(0.1f);
-	sound.PlaySource2DSound(source, true); //credits too Thief Deadly Shadows OST - South Quarter
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {

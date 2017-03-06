@@ -14,6 +14,7 @@
 #include "gui/Views/HUDView.h"
 #include "staticVars.h"
 #include "gui/ProgressBar.h"
+#include "Sound/Irrklang.h"
 
 namespace gui
 {
@@ -28,6 +29,7 @@ namespace gui
         gui::Button* _creditsButton;
         gui::Button* _quitButton;
         float* _fps;
+		ISoundSource* _backgroundMusic;
 
     public:
         MainMenuView(EventManager* manager, float* fps);
