@@ -18,6 +18,7 @@ namespace gui
     class GameOverView : public View
     {
     private:
+        //passed from main
         EventManager* _manager;
         //owned and deleted by subclass View -> Element
         Button *_playAgainButton;

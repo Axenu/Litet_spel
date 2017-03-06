@@ -34,7 +34,8 @@ void GameObject::init()
 	 {
 		_animatedSkel = std::unique_ptr<AnimatedSkeleton>(new AnimatedSkeleton(*skel, *this));
 		_model.setAnimController(_animatedSkel.get());
-		bool success = _animatedSkel->setAnim("");
+		//bool success = _animatedSkel->setAnimPose("", 0.5f, 0.f);
+		_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
 	}
 	_model.transform(_modelMatrix);
 }

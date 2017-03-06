@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 #include "ChannelKeys.h"
-/* An animated channel, holding the animated keys.
+/* An animated channel, holding the animated keys for each set of animated values for a node.
 */
 class Channel
 {
@@ -17,9 +17,12 @@ public:
 	~Channel();
 	/* Get next keyframe for the specific animation time. If there is no more -1 is returned
 	*/
-	int getNext(float elapsedTime, unsigned int chType) const;
+	int getNext(float elapsedTime, unsigned int chInd) const;
+	/* Get previous keyframe for the specific animation time. If there is none -1 is returned
+	*/
+	int getPrevious(float elapsedTime, unsigned int chInd) const;
 	/* Get a specific key from a channel */
-	ChannelKey getKey(unsigned int index, unsigned int chType) const;
+	ChannelKey getKey(unsigned int index, unsigned int chInd) const;
 	/* Get the number of keys in a specific node channel */
 	unsigned int numKeys(unsigned int chType) const;
 	/* Get the number of animated channels in the channel node */

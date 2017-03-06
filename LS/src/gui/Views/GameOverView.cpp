@@ -113,13 +113,13 @@ namespace gui {
     {
         if (action == GLFW_RELEASE)
         {
-            HUDView *view = dynamic_cast<HUDView*>(_parent->setView("HUDView"));
-            if (view == nullptr)
+            if (!_parent->setView("LoadingView"))
             {
                 float f = 0.0f;
-                view = new HUDView(_manager, &f);
-                _parent->setView(view);
+                _parent->setView(new LoadingView(_manager, &f));
             }
+            ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
+            _manager->execute(event);
         }
     }
 }
