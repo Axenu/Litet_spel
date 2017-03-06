@@ -34,10 +34,11 @@ public:
 	/* Add the object to the frame
 	*/
 	virtual void addToFrame(DrawFrame &dF);
-private:
-	Model _model;
+protected:
 	/* The gameobjects animated skeleton controller */
 	std::unique_ptr<AnimatedSkeleton> _animatedSkel;
+private:
+	Model _model;
 };
 
 
