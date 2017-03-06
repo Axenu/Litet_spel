@@ -31,7 +31,7 @@ namespace gui
 		if (_callback)
 			delete _callback;
     }
-    void Button::onRender()
+    void Button::onRender(float dt)
     {
 
     }

@@ -73,7 +73,7 @@ namespace gui
         }
         void execute(int action);
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
 
         void setPrimaryColor(glm::vec4 color);

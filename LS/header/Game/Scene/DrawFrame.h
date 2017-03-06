@@ -27,6 +27,7 @@ protected:
 	std::vector<MeshDrawable> _meshes;
 	std::vector<PointLight> _lightInfo;
 	std::vector<AntiLightValues> _grenadeInfo;
+	std::vector<AnimatedSkeleton*> _animatedSkeletons;
 public:
 	DrawFrame();
 	~DrawFrame();
@@ -34,6 +35,8 @@ public:
 	/* Add a drawable to be rendered
 	*/
 	void add(const Model &m, const glm::mat4 &modelMatrix);
+	// Add a skeleton to be updated if in frame
+	void add(AnimatedSkeleton *skeleton);
 	/* Add a point point light to be rendered
 	*/
 	void add(const PointLight &light);
@@ -49,6 +52,9 @@ public:
 	void renderNonAnimatedMeshes(RenderInfo &rI, MeshShader* shader);
 	/* Render all meshes with skelton animations in the drawframe with the specific shader, not using linked material links */
 	void renderAnimatedMeshes(RenderInfo &rI, MeshShader* shader);
+
+	void updateVisuals(float dt);
+
 	void cullLightsByDistance(glm::vec3 &pos);
 	/* Get batched light info for the frame
 	*/

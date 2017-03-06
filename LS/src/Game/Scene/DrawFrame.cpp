@@ -15,6 +15,10 @@ void DrawFrame::add(const Model &m, const glm::mat4 &modelMatrix) {
 	for (unsigned int i = 0; i < parts.size(); i++)
 		_meshes.push_back(MeshDrawable(parts[i], modelMatrix));
 }
+//add animated skeleton
+void DrawFrame::add(AnimatedSkeleton *skeleton) {
+	_animatedSkeletons.push_back(skeleton);
+}
 
 void DrawFrame::add(const PointLight &light) {
 	_lightInfo.push_back(light);
@@ -64,7 +68,14 @@ void DrawFrame::renderAnimatedMeshes(RenderInfo &rI, MeshShader* shader) {
 	}
 }
 
-
+// update visauls e.g. Skeletal animation
+void DrawFrame::updateVisuals(float dt)
+{
+	for (unsigned int i = 0; i < _animatedSkeletons.size(); i++) {
+		AnimatedSkeleton *ref = _animatedSkeletons[i];
+		ref->update(dt);
+	}
+}
 
 /* Get batched light info for the frame
 */

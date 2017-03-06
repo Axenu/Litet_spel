@@ -35,7 +35,7 @@ namespace gui
         MainMenuView(EventManager* manager, float* fps);
         virtual ~MainMenuView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}

@@ -558,12 +558,12 @@ void Character::setScene(Scene * scene)
 
 void Character::pause()
 {
-    _eventManager->unlisten(this, &Character::moveCharacter);
+    // _eventManager->unlisten(this, &Character::moveCharacter);
     _eventManager->unlisten(this, &Character::moveMouse);
 }
 void Character::resume()
 {
-	_eventManager->listen(this, &Character::moveCharacter);
+	// _eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
 	_hasMoved = false;
 }

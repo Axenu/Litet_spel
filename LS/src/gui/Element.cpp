@@ -16,14 +16,14 @@ namespace gui
             delete child;
         }
     }
-    void Element::render()
+    void Element::render(float dt)
     {
         if (!_isActive)
             return;
-        onRender();
+        onRender(dt);
         for (Element* child : _children)
         {
-            child->render();
+            child->render(dt);
         }
     }
     void Element::update(float dt)

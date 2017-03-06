@@ -79,7 +79,7 @@ namespace gui
     MainMenuView::~MainMenuView()
     {
     }
-    void MainMenuView::onRender()
+    void MainMenuView::onRender(float dt)
     {
 
     }

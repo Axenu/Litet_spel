@@ -24,7 +24,7 @@ namespace gui
 			delete _sComponents[i];
 		}
     }
-    void Label::onRender()
+    void Label::onRender(float dt)
     {
         _shader->bind();
         glActiveTexture(GL_TEXTURE0);

@@ -32,7 +32,7 @@ namespace gui
         GameOverView(EventManager* manager, const GameOverEvent &event);
         virtual ~GameOverView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}

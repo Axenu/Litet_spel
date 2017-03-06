@@ -43,8 +43,8 @@ void GameObject::init()
 void GameObject::update(float dt)
 {
 	Node::update(dt);
-	if (_animatedSkel) //Update anim controller if it exist.
-		_animatedSkel->update(dt);
+	// if (_animatedSkel) //Update anim controller if it exist.
+	// 	_animatedSkel->update(dt);
 	_model.transform(_modelMatrix);
 }
 
@@ -85,4 +85,9 @@ bool GameObject::pick(Camera & cam)
 void GameObject::addToFrame(DrawFrame &dF)
 {
 	dF.add(_model, _modelMatrix);
+	//if has skeleton, add skeleton
+	if (_animatedSkel)
+	{
+		dF.add(_animatedSkel.get());
+	}
 }

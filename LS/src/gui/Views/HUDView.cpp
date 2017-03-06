@@ -134,10 +134,14 @@ namespace gui {
 		_eventManager->unlisten(this, &HUDView::canClimb);
         _eventManager->unlisten(this, &HUDView::guardAlert);
         _eventManager->unlisten(this, &HUDView::KeyboardPressed);
+        if (_game != nullptr)
+        {
+            delete _game;
+        }
     }
-    void HUDView::onRender()
+    void HUDView::onRender(float dt)
     {
-        _game->draw();
+        _game->draw(dt);
     }
     void HUDView::onUpdate(float dt)
     {
@@ -159,23 +163,33 @@ namespace gui {
     }
     void HUDView::pauseView()
     {
-        _game->getCharacter()->pause();
-        _isActive = false;
+        if (_isActive)
+        {
+            _game->getCharacter()->pause();
+            _isActive = false;
+        }
     }
     void HUDView::resumeView()
     {
-        _game->getCharacter()->resume();
-        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
-        _eventManager->execute(event);
-        _isActive = true;
+        if (!_isActive)
+        {
+            _game->getCharacter()->resume();
+            cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
+            _eventManager->execute(event);
+            _isActive = true;
+        }
     }
     void HUDView::initiate()
     {
+        if (_game != nullptr)
+        {
+            delete _game;
+        }
         //init game
         Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
     	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
-    	_game = std::unique_ptr<TestGame>(new TestGame(setting, _eventManager));
+    	_game = new TestGame(setting, _eventManager);
 
         /* Load game
     	*/
@@ -359,8 +373,15 @@ namespace gui {
             posS.y = std::max(posS.y, -1.0f);
             alert->setPosition(posS.x - alert->getSize().x*0.5f, posS.y);
             alert->activate();
-            //set opacity to indicate level of detection
-            alert->setOpacity(event._detection);
+            //set color to indicate level of detection
+            if (event._detection < 0.5f)
+            {
+                alert->setOpacity(event._detection * 2.0f);
+            }
+            else
+            {
+
+            }
             alert->update(0.0f);
         }
         else

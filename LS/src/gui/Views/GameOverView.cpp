@@ -59,7 +59,7 @@ namespace gui {
     GameOverView::~GameOverView()
     {
     }
-    void GameOverView::onRender()
+    void GameOverView::onRender(float dt)
     {
 
     }

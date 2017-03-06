@@ -26,7 +26,7 @@ namespace gui
         View();
 		virtual ~View();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
 
         virtual void initiate() = 0;

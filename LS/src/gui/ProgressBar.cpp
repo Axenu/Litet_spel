@@ -25,7 +25,7 @@ namespace gui
 
     }
 
-    void ProgressBar::onRender()
+    void ProgressBar::onRender(float dt)
     {
 
     }
