@@ -119,8 +119,8 @@ void Scene::fetchDrawables(DrawFrame &dF) {
 	_quadTree.QuadTreeTest(drawList, _cam->VPMatrix);
 	drawList.push_back(_rootObject);
 	for (unsigned int i = 0; i < drawList.size(); i++)
-		drawList[i]->addToFrame(dF);
-}
+		drawList[i]->addToFrame(dF)ö
+ö
 
 void Scene::fetchDrawables(DrawFrame &dF, AABB &aabb) {
 	std::vector<GameObject*> drawList;
