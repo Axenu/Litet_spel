@@ -21,8 +21,30 @@ void AnimatedSkeleton::update(float dT) {
 	{
 		_elapAnimTime += dT;
 		//Check if animation is complete, currently it will only loop
-		if (_elapAnimTime > _animation->_duration)
-			loopRefit(); //Loop
+		if (_elapAnimTime > _animDuration)
+		{
+			//Check what state 
+			switch (_endState)
+			{
+			case AnimatedSkeleton::Loop:
+				loopRefit();
+				break;
+			//Stop animation
+			case AnimatedSkeleton::Once:
+				/* Special case for (pose) animations of 0 or < dT duration. Updates the skeleton.
+				 * Check could be performed when setting animation but this includes dT verification.
+				*/
+				if (_animDuration < dT)
+				{
+					_elapAnimTime = _animDuration * 0.5f;
+					updateSkeleton();
+				}
+			default:
+				stopAnimation();
+				return;
+			}
+		}
+		//Update
 		updateSkeleton();
 	}
 }
@@ -39,24 +61,46 @@ void AnimatedSkeleton::updateSkeleton()
 	}
 }
 
-bool AnimatedSkeleton::setAnim(const std::string& name) {
+bool AnimatedSkeleton::setAnim(const std::string& name, PlayType runType) {
 	//Change animation, it may fail
 	_animation = _ref.getAnimation(name);
-	for (unsigned int i = 0; i < _channel.size(); i++)
-		_channel[i].newAnimation(_elapAnimTime, &_animation->operator[](i), _animation->_duration);
-	_elapAnimTime = 0.f;
-	return _animation != nullptr;
+	if (_animation)
+	{
+		_animDuration = _animation->_duration;
+		for (unsigned int i = 0; i < _channel.size(); i++)
+			_channel[i].newAnimation(_elapAnimTime, &_animation->operator[](i), _animDuration);
+		_elapAnimTime = 0.f;
+		_endState = runType;
+		return true;
+	}
+	//No animation found, set current to null.
+	stopAnimation();
+	return false;
 }
 
-/* Pose the skeleton at the specific point of an specified animation */
-void AnimatedSkeleton::setAnimPose(const std::string& name, float time)
+/* Pose the skeleton at the specific point of animation. Blends into the pose over the animation time specified. */
+bool AnimatedSkeleton::setAnimPose(const std::string& name, float poseAt, float animTime)
 {
-
+	//Change animation, it may fail
+	_animation = _ref.getAnimation(name);
+	if (_animation)
+	{
+		for (unsigned int i = 0; i < _channel.size(); i++)
+			_channel[i].poseAnimation(_elapAnimTime, &_animation->operator[](i), poseAt, animTime);
+		_elapAnimTime = 0.f;
+		_animDuration = animTime;
+		_endState = Once;
+		return true;
+	}
+	//No animation found, set current to null.
+	stopAnimation();
+	return false;
 }
 /* Freeze the current animation */
 void AnimatedSkeleton::stopAnimation()
 {
-
+	_animation = nullptr;
+	_endState = None;
 }
 
 /* Recalculates the end time when animation is looped */

@@ -23,5 +23,5 @@ loot S 3 3 R 0 0 0 V 4 M Chalice.obj
 loot S 4 4 R 90 0 0 V 8 M Chandilier.obj
 loot S 5 5 R 0 90 0 V 12 M GoldBar.obj
 loot S 6 6 R 0 0 90 V 20 M Diamond.obj
-listDoors V 2 S 5 10 S 10 5 S 15 10 S 19 5 S 24 10
+listDoors V 1 S 5 10 S 10 5 S 15 10 S 19 5 S 24 10
 listDoors S 5 13 S 10 17 S 15 13
