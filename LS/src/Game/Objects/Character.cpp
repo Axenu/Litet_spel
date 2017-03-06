@@ -215,7 +215,7 @@ std::vector<GrenadeValues> Character::getGrenadeData()
 		_grenadevalues.push_back(_antiLightGrenade[i]->getgrenadeData());
 		if (_antiLightGrenade[i]->getExplodedGrenade())
 		{
-			_grenadeSound->PlaySource3DSound(_soundSource, false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward(), this->getUp(), 0.0f);
+			sound.PlaySource3DSound(sound.GetSound("Resources/Grenade.wav"), false, this->getWorldPos(), _antiLightGrenade[i]->getgrenadeData()._grenadePositionWhenLanded, this->getForward(), this->getUp());
 		}
 	}
 	return _grenadevalues;
@@ -422,10 +422,6 @@ Character::Character(glm::vec3 pos, EventManager *manager, std::vector<AntiLight
 	_timerForGrenade = 0;
 	noMoreGrenadeCount = true;
 	_lightAtPos = 1.0f;
-
-	_grenadeSound = new Sound("Resources/Grenade.wav");
-
-	_soundSource = _grenadeSound->GetSoundSource("Resources/Grenade.wav");
 }
 
 Character::Character()

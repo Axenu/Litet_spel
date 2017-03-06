@@ -14,7 +14,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
-#include "Sound/Sound.h"
+#include "Sound/Irrklang.h"
 void setupWindow()
 {
 #ifndef __APPLE__

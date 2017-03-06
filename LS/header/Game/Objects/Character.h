@@ -11,7 +11,7 @@
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
-#include "Sound/Sound.h"
+#include "Sound/Irrklang.h"
 #define RotationSpeed 0.005f
 
 
@@ -57,8 +57,6 @@ public:
 
 	float getLightAtPosition();
 private:
-	Sound* _grenadeSound;
-	ISoundSource* _soundSource;
 	int _grenadeID;
 	Grid *_currentLevel;
 	Scene *_currentScene;
