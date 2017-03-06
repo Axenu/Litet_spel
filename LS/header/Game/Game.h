@@ -21,7 +21,7 @@ protected:
 	Setting _setting;
 	GraphicsResource _resource;
 	RenderDeferred _deferred;
-	
+
 	/* Scene vars:
 	*/
 	EventManager *_eventManager;
@@ -41,7 +41,7 @@ public:
 	void initiate();
 
 	void update(float dT);
-	void draw();
+	void draw(float dT);
 
 	Scene &getScene();
 };

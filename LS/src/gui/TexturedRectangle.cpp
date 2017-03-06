@@ -46,7 +46,7 @@ namespace gui
     TexturedRectangle::~TexturedRectangle()
     {
     }
-    void TexturedRectangle::onRender()
+    void TexturedRectangle::onRender(float dt)
     {
         _shader->bind();
         glUniform4fv(_colorUniform, 1, &_color[0]);

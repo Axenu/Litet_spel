@@ -102,7 +102,7 @@ void setupWindow()
 		dT = std::fminf(dT, 0.1f); //Can't have to large dt!
 
 		guiManager.update(dT);
-		guiManager.render();
+		guiManager.render(dT);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

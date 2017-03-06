@@ -18,6 +18,7 @@ namespace gui
     class GameOverView : public View
     {
     private:
+        //passed from main
         EventManager* _manager;
         //owned and deleted by subclass View -> Element
         Button *_playAgainButton;
@@ -31,7 +32,7 @@ namespace gui
         GameOverView(EventManager* manager, const GameOverEvent &event);
         virtual ~GameOverView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}

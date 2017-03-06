@@ -20,3 +20,4 @@ template
 int sign(T value) {
 	return (value > 0) - (value < 0);
 }
+int clampInt(int value, int min, int max);

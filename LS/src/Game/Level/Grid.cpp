@@ -184,74 +184,65 @@ gridType Grid::getTypeNC(int height, int width)
 	return _twodArray[height][width].type;
 }
 
-std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition)
+std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition, int maxRange)
 {
-	int maxValue = _heightLength * _widthLength - 1;
+	if (startPosition == goalPosition)
+	{
+		std::vector<glm::vec3> emptyPath;
+		return std::shared_ptr<Path>(new Path(emptyPath));
+	}
+	//print2darraydata();
+	int maxValue = maxRange;
 	int oldMaxValue = 0;
 	int value = 0;
 	//-1 outforskadmark, ej gåbart
 	// -2 vägg
-	for (int j = 0; j < _heightLength; j++)
-	{
-		for (int i = 0; i < _widthLength; i++)
-		{
-			setvalue(j, i, -1);
-		}
-	}
+	int minX = clampInt(startPosition.x - maxRange, 0, _widthLength);
+	int maxX = clampInt(startPosition.x + maxRange, 0, _widthLength);
+	int minY = clampInt(startPosition.y - maxRange, 0, _heightLength);
+	int maxY = clampInt(startPosition.y + maxRange, 0, _heightLength);
+
 	if(isInside(startPosition))
 		setvalue(startPosition.y, startPosition.x, 0);
 
-	while (maxValue != 0)
+	while (maxValue != 0 || value != maxRange)
 	{
 		oldMaxValue = maxValue;
-		for (int j = 0; j < _heightLength; j++)
+		for (int j = minY; j < maxY; j++)
 		{
-			for (int i = 0; i < _widthLength; i++)
+			for (int i = minX; i < maxX; i++)
 			{
 				if (getTypeNC(j, i) == nothing)
 				{
 					if (getvalue(j, i) == value)
 					{
-						if (j <= 0)
-						{
-
-						}
-						else if (j > 0 && getvalue(j - 1, i) == -1 && getTypeNC(j - 1, i) == nothing)
+						if (j > 0 && getvalue(j - 1, i) == -1 && getTypeNC(j - 1, i) == nothing)
 						{
 							setvalue(j - 1, i, value + 1);
 							maxValue--;
 						}
 
-						if (j >= _heightLength - 1)
-						{
-
-						}
-						else if (j < _heightLength && getvalue(j + 1, i) == -1 && getTypeNC(j + 1, i) == nothing)
+						if (j < _heightLength && getvalue(j + 1, i) == -1 && getTypeNC(j + 1, i) == nothing)
 						{
 							setvalue(j + 1, i, value + 1);
 							maxValue--;
 						}
 
-						if (i <= 0)
-						{
-
-						}
-						else if (i > 0 && getvalue(j, i - 1) == -1 && getTypeNC(j, i - 1) == nothing)
+						if (i > 0 && getvalue(j, i - 1) == -1 && getTypeNC(j, i - 1) == nothing)
 						{
 							setvalue(j, i - 1, value + 1);
 							maxValue--;
 						}
-
-						if (i >= _widthLength - 1)
-						{
-
-						}
-						else if (i < _widthLength && getvalue(j, i + 1) == -1 && getTypeNC(j, i + 1) == nothing)
+						if (i < _widthLength && getvalue(j, i + 1) == -1 && getTypeNC(j, i + 1) == nothing)
 						{
 							setvalue(j, i + 1, value + 1);
 							maxValue--;
 						}
 					}
+				}
+				if (glm::ivec2(i, j) == goalPosition)
+				{
+					break;
 				}
 			}
 		}
@@ -261,9 +252,9 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 		}
 		value++;
 	}
-	for (int j = 0; j < _heightLength; j++)
+	for (int j = minY; j < maxY; j++)
 	{
-		for (int i = 0; i < _widthLength; i++)
+		for (int i = minX; i < maxX; i++)
 		{
 			if (getTypeNC(j, i) == wall)
 			{
@@ -304,6 +295,15 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 			path.push_back(glm::vec3(currentPos.x, 0.f, currentPos.y));
 		}
 		currentValue--;
+	}
+
+	//reset used squares
+	for (int j = clampInt(minY - 1, 0, _heightLength); j < clampInt(maxY + 1, 0, _heightLength); j++)
+	{
+		for (int i = clampInt(minX - 1, 0, _widthLength); i < clampInt(maxX + 1, 0, _widthLength); i++)
+		{
+			setvalue(j, i, -1);
+		}
 	}
 
 	for (unsigned int i = 0; i < path.size(); i++)
@@ -399,6 +399,7 @@ void Grid::loadingBmpPicture(const char* filename)
 				std::cout << "error" << std::endl;
 				std::cout << i << "," << realj << std::endl;
 			}
+			_twodArray[height - 1 - i][realj].value = -1;
 			realj++;
 		}
 	}
@@ -574,12 +575,17 @@ void Grid::print2darraydata()
 {
 	for (int j = 0; j < _heightLength; j++)
 	{
+		std::cout << "( ";
 		for (int i = 0; i < _widthLength; i++)
 		{
-			std::cout << _twodArray[j][i].type;
+			if (i == _widthLength - 1)
+				std::cout << _twodArray[j][i].value << ")";
+			else
+				std::cout << _twodArray[j][i].value << ", ";
 		}
 		std::cout << "" << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 #pragma endregion

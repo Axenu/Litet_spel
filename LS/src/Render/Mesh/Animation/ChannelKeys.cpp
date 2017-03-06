@@ -66,6 +66,17 @@ ChannelMemoryKey::ChannelMemoryKey(float time, glm::vec3 data)
 {
 	ChannelKey::set(time, data);
 }
+ChannelMemoryKey::ChannelMemoryKey(const ChannelKey &key, unsigned int size)
+	: ChannelKey(0.f, new float[size]), _size(size)
+{
+	//Set the values of the key
+	set(key, _size);
+}
+ChannelMemoryKey::ChannelMemoryKey(const ChannelMemoryKey &key)
+	: ChannelKey(0.f, new float[key._size]), _size(key._size)
+{
+	set(key, _size);
+}
 
 ChannelMemoryKey::~ChannelMemoryKey()
 {

@@ -17,9 +17,9 @@ void Guard::update(float dt)
 		{
 			glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
 			if (_walkingPoints.size() == 0)
-				_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()));//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
+				_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()), 15);//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
 			else
-				_path = _currentLevel->getGrid().generatePath(start, getNextPosition());
+				_path = _currentLevel->getGrid().generatePath(start, getNextPosition(), 15);
 		}
 		if (pos.x < 0 || pos.z < 0)
 			int a = 0;
@@ -59,7 +59,7 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_detectFov = std::cos(GUARDFOV);
 
 	glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare());
+	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare(), 15);
 
 	_speed = 0.4f;
 
@@ -109,14 +109,14 @@ void Guard::setLookingState()
 {
 	_state = GuardState::looking;
 	//Set properate animation
-	_animatedSkel->setAnim("None");
+	_animatedSkel->stopAnimation();
 }
 
 void Guard::setPathingState()
 {
 	_state = GuardState::pathing;
 	//Set properate animation
-	_animatedSkel->setAnim("");
+	_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
 }
 
 void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos)

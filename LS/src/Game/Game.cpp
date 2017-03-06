@@ -26,12 +26,13 @@ void Game::update(float dT) {
 	_scene->update(dT);
 
 }
-void Game::draw() {
+void Game::draw(float dT) {
 	DrawFrame dF;
 	_scene->fetchDrawables(dF);
 	glm::vec3 camPos = _scene->getCamera().getWorldPos();
 	dF.cullLightsByDistance(camPos);
 	RenderInfo rI(_resource, _scene->getCamera(), dF.getLightInfo(), dF.getGrenadeInfo());
+	dF.updateVisuals(dT);
 
 	glDisable(GL_CULL_FACE);
 	size_t numLights = rI._pLightInfo.size();

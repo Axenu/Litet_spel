@@ -11,7 +11,7 @@
 #include "gui/Button.h"
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
-#include "gui/Views/HUDView.h"
+#include "gui/Views/LoadingView.h"
 #include "staticVars.h"
 #include "gui/ProgressBar.h"
 
@@ -21,6 +21,7 @@ namespace gui
     class MainMenuView : public View
     {
     private:
+        //passed from main
         EventManager* _manager;
         //owned and deleted by subclass View -> Element
         gui::Button* _startButton;
@@ -34,7 +35,7 @@ namespace gui
         MainMenuView(EventManager* manager, float* fps);
         virtual ~MainMenuView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}

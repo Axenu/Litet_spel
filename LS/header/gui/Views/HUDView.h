@@ -33,6 +33,7 @@ namespace gui
     class HUDView : public View
     {
     private:
+        //passed from main
         EventManager* _eventManager;
         //owned and deleted by subclass View -> Element
         Label *_tipDisplay;
@@ -48,7 +49,7 @@ namespace gui
         ProgressBar *_guardVisionPB;
         Label *_guardVisionLabel;
         //owned by this
-        std::unique_ptr<TestGame> _game;
+        TestGame *_game = nullptr;
         //pointer to float not owned by this
         float* _fps;
 
@@ -59,7 +60,7 @@ namespace gui
         HUDView(EventManager* manager, float* fps);
         virtual ~HUDView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView();
         void resumeView();

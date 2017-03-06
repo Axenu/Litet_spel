@@ -19,5 +19,4 @@ StaticGameObject::~StaticGameObject()
 
 void StaticGameObject::update(float dT)
 {
-
 }

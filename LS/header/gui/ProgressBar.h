@@ -32,7 +32,7 @@ namespace gui
         ProgressBar(float width, float height);
 		virtual ~ProgressBar();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
 
         void setPrimaryColor(glm::vec4 color);

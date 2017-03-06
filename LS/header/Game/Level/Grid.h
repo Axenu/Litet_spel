@@ -91,7 +91,7 @@ public:
 	/* Adding object to grid*/
 	void addObject(GameObject* object, gridType gridType);
 	/* Generate a walkable path */
-	std::shared_ptr<Path> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition);
+	std::shared_ptr<Path> generatePath(glm::ivec2 startPosition, glm::ivec2 goalPosition, int maxRange);
 
 	float getHeight(int height, int width);
 

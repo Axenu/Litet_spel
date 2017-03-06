@@ -44,6 +44,8 @@ public:
 	ChannelMemoryKey();
 	ChannelMemoryKey(unsigned int size);
 	ChannelMemoryKey(float time, glm::vec3 data);
+	ChannelMemoryKey(const ChannelKey &key, unsigned int size);
+	ChannelMemoryKey(const ChannelMemoryKey &key);
 	~ChannelMemoryKey();
 
 	ChannelMemoryKey& operator= (const ChannelKey &key);

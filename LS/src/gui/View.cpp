@@ -9,7 +9,7 @@ namespace gui
     View::~View()
     {
     }
-    void View::onRender()
+    void View::onRender(float dt)
     {
 
     }

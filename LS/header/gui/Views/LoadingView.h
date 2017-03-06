@@ -8,27 +8,26 @@
 #include <glm/gtx/string_cast.hpp>
 #include "gui/Font.h"
 #include "gui/View.h"
-#include "gui/Button.h"
-#include "Event/Input/InputManager.h"
 #include "Event/Events.h"
+#include "gui/Views/HUDView.h"
 #include "staticVars.h"
 
 namespace gui
 {
 
-    class PauseView : public View
+    class LoadingView : public View
     {
     private:
         //passed from main
-        EventManager* _eventManager;
-        //owned and deleted by subclass View -> Element
-        gui::Button* _resumeButton;
-        gui::Button* _mainMenuButton;
-        gui::Button* _quitButton;
+        EventManager* _manager;
+        //pointer to float not owned by this
+        float* _fps;
+        //local only
+        float _firstUpdate = true;
 
     public:
-        PauseView(EventManager* manager);
-        virtual ~PauseView();
+        LoadingView(EventManager* manager, float* fps);
+        virtual ~LoadingView();
 
         void onRender(float dt);
         void onUpdate(float dt);
@@ -37,9 +36,6 @@ namespace gui
 
         virtual void initiate();
 
-        void quitGame(int action);
-        void mainMenu(int action);
-        void resumeGame(int action);
     };
 
 }
