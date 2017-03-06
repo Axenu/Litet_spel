@@ -42,7 +42,9 @@ private:
 	float _detectFov;
 	Level *_currentLevel;
 	float _currentGridSpace;
-	GuardState calcState(float dt);
+	GuardState checkState(float dt);
+	void setLookingState();
+	void setPathingState();
 	void noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer);
 	void visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer);
 	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);

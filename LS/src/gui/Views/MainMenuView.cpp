@@ -15,10 +15,10 @@ namespace gui
     {
         if (action == GLFW_RELEASE)
         {
-            if (!_parent->setView("HUDView"))
+            if (!_parent->setView("LoadingView"))
             {
                 // std::cout << "scene not found \n Creating new..." << std::endl;
-                _parent->setView(new HUDView(_manager, _fps));
+                _parent->setView(new LoadingView(_manager, _fps));
             }
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
             _manager->execute(event);
@@ -78,11 +78,6 @@ namespace gui
     }
     MainMenuView::~MainMenuView()
     {
-        // if (font)
-        // {
-        //     delete font;
-        // }
-        // std::cout << "gui scene destructor" << std::endl;
     }
     void MainMenuView::onRender()
     {
