@@ -99,7 +99,6 @@ void setupWindow()
 			passedTime = 0.0f;
 			passedFrames = 0.0f;
 		}
-		// FPS = 1.0f / dT;
 		dT = std::fminf(dT, 0.1f); //Can't have to large dt!
 
 		guiManager.update(dT);

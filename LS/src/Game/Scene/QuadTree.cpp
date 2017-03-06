@@ -401,7 +401,6 @@ void QuadTreeNode::QuadTreeTest(std::vector<GameObject*>& gameObjects, AABB &aab
 			//test if collide with aabb
 			if (AABBvAABB(_objectData[i]->getAABB(), aabb))
 			{
-				// std::cout << "adding cornercase object" << std::endl;
 				gameObjects.push_back(_objectData[i]);
 			}
 		}
