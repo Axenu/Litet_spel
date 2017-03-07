@@ -11,7 +11,6 @@
 #include "gui/Button.h"
 #include "gui/Manager.h"
 #include "gui/Views/MainMenuView.h"
-#include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
 

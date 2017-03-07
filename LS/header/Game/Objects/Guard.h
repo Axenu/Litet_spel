@@ -9,6 +9,7 @@
 #include <time.h>
 #include "Game/Level/Path.h"
 #include <memory>
+#include <Sound/Irrklang.h>
 
 #define GUARDVIEWDISTANCE 20.f
 #define GUARDHEARDISTANCE 20.f
