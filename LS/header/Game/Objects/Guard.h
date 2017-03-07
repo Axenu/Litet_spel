@@ -37,6 +37,7 @@ private:
 	unsigned int _whatPathToLoad;
 	float _detectionScore;
 	float _noiseDetVal;
+	float _finalDetVal;
 	float _interestTime;
 	glm::vec3 _pointOfInterest;
 	GuardState _state;
@@ -51,6 +52,7 @@ private:
 	void setPathingState();
 	void noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos);
 	void visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer);
+	void finalDetection();
 	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);
 	std::vector<glm::vec2> _walkingPoints;
 public:
