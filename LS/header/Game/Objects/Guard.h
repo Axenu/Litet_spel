@@ -61,6 +61,6 @@ public:
 	virtual	void update(float dt);
 	glm::vec2 getNextPosition();
 	PointLightObject *getLight();
-	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, std::vector<glm::vec2>& walkingPoints);
+	Guard(glm::vec3 position, Character* player, EventManager* event, Model& m, Level* Level, std::vector<glm::vec2>& walkingPoints);
 	unsigned int _id;
 };

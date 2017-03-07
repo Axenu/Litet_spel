@@ -191,6 +191,7 @@ void Guard::finalDetection()
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
+		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
 	}
 	else
 	{
