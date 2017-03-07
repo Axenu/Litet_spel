@@ -14,7 +14,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
-#include "Sound/Irrklang.h"
+
 void setupWindow()
 {
 #ifndef __APPLE__
@@ -52,9 +52,6 @@ void setupWindow()
 	}
 #endif
 
-
-
-
 	//init DevIL
 	ilInit();
 
@@ -83,6 +80,8 @@ void setupWindow()
 	guiManager.setWindowSize(wWidth, wHeight);
 	guiManager.setView(guiScene);
 
+
+
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -102,7 +101,6 @@ void setupWindow()
 		}
 		dT = std::fminf(dT, 0.1f); //Can't have to large dt!
 
-
 		guiManager.update(dT);
 		guiManager.render(dT);
 
@@ -114,7 +112,7 @@ void setupWindow()
         /* Poll for and process events */
         glfwPollEvents();
     }
-	
+
     glfwTerminate();
 }
 

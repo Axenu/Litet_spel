@@ -81,10 +81,12 @@ namespace gui {
         _grenadeCountLabel->setScale(0.75);
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         addChild(_grenadeCountLabel);
-		_grenadeCooldownCounter = new Label(_font);
-		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2"));
-		_grenadeCooldownCounter->setScale(0.4);
-		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f+0.85f, 0.9f);
+
+		_grenadeCooldownCounter = new Label(font);
+		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2.000"));
+        _grenadeCooldownCounter->addStringComponent(new StringComponentString(" s"));
+		_grenadeCooldownCounter->setScale(0.25);
+		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f, -0.82f);
 		addChild(_grenadeCooldownCounter);
 
         _grenadeLabel = new Label(font);
@@ -389,10 +391,3 @@ namespace gui {
         }
     }
 }
-
-
-		_grenadeCooldownCounter = new Label(font);
-		_grenadeCooldownCounter->addStringComponent(new StringComponentString("2.000"));
-        _grenadeCooldownCounter->addStringComponent(new StringComponentString(" s"));
-		_grenadeCooldownCounter->setScale(0.25);
-		_grenadeCooldownCounter->setPosition(0 - _grenadeCooldownCounter->getTextWidth()*0.5f, -0.82f);

@@ -13,7 +13,6 @@
 #include "StaticVars.h"
 #include "Game/Level/IObjectFactory.h"
 
-#include "Sound/Irrklang.h"
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
 
@@ -68,7 +67,7 @@ public:
 
 	glm::vec3 getEyePos();
 
-	float calcLightAtPosition();
+	float calcLightOnPosition();
 
 	float getLightAtPosition();
 private:
