@@ -252,6 +252,7 @@
     <ClInclude Include="header\Event\SceneEvents\SceneEvent.h" />
     <ClInclude Include="header\Game\Level\IObjectFactory.h" />
     <ClInclude Include="header\Game\Objects\Door.h" />
+    <ClInclude Include="header\Game\Objects\WalkPoints.h" />
     <ClInclude Include="header\gui\ProgressBar.h" />
     <ClInclude Include="header\gui\Views\LoadingView.h" />
     <ClInclude Include="header\gui\Views\PauseView.h" />

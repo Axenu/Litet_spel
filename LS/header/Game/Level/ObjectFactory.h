@@ -27,8 +27,13 @@ struct worldData {
 };
 
 struct guardData {
-	std::vector<glm::vec2> walkingPoints;
-	glm::ivec2 spawnPosition;
+	std::vector<glm::ivec2> walkingPoints;
+	int walkType;
+	glm::ivec2 spawnPosition, face;
+	guardData(glm::ivec2 spawn, glm::ivec2 face, unsigned int walkType)
+		: walkingPoints(), walkType(walkType), spawnPosition(spawn), face(face)
+	{
+	}
 };
 
 struct lootData : worldData {
@@ -95,7 +100,7 @@ public:
 
 	Character* createCharacter(glm::ivec2 square, float height);
 	virtual AntiLightGrenade* createLightGrenade(const std::string &model, glm::vec3 pos, glm::vec3 dir);
-	Guard* createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints);
+	Guard* createGuard(const std::string &model, Character& player, guardData& info);
 	Door* CreateDoor(const std::string &model, glm::ivec2 square, glm::vec3 rotation);
 	void loadSceneFromFile(std::string path, std::vector<guardData> &guards, std::vector<lootData> &loot, std::vector<doorData> &doorList);
 	MeshShader& getShader();

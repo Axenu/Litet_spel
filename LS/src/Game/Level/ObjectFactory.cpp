@@ -120,13 +120,14 @@ AntiLightGrenade* ObjectFactory::createLightGrenade(const std::string &model, gl
 }
 
 
-Guard* ObjectFactory::createGuard(const std::string &model, glm::ivec2 square, Character& player, std::vector<glm::vec2>& walkingPoints)
+Guard* ObjectFactory::createGuard(const std::string &model, Character& player, guardData &data)
 {
 	Material mat(&_skinnedShader);
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_modelPath + model, mat);
-	glm::vec3 pos = calcPos(square, tmpModel.getBox());
-	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, walkingPoints);
+	glm::vec3 pos = calcPos(data.spawnPosition, tmpModel.getBox());
+	WalkPoints points(data.walkingPoints, data.walkType, data.face);
+	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, points);
 	guard->_id = _guardCount++;
 	guard->init();
 	_scene->add(guard, true);
@@ -186,7 +187,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 {
 	std::ifstream file;
   	file.open(_path + path);
-	std::string line;
+	std::string line, comment;
 	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	glm::vec2 walkP;
 	while (std::getline(file, line))
@@ -236,6 +237,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 				if (guards.size() > 0)
 					guards.back().walkingPoints.push_back(walkP);
 				break;
+			case '%':
+				//Read comment
+				iss >> comment; 
 			default:
 				break;
 			}
@@ -263,7 +267,14 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			loot.push_back(lootData(square, rot, modelName, (int)value ));
 		else if (type == "guard")
 		{
-			guards.push_back({ std::vector<glm::vec2>(), square });
+			guards.push_back(guardData(square, square, (unsigned int)value));
+		}
+		else if (type == "path")
+		{
+			if (guards.size() > 0)
+			{
+				guards.back().face = square;
+			}
 		}
 	}
 }
