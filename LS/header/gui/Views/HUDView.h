@@ -56,6 +56,8 @@ namespace gui
         bool _isAtExit = false;
         std::vector<AlertStruct> _alerts;
 
+        glm::vec4 mixColors(glm::vec4 color1, glm::vec4 color2, float dt);
+
     public:
         HUDView(EventManager* manager, float* fps);
         virtual ~HUDView();
