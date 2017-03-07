@@ -56,6 +56,7 @@ public:
 	void testClimb();
 	bool guardVision();
 	int* getLootValuePointer();
+	float* getScoreValuePointer();
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	float getNoise();
@@ -75,6 +76,7 @@ private:
 	void normalKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
 	bool charMovement(const KeyboardEvent& event);
+	void detected(const GuardAlertEvent &event);
 	void gVisionTimerUpdate(float dt);
 	void calcNoise();
 	void returnVision();
@@ -93,6 +95,8 @@ private:
     float _speed;
     float _isMoving;
     int _lootValue;
+	float _score;
+	float _detectionLevel;
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables

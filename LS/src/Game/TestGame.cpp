@@ -39,7 +39,7 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 	}
 	for (unsigned int i = 0; i < guards.size(); i++)
 		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
-	_factory.createRandomLoot(loot, 20);
+	_factory.createRandomLoot(loot, MAX_LOOT_LEVEL);
 
 	/* Preload
 	*/

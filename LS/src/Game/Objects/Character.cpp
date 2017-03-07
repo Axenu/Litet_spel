@@ -41,6 +41,14 @@ void Character::onUpdate(float dt)
 
 	_lightAtPos = calcLightAtPosition();
 	calcNoise();
+
+	//calculate score based on detection
+	if (_detectionLevel > 0.0f)
+	{
+		_score -= _detectionLevel * dt;
+		_detectionLevel = 0.0f;
+		_score = std::max(0.0f, _score);
+	}
 }
 
 void Character::init()
@@ -299,6 +307,11 @@ int* Character::getLootValuePointer()
 	return &_lootValue;
 }
 
+float* Character::getScoreValuePointer()
+{
+    return &_score;
+}
+
 int* Character::getGrenadeCountPointer()
 {
 	return &_lightGrenadeCount;
@@ -307,6 +320,11 @@ int* Character::getGrenadeCountPointer()
 float * Character::getGrenadeCooldownTimer()
 {
 	return &_grenadeTimer;
+}
+
+void Character::detected(const GuardAlertEvent &event)
+{
+	_detectionLevel += event._detection;
 }
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -341,6 +359,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 			{
 				CollectLootEvent event(points);
 				_lootValue += points;
+				_score += points;
 				_eventManager->execute(event);
 			}
 		}
@@ -349,7 +368,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
+			if (_gridSquare._grid == gridType::exiting && _lootValue >= MAX_LOOT_LEVEL * 0.5f) // && _hasVictoryLoot TODO
 			{
 				//call endGameEvent
 				GameOverEvent event(true);
@@ -583,6 +602,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_state = CharState::normal;
 	_height = height;
 	_lootValue = 0;
+	_score = 0.0f;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
 	_camTilt = glm::vec2(0.0f);
@@ -590,6 +610,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_isMoving = 0;
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
+	_eventManager->listen(this, &Character::detected);
 	_canClimb = false;
 	_animFirstPhaseTime = 0.0f;
 	_animSecondPhaseTime = 0.0f;
@@ -608,8 +629,9 @@ Character::Character()
 }
 Character::~Character()
 {
-	_eventManager->unlisten(this, &Character::moveCharacter);
-	_eventManager->unlisten(this, &Character::moveMouse);
+    _eventManager->unlisten(this, &Character::moveCharacter);
+    _eventManager->unlisten(this, &Character::moveMouse);
+	_eventManager->unlisten(this, &Character::detected);
 
 }
 
