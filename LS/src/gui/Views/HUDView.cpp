@@ -376,11 +376,13 @@ namespace gui {
             //set color to indicate level of detection
             if (event._detection < 0.5f)
             {
-                alert->setOpacity(event._detection * 2.0f);
+                glm::vec4 color(1.0f, 1.0f, 0.5f, event._detection * 2.0f);
+                alert->setColor(color);
             }
             else
             {
-
+                glm::vec4 color = mixColors(glm::vec4(1.0f, 1.0f, 0.5f, 1.0f), glm::vec4(0.92578125f, 0.26171875f, 0.21484375f, 1.0f), event._detection * 2.0f - 1.0f);
+                alert->setColor(color);
             }
             alert->update(0.0f);
         }
@@ -389,5 +391,10 @@ namespace gui {
             //if the guard no longer notices the player, hide it.
             alert->deactivate();
         }
+    }
+    glm::vec4 HUDView::mixColors(glm::vec4 color1, glm::vec4 color2, float dt)
+    {
+        glm::vec4 diff = color2 - color1;
+        return glm::vec4(color1 + dt*diff);
     }
 }
