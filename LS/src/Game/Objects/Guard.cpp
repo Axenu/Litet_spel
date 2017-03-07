@@ -49,7 +49,7 @@ void Guard::update(float dt)
 	dirToPlayer = glm::normalize(dirToPlayer);
 	visionDetection(pos, dt, playerDist, dirToPlayer);
 	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
-
+	finalDetection();
 }
 
 Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, WalkPoints &walkingPoints) :
@@ -65,9 +65,11 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 	_speed = 0.4f;
 
-	_detectionScore = 0.3f;
+	_detectionScore = 0.0f;
 
 	_noiseDetVal = 0.0f;
+
+	_finalDetVal = 0.0f;
 
 	//setup lantern
 	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
@@ -95,14 +97,14 @@ GuardState Guard::checkState(float dt)
 	switch (_state)
 	{
 	case GuardState::pathing:
-		if (_noiseDetVal > LOOKNOISELIMIT)
+		if (_finalDetVal > LOOKNOISELIMIT)
 		{
 			setLookingState();
 		}
 		break;
 	case GuardState::looking:
 		_interestTime -= dt;
-		if (_noiseDetVal < LOOKNOISELIMIT)
+		if (_finalDetVal < LOOKNOISELIMIT)
 		{
 			if (_interestTime < 0.0f)
 			{
@@ -158,7 +160,6 @@ void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noise
 		noiseVal *= dt * noise;
 		_noiseDetVal += noiseVal;
 		_noiseDetVal = std::fmin(_noiseDetVal, 1.0f); //clamp value to not be over 1.
-		_pointOfInterest = noisePos;
 	}
 	else
 	{
@@ -178,40 +179,36 @@ void Guard::visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3
 	//Activate the detection event based on distance between the player and guard
 	if (playerDist <  detectionDist)
 	{
-
 		//Timer to determine the amount of time before the guard detects the player
-		float detectionAmount = (1.0f - (playerDist / detectionDist));
-		_detectionScore -= dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
-
-		if (_detectionScore < 0.0f)
-		{
-			//Game over
-			GameOverEvent event(false);
-			_eventManager->execute(event);
-		}
-		else
-		{
-			// std::cout << "detection" << std::endl;
-			GuardAlertEvent event(pos, 1.0f - _detectionScore * 3.3333333333f);
-			event._id = _id;
-			_eventManager->execute(event);
-			// ALmost detected
-			// call event
-			// use detection value
-			// use pos
-			// use VP-Matrix?
-		}
+		float detectionAmount = (playerDist / detectionDist);
+		_detectionScore += dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
 	}
 	else
 	{
-		if (_detectionScore <= 0.3f)
+		if (_detectionScore > 0.0f)
 		{
-			// std::cout << _detectionScore << std::endl;
-			_detectionScore += dt*0.1f;
-			GuardAlertEvent event(pos, 1.0f - _detectionScore * 3.3333333333f);
-			event._id = _id;
-			_eventManager->execute(event);
+			_detectionScore -= dt*0.1f;
 		}
+	}
+}
+
+void Guard::finalDetection()
+{
+	_finalDetVal = _noiseDetVal + _detectionScore;
+	if (_finalDetVal > 1.0f)
+	{
+		GameOverEvent event(false);
+		_eventManager->execute(event);
+	}
+	else
+	{
+		GuardAlertEvent event(this->getWorldPos(), _finalDetVal);
+		event._id = _id;
+		_eventManager->execute(event);
+	}
+	if (_finalDetVal < LOOKNOISELIMIT)
+	{
+		_pointOfInterest = _player->getWorldPos();
 	}
 }
 

@@ -38,9 +38,11 @@ namespace gui
         //owned and deleted by subclass View -> Element
         Label *_tipDisplay;
         Label *_scoreLabel;
+        Label *_lootLabel;
         Label *_grenadeCountLabel;
 		Label *_grenadeCooldownCounter;
         Rectangle *_scoreBackground;
+        Rectangle *_lootBackground;
         Label *_soundLabel;
         Label *_lightLabel;
         Label *_grenadeLabel;
@@ -55,6 +57,8 @@ namespace gui
 
         bool _isAtExit = false;
         std::vector<AlertStruct> _alerts;
+
+        glm::vec4 mixColors(glm::vec4 color1, glm::vec4 color2, float dt);
 
     public:
         HUDView(EventManager* manager, float* fps);
