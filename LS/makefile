@@ -5,7 +5,7 @@ lIBDIR=lib/OSX/
 IDIR=include/
 HDIR=header/
 
-SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Level src/Game/Objects src/Game/Scene src/gui src/gui/Views src/Render src/Render/Mesh src/Render/Mesh/Shader src/Render/Mesh/Animation src/Render/Composition src/Math
+SRC_DIR   := src src/gl src/Event src/Event/Input src/Game src/Game/Level src/Game/Objects src/Game/Scene src/gui src/gui/Views src/Render src/Render/Mesh src/Render/Mesh/Shader src/Render/Mesh/Animation src/Render/Composition src/Math src/Sound
 BUILD_DIR := $(SRC_DIR:src%=build%)
 SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ_files := $(SRC:src%=build%)
@@ -18,7 +18,7 @@ CXXFLAGS = -Wall -Wextra -std=c++11 -Wdouble-promotion -Wno-sign-conversion -Wno
 # The c++ compiler to use for compilation
 CC = g++
 
-LIB=-lglfw3 -lil -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms -lassimp
+LIB=-lglfw3 -lil -ltiff -lpng16 -lz -ljasper -ljpeg -llzma -lfreetype -lbz2 -lmng -llcms -lassimp -lirrklang
 #OSX frameworks
 FRAMEWORKS=-framework IOKit -framework Cocoa -framework OpenGL -framework CoreVideo
 
