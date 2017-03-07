@@ -20,8 +20,10 @@ namespace gui
                 // std::cout << "scene not found \n Creating new..." << std::endl;
                 _parent->setView(new LoadingView(_manager, _fps));
             }
+
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
             _manager->execute(event);
+			sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/BackgroundMusic.ogg"), true);
         }
     }
     MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()

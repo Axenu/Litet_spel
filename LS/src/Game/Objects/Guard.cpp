@@ -8,6 +8,10 @@ void Guard::update(float dt)
 	glm::vec3 dirToPlayer;
 	float playerDist;
 
+	dirToPlayer = _player->getWorldPos() - this->getWorldPos();
+	playerDist = glm::length(dirToPlayer);
+	dirToPlayer = glm::normalize(dirToPlayer);
+
 	checkState(dt);
 
 	switch (_state)
@@ -35,18 +39,23 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
+	
+			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
+
 		break;
+
 	case GuardState::looking:
 		face(_pointOfInterest);
+		
+		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
+
 		break;
 	}
 
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
 							//Get direction vector and distance to player
-	dirToPlayer = _player->getWorldPos() - this->getWorldPos();
-	playerDist = glm::length(dirToPlayer);
-	dirToPlayer = glm::normalize(dirToPlayer);
+	
 	visionDetection(pos, dt, playerDist, dirToPlayer);
 	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
 	finalDetection();
@@ -199,6 +208,7 @@ void Guard::finalDetection()
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
+		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
 	}
 	else
 	{
