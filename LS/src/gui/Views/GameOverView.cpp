@@ -21,12 +21,22 @@ namespace gui {
         _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.4f);
         addChild(_victoryLabel);
 
-        gui::Label *l = new gui::Label(font);
-        l->addStringComponent(new StringComponentString("Score: "));
-        l->addStringComponent(new StringComponentInt(&_score));
-        l->setScale(0.5f);
-        l->setPosition(-l->getSize().x*0.25f, 0.2f);
-        addChild(l);
+        //score
+        _scoreLabel = new gui::Label(font);
+        _scoreLabel->addStringComponent(new StringComponentString("Score: "));
+        StringComponentFloat *f = new StringComponentFloat(&_score);
+        f->_precision = 1;
+        _scoreLabel->addStringComponent(f);
+        _scoreLabel->setScale(0.5f);
+        _scoreLabel->setPosition(-_scoreLabel->getSize().x*0.25f, 0.2f);
+        addChild(_scoreLabel);
+        //loot
+        _lootLabel = new gui::Label(font);
+        _lootLabel->addStringComponent(new StringComponentString("Loot: "));
+        _lootLabel->addStringComponent(new StringComponentInt(&_loot));
+        _lootLabel->setScale(0.5f);
+        _lootLabel->setPosition(-_lootLabel->getSize().x*0.25f, 0.0f);
+        addChild(_lootLabel);
 
         _playAgainButton = new gui::Button(1.5f, 0.4f);
         _playAgainButton->addStringComponent(new StringComponentString("Play again"));
@@ -84,9 +94,14 @@ namespace gui {
         }
         _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.4f);
     }
-    void GameOverView::setScore(int score)
+    void GameOverView::setScoreAndLoot(float score, int loot)
     {
         _score = score;
+        _loot = loot;
+        _scoreLabel->updateText();
+        _lootLabel->updateText();
+        _scoreLabel->setPosition(-_scoreLabel->getSize().x*0.25f, 0.2f);
+        _lootLabel->setPosition(-_lootLabel->getSize().x*0.25f, 0.0f);
     }
     void GameOverView::QuitGame(int action)
     {

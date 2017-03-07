@@ -47,6 +47,7 @@ void DrawFrame::renderMeshOnly(RenderInfo &rI, MeshShader* shader) {
 }
 
 void DrawFrame::renderNonAnimatedMeshes(RenderInfo &rI, MeshShader* shader) {
+	// std::cout << _meshes.size() << std::endl;
 	for (unsigned int i = 0; i < _meshes.size(); i++) {
 		const MeshDrawable &ref = _meshes[i];
 		if (!ref._part->hasSkeleton())

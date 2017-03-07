@@ -25,8 +25,11 @@ namespace gui
         Button* _quitButton;
         Button* _mainMenuButton;
         Label *_victoryLabel;
+        Label *_scoreLabel;
+        Label *_lootLabel;
 
-        int _score;
+        float _score;
+        int _loot;
 
     public:
         GameOverView(EventManager* manager, const GameOverEvent &event);
@@ -40,7 +43,7 @@ namespace gui
         virtual void initiate();
         void updateText(const GameOverEvent &event);
 
-        void setScore(int score);
+        void setScoreAndLoot(float score, int loot);
 
         void QuitGame(int action);
         void gotoMainMenu(int action);

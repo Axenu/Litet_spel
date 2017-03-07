@@ -8,3 +8,5 @@ namespace sic {
 
 
 }
+
+#define MAX_LOOT_LEVEL 20
