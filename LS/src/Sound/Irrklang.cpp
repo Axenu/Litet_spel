@@ -27,11 +27,17 @@ Sound::~Sound()
 
 void Sound::PlaySource2DSound(ISoundSource* source, bool loop)
 {
+	if (!_engine)
+		return;
+
 	_engine->play2D(source, loop);
 }
 
 void Sound::PlaySource3DSound(ISoundSource * source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt, bool update)
 {
+	if (!_engine)
+		return;
+
 	origin = glm::vec3(origin - listenerPos);
 
 	if (_sound == nullptr || _sound->isFinished())
@@ -49,6 +55,9 @@ void Sound::PlaySource3DSound(ISoundSource * source, bool loop, glm::vec3 listen
 
 void Sound::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up)
 {
+	if (!_engine)
+		return;
+
 	origin = glm::vec3(origin - listenerPos);
 
 	_engine->setListenerPosition(vec3df(0.0f, 0.0f, 0.0f), -vec3df(lookDir.x, lookDir.y, lookDir.z), vec3df(0.0f, 0.0f, 0.0f), vec3df(up.x, up.y, up.z));
@@ -57,6 +66,9 @@ void Sound::PlaySource3DSound(ISoundSource* source, bool loop, glm::vec3 listene
 
 void Sound::PlaySource3DSound(ISoundSource * source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt, bool update, float volume)
 {
+	if (!_engine)
+		return;
+
 	origin = glm::vec3(origin - listenerPos);
 
 	if (_sound == nullptr || _sound->isFinished())
@@ -74,6 +86,9 @@ void Sound::PlaySource3DSound(ISoundSource * source, bool loop, glm::vec3 listen
 
 ISoundSource* Sound::GetSound(char* filename)
 {
+	if (!_engine)
+		return nullptr;
+		
 	return _engine->getSoundSource(filename);
 }
 
