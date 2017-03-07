@@ -250,13 +250,16 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		}
 		else if (type == "listDoors")
 		{
+			int lastSize = doorList.size();
 			//Generate open doors
 			for (unsigned short int i = 0; i < squareList.size(); i++)
 				doorList.push_back(doorData(squareList[i], calcRot(squareList[i]), true));
 			//Close some doors, might close same door twice but... don't care?
-			int closeCount = std::max((int)value, 1);
+			int closeCount = (int)value;
 			for (int i = 0; i < closeCount; i++)
-				doorList[getRand(squareList.size())].open = false;
+			{
+				doorList[lastSize + getRand(squareList.size())].open = false;
+			}
 		}
 		else if (type == "loot")
 			loot.push_back(lootData(square, rot, modelName, (int)value ));

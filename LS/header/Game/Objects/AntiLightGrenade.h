@@ -10,7 +10,7 @@
 #include "Event/EventManager.h"
 	const static float expandSize = 3.f;
 	const static float expandDur = 1.f;
-	const static float fadeDur = 3.f;
+	const static float fadeDur = 5.f;
 
 struct GrenadeValues {
 	float fading;

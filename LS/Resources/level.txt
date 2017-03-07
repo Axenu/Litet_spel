@@ -1,8 +1,9 @@
-light P 5.5 1.2 18 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
-light P 4.9 1.2 9.5
-light P 2.9 1.2 5
-light P 4.5 1.2 27
-light P 14 1.2 5
+light P 45 1.2 53 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
+light P 50 1.2 53
+light P 42.5 1.2 49.1
+light P 46 1.2 39.1
+light P 48 1.2 39.1
+light P 55 1.2 53.1
 model S 1 11 M Table.obj R 0 90 0
 model S 2 11 M Table.obj
 model S 10 11 M Table.obj
@@ -18,5 +19,21 @@ loot S 3 3 R 0 0 0 V 4 M Chalice.obj
 loot S 4 4 R 90 0 0 V 8 M Chandilier.obj
 loot S 5 5 R 0 90 0 V 12 M GoldBar.obj
 loot S 6 6 R 0 0 90 V 20 M Diamond.obj
+listDoors V 0 S 30 50 S 34 42 S 41 39 S 67 17 S 71 36 S 74 40
+listDoors V 1 S 21 49 S 8 44
+listDoors V 1 S 24 44 S 31 45
+listDoors V 1 S 41 50 S 34 48
+listDoors V 1 S 54 52 S 54 40
+listDoors V 1 S 58 51 S 56 41
+listDoors V 1 S 25 32 S 26 26 S 31 17
+listDoors V 1 S 35 38 S 40 29 S 47 38
+listDoors V 1 S 37 17 S 40 23 S 46 17
+listDoors V 1 S 50 17 S 55 23 S 60 17
+listDoors V 1 S 71 23 S 73 26 S 71 28
+listDoors V 2 S 55 34 S 62 38 S 69 38 S 64 40
+listDoors V 1 S 64 45 S 64 51
+listDoors V 1 S 74 46 S 74 51
+listDoors V 1 S 85 49 S 96 43
+
 listDoors V 1 S 5 10 S 10 5 S 15 10 S 19 5 S 24 10
 listDoors S 5 13 S 10 17 S 15 13
