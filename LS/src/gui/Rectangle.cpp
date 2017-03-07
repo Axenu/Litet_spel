@@ -43,7 +43,7 @@ namespace gui
     {
 
     }
-    void Rectangle::onRender()
+    void Rectangle::onRender(float dt)
     {
         _shader->bind();
         glUniform4fv(_colorUniform, 1, &_color[0]);

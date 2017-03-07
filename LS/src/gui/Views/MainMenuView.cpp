@@ -20,9 +20,34 @@ namespace gui
                 // std::cout << "scene not found \n Creating new..." << std::endl;
                 _parent->setView(new LoadingView(_manager, _fps));
             }
+
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
             _manager->execute(event);
+			sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/BackgroundMusic.ogg"), true);
         }
+    }
+    void MainMenuView::Credits(int action)
+    {
+        if (action == GLFW_RELEASE)
+        {
+            if (!_parent->setView("CreditsView"))
+            {
+                _parent->setView(new CreditsView());
+            }
+        }
+    }
+    void MainMenuView::Settings(int action)
+    {
+        // if (action == GLFW_RELEASE)
+        // {
+        //     if (!_parent->setView("LoadingView"))
+        //     {
+        //         // std::cout << "scene not found \n Creating new..." << std::endl;
+        //         _parent->setView(new LoadingView(_manager, _fps));
+        //     }
+        //     ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
+        //     _manager->execute(event);
+        // }
     }
     MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
     {
@@ -62,7 +87,7 @@ namespace gui
     	_creditsButton->setPosition(-_startButton->getSize().x*0.25f, 0.0f);
         _creditsButton->setPrimaryColor(PALLETPRIMARY);
         _creditsButton->setSecondaryColor(PALLETHIGHLIGHT);
-        // _startButton->listen(this, &MainMenuView::StartGame);
+        _creditsButton->listen(this, &MainMenuView::Credits);
         _creditsButton->setScale(0.5,0.5);
         addChild(_creditsButton);
 
@@ -79,7 +104,7 @@ namespace gui
     MainMenuView::~MainMenuView()
     {
     }
-    void MainMenuView::onRender()
+    void MainMenuView::onRender(float dt)
     {
 
     }

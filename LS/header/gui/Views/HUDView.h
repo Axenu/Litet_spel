@@ -38,9 +38,11 @@ namespace gui
         //owned and deleted by subclass View -> Element
         Label *_tipDisplay;
         Label *_scoreLabel;
+        Label *_lootLabel;
         Label *_grenadeCountLabel;
 		Label *_grenadeCooldownCounter;
         Rectangle *_scoreBackground;
+        Rectangle *_lootBackground;
         Label *_soundLabel;
         Label *_lightLabel;
         Label *_grenadeLabel;
@@ -49,18 +51,20 @@ namespace gui
         ProgressBar *_guardVisionPB;
         Label *_guardVisionLabel;
         //owned by this
-        std::unique_ptr<TestGame> _game;
+        TestGame *_game = nullptr;
         //pointer to float not owned by this
         float* _fps;
 
         bool _isAtExit = false;
         std::vector<AlertStruct> _alerts;
 
+        glm::vec4 mixColors(glm::vec4 color1, glm::vec4 color2, float dt);
+
     public:
         HUDView(EventManager* manager, float* fps);
         virtual ~HUDView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView();
         void resumeView();

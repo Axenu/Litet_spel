@@ -34,8 +34,8 @@ namespace gui
         Element();
         virtual ~Element();
 
-        void render();
-        virtual void onRender() = 0;
+        void render(float dt);
+        virtual void onRender(float dt) = 0;
         void update(float dt);
         virtual void onUpdate(float dt) = 0;
 

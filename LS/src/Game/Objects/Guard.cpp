@@ -8,52 +8,63 @@ void Guard::update(float dt)
 	glm::vec3 dirToPlayer;
 	float playerDist;
 
+	dirToPlayer = _player->getWorldPos() - this->getWorldPos();
+	playerDist = glm::length(dirToPlayer);
+	dirToPlayer = glm::normalize(dirToPlayer);
+
 	checkState(dt);
 
 	switch (_state)
 	{
 	case GuardState::pathing:
+		//True if no grid path exists/complete
 		if (_path->walkOnPath(&pos, _speed, dt))
 		{
 			glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-			if (_walkingPoints.size() == 0)
-				_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()), 15);//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
-			else
-				_path = _currentLevel->getGrid().generatePath(start, getNextPosition(), 15);
+			glm::ivec2 point;
+			if (_walkPoints.hasPath())
+				point = _walkPoints.getNextPosition();
+			else if (_walkPoints.walkRandom())
+				point = _currentLevel->getGrid().getRandomSquare();
+			else if (_walkPoints.walkToEnd())
+			{
+				//Make the guard stop moving
+				setStillState();
+				break;
+			}
+			//Slightly average distance to search in grid
+			int dist = std::max(std::abs(point.x - start.x), std::abs(point.y - start.y)) + 10;
+			//Generate a new path
+			_path = _currentLevel->getGrid().generatePath(start, point, dist);
 		}
-		if (pos.x < 0 || pos.z < 0)
-			int a = 0;
 		setPosition(pos);
 		face(_path->movingTo());
+	
+			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
+
 		break;
+
 	case GuardState::looking:
 		face(_pointOfInterest);
+		
+		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
+
 		break;
 	}
 
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
 							//Get direction vector and distance to player
-	dirToPlayer = _player->getWorldPos() - this->getWorldPos();
-	playerDist = glm::length(dirToPlayer);
-	dirToPlayer = glm::normalize(dirToPlayer);
+	
 	visionDetection(pos, dt, playerDist, dirToPlayer);
-	noiseDetection(pos, playerDist, dirToPlayer);
+	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
+	finalDetection();
 }
 
-glm::vec2 Guard::getNextPosition()
-{
-	_whatPathToLoad += 1;
-	if (_whatPathToLoad >= _walkingPoints.size())
-		_whatPathToLoad = 0;
-	return(_walkingPoints[_whatPathToLoad]);
-}
-
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>& walkingPoints) :
-	GameObject(m), _player(player), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, WalkPoints &walkingPoints) :
+	GameObject(m), _player(player), _currentLevel(level), _walkPoints(std::move(walkingPoints))
 {
 	_eventManager = event;
-	_whatPathToLoad = 0;
 
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
@@ -63,15 +74,31 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 	_speed = 0.4f;
 
-	_detectionScore = 0.3f;
+	_detectionScore = 0.0f;
 
 	_noiseDetVal = 0.0f;
 
-	_state = GuardState::pathing;
+	_finalDetVal = 0.0f;
+
+	//setup lantern
+	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
+ 	_lantern = new PointLightObject(light, this);
+	_lantern->init();
+	_lantern->setPosition(0.0f, 1.0f, 1.0f);
+	addChild(_lantern);
 }
 
 Guard::~Guard()
 {
+}
+
+void Guard::init()
+{
+	GameObject::init();
+	if (_walkPoints.hasPath() || _walkPoints.walkRandom())
+		setPathingState();
+	else
+		setStillState();
 }
 
 GuardState Guard::checkState(float dt)
@@ -79,14 +106,14 @@ GuardState Guard::checkState(float dt)
 	switch (_state)
 	{
 	case GuardState::pathing:
-		if (_noiseDetVal > 0.00001f)
+		if (_finalDetVal > LOOKNOISELIMIT)
 		{
 			setLookingState();
 		}
 		break;
 	case GuardState::looking:
 		_interestTime -= dt;
-		if (_noiseDetVal < 0.00001f)
+		if (_finalDetVal < LOOKNOISELIMIT)
 		{
 			if (_interestTime < 0.0f)
 			{
@@ -99,12 +126,21 @@ GuardState Guard::checkState(float dt)
 			_interestTime = LOOKNOISEINTRESTTIME;
 		}
 		break;
+	case GuardState::still:
+		break;
 	default:
-		setLookingState();
+		setStillState();
 	}
 	return _state;
 }
 
+void Guard::setStillState()
+{
+	_state = GuardState::still;
+	face(_currentLevel->getGrid().getCenter(_walkPoints._faceDir));
+	//Set properate animation
+	_animatedSkel->setAnimPose("", 0.5f, 0.f);
+}
 void Guard::setLookingState()
 {
 	_state = GuardState::looking;
@@ -119,17 +155,28 @@ void Guard::setPathingState()
 	_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
 }
 
-void Guard::noiseDetection(glm::vec3 pos, float playerDist, glm::vec3 dirToPlayer)
+void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos)
 {
-	float guardHearDist = _player->getNoise() * GUARDHEARDISTANCE;
-	if (playerDist < guardHearDist)
+	glm::vec3 dirToNoise = noisePos - this->getWorldPos();
+	float noiseDist = glm::length(dirToNoise);
+	//dirToNoise = glm::normalize(dirToNoise);
+	float guardHearDist = noise * GUARDHEARDISTANCE;
+
+	if (noiseDist < guardHearDist)
 	{
-		_noiseDetVal = (guardHearDist - playerDist) / guardHearDist;
-		_pointOfInterest = _player->getWorldPos();
+		float noiseVal = (guardHearDist - noiseDist) / guardHearDist; // make between 0 - 1
+		noiseVal = 2.0f * noiseVal - (noiseVal * noiseVal); // 2*x - x^2
+		noiseVal *= dt * noise;
+		_noiseDetVal += noiseVal;
+		_noiseDetVal = std::fmin(_noiseDetVal, 1.0f); //clamp value to not be over 1.
 	}
 	else
 	{
-		_noiseDetVal = 0.0f;
+		if (_noiseDetVal > 0.0f)
+		{
+			_noiseDetVal -= dt * 0.1f;
+		}
+
 	}
 }
 
@@ -141,40 +188,37 @@ void Guard::visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3
 	//Activate the detection event based on distance between the player and guard
 	if (playerDist <  detectionDist)
 	{
-
 		//Timer to determine the amount of time before the guard detects the player
-		float detectionAmount = (1.0f - (playerDist / detectionDist));
-		_detectionScore -= dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
-
-		if (_detectionScore < 0.0f)
-		{
-			//Game over
-			GameOverEvent event(false);
-			_eventManager->execute(event);
-		}
-		else
-		{
-			// std::cout << "detection" << std::endl;
-			GuardAlertEvent event(pos, 1.0f - _detectionScore * 3.3333333333f);
-			event._id = _id;
-			_eventManager->execute(event);
-			// ALmost detected
-			// call event
-			// use detection value
-			// use pos
-			// use VP-Matrix?
-		}
+		float detectionAmount = (playerDist / detectionDist);
+		_detectionScore += dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
 	}
 	else
 	{
-		if (_detectionScore <= 0.3f)
+		if (_detectionScore > 0.0f)
 		{
-			// std::cout << _detectionScore << std::endl;
-			_detectionScore += dt*0.1f;
-			GuardAlertEvent event(pos, 1.0f - _detectionScore * 3.3333333333f);
-			event._id = _id;
-			_eventManager->execute(event);
+			_detectionScore -= dt*0.1f;
 		}
+	}
+}
+
+void Guard::finalDetection()
+{
+	_finalDetVal = _noiseDetVal + _detectionScore;
+	if (_finalDetVal > 1.0f)
+	{
+		GameOverEvent event(false);
+		_eventManager->execute(event);
+		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
+	}
+	else
+	{
+		GuardAlertEvent event(this->getWorldPos(), _finalDetVal);
+		event._id = _id;
+		_eventManager->execute(event);
+	}
+	if (_finalDetVal < LOOKNOISELIMIT)
+	{
+		_pointOfInterest = _player->getWorldPos();
 	}
 }
 
@@ -205,4 +249,9 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		}
 	}
 	return 0.0f;
+}
+
+PointLightObject *Guard::getLight()
+{
+	return _lantern;
 }

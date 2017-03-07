@@ -27,11 +27,11 @@ namespace gui
             _currentView->update(dt);
         }
     }
-    void Manager::render()
+    void Manager::render(float dt)
     {
         if (_currentView != nullptr)
         {
-            _currentView->render();
+            _currentView->render(dt);
         }
     }
     View *Manager::setView(std::string name)

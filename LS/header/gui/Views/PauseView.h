@@ -30,7 +30,7 @@ namespace gui
         PauseView(EventManager* manager);
         virtual ~PauseView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}

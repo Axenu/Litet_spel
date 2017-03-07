@@ -12,8 +12,10 @@
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
 #include "gui/Views/LoadingView.h"
+#include "gui/Views/CreditsView.h"
 #include "staticVars.h"
 #include "gui/ProgressBar.h"
+#include <Sound/Irrklang.h>
 
 namespace gui
 {
@@ -35,7 +37,7 @@ namespace gui
         MainMenuView(EventManager* manager, float* fps);
         virtual ~MainMenuView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}
@@ -44,6 +46,8 @@ namespace gui
 
         void QuitGame(int action);
         void StartGame(int action);
+        void Credits(int action);
+        void Settings(int action);
     };
 
 }

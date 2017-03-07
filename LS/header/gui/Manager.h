@@ -44,7 +44,7 @@ namespace gui
         unsigned int getWindowHeight();
 
         void update(float dt);
-        void render();
+        void render(float dt);
 
         void cursorMoved(const MouseMoveEvent& event);
         void mouseClick(const MouseClickEvent& event);

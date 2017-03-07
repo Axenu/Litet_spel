@@ -40,8 +40,8 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 			_factory.createObject("Door_Closed.obj", doorList[i].pos, doorList[i].rotation, gridType::object, glm::vec3(0.f, 0.f, 0.f));
 	}
 	for (unsigned int i = 0; i < guards.size(); i++)
-		_factory.createGuard("Character.dae", guards[i].spawnPosition, *player, guards[i].walkingPoints);
-	_factory.createRandomLoot(loot, 20);
+		_factory.createGuard("Character.dae", *player, guards[i]);
+	_factory.createRandomLoot(loot, MAX_LOOT_LEVEL);
 
 	/* Preload
 	*/

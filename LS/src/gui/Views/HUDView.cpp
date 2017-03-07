@@ -48,6 +48,22 @@ namespace gui {
         _scoreLabel->setZ(2);
         addChild(_scoreLabel);
 
+        //loot background
+        _lootBackground = new Rectangle(0.5f, 0.15f);
+        _lootBackground->setPosition(0.5f, 0.85f);
+        color = PALLETPRIMARY;
+        color.w = 0.6f;
+        _lootBackground->setColor(color);
+        addChild(_lootBackground);
+        //Display player loot
+        _lootLabel = new gui::Label(font);
+        _lootLabel->addStringComponent(new StringComponentString("Loot: "));
+        _lootLabel->addStringComponent(new StringComponentString(""));
+        _lootLabel->setPosition(0.98f - _lootLabel->getSize().x, 0.97f-_lootLabel->getSize().y*0.5f);
+        _lootLabel->setScale(0.5);
+        _lootLabel->setZ(2);
+        addChild(_lootLabel);
+
         //progressbars for displaying soundlevel and lightlevel
         _soundPB = new ProgressBar(0.5f, 0.1f);
         _soundPB->setPrimaryColor(PALLETPRIMARY);
@@ -134,10 +150,14 @@ namespace gui {
 		_eventManager->unlisten(this, &HUDView::canClimb);
         _eventManager->unlisten(this, &HUDView::guardAlert);
         _eventManager->unlisten(this, &HUDView::KeyboardPressed);
+        if (_game != nullptr)
+        {
+            delete _game;
+        }
     }
-    void HUDView::onRender()
+    void HUDView::onRender(float dt)
     {
-        _game->draw();
+        _game->draw(dt);
     }
     void HUDView::onUpdate(float dt)
     {
@@ -159,29 +179,42 @@ namespace gui {
     }
     void HUDView::pauseView()
     {
-        _game->getCharacter()->pause();
-        _isActive = false;
+        if (_isActive)
+        {
+            _game->getCharacter()->pause();
+            _isActive = false;
+        }
     }
     void HUDView::resumeView()
     {
-        _game->getCharacter()->resume();
-        cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
-        _eventManager->execute(event);
-        _isActive = true;
+        if (!_isActive)
+        {
+            _game->getCharacter()->resume();
+            cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
+            _eventManager->execute(event);
+            _isActive = true;
+        }
     }
     void HUDView::initiate()
     {
+        if (_game != nullptr)
+        {
+            delete _game;
+        }
         //init game
         Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
     	setting._renderSetting._textureSetup[2] = GL_RGBA; //Specular = RGBA buffer
 
-    	_game = std::unique_ptr<TestGame>(new TestGame(setting, _eventManager));
+    	_game = new TestGame(setting, _eventManager);
 
         /* Load game
     	*/
     	_game->initiate();
-        //Update score label
-        _scoreLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
+        //Update loot and score label
+        _lootLabel->updateStringComponent(1, new StringComponentInt(_game->getCharacter()->getLootValuePointer()));
+        StringComponentFloat *f = new StringComponentFloat(_game->getCharacter()->getScoreValuePointer());
+        f->_precision = 1;
+        _scoreLabel->updateStringComponent(1, f);
         //update grenade label
         _grenadeCountLabel->updateStringComponent(0, new StringComponentInt(_game->getCharacter()->getGrenadeCountPointer()));
         //update cooldown label
@@ -196,11 +229,13 @@ namespace gui {
         if (event._active)
         {
             _scoreLabel->deactivate();
+            _lootLabel->deactivate();
             _soundPB->deactivate();
             _lightPB->deactivate();
             _grenadeCountLabel->deactivate();
             _grenadeCooldownCounter->deactivate();
             _scoreBackground->deactivate();
+            _lootBackground->deactivate();
             _lightLabel->deactivate();
             _soundLabel->deactivate();
             _grenadeLabel->deactivate();
@@ -213,11 +248,13 @@ namespace gui {
         else
         {
             _scoreLabel->activate();
+            _lootLabel->activate();
             _soundPB->activate();
             _lightPB->activate();
             _grenadeCountLabel->activate();
             _grenadeCooldownCounter->activate();
             _scoreBackground->activate();
+            _lootBackground->activate();
             _lightLabel->activate();
             _soundLabel->activate();
             _grenadeLabel->activate();
@@ -262,7 +299,7 @@ namespace gui {
             view = new GameOverView(_eventManager, event);
             _parent->setView(view);
         }
-        view->setScore(*_game->getCharacter()->getLootValuePointer());
+        view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
         view->updateText(event);
     }
     //Display information when player reaches exit
@@ -272,7 +309,14 @@ namespace gui {
         {
             if (!_isAtExit)
             {
-                _tipDisplay->updateStringComponent(0, new StringComponentString("Press G to finish."));
+                if (*_game->getCharacter()->getLootValuePointer() >= MAX_LOOT_LEVEL * 0.5f)
+                {
+                    _tipDisplay->updateStringComponent(0, new StringComponentString("Press G to finish."));
+                }
+                else
+                {
+                    _tipDisplay->updateStringComponent(0, new StringComponentString("Collect more loot before you can finish!"));
+                }
                 _tipDisplay->activate();
                 _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
                 _tipDisplay->update(0.0f);
@@ -359,8 +403,17 @@ namespace gui {
             posS.y = std::max(posS.y, -1.0f);
             alert->setPosition(posS.x - alert->getSize().x*0.5f, posS.y);
             alert->activate();
-            //set opacity to indicate level of detection
-            alert->setOpacity(event._detection);
+            //set color to indicate level of detection
+            if (event._detection < 0.5f)
+            {
+                glm::vec4 color(1.0f, 1.0f, 0.5f, event._detection * 2.0f);
+                alert->setColor(color);
+            }
+            else
+            {
+                glm::vec4 color = mixColors(glm::vec4(1.0f, 1.0f, 0.5f, 1.0f), glm::vec4(0.92578125f, 0.26171875f, 0.21484375f, 1.0f), event._detection * 2.0f - 1.0f);
+                alert->setColor(color);
+            }
             alert->update(0.0f);
         }
         else
@@ -368,5 +421,10 @@ namespace gui {
             //if the guard no longer notices the player, hide it.
             alert->deactivate();
         }
+    }
+    glm::vec4 HUDView::mixColors(glm::vec4 color1, glm::vec4 color2, float dt)
+    {
+        glm::vec4 diff = color2 - color1;
+        return glm::vec4(color1 + dt*diff);
     }
 }

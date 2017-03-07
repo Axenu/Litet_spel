@@ -13,7 +13,7 @@ ModelPart::~ModelPart()
 {
 }
 
-void ModelPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const 
+void ModelPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const
 {
 	_material.assignUniforms(fD, *this, modelMatrix);
 	_mesh->render();

@@ -79,7 +79,7 @@ namespace gui
     PauseView::~PauseView()
     {
     }
-    void PauseView::onRender()
+    void PauseView::onRender(float dt)
     {
 
     }

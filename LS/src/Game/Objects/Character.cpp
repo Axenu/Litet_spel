@@ -39,8 +39,16 @@ void Character::onUpdate(float dt)
 	if (_grenadeTimer <= 0 || _lightGrenadeCount == 0)
 		_grenadeTimer = 0.f;
 
-	_lightAtPos = calcLightOnPosition();
+	_lightAtPos = calcLightAtPosition();
 	calcNoise();
+
+	//calculate score based on detection
+	if (_detectionLevel > 0.0f)
+	{
+		_score -= _detectionLevel * dt;
+		_detectionLevel = 0.0f;
+		_score = std::max(0.0f, _score);
+	}
 }
 
 void Character::init()
@@ -70,11 +78,18 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
+		
+		if (_sneaking)
+			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
+		else
+			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
+
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
+		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -132,14 +147,14 @@ void Character::tryClimb()
 	{
 		if (_canClimb)
 		{
-		//Calc length between destination pos and current pos in xz-plane
-		float xzDist = glm::length(glm::vec2(_animEndPos.x, _animEndPos.z) - glm::vec2(_position.x, _position.z));
-		//calc animation time
-		_animFirstPhaseTime = xzDist / (2 * _speed);
-		_animSecondPhaseTime = _animFirstPhaseTime + _heightDiff / _speed;
-		_animEndTime = (_heightDiff + xzDist) / _speed;
-		_animTime = 0.0f;
-		_state = CharState::climbing;
+			//Calc length between destination pos and current pos in xz-plane
+			float xzDist = glm::length(glm::vec2(_animEndPos.x, _animEndPos.z) - glm::vec2(_position.x, _position.z));
+			//calc animation time
+			_animFirstPhaseTime = xzDist / (2 * _speed);
+			_animSecondPhaseTime = _animFirstPhaseTime + _heightDiff / _speed;
+			_animEndTime = (_heightDiff + xzDist) / _speed;
+			_animTime = 0.0f;
+			_state = CharState::climbing;
 		}
 	}
 }
@@ -221,7 +236,7 @@ void Character::gVisionTimerUpdate(float dt)
 }
 
 
-float Character::calcLightOnPosition()
+float Character::calcLightAtPosition()
 {
 	glm::vec3 pos(this->getWorldPos());
 	AABB playerBox(pos, 0.5f);
@@ -260,18 +275,18 @@ void Character::calcNoise()
 	switch (_state)
 	{
 	case CharState::climbing:
-		_movmentNoise = climbingNoise;
+		_movmentNoise = CLIMBINGNOISE;
 		break;
 	case CharState::guardVision:
 		_movmentNoise = 0.0f;
 		break;
 	default:
-		_movmentNoise = walkingNoise;
+		_movmentNoise = WALKINGNOISE;
 		break;
 	}
 	if (_sneaking)
 	{
-		_movmentNoise *= sneakingModifier;
+		_movmentNoise *= SNEAKINGMODIFIER;
 	}
 	_movmentNoise *= _isMoving;
 
@@ -289,7 +304,12 @@ void Character::onRender()
 
 int* Character::getLootValuePointer()
 {
-    return &_lootValue;
+	return &_lootValue;
+}
+
+float* Character::getScoreValuePointer()
+{
+    return &_score;
 }
 
 int* Character::getGrenadeCountPointer()
@@ -300,6 +320,11 @@ int* Character::getGrenadeCountPointer()
 float * Character::getGrenadeCooldownTimer()
 {
 	return &_grenadeTimer;
+}
+
+void Character::detected(const GuardAlertEvent &event)
+{
+	_detectionLevel += event._detection;
 }
 
 void Character::moveCharacter(const KeyboardEvent& event)
@@ -324,7 +349,7 @@ glm::vec3 Character::getEyePos()
 
 void Character::normalKeyInput(const KeyboardEvent & event)
 {
-	if (charMovement(event)){} // CharMovements takes care of WASD-input
+	if (charMovement(event)) {} // CharMovements takes care of WASD-input
 	else if (event.getKey() == GLFW_KEY_E)
 	{
 		if (event.getAction() == GLFW_PRESS)
@@ -334,6 +359,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 			{
 				CollectLootEvent event(points);
 				_lootValue += points;
+				_score += points;
 				_eventManager->execute(event);
 			}
 		}
@@ -342,11 +368,13 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
+			if (_gridSquare._grid == gridType::exiting && _lootValue >= MAX_LOOT_LEVEL * 0.5f) // && _hasVictoryLoot TODO
 			{
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
+				sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/WinSound.wav"), false);
+
 			}
 		}
 	}
@@ -411,7 +439,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 
 void Character::guardVisionKeyInput(const KeyboardEvent & event)
 {
-	if (charMovement(event)){} //Takes care so movement vectors keeps up to date.
+	if (charMovement(event)) {} //Takes care so movement vectors keeps up to date.
 	else if (event.getKey() == GLFW_KEY_R)
 	{
 		if (event.getAction() == GLFW_PRESS)
@@ -506,17 +534,17 @@ float maxRotation(float curRot, float amount, float max, float min)
 
 void Character::moveMouse(const MouseMoveEvent& event)
 {
-    if (_hasMoved == false)
-    {
-        _hasMoved = true;
-        _lastCursorPos = event.getPos();
-        return;
-    }
-    glm::vec2 currentCurserPos = event.getPos();
-    glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
-    _lastCursorPos = currentCurserPos;
-    if (_cursorMode == GLFW_CURSOR_DISABLED)
-    {
+	if (_hasMoved == false)
+	{
+		_hasMoved = true;
+		_lastCursorPos = event.getPos();
+		return;
+	}
+	glm::vec2 currentCurserPos = event.getPos();
+	glm::vec2 deltaPos = currentCurserPos - _lastCursorPos;
+	_lastCursorPos = currentCurserPos;
+	if (_cursorMode == GLFW_CURSOR_DISABLED)
+	{
 		// Left / Right camera rotation.
 		float rotate = deltaPos.x * -RotationSpeed;
 		switch (_state)
@@ -539,7 +567,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
 		//Tilt
 		_camTilt.y += tilt;
 		_currentScene->getCamera().rotateX(tilt);
-    }
+	}
 }
 
 #pragma endregion
@@ -558,12 +586,12 @@ void Character::setScene(Scene * scene)
 
 void Character::pause()
 {
-    _eventManager->unlisten(this, &Character::moveCharacter);
-    _eventManager->unlisten(this, &Character::moveMouse);
+	// _eventManager->unlisten(this, &Character::moveCharacter);
+	_eventManager->unlisten(this, &Character::moveMouse);
 }
 void Character::resume()
 {
-	_eventManager->listen(this, &Character::moveCharacter);
+	// _eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
 	_hasMoved = false;
 }
@@ -574,6 +602,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_state = CharState::normal;
 	_height = height;
 	_lootValue = 0;
+	_score = 0.0f;
 	setPosition(pos);
 	_velocity = glm::vec3(0, 0, 0);
 	_camTilt = glm::vec2(0.0f);
@@ -581,6 +610,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_isMoving = 0;
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
+	_eventManager->listen(this, &Character::detected);
 	_canClimb = false;
 	_animFirstPhaseTime = 0.0f;
 	_animSecondPhaseTime = 0.0f;
@@ -595,12 +625,13 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 
 Character::Character()
 {
-    _lootValue = 0;
+	_lootValue = 0;
 }
 Character::~Character()
 {
     _eventManager->unlisten(this, &Character::moveCharacter);
     _eventManager->unlisten(this, &Character::moveMouse);
+	_eventManager->unlisten(this, &Character::detected);
 
 }
 

@@ -28,7 +28,7 @@ namespace gui
     LoadingView::~LoadingView()
     {
     }
-    void LoadingView::onRender()
+    void LoadingView::onRender(float dt)
     {
         _firstUpdate = false;
     }

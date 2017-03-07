@@ -1,9 +1,8 @@
-light P 45 1.2 53 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
-light P 50 1.2 53
-light P 42.5 1.2 49.1
-light P 46 1.2 39.1
-light P 48 1.2 39.1
-light P 55 1.2 53.1
+light P 5.5 1.2 18 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
+light P 4.9 1.2 9.5
+light P 2.9 1.2 5
+light P 4.5 1.2 27
+light P 14 1.2 5
 model S 1 11 M Table.obj R 0 90 0
 model S 2 11 M Table.obj
 model S 10 11 M Table.obj
@@ -11,10 +10,10 @@ model S 2 17 M Table.obj
 model S 3 17 M Table.obj
 model S 6 2 M Bookcase_Empty.obj R 0 90 0
 model S 7 2 M Bookcase_Empty.obj R 0 -90 0
-guard S 14 4
-path H 20 4
-guard S 14 3
-path H 14 3
+guard S 14 4 V 2 % 2_equal_loop_path
+path H 20 4 H 12 6
+guard S 14 3 V 0 % 0_equal_stand_still
+path S 0 0 % Guard_faces_this_square_when_in_still_state
 loot S 3 3 R 0 0 0 V 4 M Chalice.obj
 loot S 4 4 R 90 0 0 V 8 M Chandilier.obj
 loot S 5 5 R 0 90 0 V 12 M GoldBar.obj
@@ -37,3 +36,10 @@ listDoors V 1 S 85 49 S 96 43
 
 listDoors V 1 S 5 10 S 10 5 S 15 10 S 19 5 S 24 10
 listDoors S 5 13 S 10 17 S 15 13
+
+light P 45 1.2 53 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
+light P 50 1.2 53
+light P 42.5 1.2 49.1
+light P 46 1.2 39.1
+light P 48 1.2 39.1
+light P 55 1.2 53.1

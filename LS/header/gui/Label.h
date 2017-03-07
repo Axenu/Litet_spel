@@ -39,7 +39,7 @@ namespace gui
         Label(Font* font);
     	virtual ~Label();
 
-        void onRender();
+        void onRender(float dt);
 
         void onUpdate(float dt);
 

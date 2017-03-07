@@ -12,13 +12,14 @@
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
 #include "Game/Level/IObjectFactory.h"
+#include <Sound/Irrklang.h>
 
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
 
-#define climbingNoise 0.6f
-#define walkingNoise 0.4f
-#define sneakingModifier 0.5f;
+#define CLIMBINGNOISE 0.6f
+#define WALKINGNOISE 0.4f
+#define SNEAKINGMODIFIER 0.4f
 
 class CollectLootEvent : public Event
 {
@@ -55,6 +56,7 @@ public:
 	void testClimb();
 	bool guardVision();
 	int* getLootValuePointer();
+	float* getScoreValuePointer();
 	int* getGrenadeCountPointer();
 	float* getGrenadeCooldownTimer();
 	float getNoise();
@@ -67,13 +69,14 @@ public:
 
 	glm::vec3 getEyePos();
 
-	float calcLightOnPosition();
+	float calcLightAtPosition();
 
 	float getLightAtPosition();
 private:
 	void normalKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
 	bool charMovement(const KeyboardEvent& event);
+	void detected(const GuardAlertEvent &event);
 	void gVisionTimerUpdate(float dt);
 	void calcNoise();
 	void returnVision();
@@ -92,6 +95,8 @@ private:
     float _speed;
     float _isMoving;
     int _lootValue;
+	float _score;
+	float _detectionLevel;
     bool _hasMoved = false;
     int _cursorMode = GLFW_CURSOR_DISABLED;
 	//Climbing variables

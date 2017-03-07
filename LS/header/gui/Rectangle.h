@@ -34,7 +34,7 @@ namespace gui
         Rectangle(float width, float height);
         virtual ~Rectangle();
 
-        void onRender();
+        void onRender(float dt);
 
         void onUpdate(float dt);
 

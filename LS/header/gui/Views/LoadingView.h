@@ -29,7 +29,7 @@ namespace gui
         LoadingView(EventManager* manager, float* fps);
         virtual ~LoadingView();
 
-        void onRender();
+        void onRender(float dt);
         void onUpdate(float dt);
         void pauseView() {}
         void resumeView() {}
