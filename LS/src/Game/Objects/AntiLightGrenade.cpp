@@ -63,6 +63,11 @@ void AntiLightGrenade::setLevel(Grid *level)
 	this->_currentLevel = level;
 }
 
+bool AntiLightGrenade::getExplodedGrenade()
+{
+	return _checkForSound;
+}
+
 void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::vec3 Direction)
 {
 	_landed = false;
