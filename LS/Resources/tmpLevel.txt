@@ -18,7 +18,8 @@ loot S 3 3 R 0 0 0 V 4 M Chalice.obj
 loot S 4 4 R 90 0 0 V 8 M Chandilier.obj
 loot S 5 5 R 0 90 0 V 12 M GoldBar.obj
 loot S 6 6 R 0 0 90 V 20 M Diamond.obj
-listDoors V 0 S 30 50 S 34 42 S 41 39 S 67 17 S 71 36 S 74 40
+listDoors V 0 S 30 50 S 34 42 S 41 39 S 67 17 S 71 36 S 74 40 S 93 35 S 91 18 S 91 3 S 94 3
+listDoors V 0 S 78 14 S 24 5 S 14 7 S 11 10 S 10 41 S 71 14
 listDoors V 1 S 21 49 S 8 44
 listDoors V 1 S 24 44 S 31 45
 listDoors V 1 S 41 50 S 34 48
@@ -33,10 +34,17 @@ listDoors V 2 S 55 34 S 62 38 S 69 38 S 64 40
 listDoors V 1 S 64 45 S 64 51
 listDoors V 1 S 74 46 S 74 51
 listDoors V 1 S 85 49 S 96 43
-
-listDoors V 1 S 5 10 S 10 5 S 15 10 S 19 5 S 24 10
-listDoors S 5 13 S 10 17 S 15 13
-
+listDoors V 1 S 91 30 S 86 26 S 91 24
+listDoors V 1 S 94 30 S 94 24
+listDoors V 1 S 91 12 S 86 10 S 91 7
+listDoors V 1 S 94 16 S 94 8 
+listDoors V 2 S 73 4 S 64 3 S 70 9
+listDoors V 1 S 54 5 S 60 7 S 54 10
+listDoors V 1 S 52 14 S 63 14
+listDoors V 1 S 47 3 S 42 5 S 35 3
+listDoors V 1 S 44 14 S 33 14
+listDoors V 1 S 19 10 S 17 17 S 14 24
+listDoors V 1 S 11 20 S 4 28 S 8 34
 light P 45 1.2 53 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
 light P 50 1.2 53
 light P 42.5 1.2 49.1
