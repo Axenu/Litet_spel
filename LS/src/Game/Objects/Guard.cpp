@@ -13,16 +13,26 @@ void Guard::update(float dt)
 	switch (_state)
 	{
 	case GuardState::pathing:
+		//True if no grid path exists/complete
 		if (_path->walkOnPath(&pos, _speed, dt))
 		{
 			glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
-			if (_walkingPoints.size() == 0)
-				_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getSquare(getWorldPos()), 15);//		_path = _currentLevel->generatePath(start, _currentLevel->getRandomSquare());
-			else
-				_path = _currentLevel->getGrid().generatePath(start, getNextPosition(), 15);
+			glm::ivec2 point;
+			if (_walkPoints.hasPath())
+				point = _walkPoints.getNextPosition();
+			else if (_walkPoints.walkRandom())
+				point = _currentLevel->getGrid().getRandomSquare();
+			else if (_walkPoints.walkToEnd())
+			{
+				//Make the guard stop moving
+				setStillState();
+				break;
+			}
+			//Slightly average distance to search in grid
+			int dist = std::max(std::abs(point.x - start.x), std::abs(point.y - start.y)) + 10;
+			//Generate a new path
+			_path = _currentLevel->getGrid().generatePath(start, point, dist);
 		}
-		if (pos.x < 0 || pos.z < 0)
-			int a = 0;
 		setPosition(pos);
 		face(_path->movingTo());
 		break;
@@ -42,19 +52,10 @@ void Guard::update(float dt)
 
 }
 
-glm::vec2 Guard::getNextPosition()
-{
-	_whatPathToLoad += 1;
-	if (_whatPathToLoad >= _walkingPoints.size())
-		_whatPathToLoad = 0;
-	return(_walkingPoints[_whatPathToLoad]);
-}
-
-Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, std::vector<glm::vec2>& walkingPoints) :
-	GameObject(m), _player(player), _currentLevel(level), _walkingPoints(std::move(walkingPoints))
+Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &m, Level *level, WalkPoints &walkingPoints) :
+	GameObject(m), _player(player), _currentLevel(level), _walkPoints(std::move(walkingPoints))
 {
 	_eventManager = event;
-	_whatPathToLoad = 0;
 
 	setPosition(position);
 	_detectFov = std::cos(GUARDFOV);
@@ -68,8 +69,6 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 	_noiseDetVal = 0.0f;
 
-	_state = GuardState::pathing;
-
 	//setup lantern
 	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
  	_lantern = new PointLightObject(light, this);
@@ -80,6 +79,15 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 Guard::~Guard()
 {
+}
+
+void Guard::init()
+{
+	GameObject::init();
+	if (_walkPoints.hasPath() || _walkPoints.walkRandom())
+		setPathingState();
+	else
+		setStillState();
 }
 
 GuardState Guard::checkState(float dt)
@@ -107,12 +115,21 @@ GuardState Guard::checkState(float dt)
 			_interestTime = LOOKNOISEINTRESTTIME;
 		}
 		break;
+	case GuardState::still:
+		break;
 	default:
-		setLookingState();
+		setStillState();
 	}
 	return _state;
 }
 
+void Guard::setStillState()
+{
+	_state = GuardState::still;
+	face(_currentLevel->getGrid().getCenter(_walkPoints._faceDir));
+	//Set properate animation
+	_animatedSkel->setAnimPose("", 0.5f, 0.f);
+}
 void Guard::setLookingState()
 {
 	_state = GuardState::looking;
