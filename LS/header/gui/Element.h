@@ -42,9 +42,10 @@ namespace gui
         void addChild(Element* child);
 
         Element *checkCollision(glm::vec2 &pos);
-        virtual void cursorDidEnter() {}
-        virtual void cursorDidExit() {}
-        virtual bool handleClick(int action);
+        virtual void cursorDidEnter(glm::vec2 pos) {}
+        virtual void cursorDidExit(glm::vec2 pos) {}
+        virtual void cursorMovedInside(glm::vec2 pos) {}
+        virtual bool handleClick(int action, glm::vec2 pos);
 
 
         //getters
@@ -61,6 +62,7 @@ namespace gui
         void setScale(glm::vec2 &scale);
         void setScale(float x, float y);
         void setScale(float s);
+        void setReactive(bool react);
 
         void activate();
         void deactivate();

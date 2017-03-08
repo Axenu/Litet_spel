@@ -97,12 +97,12 @@ public:
 
 	virtual ~Node();
 
+
 private:
 	bool _isActive;
 	/* Our forward and up local orientation vectors */
 	glm::vec3 _forward, _up;
 
-	void calcModelMatrix();
 	void reOrthogonalize();
 protected:
 	glm::vec3 _position;
@@ -110,6 +110,10 @@ protected:
     glm::mat4 _modelMatrix;
     std::vector<Node *> _children;
     Node *_parent = nullptr;
+	
+	/* Method allowing access for custom node implementations */
+	void updateChildren(float dT);
+	void calcModelMatrix();
 
     virtual void onUpdate(float dt){}
     virtual void onRender(){}

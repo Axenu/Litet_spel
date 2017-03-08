@@ -63,6 +63,5 @@ public:
 	virtual ~Guard();
 	virtual void init();
 	virtual	void update(float dt);
-	PointLightObject *getLight();
 	unsigned int _id;
 };

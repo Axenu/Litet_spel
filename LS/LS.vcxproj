@@ -158,9 +158,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render\Mesh\Animation\BoneNode.cpp" />
     <ClCompile Include="src\Game\Scene\SceneEventManager.cpp" />
     <ClCompile Include="src\Game\Objects\Door.cpp" />
     <ClCompile Include="src\gui\ProgressBar.cpp" />
+    <ClCompile Include="src\gui\Views\CreditsView.cpp" />
     <ClCompile Include="src\gui\Views\LoadingView.cpp" />
     <ClCompile Include="src\gui\Views\PauseView.cpp" />
     <ClCompile Include="src\math\GridTraveler.cpp" />
@@ -248,12 +250,14 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Render\Mesh\Animation\BoneNode.h" />
     <ClInclude Include="header\Event\SceneEvents\CreateEvents.h" />
     <ClInclude Include="header\Event\SceneEvents\SceneEvent.h" />
     <ClInclude Include="header\Game\Level\IObjectFactory.h" />
     <ClInclude Include="header\Game\Objects\Door.h" />
     <ClInclude Include="header\Game\Objects\WalkPoints.h" />
     <ClInclude Include="header\gui\ProgressBar.h" />
+    <ClInclude Include="header\gui\Views\CreditsView.h" />
     <ClInclude Include="header\gui\Views\LoadingView.h" />
     <ClInclude Include="header\gui\Views\PauseView.h" />
     <ClInclude Include="header\keyBindings.h" />
