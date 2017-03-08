@@ -14,5 +14,7 @@ namespace sic {
 #define WIN_SOUND "Resources/Sounds/WinSound.wav"
 #define LOSE_SOUND "Resources/Sounds/Gameover.wav"
 #define PLAYERWALKING "Resources/Sounds/footSteps.wav"
+#define LOOTINGSOUND "Resources/Sounds/LootingSound.wav"
+#define CLIMBINGSOUND "Resources/Sounds/Climbingeffect.wav"
 //Lootlevel
 #define MAX_LOOT_LEVEL 20
