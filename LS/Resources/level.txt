@@ -1,4 +1,4 @@
-light P 5.5 1.2 18 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5 % Sets_light_values_until_set_again
+light P 5.5 1.2 18 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
 light P 4.9 1.2 9.5
 light P 2.9 1.2 5
 light P 4.5 1.2 27

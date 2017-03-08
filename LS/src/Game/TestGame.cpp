@@ -16,11 +16,13 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 	//Create the scene, and the level
 	Level* level;
 	std::unique_ptr<Scene> scene = _factory.createLevel("Demo1.bmp", level);
+	//std::unique_ptr<Scene> scene = _factory.createLevel("roomtest.bmp", level);
 	//Initiate camera and renderer vars:
 	Camera& cam = scene->setCamera(_setting);
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
 	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), scene->getCamera());
 	Character* player = _factory.createCharacter(glm::ivec2(2, 2), 1.3f);
+	//Character* player = _factory.createCharacter(glm::ivec2(48, 53), 1.3f);
 	_player = player;
 
 
