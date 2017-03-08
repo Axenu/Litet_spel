@@ -60,7 +60,7 @@ namespace Config
                 std::cout << "Var not found in config: " << varName << std::endl;
             }
         }
-        return false;
+        return true;
     }
     bool saveConfig(std::string path)
     {
@@ -77,5 +77,6 @@ namespace Config
         confFile << "shadowMapSize " << shadowMapSize << std::endl;
         confFile << "borderLess " << borderLess << std::endl;
         confFile << "showFPS " << showFPS << std::endl;
+        return true;
     }
 }

@@ -39,7 +39,7 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-	
+
 		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
 
 		break;
@@ -65,6 +65,8 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
+		break;
+	default:
 		break;
 	}
 
@@ -200,6 +202,8 @@ void Guard::setLookingState()
 	case GuardState::still:
 		_returnPoint = getWorldPos();
 		break;
+	default:
+		break;
 	}
 	_state = GuardState::looking;
 }
@@ -226,7 +230,7 @@ void Guard::setSearchingState()
 		_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
 	}
 	_interestTime = SEARCHINTERESTTIME;
-	
+
 	setPath(this->getWorldPos(), _pointOfInterest);
 
 	_state = GuardState::searching;

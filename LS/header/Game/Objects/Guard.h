@@ -41,7 +41,6 @@ private:
 	std::shared_ptr<Path> _path;
 	WalkPoints _walkPoints;
 	float _speed;
-	float _distLength;
 	float _detectionScore;
 	float _noiseDetVal;
 	float _finalDetVal;
@@ -49,12 +48,10 @@ private:
 	glm::vec3 _pointOfInterest;
 	glm::vec3 _returnPoint;
 	GuardState _state;
-	PointLightObject *_lantern;
 
 	//Field of view in cosine
 	float _detectFov;
 	Level *_currentLevel;
-	float _currentGridSpace;
 	GuardState checkState(float dt);
 	void setStillState();
 	void setLookingState();
