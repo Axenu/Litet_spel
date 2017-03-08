@@ -30,9 +30,11 @@ namespace gui
         Checkbox *_soundCheckbox;
         Checkbox *_fpsCheckbox;
         Checkbox *_borderlessCheckbox;
+        //passed in ctor
+        EventManager *_eventManager;
 
     public:
-        SettingsView();
+        SettingsView(EventManager *em);
         virtual ~SettingsView();
 
         void onRender(float dt) {}

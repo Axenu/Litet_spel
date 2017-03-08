@@ -33,8 +33,8 @@ void PointLightObject::update(float dT) {
 		_positionOffset = _positionDestination;
 		_positionDestination = glm::vec3((std::fmod((float)rand(), 1000.0f)-500.0f)/20000.0f, (std::fmod((float)rand(), 1000.0f)-500.0f)/20000.0f, (std::fmod((float)rand(), 1000.0f)-500.0f)/20000.0f);
 	}
-	// _lightInfo._light._diffuse = glm::vec4(0.5f, 0.5f, 0.0f, 1.0f);
 	_lightInfo._light._pos += _positionOffset;
+	// _lightInfo._light._fadeDist = 3.5f + _positionOffset.x * 5.f;
 	GameObject::setModelAABB(_lightInfo.generateAABB());
 	_lightInfo.updateMatrices();
 }
