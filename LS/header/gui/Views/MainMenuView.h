@@ -24,7 +24,7 @@ namespace gui
     {
     private:
         //passed from main
-        EventManager* _manager;
+        EventManager* _eventManager;
         //owned and deleted by subclass View -> Element
         gui::Button* _startButton;
         gui::Button* _settingsButton;
