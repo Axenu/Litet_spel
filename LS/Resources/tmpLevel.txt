@@ -37,6 +37,53 @@ model S 2 17 M Table.obj
 model S 3 17 M Table.obj
 model S 6 2 M Bookcase_Empty.obj R 0 90 0
 model S 7 2 M Bookcase_Empty.obj R 0 -90 0
+
+
+model S 53 46 M Table.obj R 0 90 0
+model S 50 39 M drawer.obj R 0 0 0
+model S 44 39 M drawer.obj R 0 0 0
+model S 42 46 M Fireplace.obj R 0 270 0
+
+
+
+model S 62 52 M Table.obj R 0 0 0
+model S 61 40 M drawer.obj R 0 180 0
+model S 44 39 M drawer.obj R 0 0 0
+model S 68 42 M Fireplace.obj R 0 0 0
+loot S 44 39 R 0 0 0 V 4 M Chalice.obj
+loot S 61 40 R 0 0 0 V 4 M GoldBar.obj
+model S 65 49 M Table.obj R 0 90 0
+model S 69 44 M Bookcase_Empty.obj R 0 0 0
+model S 70 42 M Fireplace.obj R 0 0 0
+loot S 69 44 R 0 0 0 V 4 M Chalice.obj
+
+//model S 45 50 M Table.obj R 0 0 0 up
+//model S 46 50 M Table.obj R 0 90 0 vänster
+//model S 47 50 M Table.obj R 0 180 0 ner 
+//model S 48 50 M Table.obj R 0 270 0 höger
+
+model S 79 50 M Table.obj R 0 180 0
+model S 90 50 M Bookcase_Empty.obj R 0 180 0 
+model S 97 45 M Fireplace.obj R 0 270 0 
+model S 97 39 M WingChair.obj R 0 270 0 
+model S 95 38 M Table.obj R 0 0 0 
+loot S 95 38 R 0 0 0 V 4 M Diamond.obj 
+loot S 90 50 R 0 0 0 V 4 M Chalice.obj 
+
+model S 75 19 M Bookcase_Empty.obj R 0 270 0  
+model S 75 21 M Bookcase_Empty.obj R 0 270 0
+model S 75 23 M Bookcase_Empty.obj R 0 270 0 
+model S 75 25 M Bookcase_Empty.obj R 0 270 0 
+model S 75 27 M Bookcase_Empty.obj R 0 270 0 
+model S 75 29 M Bookcase_Empty.obj R 0 270 0 
+model S 75 31 M Bookcase_Empty.obj R 0 270 0 
+model S 75 33 M Bookcase_Empty.obj R 0 270 0 
+model S 75 35 M Bookcase_Empty.obj R 0 270 0  
+model S 75 37 M Bookcase_Empty.obj R 0 270 0 
+
+
+
+
 guard S 14 4 V 2 % 2_equal_loop_path
 path H 20 4 H 12 6
 guard S 14 3 V 0 % 0_equal_stand_still
