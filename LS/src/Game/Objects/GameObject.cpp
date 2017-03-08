@@ -41,8 +41,6 @@ void GameObject::init()
 void GameObject::update(float dt)
 {
 	Node::update(dt);
-	// if (_animatedSkel) //Update anim controller if it exist.
-	// 	_animatedSkel->update(dt);
 	_model.transform(_modelMatrix);
 }
 
@@ -88,4 +86,15 @@ void GameObject::addToFrame(DrawFrame &dF)
 	{
 		dF.add(_animatedSkel.get());
 	}
+}
+
+
+bool GameObject::hasSkeleton() const
+{
+	return _animatedSkel.get() != nullptr;
+}
+
+const AnimatedSkeleton* GameObject::getSkeleton() const
+{
+	return _animatedSkel.get();
 }

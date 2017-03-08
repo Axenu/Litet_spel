@@ -42,6 +42,7 @@ namespace gui
         glm::vec4& getColor();
         //setters
         void setColor(glm::vec4& color);
+        void setOpacity(float opacity);
 
     };
 

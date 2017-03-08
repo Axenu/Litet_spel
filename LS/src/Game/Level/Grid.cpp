@@ -398,6 +398,7 @@ void Grid::loadingBmpPicture(const char* filename)
 			{
 				std::cout << "error" << std::endl;
 				std::cout << i << "," << realj << std::endl;
+				std::cout << "(" << glm::vec3(data[j], data[j + 1], data[j + 2]).x << ", " << glm::vec3(data[j], data[j + 1], data[j + 2]).y << ", " << glm::vec3(data[j], data[j + 1], data[j + 2]).z << ")" << std::endl;
 			}
 			_twodArray[height - 1 - i][realj].value = -1;
 			realj++;
@@ -647,7 +648,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	int currentX = (int)glm::floor(position.x / GRIDSPACE);
 	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
 
-	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength - 1 || currentZ > _heightLength - 1)
+	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength - 2 || currentZ > _heightLength - 2)
 	{
 		position.x += velocity.x;
 		position.z += velocity.z;
@@ -815,7 +816,7 @@ bool Grid::wallCollissionForGrenade(glm::vec3 position, glm::vec3 velocity)
 	int currentX = (int)glm::floor(position.x / GRIDSPACE);
 	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
 
-	if (currentX < 0 || currentZ < 0 || currentX > _widthLength || currentZ > _heightLength)
+	if (currentX < 0 || currentZ < 0 || currentX > _widthLength - 1 || currentZ > _heightLength - 1)
 	{
 		return false;
 	}

@@ -9,7 +9,7 @@ namespace gui {
         _name = "HUDView";
 
         gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
-        if (sic::debug)
+        if (Config::showFPS)
         {
             gui::Label *l = new gui::Label(font);
             l->addStringComponent(new StringComponentString("FPS: "));
@@ -36,7 +36,6 @@ namespace gui {
         _scoreBackground = new Rectangle(0.5f, 0.15f);
         _scoreBackground->setPosition(-1.f, 0.85f);
         color = PALLETPRIMARY;
-        color.w = 0.6f;
         _scoreBackground->setColor(color);
         addChild(_scoreBackground);
         //Display player score
@@ -52,7 +51,6 @@ namespace gui {
         _lootBackground = new Rectangle(0.5f, 0.15f);
         _lootBackground->setPosition(0.5f, 0.85f);
         color = PALLETPRIMARY;
-        color.w = 0.6f;
         _lootBackground->setColor(color);
         addChild(_lootBackground);
         //Display player loot
@@ -137,10 +135,7 @@ namespace gui {
         _eventManager->listen(this, &HUDView::KeyboardPressed);
         _isActive = true;
 
-        // Setting setting(_parent->getWindowWidth(), _parent->getWindowHeight(), 3, 0.1f, 25.f, 70.f);
-    	// setting._renderSetting._textureSetup[2] = GL_RGBA;
-        // _g = std::unique_ptr<TestGame>(new TestGame(setting, _eventManager));
-
+        _gameOverCD = -1.0f;
     }
     HUDView::~HUDView()
     {
@@ -161,6 +156,38 @@ namespace gui {
     }
     void HUDView::onUpdate(float dt)
     {
+        if (_gameOverCD != -1.0f)
+        {
+            if (_gameOverCD > 0.0f)
+            {
+                _gameOverCD -= dt;
+                float opacity = _gameOverCD/3.0f;
+                _scoreLabel->setOpacity(opacity);
+                _lootLabel->setOpacity(opacity);
+                _soundPB->setOpacity(opacity);
+                _lightPB->setOpacity(opacity);
+                _grenadeCountLabel->setOpacity(opacity);
+                _grenadeCooldownCounter->setOpacity(opacity);
+                _scoreBackground->setOpacity(opacity);
+                _lootBackground->setOpacity(opacity);
+                _lightLabel->setOpacity(opacity);
+                _soundLabel->setOpacity(opacity);
+                _grenadeLabel->setOpacity(opacity);
+                return;
+            }
+            else
+            {
+                //game over stored event?
+                GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
+                if (view == nullptr)
+                {
+                    view = new GameOverView(_eventManager, false);
+                    _parent->setView(view);
+                }
+                view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
+                view->updateText(false);
+            }
+        }
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
         _lightPB->setValue(_game->getCharacter()->getLightAtPosition());
@@ -222,7 +249,19 @@ namespace gui {
         cursorModeChangeEvent event(GLFW_CURSOR_DISABLED);
         _eventManager->execute(event);
         _isActive = true;
-
+        _gameOverCD = -1.0f;
+        float opacity = 1.0f;
+        _scoreLabel->setOpacity(opacity);
+        _lootLabel->setOpacity(opacity);
+        _soundPB->setOpacity(opacity);
+        _lightPB->setOpacity(opacity);
+        _grenadeCountLabel->setOpacity(opacity);
+        _grenadeCooldownCounter->setOpacity(opacity);
+        _scoreBackground->setOpacity(opacity);
+        _lootBackground->setOpacity(opacity);
+        _lightLabel->setOpacity(opacity);
+        _soundLabel->setOpacity(opacity);
+        _grenadeLabel->setOpacity(opacity);
     }
     void HUDView::switchToGuardVision(const GuardVisionEvent &event)
     {
@@ -293,14 +332,27 @@ namespace gui {
     //Handle game ended events
     void HUDView::gameOver(const GameOverEvent &event)
     {
-        GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
-        if (view == nullptr)
+        // set Game over flag and begin countdown
+        // move camera towards guard.
+        if (event.hasWon())
         {
-            view = new GameOverView(_eventManager, event);
-            _parent->setView(view);
+            GameOverView *view = dynamic_cast<GameOverView*>(_parent->setView("GameOverView"));
+            if (view == nullptr)
+            {
+                view = new GameOverView(_eventManager, event.hasWon());
+                _parent->setView(view);
+            }
+            view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
+            view->updateText(event.hasWon());
         }
-        view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
-        view->updateText(event);
+        else
+        {
+            _tipDisplay->updateStringComponent(0, new StringComponentString("Game over!"));
+            _tipDisplay->activate();
+            _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
+            _tipDisplay->update(0.0f);
+            _gameOverCD = 3.0f;
+        }
     }
     //Display information when player reaches exit
     void HUDView::exitSquareTrigger(const CharacterSquareEvent &event)

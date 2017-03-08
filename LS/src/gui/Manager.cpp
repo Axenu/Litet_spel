@@ -92,32 +92,35 @@ namespace gui
     {
         if (_cursorMode == GLFW_CURSOR_NORMAL && _currentView != nullptr)
         {
-            _lastCursorPos = event.getPos();
-            glm::vec2 pos;
-            pos.x = (_lastCursorPos.x / (float)_windowWidth * 2) - 1;
-            pos.y = (1 - (_lastCursorPos.y / (float)_windowHeight * 2));
-            if (pos.x >= -1 && pos.y >= -1 && pos.x <= 1 && pos.y <= 1)
+            glm::vec2 pos = event.getPos();
+            _lastCursorPos.x = (pos.x / (float)_windowWidth * 2) - 1;
+            _lastCursorPos.y = (1 - (pos.y / (float)_windowHeight * 2));
+            if (_lastCursorPos.x >= -1 && _lastCursorPos.y >= -1 && _lastCursorPos.x <= 1 && _lastCursorPos.y <= 1)
             {
-                Element *e = _currentView->View::checkCollision(pos);
+                Element *e = _currentView->View::checkCollision(_lastCursorPos);
                 if (e != nullptr)
                 {
                     if (_selectedElement == nullptr)
                     {
                         _selectedElement = e;
-                        e->cursorDidEnter();
+                        e->cursorDidEnter(_lastCursorPos);
                     }
                     else if (_selectedElement != e)
                     {
-                        _selectedElement->cursorDidExit();
+                        _selectedElement->cursorDidExit(_lastCursorPos);
                         _selectedElement = e;
-                        e->cursorDidEnter();
+                        e->cursorDidEnter(_lastCursorPos);
+                    }
+                    else
+                    {
+                        _selectedElement->cursorMovedInside(_lastCursorPos);
                     }
                 }
                 else
                 {
                     if (_selectedElement != nullptr)
                     {
-                        _selectedElement->cursorDidExit();
+                        _selectedElement->cursorDidExit(_lastCursorPos);
                         _selectedElement = nullptr;
                     }
                 }
@@ -141,7 +144,7 @@ namespace gui
             {
                 if (_selectedElement != nullptr)
                 {
-                    _selectedElement->handleClick(event.getAction());
+                    _selectedElement->handleClick(event.getAction(), _lastCursorPos);
                 }
             }
         }

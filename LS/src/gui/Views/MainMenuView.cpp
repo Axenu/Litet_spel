@@ -1,4 +1,5 @@
 #include "gui/Views/MainMenuView.h"
+#include "gui/Views/SettingsView.h"
 #include "gui/Manager.h"
 
 namespace gui
@@ -26,12 +27,32 @@ namespace gui
 			sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/BackgroundMusic.ogg"), true);
         }
     }
+    void MainMenuView::Credits(int action)
+    {
+        if (action == GLFW_RELEASE)
+        {
+            if (!_parent->setView("CreditsView"))
+            {
+                _parent->setView(new CreditsView());
+            }
+        }
+    }
+    void MainMenuView::Settings(int action)
+    {
+        if (action == GLFW_RELEASE)
+        {
+            if (!_parent->setView("SettingsView"))
+            {
+                _parent->setView(new SettingsView());
+            }
+        }
+    }
     MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
     {
         _name = "MainMenuView";
 
         gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
-        if (sic::debug)
+        if (Config::showFPS)
         {
             gui::Label *l = new gui::Label(font);
             l->addStringComponent(new StringComponentString("FPS: "));
@@ -55,7 +76,7 @@ namespace gui
     	_settingsButton->setPosition(-_startButton->getSize().x*0.25f, 0.2f);
         _settingsButton->setPrimaryColor(PALLETPRIMARY);
         _settingsButton->setSecondaryColor(PALLETHIGHLIGHT);
-        // _startButton->listen(this, &MainMenuView::StartGame);
+        _settingsButton->listen(this, &MainMenuView::Settings);
         _settingsButton->setScale(0.5,0.5);
         addChild(_settingsButton);
 
@@ -64,7 +85,7 @@ namespace gui
     	_creditsButton->setPosition(-_startButton->getSize().x*0.25f, 0.0f);
         _creditsButton->setPrimaryColor(PALLETPRIMARY);
         _creditsButton->setSecondaryColor(PALLETHIGHLIGHT);
-        // _startButton->listen(this, &MainMenuView::StartGame);
+        _creditsButton->listen(this, &MainMenuView::Credits);
         _creditsButton->setScale(0.5,0.5);
         addChild(_creditsButton);
 

@@ -1,5 +1,5 @@
 #include "Render/Mesh/Animation/AnimatedSkeleton.h"
-
+#include "Render/Mesh/Animation/BoneNode.h"
 
 
 AnimatedSkeleton::AnimatedSkeleton(Skeleton& ref, Node& root)
@@ -14,6 +14,8 @@ AnimatedSkeleton::AnimatedSkeleton(Skeleton& ref, Node& root)
 
 AnimatedSkeleton::~AnimatedSkeleton()
 {
+	for (unsigned int i = 0; i < _boneNodes.size(); i++)
+		delete _boneNodes[i];
 }
 
 void AnimatedSkeleton::update(float dT) {
@@ -47,6 +49,9 @@ void AnimatedSkeleton::update(float dT) {
 		//Update
 		updateSkeleton();
 	}
+	//Update bone nodes
+	for (unsigned int i = 0; i < _boneNodes.size(); i++)
+		_boneNodes[i]->update(dT);
 }
 void AnimatedSkeleton::updateSkeleton()
 {
@@ -120,7 +125,21 @@ unsigned int AnimatedSkeleton::boneCount() const {
 
 /* Get the world matrix of a bone
 */
-glm::mat4 AnimatedSkeleton::getBoneWorld(unsigned int bone)
+glm::mat4 AnimatedSkeleton::getBoneWorld(unsigned int bone) const
 {
 	return _root.getModelMatrix() * _pose[bone];
+}
+
+
+/* Create a bone node for the skeleton */
+BoneNode* AnimatedSkeleton::getBoneNode(const std::string &bone) const
+{
+	unsigned int id;
+	if (_ref.getBoneIndex(bone, id))
+	{
+		BoneNode *node = new BoneNode(*this, id);
+		_boneNodes.push_back(node);
+		return node;
+	}
+	return nullptr;
 }

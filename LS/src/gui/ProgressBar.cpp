@@ -18,6 +18,7 @@ namespace gui
         addChild(_foregroundRect);
         _value = 0.5f;
         _inverted = false;
+        _clicked = false;
 
     }
     ProgressBar::~ProgressBar()
@@ -42,6 +43,50 @@ namespace gui
         }
     }
 
+    //cursor handling
+    void ProgressBar::cursorDidEnter(glm::vec2 pos)
+    {
+        // _rect->setColor(_secondaryColor);
+        // _cursorInside = true;
+    }
+    void ProgressBar::cursorDidExit(glm::vec2 pos)
+    {
+        // _rect->setColor(_primaryColor);
+        // _cursorInside = false;
+    }
+    void ProgressBar::cursorMovedInside(glm::vec2 pos)
+    {
+        if (_clicked)
+        {
+            glm::vec3 min = _modelMatrix * glm::vec3(0, 0, 1.0);
+            glm::vec3 max = _modelMatrix * glm::vec3(_size.x, _size.y, 1.0);
+            _value = (pos.x - min.x)/(max.x - min.x);
+            if (_inverted)
+            {
+                _value = 1 - _value;
+            }
+        }
+    }
+    bool ProgressBar::handleClick(int action, glm::vec2 pos)
+    {
+        if (action == GLFW_PRESS)
+        {
+            glm::vec3 min = _modelMatrix * glm::vec3(0, 0, 1.0);
+            glm::vec3 max = _modelMatrix * glm::vec3(_size.x, _size.y, 1.0);
+            _value = (pos.x - min.x)/(max.x - min.x);
+            if (_inverted)
+            {
+                _value = 1 - _value;
+            }
+            _clicked = true;
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            _clicked = false;
+        }
+        return false;
+    }
+
     // setters
     void ProgressBar::setPrimaryColor(glm::vec4 color)
     {
@@ -52,6 +97,13 @@ namespace gui
     {
         _secondaryColor = color;
         _foregroundRect->setColor(color);
+    }
+    void ProgressBar::setOpacity(float opacity)
+    {
+        _primaryColor.a = opacity;
+        _secondaryColor.a = opacity;
+        _backgroundRect->setOpacity(opacity);
+        _foregroundRect->setOpacity(opacity);
     }
     void ProgressBar::setValue(float value)
     {

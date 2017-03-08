@@ -5,6 +5,7 @@
 #include "Bone.h"
 #include "Skeleton.h"
 #include "BoneFrame.h"
+#include "BoneNode.h"
 
 class AnimatedSkeleton
 {
@@ -33,6 +34,8 @@ private:
 	/* Transformation from rest pose -> world space.
 	*/
 	std::vector<glm::mat4> _skinTransform;
+	/* Container for all bone nodes generated for the skeleton and object */
+	mutable std::vector<BoneNode*> _boneNodes;
 
 	/* Recalculates the end time when animation is looped */
 	void loopRefit();
@@ -57,5 +60,7 @@ public:
 
 	/* Get the world matrix of a bone
 	*/
-	glm::mat4 getBoneWorld(unsigned int bone);
+	glm::mat4 getBoneWorld(unsigned int bone) const;
+	/* Create a bone node for the skeleton */
+	BoneNode* getBoneNode(const std::string &bone) const;
 };

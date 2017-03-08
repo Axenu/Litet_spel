@@ -43,13 +43,14 @@ namespace gui
     void Button::setPrimaryColor(glm::vec4 color)
     {
         _primaryColor = color;
-        if (!_cursorInside)
-            _rect->setColor(color);
+        if (!_selected)
+            if (!_cursorInside)
+                _rect->setColor(color);
     }
     void Button::setSecondaryColor(glm::vec4 color)
     {
         _secondaryColor = color;
-        if (_cursorInside)
+        if (_cursorInside || _selected)
             _rect->setColor(color);
     }
     void Button::setTextColor(glm::vec4 color)
@@ -66,17 +67,18 @@ namespace gui
     {
 
     }
-    void Button::cursorDidEnter()
+    void Button::cursorDidEnter(glm::vec2 pos)
     {
         _rect->setColor(_secondaryColor);
         _cursorInside = true;
     }
-    void Button::cursorDidExit()
+    void Button::cursorDidExit(glm::vec2 pos)
     {
-        _rect->setColor(_primaryColor);
+        if (!_selected)
+            _rect->setColor(_primaryColor);
         _cursorInside = false;
     }
-    bool Button::handleClick(int action)
+    bool Button::handleClick(int action, glm::vec2 pos)
     {
         if (_callback != nullptr)
         {
@@ -89,5 +91,13 @@ namespace gui
     {
         _label->addStringComponent(sc);
         onUpdate(0.0f);
+    }
+    void Button::setSelected(bool select)
+    {
+        _selected = select;
+        if (_selected)
+            _rect->setColor(_secondaryColor);
+        else
+            _rect->setColor(_primaryColor);
     }
 }

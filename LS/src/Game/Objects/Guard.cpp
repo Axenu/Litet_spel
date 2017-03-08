@@ -46,7 +46,7 @@ void Guard::update(float dt)
 
 	case GuardState::looking:
 		face(_pointOfInterest);
-		
+
 		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
 
 		break;
@@ -71,7 +71,7 @@ void Guard::update(float dt)
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
 							//Get direction vector and distance to player
-	
+
 	visionDetection(pos, dt, playerDist, dirToPlayer);
 	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
 	finalDetection();
@@ -95,13 +95,6 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_noiseDetVal = 0.0f;
 
 	_finalDetVal = 0.0f;
-
-	//setup lantern
-	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
- 	_lantern = new PointLightObject(light, this);
-	_lantern->init();
-	_lantern->setPosition(0.0f, 1.0f, 1.0f);
-	addChild(_lantern);
 }
 
 Guard::~Guard()
@@ -352,9 +345,4 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		}
 	}
 	return 0.0f;
-}
-
-PointLightObject *Guard::getLight()
-{
-	return _lantern;
 }
