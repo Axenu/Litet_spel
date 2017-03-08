@@ -249,7 +249,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 				break;
 			case '%':
 				//Read comment
-				iss >> comment; 
+				iss >> comment;
 			default:
 				break;
 			}
