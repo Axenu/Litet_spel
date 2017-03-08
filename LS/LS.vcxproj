@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Render\Mesh\Animation\BoneNode.cpp" />
     <ClCompile Include="src\Game\Scene\SceneEventManager.cpp" />
     <ClCompile Include="src\Game\Objects\Door.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\Config.h" />
     <ClInclude Include="header\Render\Mesh\Animation\BoneNode.h" />
     <ClInclude Include="header\Event\SceneEvents\CreateEvents.h" />
     <ClInclude Include="header\Event\SceneEvents\SceneEvent.h" />
