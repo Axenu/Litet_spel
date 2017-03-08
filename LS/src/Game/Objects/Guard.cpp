@@ -40,14 +40,14 @@ void Guard::update(float dt)
 		setPosition(pos);
 		face(_path->movingTo());
 
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
+		sound.PlaySource3DSound(sound.GetSound(GUARD_WALK), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
 
 		break;
 
 	case GuardState::looking:
 		face(_pointOfInterest);
 
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
+		sound.PlaySource3DSound(sound.GetSound(GUARD_WALK), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
 
 		break;
 	case GuardState::searching:
@@ -308,7 +308,7 @@ void Guard::finalDetection()
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
-		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
+		sound.PlaySource2DSound(sound.GetSound(LOSE_SOUND), false);
 	}
 	else
 	{

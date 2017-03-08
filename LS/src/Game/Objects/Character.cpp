@@ -80,16 +80,16 @@ void Character::move(float dt) {
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
 		
 		if (_sneaking)
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
+			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
 		else
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
+			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
 
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
+		sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -100,7 +100,6 @@ void Character::climb(float dT)
 	_animTime += dT;
 	if (_animTime < _animEndTime)
 	{
-
 		if (_animTime < _animFirstPhaseTime)
 		{
 			glm::vec3 dir = _animEndPos - _position;
@@ -112,6 +111,7 @@ void Character::climb(float dT)
 		}
 		else if (_animTime < _animSecondPhaseTime) //Animate climb phase
 		{
+		//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, false, 1.0f);
 			float yDist = _animEndPos.y - _position.y;
 			float timeDiff = _animSecondPhaseTime - _animTime;
 			if (timeDiff > 0.00001f) //Check so animation phase is not about to end.
@@ -138,6 +138,7 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_state = CharState::normal;
+	//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, true);
 	}
 }
 
@@ -155,6 +156,7 @@ void Character::tryClimb()
 			_animEndTime = (_heightDiff + xzDist) / _speed;
 			_animTime = 0.0f;
 			_state = CharState::climbing;
+			
 		}
 	}
 }
@@ -360,6 +362,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				CollectLootEvent event(points);
 				_lootValue += points;
 				_score += points;
+				sound.PlaySource2DSound(sound.GetSound(LOOTINGSOUND), false);
 				_eventManager->execute(event);
 			}
 		}
@@ -373,7 +376,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
-				sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/WinSound.wav"), false);
+				sound.PlaySource2DSound(sound.GetSound(WIN_SOUND), false);
 
 			}
 		}
