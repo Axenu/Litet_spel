@@ -43,6 +43,7 @@ namespace gui
 
         void setPrimaryColor(glm::vec4 color);
         void setSecondaryColor(glm::vec4 color);
+        void setOpacity(float opacity);
         void setValue(float value);
         void setInverted(bool i);
 
