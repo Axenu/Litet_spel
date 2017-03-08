@@ -53,6 +53,7 @@ namespace gui
         glm::vec4 _secondaryColor;
         glm::vec4 _textColor;
         bool _cursorInside = false;
+        bool _selected = false;
 
         glm::vec2 _padding;
 
@@ -81,11 +82,12 @@ namespace gui
         void setTextColor(glm::vec4 color);
         void setPadding(float x, float y);
 
-        virtual void cursorDidEnter();
-        virtual void cursorDidExit();
-        bool handleClick(int action);
+        virtual void cursorDidEnter(glm::vec2 pos);
+        virtual void cursorDidExit(glm::vec2 pos);
+        virtual bool handleClick(int action, glm::vec2 pos);
 
         void addStringComponent(StringComponent* sc);
+        void setSelected(bool select);
 
     };
 

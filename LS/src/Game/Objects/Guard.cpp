@@ -39,14 +39,14 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-	
+
 			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
 
 		break;
 
 	case GuardState::looking:
 		face(_pointOfInterest);
-		
+
 		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
 
 		break;
@@ -55,7 +55,7 @@ void Guard::update(float dt)
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
 							//Get direction vector and distance to player
-	
+
 	visionDetection(pos, dt, playerDist, dirToPlayer);
 	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
 	finalDetection();

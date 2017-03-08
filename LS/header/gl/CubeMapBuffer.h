@@ -4,6 +4,7 @@
 #include "GLFunctions.h"
 #include "FrameBuffer.h"
 #include "DefferedSettings.h"
+#include "Config.h"
 
 namespace gl{
 

@@ -131,7 +131,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, Character& player, g
 	guard->_id = _guardCount++;
 	guard->init();
 	_scene->add(guard, true);
-	_scene->add(guard->getLight(), true);
+	// _scene->add(guard->getLight(), true);
 
 	return guard;
 }
@@ -239,7 +239,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 				break;
 			case '%':
 				//Read comment
-				iss >> comment; 
+				iss >> comment;
 			default:
 				break;
 			}
