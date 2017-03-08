@@ -15,8 +15,10 @@
 #define GUARDVIEWDISTANCE 20.f
 #define GUARDHEARDISTANCE 20.f
 
-#define LOOKNOISEINTRESTTIME 2.f
+#define LOOKNOISEINTRESTTIME 4.0f
+#define SEARCHINTERESTTIME 1.0f
 #define LOOKNOISELIMIT 0.4f
+#define SEARCHNOISELIMIT 0.6f
 
 #define GUARDFOV 45.0f * M_PIf / 180.f
 
@@ -24,7 +26,9 @@ enum GuardState
 {
 	pathing = 0,
 	still = 1,
-	looking
+	looking = 2,
+	searching = 3,
+	returning = 4
 };
 
 
@@ -43,6 +47,7 @@ private:
 	float _finalDetVal;
 	float _interestTime;
 	glm::vec3 _pointOfInterest;
+	glm::vec3 _returnPoint;
 	GuardState _state;
 	PointLightObject *_lantern;
 
@@ -54,6 +59,9 @@ private:
 	void setStillState();
 	void setLookingState();
 	void setPathingState();
+	void setSearchingState();
+	void setReturningState();
+	void setPath(glm::vec3 start, glm::vec3 point);
 	void noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos);
 	void visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer);
 	void finalDetection();

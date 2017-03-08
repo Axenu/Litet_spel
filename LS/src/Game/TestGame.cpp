@@ -8,7 +8,6 @@ TestGame::TestGame(Setting &setting, EventManager *events)
 }
 TestGame::~TestGame()
 {
-	std::cout << "delete game" << std::endl;
 }
 
 std::unique_ptr<Scene> TestGame::spawnScene() {

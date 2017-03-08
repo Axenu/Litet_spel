@@ -32,7 +32,7 @@ namespace gui
         int _loot;
 
     public:
-        GameOverView(EventManager* manager, const GameOverEvent &event);
+        GameOverView(EventManager* manager, bool hasWon);
         virtual ~GameOverView();
 
         void onRender(float dt);
@@ -41,7 +41,7 @@ namespace gui
         void resumeView() {}
 
         virtual void initiate();
-        void updateText(const GameOverEvent &event);
+        void updateText(bool hasWon);
 
         void setScoreAndLoot(float score, int loot);
 

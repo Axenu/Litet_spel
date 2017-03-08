@@ -159,14 +159,18 @@ namespace gui
             {
                 case 0:
                     Config::hasShadowMap = false;
+                    Config::shadowMapSize = 1;
                 break;
                 case 1:
+                    Config::hasShadowMap = true;
                     Config::shadowMapSize = 256;
                 break;
                 case 2:
+                    Config::hasShadowMap = true;
                     Config::shadowMapSize = 512;
                 break;
                 case 3:
+                    Config::hasShadowMap = true;
                     Config::shadowMapSize = 1024;
                 break;
                 default:

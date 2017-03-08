@@ -67,4 +67,8 @@ namespace gui
     {
         _color = color;
     }
+    void Rectangle::setOpacity(float opacity)
+    {
+        _color.a = opacity;
+    }
 }

@@ -9,4 +9,4 @@ namespace sic {
 
 }
 
-#define MAX_LOOT_LEVEL 100
+#define MAX_LOOT_LEVEL 20
