@@ -83,13 +83,18 @@ void Node::removeChild(Node *node) {
     }
 }
 
-void Node::update(float dt) {
+void Node::update(float dT) {
 	if (!_isActive)
 		return;
-	onUpdate(dt);
+	onUpdate(dT);
 	calcModelMatrix();
+	updateChildren(dT);
+}
+
+void Node::updateChildren(float dT)
+{
 	for (Node *Node : _children)
-		Node->update(dt);
+		Node->update(dT);
 }
 
 void Node::init()

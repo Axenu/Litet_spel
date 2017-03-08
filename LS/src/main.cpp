@@ -13,6 +13,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
+#include "Config.h"
 
 void setupWindow()
 {
@@ -31,10 +32,9 @@ void setupWindow()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_SAMPLES, 0);
-    glfwWindowHint(GLFW_DECORATED, true);
-	unsigned int wWidth = 1920, wHeight = 1080;
-	GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "Hello World", NULL, NULL);
+    // glfwWindowHint(GLFW_SAMPLES, 0);
+    glfwWindowHint(GLFW_DECORATED, !Config::borderLess);
+	GLFWwindow* window = glfwCreateWindow(Config::resolution.x, Config::resolution.y, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -76,7 +76,7 @@ void setupWindow()
 
 	gui::MainMenuView* guiScene = new gui::MainMenuView(&eventManager, &FPS);
 	gui::Manager guiManager(&eventManager);
-	guiManager.setWindowSize(wWidth, wHeight);
+	guiManager.setWindowSize(Config::resolution.x, Config::resolution.y);
 	guiManager.setView(guiScene);
 
 
@@ -106,7 +106,7 @@ void setupWindow()
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 		// unlock fps
-		glfwSwapInterval(0);
+		// glfwSwapInterval(0);
 
         /* Poll for and process events */
         glfwPollEvents();
@@ -117,6 +117,9 @@ void setupWindow()
 
 int main()
 {
+
+	//load settings
+	Config::loadConfig("resources/settings.conf");
 	// std::cout << "Init window!" << std::endl;
 	setupWindow();
 

@@ -89,3 +89,14 @@ void GameObject::addToFrame(DrawFrame &dF)
 		dF.add(_animatedSkel.get());
 	}
 }
+
+
+bool GameObject::hasSkeleton() const
+{
+	return _animatedSkel.get() != nullptr;
+}
+
+const AnimatedSkeleton* GameObject::getSkeleton() const
+{
+	return _animatedSkel.get();
+}

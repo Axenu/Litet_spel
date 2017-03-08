@@ -24,6 +24,12 @@ public:
 	Animation* getAnimation(const std::string &name);
 	const std::vector<Bone>& getBones() const;
 	const Bone& getBone(unsigned int i) const;
+	/* Access a bone from name. Returns if bone name exists.
+	boneName	<<	Name matched with the bones.
+	boneID		>>	Returned bone index if found.
+	return		>>	Returns true if bone was found.
+	*/
+	bool getBoneIndex(const std::string &boneName, unsigned int &boneID) const;
 	/* Get the number of bones in the skeleton */
 	unsigned int getNumBones() const;
 	/* Add an animation to the skeleton */

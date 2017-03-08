@@ -71,7 +71,7 @@ namespace gui
         }
         return nullptr;
     }
-    bool Element::handleClick(int action)
+    bool Element::handleClick(int action, glm::vec2 pos)
     {
         return false;
     }
@@ -127,6 +127,10 @@ namespace gui
     {
         _scale.x = s;
         _scale.y = s;
+    }
+    void Element::setReactive(bool react)
+    {
+        _isReactive = react;
     }
     void Element::activate()
     {
