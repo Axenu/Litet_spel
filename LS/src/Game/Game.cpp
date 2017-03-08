@@ -34,27 +34,30 @@ void Game::draw(float dT) {
 	RenderInfo rI(_resource, _scene->getCamera(), dF.getLightInfo(), dF.getGrenadeInfo());
 	dF.updateVisuals(dT);
 
-	glDisable(GL_CULL_FACE);
-	size_t numLights = rI._pLightInfo.size();
-	for (size_t i = 0; i < numLights; i++)
+	if (Config::hasShadowMap)
 	{
-		DrawFrame tempDF;
-		AABB lightAABB = rI._pLightInfo[i].generateAABB();
-		_scene->fetchDrawables(tempDF, lightAABB);
-		_resource.getCubeMap(i).bindDraw();
+		glDisable(GL_CULL_FACE);
+		size_t numLights = rI._pLightInfo.size();
+		for (size_t i = 0; i < numLights; i++)
+		{
+			DrawFrame tempDF;
+			AABB lightAABB = rI._pLightInfo[i].generateAABB();
+			_scene->fetchDrawables(tempDF, lightAABB);
+			_resource.getCubeMap(i).bindDraw();
 
-		//Render meshes
-		_shadowShader.setUp(rI._pLightInfo[i]);
-		tempDF.renderNonAnimatedMeshes(rI, &_shadowShader);
-		//Render skinned meshes
-		_skinnedShadowShader.setUp(rI._pLightInfo[i]);
-		tempDF.renderAnimatedMeshes(rI, &_skinnedShadowShader);
+			//Render meshes
+			_shadowShader.setUp(rI._pLightInfo[i]);
+			tempDF.renderNonAnimatedMeshes(rI, &_shadowShader);
+			//Render skinned meshes
+			_skinnedShadowShader.setUp(rI._pLightInfo[i]);
+			tempDF.renderAnimatedMeshes(rI, &_skinnedShadowShader);
 #ifdef DEBUG
-		gl::CheckGLErrors("Render stage failed: CubeMap");
+			gl::CheckGLErrors("Render stage failed: CubeMap");
 #endif
 
+		}
+		glEnable(GL_CULL_FACE);
 	}
-	glEnable(GL_CULL_FACE);
 
 	_resource.getDeffered().bindDraw();
 	dF.render(rI);

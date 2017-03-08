@@ -20,6 +20,7 @@ namespace gui
     private:
         Rectangle* _backgroundRect;
         Rectangle* _foregroundRect;
+        Rectangle* _highlightRect;
         glm::vec4 _primaryColor;
         glm::vec4 _secondaryColor;
         int _selectedIndex;
