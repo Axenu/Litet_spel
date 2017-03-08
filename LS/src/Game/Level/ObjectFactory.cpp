@@ -157,7 +157,7 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	object->setRotEuler(rotation);
 	object->init();
 	_scene->add(object, false);
-	if (type == gridType::object)
+	if (type == gridType::object || type == gridType::wall)
 		_level->getGrid().addObject(object, type);
 	return object;
 }
@@ -170,7 +170,8 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 squar
 	object->setPosition(calcPos(square, tmpModel.getBox()));
 	object->setRotEuler(rotation);
 	//Add rotation somewhere
-	object->moveY(1.f);
+	object->init();
+	object->moveY(_level->getGrid().getHeight(square.y, square.x) - object->getAABB().getMin().y);
 	object->init();
 	_scene->add(object, false);
 	return object;
@@ -255,6 +256,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		}
 		else if (type == "listDoors")
 		{
+			seed((unsigned int)time(NULL));
 			int lastSize = doorList.size();
 			//Generate open doors
 			for (unsigned short int i = 0; i < squareList.size(); i++)
