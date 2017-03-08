@@ -256,6 +256,7 @@
     <ClInclude Include="header\gui\ProgressBar.h" />
     <ClInclude Include="header\gui\Views\LoadingView.h" />
     <ClInclude Include="header\gui\Views\PauseView.h" />
+    <ClInclude Include="header\keyBindings.h" />
     <ClInclude Include="header\math\GridTraveler.h" />
     <ClInclude Include="header\math\AARect.h" />
     <ClInclude Include="header\Game\Level\Path.h" />
