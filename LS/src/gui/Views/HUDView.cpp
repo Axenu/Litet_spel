@@ -9,7 +9,7 @@ namespace gui {
         _name = "HUDView";
 
         gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
-        if (sic::debug)
+        if (Config::showFPS)
         {
             gui::Label *l = new gui::Label(font);
             l->addStringComponent(new StringComponentString("FPS: "));
