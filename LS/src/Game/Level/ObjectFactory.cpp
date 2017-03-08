@@ -212,7 +212,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		//Data items to fill on each line
 		glm::ivec2 square(0);
 		std::vector<glm::ivec2> squareList;
-		glm::vec3 pos(0.f), rot(0.f);
+		glm::vec3 pos(0.f), rot(0.f), offSet(0.f);
 		float value = 0.f;
 		std::string modelName;
 		//Switch statement readin next data type
@@ -220,6 +220,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		{
 			switch (iss.get())
 			{
+			case 'O': //Offset
+				iss >> offSet.x >> offSet.y >> offSet.z;
+				break;
 			case 'P': //Position
 				iss >> pos.x >> pos.y >> pos.z;
 				break;
@@ -256,7 +259,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			}
 		}
 		if (type == "model")
-			createObject(modelName, square, rot, gridType::object, glm::vec3(0.f, 0.f, 0.f));
+			createObject(modelName, square, rot, gridType::object, offSet);
 		else if (type == "light")
 		{
 			light._pos = pos;
