@@ -44,7 +44,7 @@ void Character::onUpdate(float dt)
 }
 
 void Character::move(float dt) {
-
+	ThreeDSoundEvent event;
 	if (_moveDir.x != 0 || _moveDir.y != 0)
 	{
 		//calculate inertia
@@ -65,14 +65,19 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
-
-		sound.PlaySource3DSound(sound.GetSound("Resources/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false);
+		
+		if (_sneaking)
+		event.addvalue("Resources/Sounds/footSteps.wav", false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
+		else
+		event.addvalue("Resources/Sounds/footSteps.wav", false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
+		//	sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
+		_eventManager->execute(event);
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		sound.PlaySource3DSound(sound.GetSound("Resources/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
+	//	sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -280,15 +285,17 @@ void Character::moveCharacter(const KeyboardEvent& event)
 	}
     else if (event.getKey() == GLFW_KEY_G)
 	{
-        if (event.getAction() == GLFW_PRESS)
-        {
-            if (_gridSquare._grid == gridType::exiting) // && _hasVictoryLoot TODO
-            {
-                //call endGameEvent
-                GameOverEvent event(true);
-                _eventManager->execute(event);
-            }
-        }
+		if (event.getAction() == GLFW_PRESS)
+		{
+			if (_gridSquare._grid == gridType::exiting && _lootValue >= MAX_LOOT_LEVEL * 0.5f) // && _hasVictoryLoot TODO
+			{
+				//call endGameEvent
+				GameOverEvent event(true);
+				_eventManager->execute(event);
+				//sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/WinSound.wav"), false);
+
+			}
+		}
 	}
 	else if (event.getKey() == GLFW_KEY_Q)
 	{

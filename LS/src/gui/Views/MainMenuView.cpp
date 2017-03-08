@@ -25,6 +25,7 @@ namespace gui
 			sound.PlaySource2DSound(_backgroundMusic, true); //credits too Thief Deadly Shadows OST - South Quarter
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
             _manager->execute(event);
+	//		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/BackgroundMusic.ogg"), true);
         }
     }
     MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()

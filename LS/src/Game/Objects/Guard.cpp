@@ -6,11 +6,49 @@ void Guard::update(float dt)
 	
 	glm::vec3 pos = _position;
 
-	/*if (this->getDistance(_player->getWorldPos()) < 5.0f)
+	dirToPlayer = _player->getWorldPos() - this->getWorldPos();
+	playerDist = glm::length(dirToPlayer);
+	dirToPlayer = glm::normalize(dirToPlayer);
+
+	checkState(dt);
+	ThreeDSoundEvent event;
+	switch (_state)
 	{
-		
-		sound.PlaySource3DSound(sound.GetSound("Resources/footSteps.wav"), false, _player->getWorldPos(), _position, _player->getForward(), _player->getUp(), dt);
-	}*/
+	case GuardState::pathing:
+		//True if no grid path exists/complete
+		if (_path->walkOnPath(&pos, _speed, dt))
+		{
+			glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
+			glm::ivec2 point;
+			if (_walkPoints.hasPath())
+				point = _walkPoints.getNextPosition();
+			else if (_walkPoints.walkRandom())
+				point = _currentLevel->getGrid().getRandomSquare();
+			else if (_walkPoints.walkToEnd())
+			{
+				//Make the guard stop moving
+				setStillState();
+				break;
+			}
+			//Slightly average distance to search in grid
+			int dist = std::max(std::abs(point.x - start.x), std::abs(point.y - start.y)) + 10;
+			//Generate a new path
+			_path = _currentLevel->getGrid().generatePath(start, point, dist);
+		}
+		setPosition(pos);
+		face(_path->movingTo());
+	
+		event.addvalue("Resources/Sounds/GuardWalking.wav", false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false, 1);
+		_eventManager->execute(event);
+			//sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
+
+		break;
+
+	case GuardState::looking:
+		face(_pointOfInterest);
+		event.addvalue("Resources/Sounds/GuardWalking.wav", false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true, 1);
+		_eventManager->execute(event);
+		//	sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
 
 	if (_path->walkOnPath(&pos, _speed, dt))
 	{
@@ -80,7 +118,23 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 Guard::~Guard()
 {
-
+	_finalDetVal = _noiseDetVal + _detectionScore;
+	if (_finalDetVal > 1.0f)
+	{
+		GameOverEvent event(false);
+		_eventManager->execute(event);
+	//	sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
+	}
+	else
+	{
+		GuardAlertEvent event(this->getWorldPos(), _finalDetVal);
+		event._id = _id;
+		_eventManager->execute(event);
+	}
+	if (_finalDetVal < LOOKNOISELIMIT)
+	{
+		_pointOfInterest = _player->getWorldPos();
+	}
 }
 
 float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)

@@ -14,7 +14,6 @@
 #include "gui/Views/HUDView.h"
 #include "staticVars.h"
 #include "gui/ProgressBar.h"
-#include "Sound/Irrklang.h"
 
 namespace gui
 {

@@ -4,12 +4,13 @@
 #include "Game/Level/Level.h"
 #include "Event/Input/InputManager.h"
 #include "Event/EventManager.h"
+#include "Event/Events.h"
 #include "Character.h"
 #include <stdlib.h>
 #include <time.h>
 #include "Game/Level/Path.h"
 #include <memory>
-#include "Sound/Irrklang.h"
+#include "WalkPoints.h"
 
 #define GUARDVIEWDISTANCE 10.f
 #define GUARDFOV 45.0f * M_PIf / 180.f

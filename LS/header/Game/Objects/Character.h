@@ -11,7 +11,8 @@
 #include "Game/Scene/Scene.h"
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
-#include "Sound/Irrklang.h"
+#include "Game/Level/IObjectFactory.h"
+
 #define RotationSpeed 0.005f
 
 

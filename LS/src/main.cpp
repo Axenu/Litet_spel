@@ -14,7 +14,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
-#include "Sound/Irrklang.h"
+#include "Sound/SoundManager.h"
 void setupWindow()
 {
 #ifndef __APPLE__
@@ -71,6 +71,7 @@ void setupWindow()
 	InputManager iManager(window, &eventManager);
 	bool windowalive=false;
 
+
 	//init dt calculation
 	float lastTime = (float)glfwGetTime();
 	float currentTime;
@@ -81,6 +82,8 @@ void setupWindow()
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(wWidth, wHeight);
 	guiManager.setView(guiScene);
+	Sound soundManager(&eventManager);
+
 
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))

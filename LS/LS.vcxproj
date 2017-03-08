@@ -239,6 +239,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Render\Mesh\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\Sound\SoundManager.cpp" />
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -273,7 +274,8 @@
     <ClInclude Include="header\gui\Views\MainMenuView.h" />
     <ClInclude Include="header\Render\Mesh\Shader\DefSkinnedMeshShader.h" />
     <ClInclude Include="header\Render\Mesh\ModelPart.h" />
-    <ClInclude Include="header\Sound\Irrklang.h" />
+    <ClInclude Include="header\Render\Mesh\Shader\ShadowCubeShader.h" />
+    <ClInclude Include="header\Sound\SoundManager.h" />
     <ClInclude Include="header\StaticVars.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\StringComponents.h" />

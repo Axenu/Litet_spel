@@ -1,5 +1,5 @@
-#include "Sound/Irrklang.h"
-
+#include "Sound/SoundManager.h"
+/*
 Sound::Sound()
 {
 	_engine = createIrrKlangDevice();
@@ -9,7 +9,7 @@ Sound::Sound()
 
 	_sound = nullptr;
 }
-
+*/
 Sound::~Sound()
 {
 	if (_engine)
@@ -23,11 +23,31 @@ Sound::~Sound()
 		_sound->drop();
 		_sound = nullptr;
 	}
+	//Unlisten to events
+	_eventManager->unlisten(this, &Sound::PlaySource3DSoundevent);
+}
+
+Sound::Sound(EventManager * eventManager)
+{
+	_engine = createIrrKlangDevice();
+
+	if (!_engine)
+		return;
+
+	_sound = nullptr;
+	_eventManager = eventManager;
+	//Listen to events
+	_eventManager->listen(this, &Sound::PlaySource3DSoundevent);
 }
 
 void Sound::PlaySource2DSound(ISoundSource* source, bool loop)
 {
 	_engine->play2D(source, loop);
+}
+
+void Sound::PlaySource3DSoundevent(const ThreeDSoundEvent & event)
+{
+	PlaySource3DSound(GetSound( event._filename), event._loop, event._listenerPos, event._origin, event._lookDir, event._up, event._dt, event._update);
 }
 
 void Sound::PlaySource3DSound(ISoundSource * source, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt, bool update)
