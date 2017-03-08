@@ -80,16 +80,16 @@ void Character::move(float dt) {
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
 		
 		if (_sneaking)
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
+			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
 		else
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
+			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
 
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
+		sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -373,7 +373,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
-				sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/WinSound.wav"), false);
+				sound.PlaySource2DSound(sound.GetSound(WIN_SOUND), false);
 
 			}
 		}
