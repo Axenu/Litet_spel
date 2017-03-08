@@ -77,3 +77,26 @@ GuardVisionEvent::~GuardVisionEvent()
 {
 
 }
+
+ThreeDSoundEvent::ThreeDSoundEvent()
+{
+
+}
+
+void ThreeDSoundEvent::addvalue(char * fileName, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt, bool update, float volume)
+{
+	_filename = fileName;
+	_loop = loop;
+	_listenerPos = listenerPos;
+	_origin = origin;
+	_lookDir = lookDir;
+	_up = up;
+	_dt = dt;
+	_update = update;
+	_volume = volume;
+}
+
+ThreeDSoundEvent::~ThreeDSoundEvent()
+{
+
+}

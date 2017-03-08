@@ -94,3 +94,22 @@ public:
 	bool _active;
 	float _duration;
 };
+class ThreeDSoundEvent : public Event
+{
+private:
+
+
+public:
+	char* _filename;
+	bool _loop;
+	glm::vec3 _listenerPos;
+	glm::vec3 _origin;
+	glm::vec3 _lookDir;
+	glm::vec3 _up;
+	float _dt;
+	bool _update;
+	float _volume;
+	void addvalue(char* fileName, bool loop, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, float dt, bool update, float volume);
+	ThreeDSoundEvent();
+	~ThreeDSoundEvent();
+};

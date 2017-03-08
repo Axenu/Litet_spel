@@ -13,7 +13,7 @@ void Guard::update(float dt)
 	dirToPlayer = glm::normalize(dirToPlayer);
 
 	checkState(dt);
-
+	ThreeDSoundEvent event;
 	switch (_state)
 	{
 	case GuardState::pathing:
@@ -39,15 +39,18 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
+	
+		event.addvalue("Resources/Sounds/GuardWalking.wav", false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false, 1);
+		_eventManager->execute(event);
+			//sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
 
 		break;
 
 	case GuardState::looking:
 		face(_pointOfInterest);
-
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
+		event.addvalue("Resources/Sounds/GuardWalking.wav", false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true, 1);
+		_eventManager->execute(event);
+		//	sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
 
 		break;
 	}
@@ -201,7 +204,7 @@ void Guard::finalDetection()
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
-		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
+	//	sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
 	}
 	else
 	{

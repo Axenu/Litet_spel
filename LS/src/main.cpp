@@ -13,6 +13,7 @@
 #include "gui/Views/MainMenuView.h"
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
+#include "Sound/SoundManager.h"
 #include "Config.h"
 
 void setupWindow()
@@ -66,6 +67,7 @@ void setupWindow()
 	EventManager eventManager;
 	InputManager iManager(window, &eventManager);
 
+
 	//init dt calculation
 	float lastTime = (float)glfwGetTime();
 	float currentTime;
@@ -78,7 +80,7 @@ void setupWindow()
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(Config::resolution.x, Config::resolution.y);
 	guiManager.setView(guiScene);
-
+	Sound soundManager(&eventManager);
 
 
 /* Loop until the user closes the window */
