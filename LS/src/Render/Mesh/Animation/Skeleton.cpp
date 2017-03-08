@@ -24,6 +24,19 @@ const Bone& Skeleton::getBone(unsigned int i) const {
 const std::vector<Bone>& Skeleton::getBones() const {
 	return _bones;
 }
+
+bool Skeleton::getBoneIndex(const std::string &boneName, unsigned int &boneID) const
+{
+	for (unsigned int i = 0; i < _bones.size(); i++)
+	{
+		if (_bones[i]._boneName == boneName)
+		{
+			boneID = i;
+			return true;
+		}
+	}
+	return false;
+}
 unsigned int Skeleton::getNumBones() const {
 	return _bones.size();
 }

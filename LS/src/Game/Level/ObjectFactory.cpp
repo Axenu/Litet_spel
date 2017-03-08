@@ -122,6 +122,7 @@ AntiLightGrenade* ObjectFactory::createLightGrenade(const std::string &model, gl
 
 Guard* ObjectFactory::createGuard(const std::string &model, Character& player, guardData &data)
 {
+	//Setup guard
 	Material mat(&_skinnedShader);
 	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	Model tmpModel = _models.GetModel(_modelPath + model, mat);
@@ -130,8 +131,17 @@ Guard* ObjectFactory::createGuard(const std::string &model, Character& player, g
 	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, points);
 	guard->_id = _guardCount++;
 	guard->init();
+
 	_scene->add(guard, true);
-	_scene->add(guard->getLight(), true);
+
+	//Setup guard's lantern
+	PointLightValue light(glm::vec3(0.f, 0.0f, 0.1f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
+	if (guard->hasSkeleton())
+	{
+		BoneNode* node = guard->getSkeleton()->getBoneNode("Index_R");
+		if (node)
+			PointLightObject* lantern = createLight(light, node);
+	}
 
 	return guard;
 }

@@ -79,13 +79,6 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_noiseDetVal = 0.0f;
 
 	_finalDetVal = 0.0f;
-
-	//setup lantern
-	PointLightValue light(glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
- 	_lantern = new PointLightObject(light, this);
-	_lantern->init();
-	_lantern->setPosition(0.0f, 1.0f, 1.0f);
-	addChild(_lantern);
 }
 
 Guard::~Guard()
@@ -249,9 +242,4 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		}
 	}
 	return 0.0f;
-}
-
-PointLightObject *Guard::getLight()
-{
-	return _lantern;
 }

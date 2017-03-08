@@ -34,11 +34,16 @@ public:
 	/* Add the object to the frame
 	*/
 	virtual void addToFrame(DrawFrame &dF);
+	/* Get the skeleton of this object, can be null */
+	const AnimatedSkeleton* getSkeleton() const;
+	/* Returns if the object has a skeleton and thus animated */
+	bool hasSkeleton() const;
 protected:
 	/* The gameobjects animated skeleton controller */
 	std::unique_ptr<AnimatedSkeleton> _animatedSkel;
 private:
 	Model _model;
+
 };
 
 
