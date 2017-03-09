@@ -323,6 +323,15 @@ model S 73 22 M oldTable.obj R 0 90 0 O 0.15 0 -0.2
 loot S 72 18 V 20 M GoldBar.obj
 loot S 73 21 V 20 M GoldBar.obj R 0 90 0
 
+
+guard S 10 50 V 2 % 2_equal_loop_path
+path H 5 8 H 13 47 H 18 24
+guard S 18 22 V 2 % 2_equal_loop_path
+path H 6 19 H 15 37 H 16 3
+guard S 31 7 V 2 % 2_equal_loop_path
+path H 52 6 H 62 12 H 77 11
+
+
 guard S 37 49 V 2 % 2_equal_loop_path
 path H 26 46 H 37 43 H 37 49
 guard S 14 3 V 0 % 0_equal_stand_still
