@@ -41,3 +41,8 @@ glm::vec3 Path::movingTo()
 {
 	return  _index < 0 ? glm::vec3() : _path[_index];
 }
+
+glm::vec3 Path::getDest()
+{
+	return _index < 0 ? glm::vec3() : _path[0];
+}
