@@ -52,10 +52,10 @@ void Character::onUpdate(float dt)
 	//update sound listener position
 	SoundManager::getInstance().setListenerPosition(this->getWorldPos(), this->getForward(), this->getUp(), glm::vec3(0,0,0));
 
-	if (!canLean() && _lean)
+	if (!canLean() && _lean != 0)
 	{
 		rotateZ(_rotate * -1.0f);
-		_lean = false;
+		_lean = 0;
 	}
 		
 
@@ -251,6 +251,14 @@ bool Character::canLean()
 		return false;
 
 	return true;
+}
+
+float Character::getHeight()
+{
+	if (_sneaking)
+		return _height - SneakDiff;
+
+	return _height;
 }
 
 void Character::gVisionTimerUpdate(float dt)
@@ -540,16 +548,16 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_lean = true;
+			_lean--;
 			_rotate = -1.0f * (M_PIf / 8.0f);
 			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
+			if (_lean < 0)
 			{
-				_lean = false;
+				_lean++;
 				rotateZ(-1.0f * _rotate);
 				return true;
 			}
@@ -559,16 +567,16 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_lean = true;
+			_lean++;
 			_rotate = (M_PIf / 8.0f);
 			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
+			if (_lean > 0)
 			{
-				_lean = false;
+				_lean--;
 				rotateZ(-1.0f * _rotate);
 				return true;
 			}	
