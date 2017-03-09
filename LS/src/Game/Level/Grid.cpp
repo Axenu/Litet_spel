@@ -197,7 +197,50 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 	if(isInside(startPosition))
 		setvalue(startPosition.y, startPosition.x, 0);
 
-	while (maxValue != 0)
+	for (int j = minY; j < maxY; j++)
+	{
+		for (int i = minX; i < maxX; i++)
+		{
+			if (getTypeNC(j, i) == wall)
+			{
+				setvalue(j, i, -2);
+			}
+		}
+	}
+
+	std::vector<glm::ivec2> currentPositions;
+	currentPositions.push_back(startPosition);
+
+	while (currentPositions.size() != 0)
+	{
+		std::vector<glm::ivec2> nextPositions;
+		for (int i = 0; i < currentPositions.size(); i++)
+		{
+			if (currentPositions[i].y - 1 > minY && getvalue(currentPositions[i].y - 1, currentPositions[i].x) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x, currentPositions[i].y - 1));
+				setvalue(currentPositions[i].y - 1, currentPositions[i].x, value + 1);
+			}
+			if (currentPositions[i].y + 1 < maxY && getvalue(currentPositions[i].y + 1, currentPositions[i].x) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x, currentPositions[i].y + 1));
+				setvalue(currentPositions[i].y + 1, currentPositions[i].x, value + 1);
+			}
+			if (currentPositions[i].x - 1 > minX && getvalue(currentPositions[i].y, currentPositions[i].x - 1) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x - 1, currentPositions[i].y));
+				setvalue(currentPositions[i].y, currentPositions[i].x - 1, value + 1);
+			}
+			if (currentPositions[i].x + 1 < maxX && getvalue(currentPositions[i].y, currentPositions[i].x + 1) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x + 1, currentPositions[i].y));
+				setvalue(currentPositions[i].y, currentPositions[i].x + 1, value + 1);
+			}
+		}
+		currentPositions = nextPositions;
+		value++;
+	}
+	/*while (maxValue != 0)
 	{
 		oldMaxValue = maxValue;
 		for (int j = minY; j < maxY; j++)
@@ -239,7 +282,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 			break;
 		}
 		value++;
-	}
+	}*/
 
 	for (int j = minY; j < maxY; j++)
 	{
