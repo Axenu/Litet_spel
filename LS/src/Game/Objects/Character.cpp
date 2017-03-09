@@ -57,7 +57,7 @@ void Character::onUpdate(float dt)
 		rotateZ(_rotate * -1.0f);
 		_lean = 0;
 	}
-		
+
 
 }
 
@@ -579,7 +579,7 @@ bool Character::charMovement(const KeyboardEvent& event)
 				_lean--;
 				rotateZ(-1.0f * _rotate);
 				return true;
-			}	
+			}
 		}
 	}
 	return false;
