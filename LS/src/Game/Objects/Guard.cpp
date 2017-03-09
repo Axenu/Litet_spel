@@ -163,7 +163,9 @@ GuardState Guard::checkState(float dt)
 		_interestTime -= dt;
 		if (_interestTime < 0.0f)
 		{
-			if (_finalDetVal > LOOKNOISELIMIT)
+			glm::ivec2 dest = _currentLevel->getGrid().getSquare(_path->getDest());
+			glm::ivec2 POISquare = _currentLevel->getGrid().getSquare(_pointOfInterest);
+			if (dest == POISquare)
 			{
 				setSearchingState();
 			}
