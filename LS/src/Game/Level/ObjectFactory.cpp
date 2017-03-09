@@ -293,7 +293,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			}
 		}
 		else if (type == "loot")
-			loot.push_back(lootData(square, rot, modelName, (int)value ));
+			loot.push_back(lootData(square, rot, modelName, (int)value));
+		else if (type == "listSuperLoot")
+			createLoot(modelName, squareList[getRand(squareList.size())], rot, value);
 		else if (type == "guard")
 		{
 			guards.push_back(guardData(square, square, (unsigned int)value));
