@@ -70,6 +70,18 @@ loot S 69 44 R 0 0 0 V 4 M Chalice.obj
 //model S 47 50 M Table.obj R 0 180 0 ner 
 //model S 48 50 M Table.obj R 0 270 0 h�ger
 
+model S 43 1 M Fireplace.obj R 0 180 0
+model S 40 6 M Fireplace.obj R 0 180 0
+model S 45 1 M Fireplace.obj R 0 180 0
+model S 27 1 M Fireplace.obj R 0 180 0
+
+
+model S 12 1 M Fireplace.obj R 0 180 0
+model S 6 16 M Fireplace.obj R 0 180 0
+model S 20 18 M Fireplace.obj R 0 180 0
+model S 19 45 M Fireplace.obj R 0 180 0
+model S 4 45 M Fireplace.obj R 0 180 0
+
 
 
 model S 83 27 M OldChair.obj R 0 270 0
