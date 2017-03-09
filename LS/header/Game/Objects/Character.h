@@ -83,9 +83,11 @@ private:
 	void gVisionTimerUpdate(float dt);
 	void calcNoise();
 	void returnVision();
+	bool canLean();
 	CharState _state;
 	float _height;
 	bool _lean;
+	float _rotate;
 
 	Grid *_currentLevel;
 	Scene *_currentScene;
