@@ -73,7 +73,7 @@ void Guard::update(float dt)
 
 							//Get direction vector and distance to player
 
-	visionDetection(pos, dt, playerDist, dirToPlayer);
+	//visionDetection(pos, dt, playerDist, dirToPlayer);
 	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
 	finalDetection();
 }
