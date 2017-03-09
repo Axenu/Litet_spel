@@ -33,7 +33,10 @@ void SoundManager::setListenerPosition(glm::vec3 pos, glm::vec3 lookDir, glm::ve
 {
     _engine->setListenerPosition(irrklang::vec3df(pos.x, pos.y, pos.z), -irrklang::vec3df(lookDir.x, lookDir.y, lookDir.z), irrklang::vec3df(velocity.x, velocity.y, velocity.z), irrklang::vec3df(up.x, up.y, up.z));
 }
-
+void SoundManager::pauseAllSounds(bool pause)
+{
+    _engine->setAllSoundsPaused(pause);
+}
 // void SoundManager::PlaySource3DSound(ISoundSource * source, glm::vec3 listenerPos, glm::vec3 origin, glm::vec3 lookDir, glm::vec3 up, glm::vec3 velocity)
 // {
 // 	if (!_engine)
