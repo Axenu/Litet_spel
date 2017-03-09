@@ -45,6 +45,7 @@ void InputManager::quitGame(const QuitGameEvent& event)
 void InputManager::resizeWindow(const ResizeWindowEvent& event)
 {
     glfwSetWindowSize(_window, event._width, event._height);
+    glViewport(0, 0, event._width, event._height);
 }
 
 InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(window)

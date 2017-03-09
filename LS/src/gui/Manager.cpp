@@ -45,6 +45,7 @@ namespace gui
                     _currentView->pauseView();
                 _currentView = view;
                 _currentView->initiate();
+                _currentView->resumeView();
                 _currentView->update(0.0f);
                 return _currentView;
             }
