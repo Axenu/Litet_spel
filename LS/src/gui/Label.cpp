@@ -154,6 +154,10 @@ namespace gui
     }
 
     //setters
+    void Label::setOpacity(float opacity)
+    {
+        _color.a = opacity;
+    }
     void Label::setColor(glm::vec4 &color)
     {
         _color = color;

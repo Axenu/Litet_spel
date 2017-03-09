@@ -8,15 +8,6 @@ namespace gui
         _name = "LoadingView";
 
         gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
-        if (sic::debug)
-        {
-            gui::Label *l = new gui::Label(font);
-            l->addStringComponent(new StringComponentString("FPS: "));
-            l->addStringComponent(new StringComponentFloat(_fps));
-            l->setPosition(-1.0f, 1-l->getSize().y/2.0f);
-            l->setScale(0.5);
-            addChild(l);
-        }
 
         Label *l = new Label(font);
         l->addStringComponent(new StringComponentString("Loading..."));
@@ -39,7 +30,6 @@ namespace gui
             //start game
             if (!_parent->setView("HUDView"))
             {
-                // std::cout << "scene not found \n Creating new..." << std::endl;
                 _parent->setView(new HUDView(_manager, _fps));
             }
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);

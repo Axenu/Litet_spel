@@ -78,6 +78,11 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
+		
+		if (_sneaking)
+			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
+		else
+			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
 
 		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), _velocity);
 		sound.Update();
@@ -98,7 +103,6 @@ void Character::climb(float dT)
 	_animTime += dT;
 	if (_animTime < _animEndTime)
 	{
-
 		if (_animTime < _animFirstPhaseTime)
 		{
 			glm::vec3 dir = _animEndPos - _position;
@@ -110,6 +114,7 @@ void Character::climb(float dT)
 		}
 		else if (_animTime < _animSecondPhaseTime) //Animate climb phase
 		{
+		//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, false, 1.0f);
 			float yDist = _animEndPos.y - _position.y;
 			float timeDiff = _animSecondPhaseTime - _animTime;
 			if (timeDiff > 0.00001f) //Check so animation phase is not about to end.
@@ -136,6 +141,7 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_state = CharState::normal;
+	//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, true);
 	}
 }
 
@@ -153,6 +159,7 @@ void Character::tryClimb()
 			_animEndTime = (_heightDiff + xzDist) / _speed;
 			_animTime = 0.0f;
 			_state = CharState::climbing;
+			
 		}
 	}
 }
@@ -360,13 +367,28 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
+			int points = _currentScene->loot(2);
+			if (points > 0)
+			{
+				CollectLootEvent event(points);
+				_lootValue += points;
+				_score += points;
+				sound.PlaySource2DSound(sound.GetSound(LOOTINGSOUND), false);
+				_eventManager->execute(event);
+			}
+		}
+	}
+	else if (event.getKey() == GLFW_KEY_G)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
 			if (_gridSquare._grid == gridType::exiting && _lootValue >= MAX_LOOT_LEVEL * 0.5f) // && _hasVictoryLoot TODO
 			{
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
-				sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/WinSound.wav"), false);
 				sound.SetVolume(0.2f);
+				sound.PlaySource2DSound(sound.GetSound(WIN_SOUND), false);
 
 			}
 		}

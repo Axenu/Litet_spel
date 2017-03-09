@@ -9,7 +9,7 @@ namespace gui
         if (action == GLFW_RELEASE)
         {
             QuitGameEvent event;
-            _manager->execute(event);
+            _eventManager->execute(event);
         }
     }
     void MainMenuView::StartGame(int action)
@@ -19,13 +19,13 @@ namespace gui
             if (!_parent->setView("LoadingView"))
             {
                 // std::cout << "scene not found \n Creating new..." << std::endl;
-                _parent->setView(new LoadingView(_manager, _fps));
+                _parent->setView(new LoadingView(_eventManager, _fps));
             }
 
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
-            _manager->execute(event);
-			sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/BackgroundMusic.ogg"), true);
 			sound.SetVolume(0.0001f);
+			sound.PlaySource2DSound(sound.GetSound(BACKGROUND_SONG), true);
+            _eventManager->execute(event);
         }
     }
     void MainMenuView::Credits(int action)
@@ -44,11 +44,11 @@ namespace gui
         {
             if (!_parent->setView("SettingsView"))
             {
-                _parent->setView(new SettingsView());
+                _parent->setView(new SettingsView(_eventManager));
             }
         }
     }
-    MainMenuView::MainMenuView(EventManager* manager, float* fps) : _manager(manager), _fps(fps), View()
+    MainMenuView::MainMenuView(EventManager* manager, float* fps) : _eventManager(manager), _fps(fps), View()
     {
         _name = "MainMenuView";
 
@@ -114,6 +114,6 @@ namespace gui
     void MainMenuView::initiate()
     {
         cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
-        _manager->execute(cEvent);
+        _eventManager->execute(cEvent);
     }
 }

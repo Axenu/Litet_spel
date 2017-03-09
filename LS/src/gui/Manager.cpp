@@ -12,6 +12,7 @@ namespace gui
         _manager->listen(this, &Manager::cursorMoved);
         _manager->listen(this, &Manager::mouseClick);
         _manager->listen(this, &Manager::cursorModeChanged);
+        _manager->listen(this, &Manager::resizeWindow);
     }
     Manager::~Manager()
     {
@@ -152,5 +153,10 @@ namespace gui
     void Manager::cursorModeChanged(const cursorModeChangeEvent& event)
     {
         _cursorMode = event.getState();
+    }
+    void Manager::resizeWindow(const ResizeWindowEvent& event)
+    {
+        _windowWidth = event._width;
+        _windowHeight = event._height;
     }
 }

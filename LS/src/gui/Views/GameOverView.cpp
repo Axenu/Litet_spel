@@ -3,14 +3,14 @@
 #include "gui/Views/MainMenuView.h"
 
 namespace gui {
-    GameOverView::GameOverView(EventManager* manager, const GameOverEvent &event) : _manager(manager), View()
+    GameOverView::GameOverView(EventManager* manager, bool hasWon) : _manager(manager), View()
     {
         _score = 0;
         _name = "GameOverView";
 
         gui::Font *font = Factory::getInstance().getFont("Resources/fonts/arial");
         _victoryLabel = new gui::Label(font);
-        if (event.hasWon())
+        if (hasWon)
         {
             _victoryLabel->addStringComponent(new StringComponentString("Success"));
         }
@@ -82,9 +82,9 @@ namespace gui {
         cursorModeChangeEvent cEvent(GLFW_CURSOR_NORMAL);
         _manager->execute(cEvent);
     }
-    void GameOverView::updateText(const GameOverEvent &event)
+    void GameOverView::updateText(bool hasWon)
     {
-        if (event.hasWon())
+        if (hasWon)
         {
             _victoryLabel->updateStringComponent(0, new StringComponentString("Success"));
         }

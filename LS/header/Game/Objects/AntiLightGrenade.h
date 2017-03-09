@@ -24,7 +24,6 @@ private:
 	float _fallspeed;
 	float _velocity;
 	glm::vec3 _direction;
-	float timer = 0;
 	glm::vec3 _movement;
 	GrenadeValues _grenadeValue;
 	Grid *_currentLevel;

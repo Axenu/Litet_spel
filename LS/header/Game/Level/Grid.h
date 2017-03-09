@@ -1,7 +1,7 @@
 #pragma once
 
 #define GRIDSPACE 1.f
-#define ROOFHEIGHT 2.5f
+#define ROOFHEIGHT 4.5f
 #include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

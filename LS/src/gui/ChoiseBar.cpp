@@ -14,6 +14,10 @@ namespace gui {
         _foregroundRect = new Rectangle(0.35f, 0.12f);
         _foregroundRect->setZ(2);
         addChild(_foregroundRect);
+        _highlightRect = new Rectangle(0.35f, 0.12f);
+        _highlightRect->setZ(2);
+        _highlightRect->deactivate();
+        addChild(_highlightRect);
         _isReactive = true;
         _numberOfChoises = count;
 
@@ -42,15 +46,34 @@ namespace gui {
     }
     void ChoiseBar::cursorDidEnter(glm::vec2 pos)
     {
-
+        _highlightRect->activate();
+        glm::vec3 min = _modelMatrix * glm::vec3(0, 0, 1.0);
+        float value = pos.x - min.x;
+        int index = 0;
+        while (value > 0.35f)
+        {
+            value -= 0.35f;
+            index += 1;
+        }
+        _selectedIndex = index;
+        _highlightRect->setPosition(0.35f*index, _highlightRect->getPosition().y);
     }
     void ChoiseBar::cursorDidExit(glm::vec2 pos)
     {
-
+        _highlightRect->deactivate();
     }
     void ChoiseBar::cursorMovedInside(glm::vec2 pos)
     {
-
+        glm::vec3 min = _modelMatrix * glm::vec3(0, 0, 1.0);
+        float value = pos.x - min.x;
+        int index = 0;
+        while (value > 0.35f)
+        {
+            value -= 0.35f;
+            index += 1;
+        }
+        _selectedIndex = index;
+        _highlightRect->setPosition(0.35f*index, _highlightRect->getPosition().y);
     }
     bool ChoiseBar::handleClick(int action, glm::vec2 pos)
     {
@@ -81,6 +104,7 @@ namespace gui {
     {
         _secondaryColor = color;
         _foregroundRect->setColor(color);
+        _highlightRect->setColor(color);
     }
     void ChoiseBar::setSelected(int index)
     {
