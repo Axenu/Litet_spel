@@ -212,7 +212,7 @@ model S 90 50 M Bookcase_Empty.obj R 0 180 0
 model S 97 45 M Fireplace.obj R 0 270 0 
 model S 97 39 M WingChair.obj R 0 270 0 
 model S 95 38 M Table.obj R 0 0 0 
-loot S 95 38 R 0 0 0 V 4 M Diamond.obj 
+loot S 95 38 R 0 0 0 V 4 M Chalice.obj 
 loot S 90 50 R 0 0 0 V 4 M Chalice.obj 
 
 model S 75 19 M Bookcase_Empty.obj R 0 270 0  
@@ -330,14 +330,12 @@ guard S 31 7 V 2 % 2_equal_loop_path
 path H 52 6 H 62 12 H 77 11
 
 
+listSuperLoot S 4 5 S 37 2 S 48 20 M Diamond.obj V 200 R 0 0 0
+
 guard S 37 49 V 2 % 2_equal_loop_path
 path H 26 46 H 37 43 H 37 49
 guard S 14 3 V 0 % 0_equal_stand_still
 path S 0 0 % Guard_faces_this_square_when_in_still_state
-loot S 3 3 R 0 0 0 V 4 M Chalice.obj
-loot S 4 4 R 90 0 0 V 8 M Chandilier.obj
-loot S 5 5 R 0 90 0 V 12 M GoldBar.obj
-loot S 6 6 R 0 0 90 V 20 M Diamond.obj
 listDoors V 0 S 30 50 S 34 42 S 41 39 S 67 17 S 71 36 S 74 40 S 93 35 S 91 18 S 91 3 S 94 3
 listDoors V 0 S 78 14 S 24 5 S 14 7 S 11 10 S 10 41 S 71 14 S 11 34 S 22 35
 listDoors V 1 S 21 49 S 8 44
