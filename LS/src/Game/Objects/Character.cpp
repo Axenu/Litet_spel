@@ -52,10 +52,10 @@ void Character::onUpdate(float dt)
 	//update sound listener position
 	SoundManager::getInstance().setListenerPosition(this->getWorldPos(), this->getForward(), this->getUp(), glm::vec3(0,0,0));
 
-	if (!canLean() && _lean)
+	if (!canLean() && _lean != 0)
 	{
 		rotateZ(_rotate * -1.0f);
-		_lean = false;
+		_lean = 0;
 	}
 		
 
@@ -238,19 +238,27 @@ void Character::returnVision()
 
 bool Character::canLean()
 {
-	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, wall))
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.2f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.2f, wall))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, wall))
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.3f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.3f, wall))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, this->getEyePos(), object))
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.2f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.2f, this->getEyePos(), object))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, this->getEyePos(), object))
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.3f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.3f, this->getEyePos(), object))
 		return false;
 
 	return true;
+}
+
+float Character::getHeight()
+{
+	if (_sneaking)
+		return _height - SneakDiff;
+
+	return _height;
 }
 
 void Character::gVisionTimerUpdate(float dt)
@@ -310,6 +318,7 @@ void Character::calcNoise()
 	default:
 		_movmentNoise = WALKINGNOISE;
 		_walkingSound->setVolume(1.0f);
+		_movmentNoise *= _isMoving;
 		break;
 	}
 	if (_sneaking)
@@ -317,8 +326,6 @@ void Character::calcNoise()
 		_movmentNoise *= SNEAKINGMODIFIER;
 		_walkingSound->setVolume(0.3f);
 	}
-	_movmentNoise *= _isMoving;
-
 }
 
 float Character::getNoise()
@@ -541,16 +548,16 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_lean = true;
+			_lean--;
 			_rotate = -1.0f * (M_PIf / 8.0f);
 			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
+			if (_lean < 0)
 			{
-				_lean = false;
+				_lean++;
 				rotateZ(-1.0f * _rotate);
 				return true;
 			}
@@ -560,16 +567,16 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_lean = true;
+			_lean++;
 			_rotate = (M_PIf / 8.0f);
 			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
+			if (_lean > 0)
 			{
-				_lean = false;
+				_lean--;
 				rotateZ(-1.0f * _rotate);
 				return true;
 			}	
