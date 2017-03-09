@@ -23,8 +23,9 @@ namespace gui
             }
 
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
+			sound.SetVolume(0.0001f);
+			sound.PlaySource2DSound(sound.GetSound(BACKGROUND_SONG), true);
             _eventManager->execute(event);
-			sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/BackgroundMusic.ogg"), true);
         }
     }
     void MainMenuView::Credits(int action)
