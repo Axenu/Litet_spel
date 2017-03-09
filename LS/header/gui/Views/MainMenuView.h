@@ -34,8 +34,6 @@ namespace gui
         //pointer to float not owned by this
         float* _fps;
 
-        irrklang::ISound *_backgroundSound = nullptr;
-
     public:
         MainMenuView(EventManager* manager, float* fps);
         virtual ~MainMenuView();
