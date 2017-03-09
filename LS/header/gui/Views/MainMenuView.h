@@ -15,7 +15,8 @@
 #include "gui/Views/CreditsView.h"
 #include "staticVars.h"
 #include "gui/ProgressBar.h"
-#include <Sound/Irrklang.h>
+// #include <Sound/Irrklang.h>
+#include "Sound/SoundManager.h"
 
 namespace gui
 {
@@ -32,6 +33,8 @@ namespace gui
         gui::Button* _quitButton;
         //pointer to float not owned by this
         float* _fps;
+
+        irrklang::ISound *_backgroundSound = nullptr;
 
     public:
         MainMenuView(EventManager* manager, float* fps);

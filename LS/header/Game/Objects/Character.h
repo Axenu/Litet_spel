@@ -12,8 +12,8 @@
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
 #include "Game/Level/IObjectFactory.h"
-#include <Sound/Irrklang.h>
 #include "keyBindings.h"
+#include "Sound/SoundManager.h"
 
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
@@ -122,4 +122,7 @@ private:
 	float _guardVisDuraTimer;
 	//Noise variable
 	float _movmentNoise;
+	//sound effects
+	irrklang::ISound *_walkingSound;
+	irrklang::ISound *_climbSound;
 };
