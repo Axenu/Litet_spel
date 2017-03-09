@@ -9,7 +9,7 @@
 #include <time.h>
 #include "Game/Level/Path.h"
 #include <memory>
-#include <Sound/Irrklang.h>
+#include "Sound/SoundManager.h"
 #include "WalkPoints.h"
 
 #define GUARDVIEWDISTANCE 20.f
@@ -49,6 +49,8 @@ private:
 	glm::vec3 _pointOfInterest;
 	glm::vec3 _returnPoint;
 	GuardState _state;
+
+	irrklang::ISound *_walkingSound;
 
 	//Field of view in cosine
 	float _detectFov;

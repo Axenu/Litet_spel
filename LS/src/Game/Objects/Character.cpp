@@ -49,11 +49,13 @@ void Character::onUpdate(float dt)
 		_detectionLevel = 0.0f;
 		_score = std::max(0.0f, _score);
 	}
+	//update sound listener position
+	SoundManager::getInstance().setListenerPosition(this->getWorldPos(), this->getForward(), this->getUp(), glm::vec3(0,0,0));
 
-	if (!canLean() && _lean)
+	if (!canLean() && _lean != 0)
 	{
 		rotateZ(_rotate * -1.0f);
-		_lean = false;
+		_lean = 0;
 	}
 		
 
@@ -86,16 +88,15 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
-		
-		sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), this->getVelocity());
-		sound.Update();
+
+		_walkingSound->setIsPaused(false);
 
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		sound.Pause();
+		_walkingSound->setIsPaused(true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -117,7 +118,6 @@ void Character::climb(float dT)
 		}
 		else if (_animTime < _animSecondPhaseTime) //Animate climb phase
 		{
-		//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, false, 1.0f);
 			float yDist = _animEndPos.y - _position.y;
 			float timeDiff = _animSecondPhaseTime - _animTime;
 			if (timeDiff > 0.00001f) //Check so animation phase is not about to end.
@@ -144,7 +144,7 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_state = CharState::normal;
-	//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, true);
+		_climbSound->setIsPaused(true);
 	}
 }
 
@@ -162,7 +162,9 @@ void Character::tryClimb()
 			_animEndTime = (_heightDiff + xzDist) / _speed;
 			_animTime = 0.0f;
 			_state = CharState::climbing;
-			
+			_climbSound->setPlayPosition(1000);
+			_climbSound->setIsPaused(false);
+
 		}
 	}
 }
@@ -236,19 +238,27 @@ void Character::returnVision()
 
 bool Character::canLean()
 {
-	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, wall))
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.2f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.2f, wall))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, wall))
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.3f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.3f, wall))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, this->getEyePos(), object))
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.2f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.2f, this->getEyePos(), object))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, this->getEyePos(), object))
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.3f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.3f, this->getEyePos(), object))
 		return false;
 
 	return true;
+}
+
+float Character::getHeight()
+{
+	if (_sneaking)
+		return _height - SneakDiff;
+
+	return _height;
 }
 
 void Character::gVisionTimerUpdate(float dt)
@@ -307,16 +317,15 @@ void Character::calcNoise()
 		break;
 	default:
 		_movmentNoise = WALKINGNOISE;
-		sound.SetVolume(1.0f);
+		_walkingSound->setVolume(1.0f);
+		_movmentNoise *= _isMoving;
 		break;
 	}
 	if (_sneaking)
 	{
 		_movmentNoise *= SNEAKINGMODIFIER;
-		sound.SetVolume(0.3f);
+		_walkingSound->setVolume(0.3f);
 	}
-	_movmentNoise *= _isMoving;
-
 }
 
 float Character::getNoise()
@@ -382,34 +391,20 @@ glm::vec3 Character::getVelocity()
 void Character::normalKeyInput(const KeyboardEvent & event)
 {
 	if (charMovement(event)) {} // CharMovements takes care of WASD-input
-	
+
 	else if (event.getKey() == EXIT)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			int points = _currentScene->loot(2);
-			if (points > 0)
-			{
-				CollectLootEvent event(points);
-				_lootValue += points;
-				_score += points;
-				sound.PlaySource2DSound(sound.GetSound(LOOTINGSOUND), false);
-				_eventManager->execute(event);
-			}
-		}
-	}
-	else if (event.getKey() == GLFW_KEY_G)
-	{
-		if (event.getAction() == GLFW_PRESS)
-		{
-			if (_gridSquare._grid == gridType::exiting && _lootValue >= MAX_LOOT_LEVEL * 0.5f) // && _hasVictoryLoot TODO
+			//exit game
+			if (_gridSquare._grid == gridType::exiting && _lootValue >= MAX_LOOT_LEVEL * 0.5f)
 			{
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
-				sound.SetVolume(0.2f);
-				sound.PlaySource2DSound(sound.GetSound(WIN_SOUND), false);
-
+				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(WIN_SOUND, false, false);
+				tempSound->setVolume(0.2f);
+				tempSound->setIsPaused(false);
 			}
 		}
 	}
@@ -553,16 +548,16 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_lean = true;
+			_lean--;
 			_rotate = -1.0f * (M_PIf / 8.0f);
 			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
+			if (_lean < 0)
 			{
-				_lean = false;
+				_lean++;
 				rotateZ(-1.0f * _rotate);
 				return true;
 			}
@@ -572,16 +567,16 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			_lean = true;
+			_lean++;
 			_rotate = (M_PIf / 8.0f);
 			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
+			if (_lean > 0)
 			{
-				_lean = false;
+				_lean--;
 				rotateZ(-1.0f * _rotate);
 				return true;
 			}	
@@ -655,6 +650,7 @@ void Character::clickMouse(const MouseClickEvent& event)
 				CollectLootEvent event(points);
 				_lootValue += points;
 				_score += points;
+				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
 				_eventManager->execute(event);
 			}
 		}
@@ -715,6 +711,8 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_lightAtPos = 1.0f;
 	_lean = false;
 	_rotate = 0.0f;
+	_walkingSound = SoundManager::getInstance().play2DSound(PLAYERWALKING, true, false);
+	_climbSound = SoundManager::getInstance().play2DSound(CLIMBINGSOUND, false, false);
 }
 
 Character::Character()
@@ -727,7 +725,8 @@ Character::~Character()
     _eventManager->unlisten(this, &Character::moveMouse);
 	_eventManager->unlisten(this, &Character::detected);
 	_eventManager->unlisten(this, &Character::clickMouse);
-
+	_walkingSound->drop();
+	_climbSound->drop();
 }
 
 #pragma endregion
