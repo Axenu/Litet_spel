@@ -186,6 +186,7 @@ namespace gui {
                 }
                 view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
                 view->updateText(false);
+                return;
             }
         }
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
@@ -206,6 +207,12 @@ namespace gui {
     }
     void HUDView::pauseView()
     {
+        _eventManager->unlisten(this, &HUDView::switchToGuardVision);
+        _eventManager->unlisten(this, &HUDView::gameOver);
+        _eventManager->unlisten(this, &HUDView::exitSquareTrigger);
+		_eventManager->unlisten(this, &HUDView::canClimb);
+        _eventManager->unlisten(this, &HUDView::guardAlert);
+        _eventManager->unlisten(this, &HUDView::KeyboardPressed);
         if (_isActive)
         {
             _game->getCharacter()->pause();
@@ -214,6 +221,12 @@ namespace gui {
     }
     void HUDView::resumeView()
     {
+        _eventManager->listen(this, &HUDView::switchToGuardVision);
+        _eventManager->listen(this, &HUDView::gameOver);
+        _eventManager->listen(this, &HUDView::exitSquareTrigger);
+		_eventManager->listen(this, &HUDView::canClimb);
+		_eventManager->listen(this, &HUDView::guardAlert);
+        _eventManager->listen(this, &HUDView::KeyboardPressed);
         if (!_isActive)
         {
             _game->getCharacter()->resume();

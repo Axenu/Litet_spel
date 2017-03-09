@@ -57,7 +57,7 @@ void Character::onUpdate(float dt)
 		rotateZ(_rotate * -1.0f);
 		_lean = 0;
 	}
-		
+
 
 }
 
@@ -414,7 +414,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 		{
 			if (_lightGrenadeCount > 0 && _grenadeTimer <= 0)
 			{
-				CreateLightGrenade e("grenade.obj", this->getWorldPos(), _currentScene->getCamera().getLookAt());
+				CreateLightGrenade e("grenade.obj", this->getEyePos(), _currentScene->getCamera().getLookAt());
 				_eventManager->execute(e);
 				_grenadeTimer = _grenadeCooldown;
 				_lightGrenadeCount--;
@@ -579,7 +579,7 @@ bool Character::charMovement(const KeyboardEvent& event)
 				_lean--;
 				rotateZ(-1.0f * _rotate);
 				return true;
-			}	
+			}
 		}
 	}
 	return false;
@@ -651,6 +651,7 @@ void Character::clickMouse(const MouseClickEvent& event)
 				_lootValue += points;
 				_score += points;
 				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
+				tempSound->setPlayPosition(200);
 				_eventManager->execute(event);
 			}
 		}
@@ -673,13 +674,17 @@ void Character::setScene(Scene * scene)
 
 void Character::pause()
 {
-	// _eventManager->unlisten(this, &Character::moveCharacter);
+	_eventManager->unlisten(this, &Character::moveCharacter);
 	_eventManager->unlisten(this, &Character::moveMouse);
+	_eventManager->unlisten(this, &Character::detected);
+	_eventManager->unlisten(this, &Character::clickMouse);
 }
 void Character::resume()
 {
-	// _eventManager->listen(this, &Character::moveCharacter);
+	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
+	_eventManager->listen(this, &Character::detected);
+	_eventManager->listen(this, &Character::clickMouse);
 	_hasMoved = false;
 }
 Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, float height) :
