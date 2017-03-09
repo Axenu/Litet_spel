@@ -414,7 +414,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 		{
 			if (_lightGrenadeCount > 0 && _grenadeTimer <= 0)
 			{
-				CreateLightGrenade e("grenade.obj", this->getWorldPos(), _currentScene->getCamera().getLookAt());
+				CreateLightGrenade e("grenade.obj", this->getEyePos(), _currentScene->getCamera().getLookAt());
 				_eventManager->execute(e);
 				_grenadeTimer = _grenadeCooldown;
 				_lightGrenadeCount--;
