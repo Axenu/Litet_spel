@@ -45,6 +45,7 @@ private:
 	float _noiseDetVal;
 	float _finalDetVal;
 	float _interestTime;
+	float _lastNoiseVal;
 	glm::vec3 _pointOfInterest;
 	glm::vec3 _returnPoint;
 	GuardState _state;
