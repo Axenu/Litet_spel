@@ -64,6 +64,7 @@ public:
 	float getNoise();
 	void pause();
 	void resume();
+	float getHeight();
 	Character(glm::vec3 pos, EventManager *manager, int grenadeCount, float height);
 
     Character();
@@ -86,8 +87,6 @@ private:
 	bool canLean();
 	CharState _state;
 	float _height;
-	bool _lean;
-	float _rotate;
 
 	Grid *_currentLevel;
 	Scene *_currentScene;
@@ -124,4 +123,6 @@ private:
 	float _guardVisDuraTimer;
 	//Noise variable
 	float _movmentNoise;
+	int _lean;
+	float _rotate;
 };
