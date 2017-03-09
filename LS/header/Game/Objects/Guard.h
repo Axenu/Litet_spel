@@ -41,7 +41,8 @@ private:
 	std::shared_ptr<Path> _path;
 	WalkPoints _walkPoints;
 	float _speed;
-	float _detectionScore;
+	float _visionDetScore;
+	float _lastVisionVal;
 	float _noiseDetVal;
 	float _finalDetVal;
 	float _interestTime;

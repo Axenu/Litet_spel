@@ -8,13 +8,13 @@ SoundManager& SoundManager::getInstance()
 SoundManager::SoundManager()
 {
     _engine = irrklang::createIrrKlangDevice();
-    if (!_engine)
-        _engine->drop();
+
 }
 SoundManager::~SoundManager()
 {
     if (_engine)
         _engine->drop();
+		_engine = nullptr;
 }
 
 Sound *SoundManager::play2DSound(std::string path, bool looped, bool play)
