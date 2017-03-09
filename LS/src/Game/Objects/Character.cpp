@@ -88,15 +88,16 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
-
-		_walkingSound->setIsPaused(false);
+		if (_walkingSound)
+			_walkingSound->setIsPaused(false);
 
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		_walkingSound->setIsPaused(true);
+		if (_walkingSound)
+			_walkingSound->setIsPaused(true);
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -144,7 +145,8 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_state = CharState::normal;
-		_climbSound->setIsPaused(true);
+		if (_climbSound)
+			_climbSound->setIsPaused(true);
 	}
 }
 
@@ -162,8 +164,11 @@ void Character::tryClimb()
 			_animEndTime = (_heightDiff + xzDist) / _speed;
 			_animTime = 0.0f;
 			_state = CharState::climbing;
-			_climbSound->setPlayPosition(1000);
-			_climbSound->setIsPaused(false);
+			if (_climbSound)
+			{
+				_climbSound->setPlayPosition(1000);
+				_climbSound->setIsPaused(false);
+			}
 
 		}
 	}
@@ -317,14 +322,16 @@ void Character::calcNoise()
 		break;
 	default:
 		_movmentNoise = WALKINGNOISE;
-		_walkingSound->setVolume(1.0f);
+		if (_walkingSound)
+			_walkingSound->setVolume(1.0f);
 		_movmentNoise *= _isMoving;
 		break;
 	}
 	if (_sneaking)
 	{
 		_movmentNoise *= SNEAKINGMODIFIER;
-		_walkingSound->setVolume(0.3f);
+		if (_walkingSound)
+			_walkingSound->setVolume(0.3f);
 	}
 }
 
@@ -403,8 +410,11 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				GameOverEvent event(true);
 				_eventManager->execute(event);
 				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(WIN_SOUND, false, false);
-				tempSound->setVolume(0.2f);
-				tempSound->setIsPaused(false);
+				if (tempSound)
+				{
+					tempSound->setVolume(0.2f);
+					tempSound->setIsPaused(false);
+				}
 			}
 		}
 	}
@@ -651,7 +661,8 @@ void Character::clickMouse(const MouseClickEvent& event)
 				_lootValue += points;
 				_score += points;
 				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
-				tempSound->setPlayPosition(200);
+				if (tempSound)
+					tempSound->setPlayPosition(200);
 				_eventManager->execute(event);
 			}
 		}
@@ -730,8 +741,10 @@ Character::~Character()
     _eventManager->unlisten(this, &Character::moveMouse);
 	_eventManager->unlisten(this, &Character::detected);
 	_eventManager->unlisten(this, &Character::clickMouse);
-	_walkingSound->drop();
-	_climbSound->drop();
+	if (_walkingSound)
+		_walkingSound->drop();
+	if (_climbSound)
+		_climbSound->drop();
 }
 
 #pragma endregion

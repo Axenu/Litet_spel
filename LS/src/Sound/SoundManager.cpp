@@ -19,12 +19,14 @@ SoundManager::~SoundManager()
 
 irrklang::ISound *SoundManager::play2DSound(std::string path, bool looped, bool play)
 {
+    return nullptr;
     if (!_engine)
         return nullptr;
     return _engine->play2D(path.c_str(), looped, !play, true);
 }
 irrklang::ISound *SoundManager::play3DSound(std::string path, glm::vec3 pos, bool looped, bool play)
 {
+    return nullptr;
     if (!_engine)
         return nullptr;
     return _engine->play3D(path.c_str(), irrklang::vec3df(pos.x, pos.y, pos.z), looped, !play, true);
