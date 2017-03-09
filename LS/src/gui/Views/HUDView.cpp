@@ -186,6 +186,7 @@ namespace gui {
                 }
                 view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
                 view->updateText(false);
+                return;
             }
         }
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
