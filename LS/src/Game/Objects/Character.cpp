@@ -49,6 +49,14 @@ void Character::onUpdate(float dt)
 		_detectionLevel = 0.0f;
 		_score = std::max(0.0f, _score);
 	}
+
+	if (!canLean() && _lean)
+	{
+		rotateZ(_rotate * -1.0f);
+		_lean = false;
+	}
+		
+
 }
 
 void Character::init()
@@ -224,6 +232,23 @@ void Character::returnVision()
 	_state = CharState::normal;
 	GuardVisionEvent event(false, 0.0f);
 	_eventManager->execute(event);
+}
+
+bool Character::canLean()
+{
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, wall))
+		return false;
+
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, wall))
+		return false;
+
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, this->getEyePos(), object))
+		return false;
+
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, this->getEyePos(), object))
+		return false;
+
+	return true;
 }
 
 void Character::gVisionTimerUpdate(float dt)
@@ -528,28 +553,38 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			
-			rotateZ(-1.0f * (M_PIf / 8.0f));
+			_lean = true;
+			_rotate = -1.0f * (M_PIf / 8.0f);
+			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			rotateZ((M_PIf / 8.0f));
-			return true;
+			if (_lean)
+			{
+				_lean = false;
+				rotateZ(-1.0f * _rotate);
+				return true;
+			}
 		}
 	}
 	else if (event.getKey() == LEAN_RIGHT)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			
-			rotateZ((M_PIf / 8.0f));
+			_lean = true;
+			_rotate = (M_PIf / 8.0f);
+			rotateZ(_rotate);
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			rotateZ(-1.0f * (M_PIf / 8.0f));
-			return true;
+			if (_lean)
+			{
+				_lean = false;
+				rotateZ(-1.0f * _rotate);
+				return true;
+			}	
 		}
 	}
 	return false;
@@ -679,6 +714,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_grenadeTimer = 0;
 	_lightAtPos = 1.0f;
 	_lean = false;
+	_rotate = 0.0f;
 }
 
 Character::Character()
