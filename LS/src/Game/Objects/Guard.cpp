@@ -232,7 +232,7 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		float playerLight = _player->getLightAtPosition();
 
 		//If player behind wall or obscuring object, not detected
-		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
+		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, wall) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
 		{
 			return 0.0f;
 		}

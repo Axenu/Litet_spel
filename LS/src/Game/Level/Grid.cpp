@@ -21,18 +21,10 @@ Grid::~Grid()
 #pragma region MCode
 
 
-bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist)
+bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, gridType gridType)
 {
-	GridTraveler trav(GRIDSPACE, getSquare(pos), pos, ray);
-	float dist = 0.0f;
-	do
-	{
-		if ((*this)[trav.getSquare()] == gridType::wall)
-			return true;
-
-		dist += trav.goNext();
-	} while (dist < viewDist);
-	return false; //??
+	float objectDist = 0.0f;
+	return getDist(pos, ray, viewDist, objectDist, gridType);
 }
 
 bool Grid::getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDist, gridType gridType)
