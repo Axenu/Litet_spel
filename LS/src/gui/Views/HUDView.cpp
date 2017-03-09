@@ -262,6 +262,7 @@ namespace gui {
         _lightLabel->setOpacity(opacity);
         _soundLabel->setOpacity(opacity);
         _grenadeLabel->setOpacity(opacity);
+        _tipDisplay->deactivate();
     }
     void HUDView::switchToGuardVision(const GuardVisionEvent &event)
     {

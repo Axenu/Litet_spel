@@ -16,5 +16,6 @@ namespace sic {
 #define PLAYERWALKING "Resources/Sounds/footSteps.wav"
 #define LOOTINGSOUND "Resources/Sounds/LootingSound.wav"
 #define CLIMBINGSOUND "Resources/Sounds/Climbingeffect.wav"
+#define GRENADESOUND "Resources/Sounds/Grenade.wav"
 //Lootlevel
 #define MAX_LOOT_LEVEL 1000

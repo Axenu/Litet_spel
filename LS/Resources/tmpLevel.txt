@@ -70,6 +70,8 @@ loot S 69 44 R 0 0 0 V 4 M Chalice.obj
 //model S 47 50 M Table.obj R 0 180 0 ner 
 //model S 48 50 M Table.obj R 0 270 0 h�ger
 
+
+
 model S 83 27 M OldChair.obj R 0 270 0
 model S 83 29 M oldTAble.obj R 0 270 0
 model S 83 31 M OldChair.obj R 0 90 0
@@ -100,6 +102,31 @@ model S 97 14 M OldChair.obj R 0 270 0
 model S 99 13 M oldTable.obj R 0 270 0
 model S 101 11 M OldChair.obj R 0 90 0
 
+model S 97 14 M Table.obj R 0 180 0
+model S 81 1 M OldChair.obj R 0 90 0 
+model S 81 2 M OldChair.obj R 0 90 0 
+model S 81 3 M OldChair.obj R 0 90 0 
+model S 81 4 M OldChair.obj R 0 90 0 
+model S 81 5 M OldChair.obj R 0 90 0 
+model S 81 6 M OldChair.obj R 0 90 0 
+model S 81 7 M OldChair.obj R 0 90 0 
+
+
+model S 69 3 M OldChair.obj R 0 180 0 
+model S 69 5 M OldChair.obj R 0 90 0 
+model S 71 4 M OldChair.obj R 0 0 0 
+model S 67 4 M OldChair.obj R 0 270 0 
+
+
+model S 59 3 M Table.obj
+model S 57 3 M WingChair.obj R 0 270 0
+model S 61 3 M WingChair.obj R 0 90 0
+model S 59 1 M WingChair.obj R 0 180 0
+model S 59 5 M WingChair.obj
+
+model S 59 10 M WingChair.obj
+model S 60 10 M WingChair.obj
+model S 61 10 M WingChair.obj
 
 
 

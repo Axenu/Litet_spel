@@ -39,13 +39,12 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-		sound.PlaySource3DSound(sound.GetSound(GUARD_WALK), _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), _player->getVelocity());
-		sound.Update();
+		_walkingSound->setIsPaused(false);
 		break;
 
 	case GuardState::looking:
 		face(_pointOfInterest);
-		sound.Pause();
+		_walkingSound->setIsPaused(true);
 		break;
 	case GuardState::searching:
 		if (_path->walkOnPath(&pos, _speed, dt))
@@ -54,7 +53,7 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-		sound.Update();
+		_walkingSound->setIsPaused(false);
 		break;
 	case GuardState::returning:
 		if (_path->walkOnPath(&pos, _speed, dt))
@@ -63,11 +62,13 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-		sound.Update();
+		_walkingSound->setIsPaused(false);
 		break;
 	default:
 		break;
 	}
+	irrklang::vec3df posSound(this->getWorldPos().x, this->getWorldPos().y, this->getWorldPos().z);
+	_walkingSound->setPosition(posSound);
 
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
@@ -98,10 +99,12 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_finalDetVal = 0.0f;
 
 	_lastNoiseVal = 0.0f;
+	_walkingSound = SoundManager::getInstance().play3DSound(GUARD_WALK, this->getWorldPos(), true, false);
 }
 
 Guard::~Guard()
 {
+	_walkingSound->drop();
 }
 
 void Guard::init()
@@ -309,8 +312,9 @@ void Guard::finalDetection()
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
-		sound.SetVolume(0.5f);
-		sound.PlaySource2DSound(sound.GetSound(LOSE_SOUND), false);
+		irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(LOSE_SOUND, false, false);
+		tempSound->setVolume(0.5f);
+		tempSound->setIsPaused(false);
 	}
 	else
 	{
