@@ -16,4 +16,5 @@ public:
 	bool walkOnPath(glm::vec3 *position, float speed, float dt);
 	/* Get the position next on the path */
 	glm::vec3 movingTo();
+	glm::vec3 getDest();
 };
