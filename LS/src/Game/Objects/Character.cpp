@@ -79,12 +79,7 @@ void Character::move(float dt) {
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
 		
-		if (_sneaking)
-			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
-		else
-			sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
-
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), _velocity);
+		sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), this->getVelocity());
 		sound.Update();
 
 	}
@@ -533,22 +528,13 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			if (!_currentLevel->getDist(this->getWorldPos(), glm::vec3(-1.0f, 0.0f, 0.0f), 1.0f))
-			{
-				rotateZ(-1.0f * (M_PIf / 8.0f));
-				_lean = true;
-			}
-
+			
+			rotateZ(-1.0f * (M_PIf / 8.0f));
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
-			{
-				rotateZ((M_PIf / 8.0f));
-				_lean = false;
-			}
-			
+			rotateZ((M_PIf / 8.0f));
 			return true;
 		}
 	}
@@ -556,22 +542,13 @@ bool Character::charMovement(const KeyboardEvent& event)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
-			if (!_currentLevel->getDist(this->getWorldPos(), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f))
-			{
-				rotateZ((M_PIf / 8.0f));
-				_lean = true;
-			}
-
+			
+			rotateZ((M_PIf / 8.0f));
 			return true;
 		}
 		else if (event.getAction() == GLFW_RELEASE)
 		{
-			if (_lean)
-			{
-				rotateZ(-1.0f * (M_PIf / 8.0f));
-				_lean = false;
-			}
-			
+			rotateZ(-1.0f * (M_PIf / 8.0f));
 			return true;
 		}
 	}

@@ -39,14 +39,13 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
+		sound.PlaySource3DSound(sound.GetSound(GUARD_WALK), _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), _player->getVelocity());
 		sound.Update();
-		sound.PlaySource3DSound(sound.GetSound(GUARD_WALK), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
 		break;
 
 	case GuardState::looking:
 		face(_pointOfInterest);
 		sound.Pause();
-		sound.PlaySource3DSound(sound.GetSound(GUARD_WALK), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
 		break;
 	case GuardState::searching:
 		if (_path->walkOnPath(&pos, _speed, dt))
@@ -55,6 +54,7 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
+		sound.Update();
 		break;
 	case GuardState::returning:
 		if (_path->walkOnPath(&pos, _speed, dt))
@@ -63,6 +63,7 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
+		sound.Update();
 		break;
 	default:
 		break;
