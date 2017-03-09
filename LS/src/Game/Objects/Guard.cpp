@@ -97,13 +97,16 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 	_speed = 0.6f;
 
-	_detectionScore = 0.0f;
+	_visionDetScore = 0.0f;
 
 	_noiseDetVal = 0.0f;
 
 	_finalDetVal = 0.0f;
 
 	_lastNoiseVal = 0.0f;
+
+	_lastVisionVal = 0.0f;
+
 	_walkingSound = SoundManager::getInstance().play3DSound(GUARD_WALK, this->getWorldPos(), true, false);
 }
 
@@ -300,20 +303,22 @@ void Guard::visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3
 	{
 		//Timer to determine the amount of time before the guard detects the player
 		float detectionAmount = (playerDist / detectionDist);
-		_detectionScore += dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
+		_visionDetScore += dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
+		_lastVisionVal = detectionAmount;
 	}
 	else
 	{
-		if (_detectionScore > 0.0f)
+		if (_visionDetScore > 0.0f)
 		{
-			_detectionScore -= dt*0.1f;
+			_visionDetScore -= dt*0.1f;
 		}
+		_lastVisionVal = 0.0f;
 	}
 }
 
 void Guard::finalDetection()
 {
-	_finalDetVal = _noiseDetVal + _detectionScore;
+	_finalDetVal = _noiseDetVal + _visionDetScore;
 	if (_finalDetVal > 1.0f)
 	{
 		GameOverEvent event(false);
@@ -331,7 +336,7 @@ void Guard::finalDetection()
 		event._id = _id;
 		_eventManager->execute(event);
 	}
-	if (_lastNoiseVal > 0.0f)
+	if (_lastNoiseVal > 0.0f || _lastVisionVal > 0.0f)
 	{
 		_pointOfInterest = _player->getWorldPos();
 	}
