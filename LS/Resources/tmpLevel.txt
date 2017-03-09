@@ -124,13 +124,23 @@ model S 85 21 M OldChair.obj R 0 270 0
 model S 85 23 M oldTable.obj R 0 0 0
 model S 85 25 M OldChair.obj R 0 90 0
 
-model S 97 34 M OldChair.obj R 0 270 0
-model S 99 34 M oldTable.obj R 0 270 0
-model S 101 34 M OldChair.obj R 0 90 0
+//model S 45 50 M Table.obj R 0 0 0 up
+//model S 46 50 M Table.obj R 0 90 0 v�nster
+//model S 47 50 M Table.obj R 0 180 0 ner 
+//model S 48 50 M Table.obj R 0 270 0 h�ger
 
-model S 97 21 M OldChair.obj R 0 270 0
-model S 99 21 M oldTable.obj R 0 270 0
-model S 101 21 M OldChair.obj R 0 90 0
+model S 97 34 M OldChair.obj R 0 0 0
+model S 99 34 M oldTable.obj R 0 180 0
+model S 101 34 M OldChair.obj R 0 180 0
+
+model S 101 27 M Fireplace.obj R 0 90 0
+model S 101 29 M Table.obj R 0 90 0
+model S 101 31 M Fireplace.obj R 0 90 0
+model S 95 27 M BookCase_Empty.obj R 0 270 0
+model S 95 32 M BookCase_Empty.obj R 0 270 0
+model S 97 21 M OldChair.obj R 0 0 0
+model S 99 21 M oldTable.obj R 0 180 0
+model S 101 21 M OldChair.obj R 0 180 0
 
 
 model S 97 4 M OldChair.obj R 0 270 0
