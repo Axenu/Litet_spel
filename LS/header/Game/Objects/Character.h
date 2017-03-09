@@ -13,6 +13,7 @@
 #include "StaticVars.h"
 #include "Game/Level/IObjectFactory.h"
 #include <Sound/Irrklang.h>
+#include "keyBindings.h"
 
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
@@ -47,6 +48,7 @@ public:
     void onRender();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
+	void clickMouse(const MouseClickEvent& event);
 
 	void setLevel(Grid *level);
 	void setScene(Scene *scene);
@@ -68,10 +70,11 @@ public:
     virtual ~Character();
 
 	glm::vec3 getEyePos();
+	glm::vec3 getVelocity();
 
 	float calcLightAtPosition();
-
 	float getLightAtPosition();
+
 private:
 	void normalKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
@@ -82,6 +85,7 @@ private:
 	void returnVision();
 	CharState _state;
 	float _height;
+	bool _lean;
 
 	Grid *_currentLevel;
 	Scene *_currentScene;

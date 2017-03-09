@@ -79,17 +79,15 @@ void Character::move(float dt) {
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
 		
-		if (_sneaking)
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 0.3f);
-		else
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, false, 1.0f);
+		sound.PlaySource3DSound(sound.GetSound(PLAYERWALKING), this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), this->getVelocity());
+		sound.Update();
 
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/footSteps.wav"), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dt, true);
+		sound.Pause();
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -100,7 +98,6 @@ void Character::climb(float dT)
 	_animTime += dT;
 	if (_animTime < _animEndTime)
 	{
-
 		if (_animTime < _animFirstPhaseTime)
 		{
 			glm::vec3 dir = _animEndPos - _position;
@@ -112,6 +109,7 @@ void Character::climb(float dT)
 		}
 		else if (_animTime < _animSecondPhaseTime) //Animate climb phase
 		{
+		//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, false, 1.0f);
 			float yDist = _animEndPos.y - _position.y;
 			float timeDiff = _animSecondPhaseTime - _animTime;
 			if (timeDiff > 0.00001f) //Check so animation phase is not about to end.
@@ -138,6 +136,7 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_state = CharState::normal;
+	//	sound.PlaySource3DSound(sound.GetSound(CLIMBINGSOUND), false, this->getWorldPos(), this->getWorldPos(), this->getForward(), this->getUp(), dT, true);
 	}
 }
 
@@ -155,6 +154,7 @@ void Character::tryClimb()
 			_animEndTime = (_heightDiff + xzDist) / _speed;
 			_animTime = 0.0f;
 			_state = CharState::climbing;
+			
 		}
 	}
 }
@@ -282,11 +282,13 @@ void Character::calcNoise()
 		break;
 	default:
 		_movmentNoise = WALKINGNOISE;
+		sound.SetVolume(1.0f);
 		break;
 	}
 	if (_sneaking)
 	{
 		_movmentNoise *= SNEAKINGMODIFIER;
+		sound.SetVolume(0.3f);
 	}
 	_movmentNoise *= _isMoving;
 
@@ -345,12 +347,18 @@ glm::vec3 Character::getEyePos()
 	return _currentScene->getCamera().getWorldPos();
 }
 
+glm::vec3 Character::getVelocity()
+{
+	return _velocity;
+}
+
 #pragma region Events
 
 void Character::normalKeyInput(const KeyboardEvent & event)
 {
 	if (charMovement(event)) {} // CharMovements takes care of WASD-input
-	else if (event.getKey() == GLFW_KEY_E)
+	
+	else if (event.getKey() == EXIT)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -360,6 +368,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				CollectLootEvent event(points);
 				_lootValue += points;
 				_score += points;
+				sound.PlaySource2DSound(sound.GetSound(LOOTINGSOUND), false);
 				_eventManager->execute(event);
 			}
 		}
@@ -373,12 +382,13 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
-				sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/WinSound.wav"), false);
+				sound.SetVolume(0.2f);
+				sound.PlaySource2DSound(sound.GetSound(WIN_SOUND), false);
 
 			}
 		}
 	}
-	else if (event.getKey() == GLFW_KEY_Q)
+	else if (event.getKey() == ANTILIGHTGRENADE)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -392,7 +402,7 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 
 		}
 	}
-	else if (event.getKey() == GLFW_KEY_LEFT_CONTROL)
+	else if (event.getKey() == SNEAK)
 	{
 
 		if (event.getAction() == GLFW_PRESS)
@@ -412,22 +422,22 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 			}
 		}
 	}
-	else if (event.getKey() == GLFW_KEY_SPACE)
+	else if (event.getKey() == CLIMB)
 	{
 		tryClimb();
 	}
-	else if (event.getKey() == GLFW_KEY_T)
+	else if (event.getKey() == GETEYEPOS)
 	{
 		std::cout << "X: " << getEyePos().x << " Y: " << getEyePos().z << std::endl;
 	}
-	else if (event.getKey() == GLFW_KEY_R)
+	else if (event.getKey() == VISION)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
 			guardVision();
 		}
 	}
-	else if (event.getKey() == GLFW_KEY_P)
+	else if (event.getKey() == GETPOS)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -440,14 +450,14 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 void Character::guardVisionKeyInput(const KeyboardEvent & event)
 {
 	if (charMovement(event)) {} //Takes care so movement vectors keeps up to date.
-	else if (event.getKey() == GLFW_KEY_R)
+	else if (event.getKey() == VISION)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
 			guardVision();
 		}
 	}
-	else if (event.getKey() == GLFW_KEY_F)
+	else if (event.getKey() == RETURN)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -458,7 +468,7 @@ void Character::guardVisionKeyInput(const KeyboardEvent & event)
 
 bool Character::charMovement(const KeyboardEvent& event)
 {
-	if (event.getKey() == GLFW_KEY_W)
+	if (event.getKey() == MOVE_FORWARD)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -472,7 +482,7 @@ bool Character::charMovement(const KeyboardEvent& event)
 		}
 		return false;
 	}
-	else if (event.getKey() == GLFW_KEY_A)
+	else if (event.getKey() == MOVE_LEFT)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -486,7 +496,7 @@ bool Character::charMovement(const KeyboardEvent& event)
 		}
 		return false;
 	}
-	else if (event.getKey() == GLFW_KEY_S)
+	else if (event.getKey() == MOVE_BACK)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -500,7 +510,7 @@ bool Character::charMovement(const KeyboardEvent& event)
 		}
 		return false;
 	}
-	else if (event.getKey() == GLFW_KEY_D)
+	else if (event.getKey() == MOVE_RIGHT)
 	{
 		if (event.getAction() == GLFW_PRESS)
 		{
@@ -513,6 +523,34 @@ bool Character::charMovement(const KeyboardEvent& event)
 			return true;
 		}
 		return false;
+	}
+	else if (event.getKey() == LEAN_LEFT)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			
+			rotateZ(-1.0f * (M_PIf / 8.0f));
+			return true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			rotateZ((M_PIf / 8.0f));
+			return true;
+		}
+	}
+	else if (event.getKey() == LEAN_RIGHT)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			
+			rotateZ((M_PIf / 8.0f));
+			return true;
+		}
+		else if (event.getAction() == GLFW_RELEASE)
+		{
+			rotateZ(-1.0f * (M_PIf / 8.0f));
+			return true;
+		}
 	}
 	return false;
 }
@@ -570,6 +608,24 @@ void Character::moveMouse(const MouseMoveEvent& event)
 	}
 }
 
+void Character::clickMouse(const MouseClickEvent& event)
+{
+	if (event.getKey() == LOOT)
+	{
+		if (event.getAction() == GLFW_PRESS)
+		{
+			int points = _currentScene->loot(2);
+			if (points > 0)
+			{
+				CollectLootEvent event(points);
+				_lootValue += points;
+				_score += points;
+				_eventManager->execute(event);
+			}
+		}
+	}
+}
+
 #pragma endregion
 
 #pragma region Set & Construction
@@ -611,6 +667,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_eventManager->listen(this, &Character::moveCharacter);
 	_eventManager->listen(this, &Character::moveMouse);
 	_eventManager->listen(this, &Character::detected);
+	_eventManager->listen(this, &Character::clickMouse);
 	_canClimb = false;
 	_animFirstPhaseTime = 0.0f;
 	_animSecondPhaseTime = 0.0f;
@@ -621,6 +678,7 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_lightGrenadeCount = grenadeCount;
 	_grenadeTimer = 0;
 	_lightAtPos = 1.0f;
+	_lean = false;
 }
 
 Character::Character()
@@ -632,6 +690,7 @@ Character::~Character()
     _eventManager->unlisten(this, &Character::moveCharacter);
     _eventManager->unlisten(this, &Character::moveMouse);
 	_eventManager->unlisten(this, &Character::detected);
+	_eventManager->unlisten(this, &Character::clickMouse);
 
 }
 

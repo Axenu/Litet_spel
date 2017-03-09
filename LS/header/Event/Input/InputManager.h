@@ -66,6 +66,15 @@ public:
     QuitGameEvent() {};
 };
 
+class ResizeWindowEvent : public Event
+{
+public:
+    int _width;
+    int _height;
+    ResizeWindowEvent(int width, int height);
+    ~ResizeWindowEvent();
+};
+
 class InputManager
 {
 public:
@@ -74,6 +83,7 @@ public:
 
     void switchCursorMode(const cursorModeChangeEvent& event);
     void quitGame(const QuitGameEvent& event);
+    void resizeWindow(const ResizeWindowEvent& event);
     // int getCursorMode();
 
     EventManager* getManager();
