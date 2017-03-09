@@ -1,7 +1,7 @@
 ﻿model S 47 27 11 M Fireplace.obj R 0 180 0
-model S 45 29 11 M WingChair.obj R 0 315 0
-model S 49 29 11 M WingChair.obj R 0 45 0
-model S 47 30 11 M WingChair.obj
+model S 49 29 11 M WingChair.obj R 0 315 0
+model S 52 29 11 M WingChair.obj R 0 45 0
+model S 50 29 11 M WingChair.obj
 model S 50 27 R 0 180 0 M Table.obj
 loot S 50 27 R 0 0 0 V 8 M Chandilier.obj
 
@@ -29,6 +29,18 @@ model S 14 45 M Bookcase_Empty.obj R 0 180 0
 loot S 3 53 R 0 0 0 V 4 M Chalice.obj
 loot S 11 53 R 0 0 0 V 4 M GoldBar.obj
 
+model S 17 35 M Bookcase_Empty.obj R 0 90 0
+model S 17 39 M Bookcase_Empty.obj R 0 90 0
+model S 12 38 M Table.obj
+
+model S 21 22 M Table.obj R 0 180 0
+model S 21 27 M Table.obj R 0 180 0
+model S 18 21 M drawer.obj
+
+model S 12 1 M toilet.obj R 90 0 0
+model S 14 1 M toilet.obj R 90 0 0
+model S 16 1 M toilet.obj R 90 0 0
+
 model S 61 45 M Bookcase_Empty.obj R 0 90 0
 model S 61 48 M drawer.obj R 0 90 0
 loot S 61 48 R 0 0 0 V 8 M Chandilier.obj
@@ -48,6 +60,27 @@ model S 2 17 M Table.obj
 model S 3 17 M Table.obj
 model S 6 2 M Bookcase_Empty.obj R 0 90 0
 model S 7 2 M Bookcase_Empty.obj R 0 -90 0
+model S 7 26 M drawer.obj
+
+model S 1 36 M toilet.obj R 90 90 0
+model S 1 31 M toilet.obj R 90 90 0
+model S 1 34 M drawer.obj R 0 90 0
+
+model S 29 39 M table.obj
+model S 16 41 M table.obj
+model S 23 46 M table.obj R 0 90 0
+
+model S 12 17 M drawer.obj R 0 90 0
+model S 9 32 M drawer.obj
+
+model S 28 15 M table.obj
+model S 40 14 M table.obj 
+
+model S 38 9 M Bookcase_Empty.obj
+model S 45 7 M Bookcase_Empty.obj
+
+model S 23 12 M Table.obj
+model S 21 15 M Bookcase_Empty.obj
 
 model S 53 46 M Table.obj R 0 90 0
 model S 50 39 M drawer.obj R 0 0 0
@@ -57,7 +90,7 @@ model S 42 46 M Fireplace.obj R 0 270 0
 model S 62 52 M Table.obj R 0 0 0
 model S 61 40 M drawer.obj R 0 180 0
 model S 44 39 M drawer.obj R 0 0 0
-model S 68 42 M Fireplace.obj R 0 0 0
+model S 68 42 M BookCase_Empty.obj R 0 0 0
 loot S 44 39 R 0 0 0 V 4 M Chalice.obj
 loot S 61 40 R 0 0 0 V 4 M GoldBar.obj
 model S 65 49 M Table.obj R 0 90 0
@@ -69,8 +102,6 @@ loot S 69 44 R 0 0 0 V 4 M Chalice.obj
 //model S 46 50 M Table.obj R 0 90 0 v�nster
 //model S 47 50 M Table.obj R 0 180 0 ner 
 //model S 48 50 M Table.obj R 0 270 0 h�ger
-
-
 
 model S 83 27 M OldChair.obj R 0 270 0
 model S 83 29 M oldTAble.obj R 0 270 0
