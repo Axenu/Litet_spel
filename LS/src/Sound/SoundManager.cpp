@@ -8,13 +8,16 @@ SoundManager& SoundManager::getInstance()
 SoundManager::SoundManager()
 {
     _engine = irrklang::createIrrKlangDevice();
-    if (!_engine)
-        _engine->drop();
+
 }
 SoundManager::~SoundManager()
 {
-    if (!_engine)
-        _engine->drop();
+	if (_engine)
+	{
+		_engine->drop();
+		_engine = nullptr;
+	}
+        
 }
 
 irrklang::ISound *SoundManager::play2DSound(std::string path, bool looped, bool play)
@@ -33,6 +36,9 @@ irrklang::ISound *SoundManager::play3DSound(std::string path, glm::vec3 pos, boo
 }
 void SoundManager::setListenerPosition(glm::vec3 pos, glm::vec3 lookDir, glm::vec3 velocity, glm::vec3 up)
 {
+	if (!_engine)
+		return;
+
     _engine->setListenerPosition(irrklang::vec3df(pos.x, pos.y, pos.z), -irrklang::vec3df(lookDir.x, lookDir.y, lookDir.z), irrklang::vec3df(velocity.x, velocity.y, velocity.z), irrklang::vec3df(up.x, up.y, up.z));
 }
 void SoundManager::pauseAllSounds(bool pause)

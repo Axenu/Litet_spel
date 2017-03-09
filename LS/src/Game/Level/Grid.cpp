@@ -426,12 +426,6 @@ void Grid::loadingBmpPicture(const char* filename)
 			{
 				_twodArray[height - 1 - i][realj].type = door;
 			}
-			else
-			{
-				std::cout << "error" << std::endl;
-				std::cout << i << "," << realj << std::endl;
-				std::cout << "(" << glm::vec3(data[j], data[j + 1], data[j + 2]).x << ", " << glm::vec3(data[j], data[j + 1], data[j + 2]).y << ", " << glm::vec3(data[j], data[j + 1], data[j + 2]).z << ")" << std::endl;
-			}
 			_twodArray[height - 1 - i][realj].value = -1;
 			realj++;
 		}
