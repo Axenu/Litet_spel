@@ -84,8 +84,8 @@ model S 75 37 M Bookcase_Empty.obj R 0 270 0
 
 
 
-guard S 14 4 V 2 % 2_equal_loop_path
-path H 20 4 H 12 6
+guard S 37 49 V 2 % 2_equal_loop_path
+path H 26 46 H 37 43 H 37 49
 guard S 14 3 V 0 % 0_equal_stand_still
 path S 0 0 % Guard_faces_this_square_when_in_still_state
 loot S 3 3 R 0 0 0 V 4 M Chalice.obj

@@ -97,6 +97,8 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	_noiseDetVal = 0.0f;
 
 	_finalDetVal = 0.0f;
+
+	_lastNoiseVal = 0.0f;
 }
 
 Guard::~Guard()
@@ -219,7 +221,6 @@ void Guard::setPathingState()
 
 void Guard::setSearchingState()
 {
-
 	//Set properate animation
 
 	switch (_state)
@@ -232,7 +233,6 @@ void Guard::setSearchingState()
 	_interestTime = SEARCHINTERESTTIME;
 
 	setPath(this->getWorldPos(), _pointOfInterest);
-
 	_state = GuardState::searching;
 }
 
@@ -264,10 +264,10 @@ void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noise
 
 	if (noiseDist < guardHearDist)
 	{
-		float noiseVal = (guardHearDist - noiseDist) / guardHearDist; // make between 0 - 1
-		noiseVal = 2.0f * noiseVal - (noiseVal * noiseVal); // 2*x - x^2
-		noiseVal *= dt * noise;
-		_noiseDetVal += noiseVal;
+		_lastNoiseVal = (guardHearDist - noiseDist) / guardHearDist; // make between 0 - 1
+		_lastNoiseVal = 2.0f * _lastNoiseVal - (_lastNoiseVal * _lastNoiseVal); // 2*x - x^2
+		_lastNoiseVal *= dt * noise;
+		_noiseDetVal += _lastNoiseVal;
 		_noiseDetVal = std::fmin(_noiseDetVal, 1.0f); //clamp value to not be over 1.
 	}
 	else
@@ -276,7 +276,7 @@ void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noise
 		{
 			_noiseDetVal -= dt * 0.1f;
 		}
-
+		_lastNoiseVal = 0.0f;
 	}
 }
 
@@ -316,7 +316,7 @@ void Guard::finalDetection()
 		event._id = _id;
 		_eventManager->execute(event);
 	}
-	if (_finalDetVal < LOOKNOISELIMIT)
+	if (_lastNoiseVal > 0.0f)
 	{
 		_pointOfInterest = _player->getWorldPos();
 	}
