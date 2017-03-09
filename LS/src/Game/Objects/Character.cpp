@@ -238,16 +238,16 @@ void Character::returnVision()
 
 bool Character::canLean()
 {
-	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, wall))
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.2f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.2f, wall))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, wall))
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.3f, wall) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.3f, wall))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.5f, this->getEyePos(), object))
+	if (_currentLevel->getDist(this->getEyePos(), getForward(), 0.2f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * getForward(), 0.2f, this->getEyePos(), object))
 		return false;
 
-	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.5f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.5f, this->getEyePos(), object))
+	if (_currentLevel->getDist(this->getEyePos(), this->getRight(), 0.3f, this->getEyePos(), object) || _currentLevel->getDist(this->getEyePos(), -1.0f * this->getRight(), 0.3f, this->getEyePos(), object))
 		return false;
 
 	return true;
