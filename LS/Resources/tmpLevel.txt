@@ -100,7 +100,20 @@ model S 97 14 M OldChair.obj R 0 270 0
 model S 99 13 M oldTable.obj R 0 270 0
 model S 101 11 M OldChair.obj R 0 90 0
 
+model S 97 14 M Table.obj R 0 180 0
+model S 81 1 M OldChair.obj R 0 90 0 
+model S 81 2 M OldChair.obj R 0 90 0 
+model S 81 3 M OldChair.obj R 0 90 0 
+model S 81 4 M OldChair.obj R 0 90 0 
+model S 81 5 M OldChair.obj R 0 90 0 
+model S 81 6 M OldChair.obj R 0 90 0 
+model S 81 7 M OldChair.obj R 0 90 0 
 
+
+model S 69 3 M OldChair.obj R 0 180 0 
+model S 69 5 M OldChair.obj R 0 90 0 
+model S 71 4 M OldChair.obj R 0 0 0 
+model S 67 4 M OldChair.obj R 0 270 0 
 
 
 model S 79 50 M Table.obj R 0 180 0
