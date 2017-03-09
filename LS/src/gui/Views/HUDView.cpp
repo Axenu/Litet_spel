@@ -136,6 +136,10 @@ namespace gui {
         _isActive = true;
 
         _gameOverCD = -1.0f;
+        //start background sound
+        _backgroundSound = SoundManager::getInstance().play2DSound(BACKGROUND_SONG, true, true);
+        if (_backgroundSound)
+            _backgroundSound->setVolume(0.1f);
     }
     HUDView::~HUDView()
     {
@@ -149,6 +153,8 @@ namespace gui {
         {
             delete _game;
         }
+        if (_backgroundSound)
+            _backgroundSound->drop();
     }
     void HUDView::onRender(float dt)
     {
@@ -186,6 +192,7 @@ namespace gui {
                 }
                 view->setScoreAndLoot(*_game->getCharacter()->getScoreValuePointer(), *_game->getCharacter()->getLootValuePointer());
                 view->updateText(false);
+                return;
             }
         }
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
@@ -206,14 +213,27 @@ namespace gui {
     }
     void HUDView::pauseView()
     {
+        _eventManager->unlisten(this, &HUDView::switchToGuardVision);
+        _eventManager->unlisten(this, &HUDView::gameOver);
+        _eventManager->unlisten(this, &HUDView::exitSquareTrigger);
+		_eventManager->unlisten(this, &HUDView::canClimb);
+        _eventManager->unlisten(this, &HUDView::guardAlert);
+        _eventManager->unlisten(this, &HUDView::KeyboardPressed);
         if (_isActive)
         {
             _game->getCharacter()->pause();
             _isActive = false;
         }
+        SoundManager::getInstance().pauseAllSounds(true);
     }
     void HUDView::resumeView()
     {
+        _eventManager->listen(this, &HUDView::switchToGuardVision);
+        _eventManager->listen(this, &HUDView::gameOver);
+        _eventManager->listen(this, &HUDView::exitSquareTrigger);
+		_eventManager->listen(this, &HUDView::canClimb);
+		_eventManager->listen(this, &HUDView::guardAlert);
+        _eventManager->listen(this, &HUDView::KeyboardPressed);
         if (!_isActive)
         {
             _game->getCharacter()->resume();
@@ -221,6 +241,8 @@ namespace gui {
             _eventManager->execute(event);
             _isActive = true;
         }
+        if (_backgroundSound)
+            _backgroundSound->setIsPaused(false);
     }
     void HUDView::initiate()
     {

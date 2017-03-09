@@ -21,10 +21,6 @@ namespace gui
                 _parent->setView(new LoadingView(_eventManager, _fps));
             }
 
-            //start background sound
-            _backgroundSound = SoundManager::getInstance().play2DSound(BACKGROUND_SONG, true, true);
-            _backgroundSound->setVolume(0.1f);
-
             ChangeGameStateEvent event(ChangeGameStateEvent::RunningState);
             _eventManager->execute(event);
         }
@@ -103,8 +99,6 @@ namespace gui
     }
     MainMenuView::~MainMenuView()
     {
-        if (_backgroundSound)
-            _backgroundSound->drop();
     }
     void MainMenuView::onRender(float dt)
     {

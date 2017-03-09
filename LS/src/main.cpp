@@ -79,8 +79,6 @@ void setupWindow()
 	gui::Manager guiManager(&eventManager);
 	guiManager.setWindowSize(Config::resolution.x, Config::resolution.y);
 	guiManager.setView(guiScene);
-	// SoundManager soundManager(&eventManager);
-
 
 
 /* Loop until the user closes the window */
@@ -119,17 +117,6 @@ void setupWindow()
 
 int main()
 {
-
-	//  irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
-	 //
-	//  irrklang::vec3df position(0,0,0);
-	//  irrklang::vec3df position2(0,2,0);
-	//  irrklang::ISound* snd = engine->play3D("resources/Sounds/footSteps.wav", position, true, false);
-	//  engine->play3D("resources/Sounds/Grenade.wav", position2, true, false);
-	//  engine->play3D("resources/Sounds/footSteps.wav", position);
-	//  engine->play3D("resources/Sounds/Grenade.wav", position2);
-	//  engine->play3D("resources/Sounds/footSteps.wav", position);
-	//  engine->play2D("resources/Sounds/footSteps.wav", true);
 
 	//load settings
 	Config::loadConfig("resources/settings.conf");

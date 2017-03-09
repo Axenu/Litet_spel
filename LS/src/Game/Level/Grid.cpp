@@ -184,7 +184,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 		return std::shared_ptr<Path>(new Path(emptyPath));
 	}
 	//print2darraydata();
-	int maxValue = maxRange;
+	int maxValue = maxRange * maxRange;
 	int oldMaxValue = 0;
 	int value = 0;
 	//-1 outforskadmark, ej gåbart
@@ -197,7 +197,50 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 	if(isInside(startPosition))
 		setvalue(startPosition.y, startPosition.x, 0);
 
-	while (maxValue != 0 || value != maxRange)
+	for (int j = minY; j < maxY; j++)
+	{
+		for (int i = minX; i < maxX; i++)
+		{
+			if (getTypeNC(j, i) == wall)
+			{
+				setvalue(j, i, -2);
+			}
+		}
+	}
+
+	std::vector<glm::ivec2> currentPositions;
+	currentPositions.push_back(startPosition);
+
+	while (currentPositions.size() != 0)
+	{
+		std::vector<glm::ivec2> nextPositions;
+		for (int i = 0; i < currentPositions.size(); i++)
+		{
+			if (currentPositions[i].y - 1 > minY && getvalue(currentPositions[i].y - 1, currentPositions[i].x) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x, currentPositions[i].y - 1));
+				setvalue(currentPositions[i].y - 1, currentPositions[i].x, value + 1);
+			}
+			if (currentPositions[i].y + 1 < maxY && getvalue(currentPositions[i].y + 1, currentPositions[i].x) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x, currentPositions[i].y + 1));
+				setvalue(currentPositions[i].y + 1, currentPositions[i].x, value + 1);
+			}
+			if (currentPositions[i].x - 1 > minX && getvalue(currentPositions[i].y, currentPositions[i].x - 1) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x - 1, currentPositions[i].y));
+				setvalue(currentPositions[i].y, currentPositions[i].x - 1, value + 1);
+			}
+			if (currentPositions[i].x + 1 < maxX && getvalue(currentPositions[i].y, currentPositions[i].x + 1) == -1)
+			{
+				nextPositions.push_back(glm::ivec2(currentPositions[i].x + 1, currentPositions[i].y));
+				setvalue(currentPositions[i].y, currentPositions[i].x + 1, value + 1);
+			}
+		}
+		currentPositions = nextPositions;
+		value++;
+	}
+	/*while (maxValue != 0)
 	{
 		oldMaxValue = maxValue;
 		for (int j = minY; j < maxY; j++)
@@ -232,10 +275,6 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 						}
 					}
 				}
-				if (glm::ivec2(i, j) == goalPosition)
-				{
-					break;
-				}
 			}
 		}
 		if (oldMaxValue == maxValue)
@@ -243,7 +282,8 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 			break;
 		}
 		value++;
-	}
+	}*/
+
 	for (int j = minY; j < maxY; j++)
 	{
 		for (int i = minX; i < maxX; i++)
@@ -254,7 +294,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 			}
 		}
 	}
-
+	//print2darraydata();
 	std::vector<glm::vec3> path;
 
 	glm::ivec2 currentPos = goalPosition;
@@ -562,13 +602,13 @@ void Grid::print2darraydata()
 {
 	for (int j = 0; j < _heightLength; j++)
 	{
-		std::cout << "( ";
+		std::cout << "(";
 		for (int i = 0; i < _widthLength; i++)
 		{
 			if (i == _widthLength - 1)
 				std::cout << _twodArray[j][i].value << ")";
 			else
-				std::cout << _twodArray[j][i].value << ", ";
+				std::cout << _twodArray[j][i].value << ",";
 		}
 		std::cout << "" << std::endl;
 	}

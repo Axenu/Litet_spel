@@ -25,9 +25,18 @@ void EventManager::execute(const Event& event)
 	Handlers::iterator it = _handlers.find(TypeInfo(typeid(event)));
 	if(it != _handlers.end())
 	{
-        for (std::vector<HandlerFunctionBase*>::iterator i = it->second.begin(); i != it->second.end(); ++i)
+        for (std::vector<HandlerFunctionBase*>::iterator i = it->second.begin(); i != it->second.end();)
 		{
-            (*i)->exec(event);
+			if ((*i)->_shouldDelete)
+			{
+				delete *i;
+				i = it->second.erase(i);
+			}
+			else
+			{
+				(*i)->exec(event);
+				i++;
+			}
         }
 	}
 }
