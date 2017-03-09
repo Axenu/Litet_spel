@@ -141,6 +141,37 @@ model S 60 10 M WingChair.obj
 model S 61 10 M WingChair.obj
 
 
+model S 3 35 11 M WingChair.obj R 0 315 0
+model S 2 37 M WingChair.obj R 0 45 0
+model S 4 33 11 M WingChair.obj
+
+//model S 45 50 M Table.obj R 0 0 0 up
+//model S 46 50 M Table.obj R 0 90 0 v�nster
+//model S 47 50 M Table.obj R 0 180 0 ner 
+//model S 48 50 M Table.obj R 0 270 0 h�ger
+
+model S 23 31 11 M WingChair.obj R 0 270 0 
+model S 23 32 11 M Table.obj R 0 270 0 
+model S 23 34 11 M WingChair.obj R 0 270 0 
+
+model S 23 17 11 M WingChair.obj R 0 270 0 
+model S 23 18 11 M Table.obj 0 R 270 0 
+model S 23 20 11 M WingChair.obj R 0 270 0 
+
+
+model S 72 18 11 M WingChair.obj R 0 270 0 
+model S 72 19 11 M Table.obj R 0 270 0
+model S 72 21 11 M WingChair.obj R 0 270 0 
+
+
+model S 72 30 11 M WingChair.obj R 0 270 0 
+model S 72 31 11 M Table.obj R 0 270 0 
+model S 72 33 11 M WingChair.obj R 0 270 0
+
+model S 56 27 11 M WingChair.obj R 0 270 0 
+model S 56 28 11 M Table.obj R 0 270 0 
+model S 56 30 11 M WingChair.obj R 0 270 0 
+
 
 model S 79 50 M Table.obj R 0 180 0
 model S 90 50 M Bookcase_Empty.obj R 0 180 0 
