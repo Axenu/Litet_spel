@@ -1,4 +1,4 @@
-model S 47 27 11 M Fireplace.obj R 0 180 0
+﻿model S 47 27 11 M Fireplace.obj R 0 180 0
 model S 45 29 11 M WingChair.obj R 0 315 0
 model S 49 29 11 M WingChair.obj R 0 45 0
 model S 47 30 11 M WingChair.obj
@@ -70,6 +70,39 @@ loot S 69 44 R 0 0 0 V 4 M Chalice.obj
 //model S 47 50 M Table.obj R 0 180 0 ner 
 //model S 48 50 M Table.obj R 0 270 0 h�ger
 
+model S 83 27 M OldChair.obj R 0 270 0
+model S 83 29 M oldTAble.obj R 0 270 0
+model S 83 31 M OldChair.obj R 0 90 0
+
+model S 85 21 M OldChair.obj R 0 270 0
+model S 85 23 M oldTable.obj R 0 0 0
+model S 85 25 M OldChair.obj R 0 90 0
+
+model S 97 34 M OldChair.obj R 0 270 0
+model S 99 34 M oldTable.obj R 0 270 0
+model S 101 34 M OldChair.obj R 0 90 0
+
+model S 97 21 M OldChair.obj R 0 270 0
+model S 99 21 M oldTable.obj R 0 270 0
+model S 101 21 M OldChair.obj R 0 90 0
+
+
+model S 97 4 M OldChair.obj R 0 270 0
+model S 99 4 M oldTable.obj R 0 270 0
+model S 101 4 M OldChair.obj R 0 90 0
+
+
+model S 97 10 M OldChair.obj R 0 270 0
+model S 99 12 M oldTable.obj R 0 270 0
+model S 101 15 M OldChair.obj R 0 90 0
+
+model S 97 14 M OldChair.obj R 0 270 0
+model S 99 13 M oldTable.obj R 0 270 0
+model S 101 11 M OldChair.obj R 0 90 0
+
+
+
+
 model S 79 50 M Table.obj R 0 180 0
 model S 90 50 M Bookcase_Empty.obj R 0 180 0 
 model S 97 45 M Fireplace.obj R 0 270 0 
@@ -88,6 +121,47 @@ model S 75 31 M Bookcase_Empty.obj R 0 270 0
 model S 75 33 M Bookcase_Empty.obj R 0 270 0 
 model S 75 35 M Bookcase_Empty.obj R 0 270 0  
 model S 75 37 M Bookcase_Empty.obj R 0 270 0 
+
+model S 78 18 M Bookcase_Empty.obj R 0 180 0  
+model S 80 18 M Bookcase_Empty.obj R 0 180 0  
+model S 81 21 M Bookcase_Empty.obj R 0 90 0
+model S 81 23 M Bookcase_Empty.obj R 0 90 0
+model S 81 25 M Bookcase_Empty.obj R 0 90 0
+model S 81 27 M Bookcase_Empty.obj R 0 90 0
+model S 81 29 M Bookcase_Empty.obj R 0 90 0
+model S 81 31 M Bookcase_Empty.obj R 0 90 0
+model S 81 33 M Bookcase_Empty.obj R 0 90 0
+model S 83 36 M Bookcase_Empty.obj R 0 180 0
+model S 85 36 M Bookcase_Empty.obj R 0 180 0
+model S 87 36 M Bookcase_Empty.obj R 0 180 0
+model S 89 36 M Bookcase_Empty.obj R 0 180 0
+model S 91 37 M Bookcase_Empty.obj R 0 90 0
+model S 93 40 M Bookcase_Empty.obj R 0 180 0
+model S 95 47 M Bookcase_Empty.obj R 0 90 0
+model S 95 45 M Bookcase_Empty.obj R 0 90 0
+model S 95 48 M Bookcase_Empty.obj R 0 0 0
+model S 93 48 M Bookcase_Empty.obj R 0 0 0
+model S 91 48 M Bookcase_Empty.obj R 0 0 0
+model S 89 48 M Bookcase_Empty.obj R 0 0 0
+model S 87 48 M Bookcase_Empty.obj R 0 0 0
+model S 83 48 M Bookcase_Empty.obj R 0 0 0
+model S 81 48 M Bookcase_Empty.obj R 0 0 0
+model S 79 48 M Bookcase_Empty.obj R 0 0 0
+model S 77 48 M Bookcase_Empty.obj R 0 0 0
+
+model S 80 39 M Bookcase_Empty.obj R 0 0 0
+model S 82 39 M Bookcase_Empty.obj R 0 0 0
+model S 84 39 M Bookcase_Empty.obj R 0 0 0
+model S 86 40 M Bookcase_Empty.obj R 0 270 0
+model S 86 42 M Bookcase_Empty.obj R 0 270 0
+
+model S 80 40 M Bookcase_Empty.obj R 0 180 0
+model S 82 40 M Bookcase_Empty.obj R 0 180 0
+model S 84 40 M Bookcase_Empty.obj R 0 180 0
+model S 85 40 M Bookcase_Empty.obj R 0 90 0
+model S 85 42 M Bookcase_Empty.obj R 0 90 0
+
+
 
 model S 36 27 M Table.obj R 0 180 0
 model S 33 27 M Bookcase_Empty.obj R 0 180 0
