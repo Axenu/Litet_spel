@@ -201,7 +201,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 	{
 		for (int i = minX; i < maxX; i++)
 		{
-			if (getTypeNC(j, i) == wall)
+			if (getTypeNC(j, i) != nothing)
 			{
 				setvalue(j, i, -2);
 			}
@@ -425,6 +425,10 @@ void Grid::loadingBmpPicture(const char* filename)
 			else if (glm::vec3(data[j], data[j + 1], data[j + 2]) == glm::vec3(0, 0, 255))
 			{
 				_twodArray[height - 1 - i][realj].type = door;
+			}
+			else
+			{
+				_twodArray[height - 1 - i][realj].type = nothing;
 			}
 			_twodArray[height - 1 - i][realj].value = -1;
 			realj++;
