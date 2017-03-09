@@ -310,6 +310,7 @@ void Character::calcNoise()
 	default:
 		_movmentNoise = WALKINGNOISE;
 		_walkingSound->setVolume(1.0f);
+		_movmentNoise *= _isMoving;
 		break;
 	}
 	if (_sneaking)
@@ -317,8 +318,6 @@ void Character::calcNoise()
 		_movmentNoise *= SNEAKINGMODIFIER;
 		_walkingSound->setVolume(0.3f);
 	}
-	_movmentNoise *= _isMoving;
-
 }
 
 float Character::getNoise()
