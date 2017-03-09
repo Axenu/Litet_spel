@@ -58,7 +58,7 @@ namespace gui
         bool _isAtExit = false;
         float _gameOverCD;
         std::vector<AlertStruct> _alerts;
-        irrklang::ISound *_backgroundSound = nullptr;
+        Sound *_backgroundSound = nullptr;
 
         glm::vec4 mixColors(glm::vec4 color1, glm::vec4 color2, float dt);
 

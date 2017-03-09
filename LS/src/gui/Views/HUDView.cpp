@@ -138,8 +138,7 @@ namespace gui {
         _gameOverCD = -1.0f;
         //start background sound
         _backgroundSound = SoundManager::getInstance().play2DSound(BACKGROUND_SONG, true, true);
-        if (_backgroundSound)
-            _backgroundSound->setVolume(0.1f);
+        _backgroundSound->setVolume(0.1f);
     }
     HUDView::~HUDView()
     {
@@ -153,8 +152,7 @@ namespace gui {
         {
             delete _game;
         }
-        if (_backgroundSound)
-            _backgroundSound->drop();
+        _backgroundSound->drop();
     }
     void HUDView::onRender(float dt)
     {
@@ -241,8 +239,7 @@ namespace gui {
             _eventManager->execute(event);
             _isActive = true;
         }
-        if (_backgroundSound)
-            _backgroundSound->setIsPaused(false);
+        _backgroundSound->play();
     }
     void HUDView::initiate()
     {

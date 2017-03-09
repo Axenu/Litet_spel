@@ -50,7 +50,7 @@ private:
 	glm::vec3 _returnPoint;
 	GuardState _state;
 
-	irrklang::ISound *_walkingSound;
+	Sound *_walkingSound;
 
 	//Field of view in cosine
 	float _detectFov;

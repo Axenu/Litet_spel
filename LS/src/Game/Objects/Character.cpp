@@ -88,16 +88,14 @@ void Character::move(float dt) {
 		right2D = glm::normalize(right2D);
 		_velocity = _moveDir.x * right2D * _isMoving * _speed;
 		_velocity += _moveDir.y * forw2D * _isMoving * _speed;
-		if (_walkingSound)
-			_walkingSound->setIsPaused(false);
+		_walkingSound->play();
 
 	}
 	else
 	{
 		_velocity = glm::vec3(0, 0, 0);
 		_isMoving = 0;
-		if (_walkingSound)
-			_walkingSound->setIsPaused(true);
+		_walkingSound->pause();
 	}
 	//Calculate new camera position and update the camera
 	_position = _currentLevel->wallCollission(_position, _velocity * dt);
@@ -145,8 +143,7 @@ void Character::climb(float dT)
 	{
 		setPosition(_animEndPos);
 		_state = CharState::normal;
-		if (_climbSound)
-			_climbSound->setIsPaused(true);
+		_climbSound->pause();
 	}
 }
 
@@ -164,11 +161,8 @@ void Character::tryClimb()
 			_animEndTime = (_heightDiff + xzDist) / _speed;
 			_animTime = 0.0f;
 			_state = CharState::climbing;
-			if (_climbSound)
-			{
-				_climbSound->setPlayPosition(1000);
-				_climbSound->setIsPaused(false);
-			}
+			_climbSound->setPlayPosition(1000);
+			_climbSound->play();
 
 		}
 	}
@@ -409,12 +403,9 @@ void Character::normalKeyInput(const KeyboardEvent & event)
 				//call endGameEvent
 				GameOverEvent event(true);
 				_eventManager->execute(event);
-				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(WIN_SOUND, false, false);
-				if (tempSound)
-				{
-					tempSound->setVolume(0.2f);
-					tempSound->setIsPaused(false);
-				}
+				Sound *tempSound = SoundManager::getInstance().play2DSound(WIN_SOUND, false, false);
+				tempSound->setVolume(0.2f);
+				tempSound->play();
 			}
 		}
 	}
@@ -660,9 +651,8 @@ void Character::clickMouse(const MouseClickEvent& event)
 				CollectLootEvent event(points);
 				_lootValue += points;
 				_score += points;
-				irrklang::ISound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
-				if (tempSound)
-					tempSound->setPlayPosition(200);
+				Sound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
+				tempSound->setPlayPosition(200);
 				_eventManager->execute(event);
 			}
 		}
@@ -741,10 +731,8 @@ Character::~Character()
     _eventManager->unlisten(this, &Character::moveMouse);
 	_eventManager->unlisten(this, &Character::detected);
 	_eventManager->unlisten(this, &Character::clickMouse);
-	if (_walkingSound)
-		_walkingSound->drop();
-	if (_climbSound)
-		_climbSound->drop();
+	_walkingSound->drop();
+	_climbSound->drop();
 }
 
 #pragma endregion

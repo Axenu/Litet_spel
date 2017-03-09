@@ -126,6 +126,6 @@ private:
 	int _lean;
 	float _rotate;
 	//sound effects
-	irrklang::ISound *_walkingSound;
-	irrklang::ISound *_climbSound;
+	Sound *_walkingSound;
+	Sound *_climbSound;
 };

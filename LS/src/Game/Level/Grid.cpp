@@ -214,7 +214,7 @@ std::shared_ptr<Path> Grid::generatePath(glm::ivec2 startPosition, glm::ivec2 go
 	while (currentPositions.size() != 0)
 	{
 		std::vector<glm::ivec2> nextPositions;
-		for (int i = 0; i < currentPositions.size(); i++)
+		for (size_t i = 0; i < currentPositions.size(); i++)
 		{
 			if (currentPositions[i].y - 1 > minY && getvalue(currentPositions[i].y - 1, currentPositions[i].x) == -1)
 			{
