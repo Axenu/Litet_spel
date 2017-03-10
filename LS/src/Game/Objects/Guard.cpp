@@ -132,20 +132,23 @@ void Guard::setStillState()
 	_state = GuardState::still;
 	face(_currentLevel->getGrid().getCenter(_walkPoints._faceDir));
 	//Set properate animation
-	_animatedSkel->setAnimPose("", 0.5f, 0.f);
+	if (hasSkeleton())
+		_animatedSkel->setAnimPose("", 0.5f, 0.f);
 }
 void Guard::setLookingState()
 {
 	_state = GuardState::looking;
 	//Set properate animation
-	_animatedSkel->stopAnimation();
+	if (hasSkeleton())
+		_animatedSkel->stopAnimation();
 }
 
 void Guard::setPathingState()
 {
 	_state = GuardState::pathing;
 	//Set properate animation
-	_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
+	if (hasSkeleton())
+		_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
 }
 
 void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos)

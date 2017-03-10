@@ -123,9 +123,7 @@ AntiLightGrenade* ObjectFactory::createLightGrenade(const std::string &model, gl
 Guard* ObjectFactory::createGuard(const std::string &model, Character& player, guardData &data)
 {
 	//Setup guard
-	Material mat(&_skinnedShader);
-	mat.setColor("diffuse", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	Model tmpModel = _models.GetModel(_modelPath + model, mat);
+	Model tmpModel = _models.GetModel(_modelPath + model, &_skinnedShader);
 	glm::vec3 pos = calcPos(data.spawnPosition, tmpModel.getBox());
 	WalkPoints points(data.walkingPoints, data.walkType, data.face);
 	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, points);
