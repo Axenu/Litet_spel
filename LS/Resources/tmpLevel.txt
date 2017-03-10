@@ -37,9 +37,9 @@ model S 21 22 M Table.obj R 0 90 0
 model S 21 27 M Table.obj R 0 90 0
 model S 21 25 M drawer.obj R 0 270 0
 
-model S 12 1 M toilet.obj R 90 0 0
-model S 14 1 M toilet.obj R 90 0 0
-model S 16 1 M toilet.obj R 90 0 0
+model S 12 1 M wingChair.obj
+model S 14 1 M FirePlace.obj 0 90 0 
+model S 16 1 M WingChair.obj
 
 model S 61 45 M Bookcase_Empty.obj R 0 90 0
 model S 61 48 M drawer.obj R 0 270 0
@@ -62,8 +62,8 @@ model S 6 2 M Bookcase_Empty.obj R 0 90 0
 model S 7 2 M Bookcase_Empty.obj R 0 -90 0
 model S 7 26 M drawer.obj
 
-model S 1 36 M toilet.obj R 90 90 0
-model S 1 31 M toilet.obj R 90 90 0
+model S 1 36 M Bookcase_Empty.obj
+model S 1 31 M Bookcase_Empty.obj
 model S 1 34 M drawer.obj R 0 90 0
 
 model S 29 39 M table.obj
