@@ -11,6 +11,7 @@ class SoundManager
 {
 private:
     irrklang::ISoundEngine *_engine;
+    bool _hasSound = true;
 public:
     static SoundManager& getInstance();
     SoundManager();
@@ -22,5 +23,7 @@ public:
     Sound *play3DSound(std::string path, glm::vec3 pos, bool looped, bool play);
     void setListenerPosition(glm::vec3 pos, glm::vec3 lookDir, glm::vec3 velocity, glm::vec3 up);
     void pauseAllSounds(bool pause);
+    void setGlobalVolume(float vol);
+    void setHasSound(bool sound);
 
 };

@@ -32,5 +32,4 @@ public:
 	/* Access the scene */
 	const Scene& getScene();
 
-	virtual void onUpdate(float dT);
 };

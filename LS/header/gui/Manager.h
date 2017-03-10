@@ -22,7 +22,7 @@ namespace gui
     {
     private:
         EventManager* _manager;
-        View* _currentView;
+        View* _currentView = nullptr;
         glm::vec2 _lastCursorPos;
         int _cursorMode = GLFW_CURSOR_NORMAL;
         std::vector<View*> _loadedViews;

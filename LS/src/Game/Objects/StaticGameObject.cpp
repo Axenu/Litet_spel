@@ -12,6 +12,11 @@ StaticGameObject::StaticGameObject(Model & m)
 
 }
 
+StaticGameObject::StaticGameObject(Model &m, type::GameObjectType type) : GameObject(m, type)
+{
+
+}
+
 StaticGameObject::~StaticGameObject()
 {
 
@@ -19,4 +24,5 @@ StaticGameObject::~StaticGameObject()
 
 void StaticGameObject::update(float dT)
 {
+
 }

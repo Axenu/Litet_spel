@@ -21,7 +21,7 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
 	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), scene->getCamera());
 	//Character* player = _factory.createCharacter(glm::ivec2(2, 2), 1.3f);
-	Character* player = _factory.createCharacter(glm::ivec2(47, 53), 1.3f);
+	Character* player = _factory.createCharacter(glm::ivec2(48, 53), 1.3f);
 	_player = player;
 
 
@@ -39,7 +39,7 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 			_factory.createObject("Door_Closed.obj", doorList[i].pos, doorList[i].rotation, gridType::wall, glm::vec3(0.f, 0.f, 0.f));
 	}
 	for (unsigned int i = 0; i < guards.size(); i++)
-		_factory.createGuard("Guard.obj", *player, guards[i]);
+		_factory.createGuard("Character.dae", *player, guards[i]);
 	_factory.createRandomLoot(loot, MAX_LOOT_LEVEL);
 
 	/* Preload

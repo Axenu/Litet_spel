@@ -35,7 +35,7 @@ void setupWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     // glfwWindowHint(GLFW_SAMPLES, 0);
     glfwWindowHint(GLFW_DECORATED, !Config::borderLess);
-	GLFWwindow* window = glfwCreateWindow(Config::resolution.x, Config::resolution.y, "Hello World", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(Config::resolution.x, Config::resolution.y, GAMENAME, NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -120,6 +120,10 @@ int main()
 
 	//load settings
 	Config::loadConfig("resources/settings.conf");
+	//set mastetr volume
+	SoundManager::getInstance().setGlobalVolume(Config::masterVolume);
+	if (!Config::hasSound)
+		SoundManager::getInstance().setGlobalVolume(0.0f);
 	//setup window and run game
 	setupWindow();
 

@@ -67,13 +67,13 @@ void AnimatedSkeleton::updateSkeleton()
 }
 
 bool AnimatedSkeleton::setAnim(const std::string& name, PlayType runType) {
-	//Change animation, it may fail
+	//Change animation, it can be null
 	_animation = _ref.getAnimation(name);
 	if (_animation)
 	{
 		_animDuration = _animation->_duration;
 		for (unsigned int i = 0; i < _channel.size(); i++)
-			_channel[i].newAnimation(_elapAnimTime, &_animation->operator[](i), _animDuration);
+			_channel[i].newAnimation(_elapAnimTime, &_animation->operator[](i), 0.f);
 		_elapAnimTime = 0.f;
 		_endState = runType;
 		return true;
