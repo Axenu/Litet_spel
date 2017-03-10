@@ -274,7 +274,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			for (unsigned short int i = 0; i < squareList.size(); i++)
 				doorList.push_back(doorData(squareList[i], calcRot(squareList[i]), true));
 			//Close some doors, might close same door twice but... don't care?
-			int closeCount = (int)value;
+			int closeCount = getRand((int)value + 1);
 			for (int i = 0; i < closeCount; i++)
 			{
 				doorList[lastSize + getRand(squareList.size())].open = false;
