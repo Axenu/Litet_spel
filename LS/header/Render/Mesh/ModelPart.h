@@ -13,6 +13,7 @@ private:
 	/* Reference to a linked skeleton parent, can be null */
 	AnimatedSkeleton *_skeleton;
 	Material _material;
+	bool _hasShadow = true;
 public:
 	/* Mesh box in local space
 	*/
@@ -32,4 +33,6 @@ public:
 	/* Set a skeleton reference telling that the part is animated */
 	void setSkeleton(AnimatedSkeleton *skel);
 	const AABB& getBox();
+	void setHasShadows(bool shadow);
+	bool getHasShadow() const;
 };
