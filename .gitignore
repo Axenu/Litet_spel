@@ -22,3 +22,5 @@ LS/x64/
 LS/x86/
 LS/build
 main
+
+LS/Resources/settings\.conf
