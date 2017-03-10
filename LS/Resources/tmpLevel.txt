@@ -262,7 +262,7 @@ model S 86 42 M Bookcase_Empty.obj R 0 270 0
 model S 80 40 M Bookcase_Empty.obj R 0 180 0
 model S 82 40 M Bookcase_Empty.obj R 0 180 0
 model S 84 40 M Bookcase_Empty.obj R 0 180 0
-model S 85 40 M Bookcase_Empty.obj R 0 90 0
+model S 85 41 M Bookcase_Empty.obj R 0 90 0
 model S 85 42 M Bookcase_Empty.obj R 0 90 0
 
 
@@ -328,6 +328,23 @@ guard S 18 22 V 2 % 2_equal_loop_path
 path H 6 19 H 15 37 H 16 3
 guard S 31 7 V 2 % 2_equal_loop_path
 path H 52 6 H 62 12 H 77 11
+guard S 85 3 V 2 % 2_equal_loop_path
+path H 86 8 H 86 23 H 99 29 H 99 19
+guard S 99 10 V 2
+path H 85 14 H 86 29 H 99 10 
+guard S 78 22 V 2
+path H 78 45 H 87 39 H 79 20 
+guard S 62 39 V 2
+path H 23 39 H 62 39
+
+
+guard S 63 32 V 2
+path H 34 33 H 37 21 H 63 32
+
+guard S 34 33 V 2
+path H 63 32 H 37 21 H 34 33
+
+
 
 
 listSuperLoot S 4 5 S 37 2 S 48 20 M Diamond.obj V 200 R 0 0 0
