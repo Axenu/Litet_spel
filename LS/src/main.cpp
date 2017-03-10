@@ -14,6 +14,7 @@
 #include "StaticVars.h"
 #include "math/MathFunctions.h"
 #include "Config.h"
+#include "Sound/SoundManager.h"
 
 void setupWindow()
 {
@@ -80,7 +81,6 @@ void setupWindow()
 	guiManager.setView(guiScene);
 
 
-
 /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -120,7 +120,7 @@ int main()
 
 	//load settings
 	Config::loadConfig("resources/settings.conf");
-	// std::cout << "Init window!" << std::endl;
+	//setup window and run game
 	setupWindow();
 
 	// getchar();

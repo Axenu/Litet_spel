@@ -98,6 +98,13 @@ namespace gui
         _secondaryColor = color;
         _foregroundRect->setColor(color);
     }
+    void ProgressBar::setOpacity(float opacity)
+    {
+        _primaryColor.a = opacity;
+        _secondaryColor.a = opacity;
+        _backgroundRect->setOpacity(opacity);
+        _foregroundRect->setOpacity(opacity);
+    }
     void ProgressBar::setValue(float value)
     {
         _value = value;

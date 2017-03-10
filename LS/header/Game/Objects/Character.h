@@ -12,7 +12,8 @@
 #include "AntiLightGrenade.h"
 #include "StaticVars.h"
 #include "Game/Level/IObjectFactory.h"
-#include <Sound/Irrklang.h>
+#include "keyBindings.h"
+#include "Sound/SoundManager.h"
 
 #define RotationSpeed 0.005f
 #define SneakDiff 0.5f
@@ -47,6 +48,7 @@ public:
     void onRender();
     void moveCharacter(const KeyboardEvent& event);
     void moveMouse(const MouseMoveEvent& event);
+	void clickMouse(const MouseClickEvent& event);
 
 	void setLevel(Grid *level);
 	void setScene(Scene *scene);
@@ -62,16 +64,18 @@ public:
 	float getNoise();
 	void pause();
 	void resume();
+	float getHeight();
 	Character(glm::vec3 pos, EventManager *manager, int grenadeCount, float height);
 
     Character();
     virtual ~Character();
 
 	glm::vec3 getEyePos();
+	glm::vec3 getVelocity();
 
 	float calcLightAtPosition();
-
 	float getLightAtPosition();
+
 private:
 	void normalKeyInput(const KeyboardEvent& event);
 	void guardVisionKeyInput(const KeyboardEvent& event);
@@ -80,6 +84,7 @@ private:
 	void gVisionTimerUpdate(float dt);
 	void calcNoise();
 	void returnVision();
+	bool canLean();
 	CharState _state;
 	float _height;
 
@@ -118,4 +123,9 @@ private:
 	float _guardVisDuraTimer;
 	//Noise variable
 	float _movmentNoise;
+	int _lean;
+	float _rotate;
+	//sound effects
+	Sound *_walkingSound;
+	Sound *_climbSound;
 };

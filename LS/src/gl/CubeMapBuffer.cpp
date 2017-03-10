@@ -44,6 +44,7 @@ namespace gl {
         glDrawBuffer(GL_NONE);
         glReadBuffer(GL_NONE);
         _frameBuffer = FBOData(fbo);
+        clearBuffers();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         CheckGLErrors("Error generating CubeMap buffer.");
 

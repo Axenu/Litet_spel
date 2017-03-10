@@ -251,6 +251,8 @@
     <ClCompile Include="src\Render\Mesh\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
     <ClCompile Include="src\Sound\Irrklang.cpp" />
+    <ClCompile Include="src\Sound\Sound.cpp" />
+    <ClCompile Include="src\Sound\SoundManager.cpp" />
     <ClCompile Include="src\StaticVars.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +270,7 @@
     <ClInclude Include="header\gui\Views\CreditsView.h" />
     <ClInclude Include="header\gui\Views\LoadingView.h" />
     <ClInclude Include="header\gui\Views\PauseView.h" />
+    <ClInclude Include="header\keyBindings.h" />
     <ClInclude Include="header\math\GridTraveler.h" />
     <ClInclude Include="header\math\AARect.h" />
     <ClInclude Include="header\Game\Level\Path.h" />
@@ -302,6 +305,8 @@
     <ClInclude Include="header\Render\Mesh\ModelPart.h" />
     <ClInclude Include="header\Render\Mesh\Shader\ShadowCubeShader.h" />
     <ClInclude Include="header\Sound\Irrklang.h" />
+    <ClInclude Include="header\Sound\Sound.h" />
+    <ClInclude Include="header\Sound\SoundManager.h" />
     <ClInclude Include="header\StaticVars.h" />
     <ClInclude Include="header\Game\TestGame.h" />
     <ClInclude Include="header\gui\StringComponents.h" />

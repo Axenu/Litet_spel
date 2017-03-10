@@ -49,6 +49,7 @@ namespace gui
         void cursorMoved(const MouseMoveEvent& event);
         void mouseClick(const MouseClickEvent& event);
         void cursorModeChanged(const cursorModeChangeEvent& event);
+        void resizeWindow(const ResizeWindowEvent& event);
 
     };
 

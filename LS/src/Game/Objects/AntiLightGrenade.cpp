@@ -1,5 +1,6 @@
 #include "Game/Objects/AntiLightGrenade.h"
 #include "Event/SceneEvents/SceneEvent.h"
+#include "Sound/SoundManager.h"
 
 AntiLightGrenade::AntiLightGrenade(EventManager &eventManager, Model &m, glm::vec3 CharacterPositions, glm::vec3 Direction) :
 	GameObject(m), _eventManager(eventManager)
@@ -31,17 +32,21 @@ void AntiLightGrenade::update(float dt)
 			RemoveSceneObject e(this);
 			_eventManager.execute(e);
 		}
-
 		Node::update(dt);
 		GameObject::setModelAABB(AABB(getWorldPos(), _grenadeValue.expanding));
 	}
-	else 
+	else
 	{
 		//Move
 		if (!_currentLevel->wallCollissionForGrenade(this->getPosition(), _movement * dt))
+		{
 			this->move(_movement*dt);
+		}
 		else
+		{
 			_landed = true;
+			SoundManager::getInstance().play3DSound(GRENADESOUND, this->getWorldPos(), false, true);
+		}
 		GameObject::update(dt);
 	}
 }

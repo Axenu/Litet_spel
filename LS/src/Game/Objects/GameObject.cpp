@@ -41,8 +41,6 @@ void GameObject::init()
 void GameObject::update(float dt)
 {
 	Node::update(dt);
-	// if (_animatedSkel) //Update anim controller if it exist.
-	// 	_animatedSkel->update(dt);
 	_model.transform(_modelMatrix);
 }
 

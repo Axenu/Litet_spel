@@ -164,9 +164,19 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	object->setPosition(calcPos(square, tmpModel.getBox()) + positionOffset);
 	object->setRotEuler(rotation);
 	object->init();
+	if (!(_level->getGrid().getHeight(square.y, square.x) > 0.0f))
+	{
+		if (type == gridType::object || type == gridType::wall)
+			_level->getGrid().addObject(object, type);
+	}
+	else
+	{
+		//Set objet ontop of current obejct in square
+		object->moveY(_level->getGrid().getHeight(square.y, square.x) - object->getAABB().getMin().y);
+	}
+	object->init();
 	_scene->add(object, false);
-	if (type == gridType::object)
-		_level->getGrid().addObject(object, type);
+
 	return object;
 }
 LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value)
@@ -178,7 +188,9 @@ LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 squar
 	object->setPosition(calcPos(square, tmpModel.getBox()));
 	object->setRotEuler(rotation);
 	//Add rotation somewhere
-	object->moveY(1.f);
+	object->init();
+	//Set Loot ontop of object in square
+	object->moveY(_level->getGrid().getHeight(square.y, square.x) - object->getAABB().getMin().y);
 	object->init();
 	_scene->add(object, false);
 	return object;
@@ -209,7 +221,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		//Data items to fill on each line
 		glm::ivec2 square(0);
 		std::vector<glm::ivec2> squareList;
-		glm::vec3 pos(0.f), rot(0.f);
+		glm::vec3 pos(0.f), rot(0.f), offSet(0.f);
 		float value = 0.f;
 		std::string modelName;
 		//Switch statement readin next data type
@@ -217,6 +229,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		{
 			switch (iss.get())
 			{
+			case 'O': //Offset
+				iss >> offSet.x >> offSet.y >> offSet.z;
+				break;
 			case 'P': //Position
 				iss >> pos.x >> pos.y >> pos.z;
 				break;
@@ -253,7 +268,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			}
 		}
 		if (type == "model")
-			createObject(modelName, square, rot, gridType::object, glm::vec3(0.f, 0.f, 0.f));
+			createObject(modelName, square, rot, gridType::object, offSet);
 		else if (type == "light")
 		{
 			light._pos = pos;
@@ -263,6 +278,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		}
 		else if (type == "listDoors")
 		{
+			seed((unsigned int)time(NULL));
 			int lastSize = doorList.size();
 			//Generate open doors
 			for (unsigned short int i = 0; i < squareList.size(); i++)
@@ -275,7 +291,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			}
 		}
 		else if (type == "loot")
-			loot.push_back(lootData(square, rot, modelName, (int)value ));
+			loot.push_back(lootData(square, rot, modelName, (int)value));
+		else if (type == "listSuperLoot")
+			createLoot(modelName, squareList[getRand(squareList.size())], rot, value);
 		else if (type == "guard")
 		{
 			guards.push_back(guardData(square, square, (unsigned int)value));

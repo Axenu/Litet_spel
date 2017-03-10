@@ -23,6 +23,16 @@ void cursorPosition_callback(GLFWwindow* win, double x, double y)
     iManager->getManager()->execute(event);
 }
 
+ResizeWindowEvent::ResizeWindowEvent(int width, int height) : _width(width), _height(height)
+{
+}
+ResizeWindowEvent::~ResizeWindowEvent()
+{
+
+}
+
+//input manager
+
 void InputManager::switchCursorMode(const cursorModeChangeEvent& event)
 {
     glfwSetInputMode(_window, GLFW_CURSOR, event.getState());
@@ -31,6 +41,11 @@ void InputManager::switchCursorMode(const cursorModeChangeEvent& event)
 void InputManager::quitGame(const QuitGameEvent& event)
 {
     glfwSetWindowShouldClose(_window, 1);
+}
+void InputManager::resizeWindow(const ResizeWindowEvent& event)
+{
+    glfwSetWindowSize(_window, event._width, event._height);
+    glViewport(0, 0, event._width, event._height);
 }
 
 InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(window)
@@ -44,11 +59,13 @@ InputManager::InputManager(GLFWwindow *window, EventManager* manager) : _window(
     _eventManager = manager;
     _eventManager->listen(this, &InputManager::switchCursorMode);
     _eventManager->listen(this, &InputManager::quitGame);
+    _eventManager->listen(this, &InputManager::resizeWindow);
 }
 InputManager::~InputManager()
 {
     _eventManager->unlisten(this, &InputManager::switchCursorMode);
     _eventManager->unlisten(this, &InputManager::quitGame);
+    _eventManager->unlisten(this, &InputManager::resizeWindow);
 }
 
 EventManager* InputManager::getManager()

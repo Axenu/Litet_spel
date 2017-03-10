@@ -3,7 +3,7 @@
 
 namespace gui
 {
-    SettingsView::SettingsView()
+    SettingsView::SettingsView(EventManager *em) : View(), _eventManager(em)
     {
         _name = "SettingsView";
 
@@ -134,6 +134,7 @@ namespace gui
             Config::borderLess = _borderlessCheckbox->getSelected();
             Config::showFPS = _fpsCheckbox->getSelected();
             //switch for resolution options
+            float oldRes = Config::resolution.x;
             switch(_resolutionBar->getSelected())
             {
                 case 0:
@@ -155,18 +156,27 @@ namespace gui
                 default:
                 break;
             }
+            if (oldRes != Config::resolution.x)
+            {
+                ResizeWindowEvent event(Config::resolution.x, Config::resolution.y);
+                _eventManager->execute(event);
+            }
             switch(_shadowBar->getSelected())
             {
                 case 0:
                     Config::hasShadowMap = false;
+                    Config::shadowMapSize = 1;
                 break;
                 case 1:
+                    Config::hasShadowMap = true;
                     Config::shadowMapSize = 256;
                 break;
                 case 2:
+                    Config::hasShadowMap = true;
                     Config::shadowMapSize = 512;
                 break;
                 case 3:
+                    Config::hasShadowMap = true;
                     Config::shadowMapSize = 1024;
                 break;
                 default:

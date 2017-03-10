@@ -16,6 +16,8 @@ public:
 	virtual ~HandlerFunctionBase() {};
 	void exec(const Event& event) {call(event);}
 
+	bool _shouldDelete = false;
+
 private:
 	// virtual bool isEqual(const HandlerFunctionBase &b) const = 0;
 	virtual void call(const Event&) = 0;
@@ -84,8 +86,9 @@ void EventManager::unlisten(T* obj, void (T::*memFn)(EventT&))
 	{
 		if (temp.isEqual(*i))
 		{
-			delete *i;
-			i = v->erase(i);
+			(*i)->_shouldDelete = true;
+			i++;
+			break;
 		}
 		else
 		{

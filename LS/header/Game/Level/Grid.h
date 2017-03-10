@@ -1,7 +1,7 @@
 #pragma once
 
 #define GRIDSPACE 1.f
-#define ROOFHEIGHT 2.5f
+#define ROOFHEIGHT 4.0f
 #include "gl/glInclude.h"
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -63,12 +63,13 @@ public:
 	gridType getTypeNC(int height, int width);
 
 #pragma region Mfuncs
-	/* Get distance to closest wall */
-	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist);
-
-	/* Get distance to closest object */
-	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDist,  gridType gridType);
+	/* check for object or wall */
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, gridType gridType);
 	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, glm::vec3 playerPos, gridType gridType);
+
+
+	/* Get distance to closest object or wall */
+	bool getDist(glm::vec3 pos, glm::vec3 ray, float viewDist, float &objectDist,  gridType gridType);
 	/* Verify a grid square is represented in the grid
 	*/
 	bool isInside(glm::ivec2 vec) const;
