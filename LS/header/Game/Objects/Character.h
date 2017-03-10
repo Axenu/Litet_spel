@@ -20,7 +20,7 @@
 
 #define CLIMBINGNOISE 0.6f
 #define WALKINGNOISE 0.4f
-#define SNEAKINGMODIFIER 0.4f
+#define SNEAKINGMODIFIER 0.5f
 
 class CollectLootEvent : public Event
 {

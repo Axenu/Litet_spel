@@ -310,6 +310,8 @@ void Character::calcNoise()
 	{
 	case CharState::climbing:
 		_movmentNoise = CLIMBINGNOISE;
+		if (_climbSound)
+			_climbSound->setVolume(1.0f);
 		break;
 	case CharState::guardVision:
 		_movmentNoise = 0.0f;
@@ -325,7 +327,9 @@ void Character::calcNoise()
 	{
 		_movmentNoise *= SNEAKINGMODIFIER;
 		if (_walkingSound)
-			_walkingSound->setVolume(0.3f);
+			_walkingSound->setVolume(SNEAKINGMODIFIER);
+		if (_climbSound)
+			_climbSound->setVolume(SNEAKINGMODIFIER);
 	}
 }
 
