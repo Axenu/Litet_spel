@@ -81,9 +81,9 @@ model S 7 2 M Bookcase_Empty.obj R 0 -90 0
 loot S 7 2 V 20 M GoldBar.obj 
 model S 7 26 M drawer.obj
 
-model S 1 36 M Bookcase_Empty.obj
+model S 1 36 M Bookcase_Empty.obj R 0 -90 0
 loot S 1 36 V 20 M GoldBar.obj 
-model S 1 31 M Bookcase_Empty.obj
+model S 1 31 M Bookcase_Empty.obj R 0 -90 0
 loot S 1 31 V 20 M GoldBar.obj 
 model S 1 34 M drawer.obj R 0 90 0
 

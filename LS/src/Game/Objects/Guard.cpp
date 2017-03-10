@@ -52,7 +52,7 @@ void Guard::update(float dt)
 			setLookingState();
 		}
 		setPosition(pos);
-		face(_path->movingTo());
+		face(_pointOfInterest);
 		_walkingSound->play();
 		break;
 	case GuardState::returning:
