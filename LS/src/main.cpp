@@ -120,6 +120,9 @@ int main()
 
 	//load settings
 	Config::loadConfig("resources/settings.conf");
+	//set mastetr volume
+	SoundManager::getInstance().setGlobalVolume(Config::masterVolume);
+	SoundManager::getInstance().setHasSound(Config::hasSound);
 	//setup window and run game
 	setupWindow();
 

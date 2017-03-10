@@ -133,28 +133,40 @@ namespace gui
             Config::hasSound = _soundCheckbox->getSelected();
             Config::borderLess = _borderlessCheckbox->getSelected();
             Config::showFPS = _fpsCheckbox->getSelected();
+            SoundManager::getInstance().setGlobalVolume(Config::masterVolume);
+            SoundManager::getInstance().setHasSound(Config::hasSound);
             //switch for resolution options
             float oldRes = Config::resolution.x;
             switch(_resolutionBar->getSelected())
             {
                 case 0:
+                {
                     Config::resolution.x = 480;
                     Config::resolution.y = 320;
-                break;
+                    break;
+                }
                 case 1:
+                {
                     Config::resolution.x = 1280;
                     Config::resolution.y = 720;
-                break;
+                    break;
+                }
                 case 2:
+                {
                     Config::resolution.x = 1920;
                     Config::resolution.y = 1080;
-                break;
+                    break;
+                }
                 case 3:
+                {
                     Config::resolution.x = 2560;
                     Config::resolution.y = 1440;
-                break;
+                    break;
+                }
                 default:
-                break;
+                {
+                    break;
+                }
             }
             if (oldRes != Config::resolution.x)
             {

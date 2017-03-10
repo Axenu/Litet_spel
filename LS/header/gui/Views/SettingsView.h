@@ -15,6 +15,7 @@
 #include "Event/Input/InputManager.h"
 #include "Event/Events.h"
 #include "Config.h"
+#include "Sound/SoundManager.h"
 
 namespace gui
 {
