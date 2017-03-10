@@ -250,7 +250,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Render\Mesh\Model.cpp" />
     <ClCompile Include="src\node.cpp" />
-    <ClCompile Include="src\Sound\Irrklang.cpp" />
     <ClCompile Include="src\Sound\Sound.cpp" />
     <ClCompile Include="src\Sound\SoundManager.cpp" />
     <ClCompile Include="src\StaticVars.cpp" />
