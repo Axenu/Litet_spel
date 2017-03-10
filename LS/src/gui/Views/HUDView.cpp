@@ -33,7 +33,7 @@ namespace gui {
         rect->setColor(color);
         addChild(rect);
         //score background
-        _scoreBackground = new Rectangle(0.5f, 0.15f);
+        _scoreBackground = new Rectangle(0.55f, 0.15f);
         _scoreBackground->setPosition(-1.f, 0.85f);
         color = PALLETPRIMARY;
         _scoreBackground->setColor(color);
@@ -48,8 +48,8 @@ namespace gui {
         addChild(_scoreLabel);
 
         //loot background
-        _lootBackground = new Rectangle(0.5f, 0.15f);
-        _lootBackground->setPosition(0.5f, 0.85f);
+        _lootBackground = new Rectangle(0.55f, 0.15f);
+        _lootBackground->setPosition(0.45f, 0.85f);
         color = PALLETPRIMARY;
         _lootBackground->setColor(color);
         addChild(_lootBackground);
@@ -57,7 +57,7 @@ namespace gui {
         _lootLabel = new gui::Label(font);
         _lootLabel->addStringComponent(new StringComponentString("Loot: "));
         _lootLabel->addStringComponent(new StringComponentString(""));
-        _lootLabel->setPosition(0.98f - _lootLabel->getSize().x, 0.97f-_lootLabel->getSize().y*0.5f);
+        _lootLabel->setPosition(0.48f, 0.97f-_lootLabel->getSize().y*0.5f);
         _lootLabel->setScale(0.5);
         _lootLabel->setZ(2);
         addChild(_lootLabel);
