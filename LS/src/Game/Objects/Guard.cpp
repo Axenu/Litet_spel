@@ -39,24 +39,41 @@ void Guard::update(float dt)
 		}
 		setPosition(pos);
 		face(_path->movingTo());
-
-			sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, false);
-
+		_walkingSound->play();
 		break;
 
 	case GuardState::looking:
 		face(_pointOfInterest);
-
-		sound.PlaySource3DSound(sound.GetSound("Resources/Sounds/GuardWalking.wav"), false, _player->getWorldPos(), this->getWorldPos(), _player->getForward(), _player->getUp(), dt, true);
-
+		_walkingSound->pause();
+		break;
+	case GuardState::searching:
+		if (_path->walkOnPath(&pos, _speed, dt))
+		{
+			setLookingState();
+		}
+		setPosition(pos);
+		face(_path->movingTo());
+		_walkingSound->play();
+		break;
+	case GuardState::returning:
+		if (_path->walkOnPath(&pos, _speed, dt))
+		{
+			setPathingState();
+		}
+		setPosition(pos);
+		face(_path->movingTo());
+		_walkingSound->play();
+		break;
+	default:
 		break;
 	}
+	_walkingSound->setPosition(this->getWorldPos());
 
 	GameObject::update(dt); //Let object update the move vars before doing our detection logic
 
 							//Get direction vector and distance to player
 
-	visionDetection(pos, dt, playerDist, dirToPlayer);
+	//visionDetection(pos, dt, playerDist, dirToPlayer);
 	noiseDetection(pos, dt, _player->getNoise(), _player->getWorldPos());
 	finalDetection();
 }
@@ -72,17 +89,25 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 	glm::ivec2 start = _currentLevel->getGrid().getSquare(this->getWorldPos());
 	_path = _currentLevel->getGrid().generatePath(start, _currentLevel->getGrid().getRandomSquare(), 15);
 
-	_speed = 0.4f;
+	_speed = 0.6f;
 
-	_detectionScore = 0.0f;
+	_visionDetScore = 0.0f;
 
 	_noiseDetVal = 0.0f;
 
 	_finalDetVal = 0.0f;
+
+	_lastNoiseVal = 0.0f;
+
+	_lastVisionVal = 0.0f;
+
+	_walkingSound = SoundManager::getInstance().play3DSound(GUARD_WALK, this->getWorldPos(), true, false);
 }
 
 Guard::~Guard()
 {
+	if (_walkingSound)
+		_walkingSound->drop();
 }
 
 void Guard::init()
@@ -110,16 +135,53 @@ GuardState Guard::checkState(float dt)
 		{
 			if (_interestTime < 0.0f)
 			{
-				setPathingState();
+				if (_finalDetVal > LOOKNOISELIMIT)
+				{
+					setSearchingState();
+				}
+				else
+				{
+					setReturningState();
+				}
+			}
+
+		}
+		else if (_finalDetVal < SEARCHNOISELIMIT)
+		{
+			if (_interestTime < 0.0f)
+			{
+				setSearchingState();
 			}
 
 		}
 		else
 		{
-			_interestTime = LOOKNOISEINTRESTTIME;
+			setSearchingState();
 		}
 		break;
 	case GuardState::still:
+		if (_finalDetVal > LOOKNOISELIMIT)
+		{
+			setLookingState();
+		}
+		break;
+	case GuardState::searching:
+		_interestTime -= dt;
+		if (_interestTime < 0.0f)
+		{
+			glm::ivec2 dest = _currentLevel->getGrid().getSquare(_path->getDest());
+			glm::ivec2 POISquare = _currentLevel->getGrid().getSquare(_pointOfInterest);
+			if (dest == POISquare)
+			{
+				setSearchingState();
+			}
+		}
+		break;
+	case GuardState::returning:
+		if (_finalDetVal > LOOKNOISELIMIT)
+		{
+			setLookingState();
+		}
 		break;
 	default:
 		setStillState();
@@ -129,26 +191,80 @@ GuardState Guard::checkState(float dt)
 
 void Guard::setStillState()
 {
-	_state = GuardState::still;
+
 	face(_currentLevel->getGrid().getCenter(_walkPoints._faceDir));
 	//Set properate animation
 	if (hasSkeleton())
 		_animatedSkel->setAnimPose("", 0.5f, 0.f);
+
+	_state = GuardState::still;
 }
 void Guard::setLookingState()
 {
-	_state = GuardState::looking;
 	//Set properate animation
 	if (hasSkeleton())
 		_animatedSkel->stopAnimation();
+	_interestTime = LOOKNOISEINTRESTTIME;
+	switch (_state)
+	{
+	case GuardState::pathing:
+		_returnPoint = getWorldPos();
+		break;
+	case GuardState::still:
+		_returnPoint = getWorldPos();
+		break;
+	default:
+		break;
+	}
+	_state = GuardState::looking;
 }
 
 void Guard::setPathingState()
 {
-	_state = GuardState::pathing;
+
 	//Set properate animation
 	if (hasSkeleton())
 		_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
+
+	_state = GuardState::pathing;
+}
+
+void Guard::setSearchingState()
+{
+	//Set properate animation
+
+	switch (_state)
+	{
+	case GuardState::searching:
+		break;
+	default:
+		if (hasSkeleton())
+			_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
+	}
+	_interestTime = SEARCHINTERESTTIME;
+
+	setPath(this->getWorldPos(), _pointOfInterest);
+	_state = GuardState::searching;
+}
+
+void Guard::setReturningState()
+{
+	if (hasSkeleton())
+		_animatedSkel->setAnim("", AnimatedSkeleton::Loop);
+
+	setPath(this->getWorldPos(), _returnPoint);
+
+	_state = GuardState::returning;
+}
+
+void Guard::setPath(glm::vec3 start, glm::vec3 point)
+{
+	glm::ivec2 iStart = _currentLevel->getGrid().getSquare(start);
+	glm::ivec2 iPoint = _currentLevel->getGrid().getSquare(point);
+
+	int dist = std::max(std::abs(point.x - start.x), std::abs(point.y - start.y)) + 10;
+
+	_path = _currentLevel->getGrid().generatePath(iStart, iPoint, dist);
 }
 
 void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noisePos)
@@ -160,10 +276,10 @@ void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noise
 
 	if (noiseDist < guardHearDist)
 	{
-		float noiseVal = (guardHearDist - noiseDist) / guardHearDist; // make between 0 - 1
-		noiseVal = 2.0f * noiseVal - (noiseVal * noiseVal); // 2*x - x^2
-		noiseVal *= dt * noise;
-		_noiseDetVal += noiseVal;
+		_lastNoiseVal = (guardHearDist - noiseDist) / guardHearDist; // make between 0 - 1
+		_lastNoiseVal = 2.0f * _lastNoiseVal - (_lastNoiseVal * _lastNoiseVal); // 2*x - x^2
+		_lastNoiseVal *= dt * noise;
+		_noiseDetVal += _lastNoiseVal;
 		_noiseDetVal = std::fmin(_noiseDetVal, 1.0f); //clamp value to not be over 1.
 	}
 	else
@@ -172,7 +288,7 @@ void Guard::noiseDetection(glm::vec3 pos, float dt, float noise, glm::vec4 noise
 		{
 			_noiseDetVal -= dt * 0.1f;
 		}
-
+		_lastNoiseVal = 0.0f;
 	}
 }
 
@@ -186,25 +302,29 @@ void Guard::visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3
 	{
 		//Timer to determine the amount of time before the guard detects the player
 		float detectionAmount = (playerDist / detectionDist);
-		_detectionScore += dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
+		_visionDetScore += dt * ((detectionAmount > 0.2f) ? detectionAmount : 0.2f);
+		_lastVisionVal = detectionAmount;
 	}
 	else
 	{
-		if (_detectionScore > 0.0f)
+		if (_visionDetScore > 0.0f)
 		{
-			_detectionScore -= dt*0.1f;
+			_visionDetScore -= dt*0.1f;
 		}
+		_lastVisionVal = 0.0f;
 	}
 }
 
 void Guard::finalDetection()
 {
-	_finalDetVal = _noiseDetVal + _detectionScore;
+	_finalDetVal = _noiseDetVal + _visionDetScore;
 	if (_finalDetVal > 1.0f)
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
-		sound.PlaySource2DSound(sound.GetSound("Resources/Sounds/Gameover.wav"), false);
+		Sound *tempSound = SoundManager::getInstance().play2DSound(LOSE_SOUND, false, false);
+		tempSound->setVolume(0.5f);
+		tempSound->play();
 	}
 	else
 	{
@@ -212,7 +332,7 @@ void Guard::finalDetection()
 		event._id = _id;
 		_eventManager->execute(event);
 	}
-	if (_finalDetVal < LOOKNOISELIMIT)
+	if (_lastNoiseVal > 0.0f || _lastVisionVal > 0.0f)
 	{
 		_pointOfInterest = _player->getWorldPos();
 	}
@@ -235,7 +355,7 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		float playerLight = _player->getLightAtPosition();
 
 		//If player behind wall or obscuring object, not detected
-		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, _player->getEyePos(), object))
+		if (_currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, wall) || _currentLevel->getGrid().getDist(pos, dirToPlayer, playerDist, glm::vec3(_player->getEyePos().x, _player->getHeight(), _player->getEyePos().z), object))
 		{
 			return 0.0f;
 		}
