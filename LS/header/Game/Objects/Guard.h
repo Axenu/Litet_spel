@@ -67,6 +67,7 @@ private:
 	void visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3 dirToPlayer);
 	void finalDetection();
 	float DetectedPlayer(float playerDist, glm::vec3 dirToPlayer);
+	bool distanceDetection();
 public:
 	Guard(glm::vec3 position, Character* player, EventManager* event, Model & m, Level* Level, WalkPoints& walkingPoints);
 	virtual ~Guard();

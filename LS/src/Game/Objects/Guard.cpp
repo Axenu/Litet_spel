@@ -318,7 +318,8 @@ void Guard::visionDetection(glm::vec3 pos, float dt, float playerDist, glm::vec3
 void Guard::finalDetection()
 {
 	_finalDetVal = _noiseDetVal + _visionDetScore;
-	if (_finalDetVal > 1.0f)
+
+	if (_finalDetVal > 1.0f || distanceDetection())
 	{
 		GameOverEvent event(false);
 		_eventManager->execute(event);
@@ -345,10 +346,6 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 
 	pos.y = 1.3f;
 
-	//Player to close detect!
-	if (playerDist < 1.2f)
-		return 1.0f;
-
 	if (glm::dot(dirToPlayer, getForward()) > _detectFov)
 	{
 		//Get light at position
@@ -365,4 +362,15 @@ float Guard::DetectedPlayer(float playerDist, glm::vec3 dirToPlayer)
 		}
 	}
 	return 0.0f;
+}
+
+bool Guard::distanceDetection()
+{
+	float playerDist = glm::length(this->getWorldPos() - _player->getWorldPos());
+
+	//Player to close detect!
+	if (playerDist < 0.8f)
+		return true;
+
+	return false;
 }
