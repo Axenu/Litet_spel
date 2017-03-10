@@ -114,7 +114,6 @@ model S 21 15 M Bookcase_Empty.obj
 model S 53 46 M Table.obj R 0 90 0
 loot S 53 46 V 20 M GoldBar.obj 
 loot S 50 39 V 20 M GoldBar.obj 
-loot S 44 39 V 20 M GoldBar.obj 
 model S 50 39 M drawer.obj R 0 0 0
 model S 44 39 M drawer.obj R 0 0 0
 model S 42 46 M Fireplace.obj R 0 -90 0
@@ -470,40 +469,40 @@ guard S 78 22 V 2
 path H 78 45 H 87 39 H 79 20 
 //rödblock
 guard S 4 3 V 2
-path H 5 21 H 5 34 H 17 36 H 19 27 H 19 12 H 16 3 H 4 3
+path H 8 18  H 8 26 H 5 34 H 4 39 H 17 36H 15 32 H 19 27 H 17 20 H 19 12 H 12 5 H 16 3 H 5 12 H 4 3
 
 guard S 18 36 V 2
-path H 5 35 H 6 21 H 5 10 H 15 3 H 18 14 H 19 25 H 18 36
+path H 5 35 H 4 38 H 6 21 H 7 25 H 5 10 H 6 3 H 15 3 H 18 14 H 19 25 H 18 19 H 18 36
 
 //grön
 guard S 4 51 V 2
-path H 27 45 H 27 52 H 8 46
+path H 17 51 H 10 46 H 27 45 H 27 52 H 8 46
 guard S 38 43 V 2
-path H 38 52 H 48 46 H 38 43
+path H  H 38 52 H 43 49 H 51 20 H  51 42 H 44 42 H 48 46 H 38 43
 
 
 
 //blå
 guard S 29 8 V 2
-path H 40 2 H 41 10 H 50 8 H 41 2 H 29 8
+path H 27 3 H 28 11 H 33 4 H 40 2 H 45 7 H 41 10 H 50 8 H 51 3 H 41 2 H 29 8
 guard S 78 6 V 2
-path H 69 5 H 59 3 H 57 11 H 51 5 H 78 6
+path H 78 11 H 68 11 H 69 5 H 68 2 H 59 3 H 57 11  H 51 5 H 51 12 H 78 6
 //mörkblå
 guard S 95 37 V 2
-path H 70 51 H 69 41 H 95 37 
+path H 99 43 H 94 52 H 70 51 H 69 46 H 69 41 H 95 37 
 guard S 58 45 V 2
-path H 58 52 H 47 48 H 58 45 
+path H 58 51 H 58 52 H 47 48 H 48 42 H 58 45 
 //brun
 guard S 99 3 V 2
-path H 87 3 H 86 8 H 97 10 H 87 15 H 99 3
+path H 87 3 H 86 8 H 97 10 H 98 17 H 87 15 H 79 16 H 99 3
 guard S 85 22 V 2
-path H 99 24 H 87 30 H 85 22 
+path H 98 25 H 99 24 H 87 30 H 87 23 H 85 22 
 
 //lila
 guard S  32 34 V 2
-path H 24 24 H 29 21 H 37 21 H 48 21 H 32 34
+path H 36 31 H 50 29 H 44 35 H 24 24 H 29 21 H 37 21 H 48 21 H 32 34
 guard S 47 32 V 2
-path H 64 32 H 73 28 H 73 22 H 68 20 H 61 15 H 60 22 H 47 32
+path H 59 30 H 67 29 H 64 32 H 73 28 H 73 22 H 68 20 H 61 15 H 60 22 H 47 32
 
 
 
