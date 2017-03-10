@@ -262,7 +262,7 @@ model S 86 42 M Bookcase_Empty.obj R 0 270 0
 model S 80 40 M Bookcase_Empty.obj R 0 180 0
 model S 82 40 M Bookcase_Empty.obj R 0 180 0
 model S 84 40 M Bookcase_Empty.obj R 0 180 0
-model S 85 40 M Bookcase_Empty.obj R 0 90 0
+model S 85 41 M Bookcase_Empty.obj R 0 90 0
 model S 85 42 M Bookcase_Empty.obj R 0 90 0
 
 

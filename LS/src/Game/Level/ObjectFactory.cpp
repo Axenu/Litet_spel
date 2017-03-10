@@ -164,19 +164,9 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	object->setPosition(calcPos(square, tmpModel.getBox()) + positionOffset);
 	object->setRotEuler(rotation);
 	object->init();
-	if (!(_level->getGrid().getHeight(square.y, square.x) > 0.0f))
-	{
-		if (type == gridType::object || type == gridType::wall)
-			_level->getGrid().addObject(object, type);
-	}
-	else
-	{
-		//Set objet ontop of current obejct in square
-		object->moveY(_level->getGrid().getHeight(square.y, square.x) - object->getAABB().getMin().y);
-	}
-	object->init();
 	_scene->add(object, false);
-
+	if (type == gridType::object || type == gridType::wall)
+		_level->getGrid().addObject(object, type);
 	return object;
 }
 LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value)
