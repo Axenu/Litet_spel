@@ -25,6 +25,7 @@ namespace gui
         gui::Button* _resumeButton;
         gui::Button* _mainMenuButton;
         gui::Button* _quitButton;
+        gui::Button* _settingsButton;
 
     public:
         PauseView(EventManager* manager);
@@ -39,6 +40,7 @@ namespace gui
 
         void quitGame(int action);
         void mainMenu(int action);
+        void settingsMenu(int action);
         void resumeGame(int action);
     };
 

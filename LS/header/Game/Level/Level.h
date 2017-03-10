@@ -11,7 +11,7 @@ class PointLightObject;
 /* Level struct holding 'all' information about a specific level loaded for a game instance.
 */
 class Level
-	: public GameObject
+	: public StaticGameObject
 {
 public:
 
@@ -32,5 +32,4 @@ public:
 	/* Access the scene */
 	const Scene& getScene();
 
-	virtual void onUpdate(float dT);
 };
