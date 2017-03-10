@@ -49,7 +49,7 @@ void DrawFrame::renderMeshOnly(RenderInfo &rI, MeshShader* shader) {
 void DrawFrame::renderNonAnimatedMeshes(RenderInfo &rI, MeshShader* shader) {
 	for (unsigned int i = 0; i < _meshes.size(); i++) {
 		const MeshDrawable &ref = _meshes[i];
-		if (!ref._part->hasSkeleton())
+		if (!ref._part->hasSkeleton() && ref._part->getHasShadow())
 		{
 			shader->assignUniforms(rI, *_meshes[i]._part, *ref._transform, nullptr);
 			ref._part->renderMeshOnly();

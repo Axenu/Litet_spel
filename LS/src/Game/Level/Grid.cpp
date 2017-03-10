@@ -490,6 +490,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 					{
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 2.3f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
+					else if (_twodArray[j - 1][i].type == exiting)
+					{
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 3.1f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 				if (j != _heightLength - 1)
 				{
@@ -505,6 +509,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 					else if (_twodArray[j + 1][i].type == door)
 					{
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 2.3f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
+					else if (_twodArray[j + 1][i].type == exiting)
+					{
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 3.1f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
 				if (i != 0)
@@ -522,6 +530,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 					{
 						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 2.3f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
+					else if (_twodArray[j][i + 1].type == exiting)
+					{
+						addQuad(position, normal, indices, k, glm::vec3((i + 1) * GRIDSPACE, 3.1f, j * GRIDSPACE), glm::vec3((i + 1) * GRIDSPACE, ROOFHEIGHT, (j + 1) * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
 				}
 				if (i != _widthLength - 1)
 				{
@@ -537,6 +549,10 @@ void Grid::generateMesh(Mesh* meshes, float windowMin, float windowMax, float wi
 					else if (_twodArray[j][i - 1].type == door)
 					{
 						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 2.3f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
+					}
+					else if (_twodArray[j][i + 1].type == exiting)
+					{
+						addQuad(position, normal, indices, k, glm::vec3(i * GRIDSPACE, 3.1f, (j + 1) * GRIDSPACE), glm::vec3(i * GRIDSPACE, ROOFHEIGHT, j * GRIDSPACE), glm::vec3(0.f, 1.f, 0.f));
 					}
 				}
 			}
@@ -683,8 +699,8 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
 	if (currentX > 0 && currentX < _widthLength - 1 && signbit(velocity.x) == false)
 	{
-		if (newPos.x <= 0.3f)
-			position.x = 0.3f;
+		if (newPos.x <= 0.45f)
+			position.x = 0.45f;
 		else if (_twodArray[currentZ][currentX + 1].type == wall)
 		{
 			if (position.x - currentX < 0.7f)
@@ -708,8 +724,8 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (newPos.x > _widthLength - 0.3f)
-			position.x = _widthLength - 0.3f;
+		if (newPos.x > _widthLength - 0.45f)
+			position.x = _widthLength - 0.45f;
 		else if (_twodArray[currentZ][currentX - 1].type == wall)
 		{
 			if (position.x - currentX > 0.3f)
@@ -735,8 +751,8 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
 	if (currentZ > 0 && currentZ < _heightLength - 1 && signbit(velocity.z) == false)
 	{
-		if (newPos.y <= 0.3f)
-			position.z = 0.3f;
+		if (newPos.y <= 0.45f)
+			position.z = 0.45f;
 		else if (_twodArray[currentZ + 1][currentX].type == wall)
 		{
 			if (position.z - currentZ < 0.7f)
@@ -760,8 +776,8 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	}
 	else
 	{
-		if ((newPos.y > _heightLength - 0.3f))
-			position.z = _heightLength - 0.3f;
+		if ((newPos.y > _heightLength - 0.45f))
+			position.z = _heightLength - 0.45f;
 		else if (_twodArray[currentZ - 1][currentX].type == wall)
 		{
 			if (position.z - currentZ > 0.3f)
