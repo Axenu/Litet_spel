@@ -1,7 +1,8 @@
 #include"Render/Mesh/ModelPart.h"
 
 ModelPart::ModelPart()
-	: _mesh(nullptr), _skeleton(nullptr), _material(nullptr), _box() {
+	: _mesh(nullptr), _skeleton(nullptr), _material(nullptr), _box()
+{
 }
 
 ModelPart::ModelPart(Mesh *mesh, Material &mat)
@@ -19,7 +20,8 @@ void ModelPart::render(RenderInfo &fD, const glm::mat4 &modelMatrix) const
 	_mesh->render();
 }
 
-void ModelPart::renderMeshOnly() const {
+void ModelPart::renderMeshOnly() const
+{
 	_mesh->render();
 }
 
@@ -31,10 +33,12 @@ void ModelPart::setMaterial(Material & mat)
 {
 	_material = mat;
 }
-void ModelPart::setSkeleton(AnimatedSkeleton *skel) {
+void ModelPart::setSkeleton(AnimatedSkeleton *skel)
+{
 	_skeleton = skel;
 }
-const AnimatedSkeleton* ModelPart::getSkeleton() const {
+const AnimatedSkeleton* ModelPart::getSkeleton() const
+{
 	return _skeleton;
 }
 bool ModelPart::hasSkeleton() const
@@ -44,4 +48,12 @@ bool ModelPart::hasSkeleton() const
 const AABB & ModelPart::getBox()
 {
 	return _box;
+}
+void ModelPart::setHasShadows(bool shadow)
+{
+	_hasShadow = shadow;
+}
+bool ModelPart::getHasShadow() const
+{
+	return _hasShadow;
 }

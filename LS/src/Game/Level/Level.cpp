@@ -20,8 +20,10 @@ Level::Level(const std::string &level, EventManager *eventManager, MeshShader &s
 	wallMat.setFloat("shine", 20.f);
 	//Create meshes
 	ModelPart floorPart(&_gridMesh[0], floorMat);
+	floorPart.setHasShadows(false);
 	parts.push_back(floorPart);
 	ModelPart roofPart(&_gridMesh[1], floorMat);
+	roofPart.setHasShadows(false);
 	parts.push_back(roofPart);
 	ModelPart wallPart(&_gridMesh[2], wallMat);
 	parts.push_back(wallPart);

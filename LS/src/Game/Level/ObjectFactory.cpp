@@ -96,7 +96,7 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, 10, height);
+	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, 5, height);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
@@ -284,6 +284,8 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			loot.push_back(lootData(square, rot, modelName, (int)value));
 		else if (type == "listSuperLoot")
 			createLoot(modelName, squareList[getRand(squareList.size())], rot, value);
+		else if (type == "exitDoor")
+			createObject(modelName, square, rot, gridType::nothing, offSet);
 		else if (type == "guard")
 		{
 			guards.push_back(guardData(square, square, (unsigned int)value));

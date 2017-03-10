@@ -67,7 +67,7 @@ namespace Config
         std::ofstream confFile;
 		confFile.open(path, std::ios::trunc);
 		if (!confFile.is_open()) {
-			std::cout << "Config file: " + path + " could not be found";
+			std::cout << "Config file: " + path + " could not be found" << std::endl;
 			return false;
 		}
         confFile << "resolution " << resolution.x << " " << resolution.y << std::endl;
