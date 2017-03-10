@@ -19,7 +19,7 @@
 #include <math.h>
 #include <cmath>
 
-#define WalkHeight 0.25f
+#define WalkHeight 0.01f
 
 struct gridValues {
 	glm::vec2 xz;
