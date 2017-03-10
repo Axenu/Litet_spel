@@ -678,17 +678,14 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	int currentX = (int)glm::floor(position.x / GRIDSPACE);
 	int currentZ = (int)glm::floor(position.z / GRIDSPACE);
 
-	if (currentX <= 0 || currentZ <= 0 || currentX > _widthLength - 2 || currentZ > _heightLength - 2)
-	{
-		position.x += velocity.x;
-		position.z += velocity.z;
-		return position;
-	}
+	glm::vec2 newPos = glm::vec2(position.x, position.z) + glm::vec2(velocity.x, velocity.z);
 
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the right or left
-	if (signbit(velocity.x) == false)
+	if (currentX > 0 && currentX < _widthLength - 1 && signbit(velocity.x) == false)
 	{
-		if (_twodArray[currentZ][currentX + 1].type == wall)
+		if (newPos.x <= 0.3f)
+			position.x = 0.3f;
+		else if (_twodArray[currentZ][currentX + 1].type == wall)
 		{
 			if (position.x - currentX < 0.7f)
 			{
@@ -711,7 +708,9 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (_twodArray[currentZ][currentX - 1].type == wall)
+		if (newPos.x > _widthLength - 0.3f)
+			position.x = _widthLength - 0.3f;
+		else if (_twodArray[currentZ][currentX - 1].type == wall)
 		{
 			if (position.x - currentX > 0.3f)
 			{
@@ -734,9 +733,11 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	}
 
 	//Determine which direction the player is moving, stop the player 0.3 units before the wall if there is a wall to the forward or backward
-	if (signbit(velocity.z) == false)
+	if (currentZ > 0 && currentZ < _heightLength - 1 && signbit(velocity.z) == false)
 	{
-		if (_twodArray[currentZ + 1][currentX].type == wall)
+		if (newPos.y <= 0.3f)
+			position.z = 0.3f;
+		else if (_twodArray[currentZ + 1][currentX].type == wall)
 		{
 			if (position.z - currentZ < 0.7f)
 			{
@@ -759,7 +760,9 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 	}
 	else
 	{
-		if (_twodArray[currentZ - 1][currentX].type == wall)
+		if ((newPos.y > _heightLength - 0.3f))
+			position.z = _heightLength - 0.3f;
+		else if (_twodArray[currentZ - 1][currentX].type == wall)
 		{
 			if (position.z - currentZ > 0.3f)
 			{
@@ -781,7 +784,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		}
 	}
 	//Check if there's a wall in the north east square, if true, move the player 0.3 units away from the corner in the direction he was moving
-	if (_twodArray[currentZ - 1][currentX - 1].type == wall && _twodArray[currentZ - 1][currentX - 1].type != object)
+	if (currentX > 0 && currentX < _widthLength - 1 && _twodArray[currentZ - 1][currentX - 1].type == wall && _twodArray[currentZ - 1][currentX - 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX - position.x, 0.f, (float)currentZ - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -795,7 +798,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		}
 	}
 	//north west square
-	if (_twodArray[currentZ - 1][currentX + 1].type == wall && _twodArray[currentZ - 1][currentX + 1].type != object)
+	if (currentX > 0 && currentX < _widthLength - 1 && _twodArray[currentZ - 1][currentX + 1].type == wall && _twodArray[currentZ - 1][currentX + 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position.x, 0.f, (float)currentZ - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -809,7 +812,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		}
 	}
 	//south east square
-	if (_twodArray[currentZ + 1][currentX - 1].type == wall && _twodArray[currentZ + 1][currentX - 1].type != object)
+	if (currentZ > 0 && currentZ < _heightLength - 1 && _twodArray[currentZ + 1][currentX - 1].type == wall && _twodArray[currentZ + 1][currentX - 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX - position.x, 0.f, (float)currentZ + 1 - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
@@ -823,7 +826,7 @@ glm::vec3 Grid::wallCollission(glm::vec3 position, glm::vec3 velocity)
 		}
 	}
 	//south west square
-	if (_twodArray[currentZ + 1][currentX + 1].type == wall && _twodArray[currentZ + 1][currentX + 1].type != object)
+	if (currentZ > 0 && currentZ < _heightLength - 1 && _twodArray[currentZ + 1][currentX + 1].type == wall && _twodArray[currentZ + 1][currentX + 1].type != object)
 	{
 		glm::vec3 playerToCorner = glm::vec3((float)currentX + 1 - position.x, 0.f, (float)currentZ + 1 - position.z);
 		float len = sqrtf(playerToCorner.x * playerToCorner.x + playerToCorner.z * playerToCorner.z);
