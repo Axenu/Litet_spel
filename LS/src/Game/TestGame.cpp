@@ -21,7 +21,7 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
 	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), scene->getCamera());
 	//Character* player = _factory.createCharacter(glm::ivec2(2, 2), 1.3f);
-	Character* player = _factory.createCharacter(glm::ivec2(32, 53), 1.3f);
+	Character* player = _factory.createCharacter(glm::ivec2(47, 53), 1.3f);
 	_player = player;
 
 
