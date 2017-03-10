@@ -133,28 +133,41 @@ namespace gui
             Config::hasSound = _soundCheckbox->getSelected();
             Config::borderLess = _borderlessCheckbox->getSelected();
             Config::showFPS = _fpsCheckbox->getSelected();
+            SoundManager::getInstance().setGlobalVolume(Config::masterVolume);
+            if (!Config::hasSound)
+                SoundManager::getInstance().setGlobalVolume(0.0f);
             //switch for resolution options
             float oldRes = Config::resolution.x;
             switch(_resolutionBar->getSelected())
             {
                 case 0:
+                {
                     Config::resolution.x = 480;
                     Config::resolution.y = 320;
-                break;
+                    break;
+                }
                 case 1:
+                {
                     Config::resolution.x = 1280;
                     Config::resolution.y = 720;
-                break;
+                    break;
+                }
                 case 2:
+                {
                     Config::resolution.x = 1920;
                     Config::resolution.y = 1080;
-                break;
+                    break;
+                }
                 case 3:
+                {
                     Config::resolution.x = 2560;
                     Config::resolution.y = 1440;
-                break;
+                    break;
+                }
                 default:
-                break;
+                {
+                    break;
+                }
             }
             if (oldRes != Config::resolution.x)
             {
@@ -186,7 +199,7 @@ namespace gui
             View *view = _parent->resumeView("MainMenuView");
             if (view == nullptr)
             {
-                std::cout << "Should already exist! Not possible in PauseView.cpp" << std::endl;
+                std::cout << "Should already exist! Not possible in SettingsView.cpp" << std::endl;
             }
         }
     }

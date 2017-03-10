@@ -55,7 +55,6 @@ namespace gui {
             value -= 0.35f;
             index += 1;
         }
-        _selectedIndex = index;
         _highlightRect->setPosition(0.35f*index, _highlightRect->getPosition().y);
     }
     void ChoiseBar::cursorDidExit(glm::vec2 pos)
@@ -72,7 +71,6 @@ namespace gui {
             value -= 0.35f;
             index += 1;
         }
-        _selectedIndex = index;
         _highlightRect->setPosition(0.35f*index, _highlightRect->getPosition().y);
     }
     bool ChoiseBar::handleClick(int action, glm::vec2 pos)

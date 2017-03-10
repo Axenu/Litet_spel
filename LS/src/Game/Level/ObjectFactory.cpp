@@ -123,7 +123,7 @@ AntiLightGrenade* ObjectFactory::createLightGrenade(const std::string &model, gl
 Guard* ObjectFactory::createGuard(const std::string &model, Character& player, guardData &data)
 {
 	//Setup guard
-	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
+	Model tmpModel = _models.GetModel(_modelPath + model, &_skinnedShader);
 	glm::vec3 pos = calcPos(data.spawnPosition, tmpModel.getBox());
 	WalkPoints points(data.walkingPoints, data.walkType, data.face);
 	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, points);
@@ -160,23 +160,13 @@ Door * ObjectFactory::CreateDoor(const std::string & model, glm::ivec2 square, g
 GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation, enum gridType type, glm::vec3 positionOffset)
 {
 	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
-	GameObject* object = new GameObject(tmpModel, type::Doodad);
+	GameObject* object = new StaticGameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()) + positionOffset);
 	object->setRotEuler(rotation);
 	object->init();
-	if (!(_level->getGrid().getHeight(square.y, square.x) > 0.0f))
-	{
-		if (type == gridType::object || type == gridType::wall)
-			_level->getGrid().addObject(object, type);
-	}
-	else
-	{
-		//Set objet ontop of current obejct in square
-		object->moveY(_level->getGrid().getHeight(square.y, square.x) - object->getAABB().getMin().y);
-	}
-	object->init();
 	_scene->add(object, false);
-
+	if (type == gridType::object || type == gridType::wall)
+		_level->getGrid().addObject(object, type);
 	return object;
 }
 LootObject* ObjectFactory::createLoot(const std::string &model, glm::ivec2 square, glm::vec3 rotation, int value)

@@ -67,7 +67,7 @@ void main () {
 	ColorOut = vec4(color * 0.25f, 1.0f); //Add ambient
 
 	//player light
-	ColorOut.xyz += pointLightCalc(position, normal, color, specular.xyz, specular.w, vec3(0,0,0), 3.f, vec3(0.55, 0.55, 0.55), vec3(0.1f, 0.1f, 0.1f));
+	ColorOut.xyz += pointLightCalc(position, normal, color, specular.xyz, specular.w, vec3(0,0,0), 10.f, vec3(0.55, 0.55, 0.55), vec3(0.1f, 0.1f, 0.1f));
 
 	for(uint i = 0; i < pNumLight; i++)
 		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));

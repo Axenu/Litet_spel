@@ -49,7 +49,3 @@ const Scene& Level::getScene()
 Grid& Level::getGrid() {
 	return _grid;
 }
-
-void Level::onUpdate(float dT) {
-
-}

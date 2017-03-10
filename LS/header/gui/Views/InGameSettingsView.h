@@ -20,23 +20,17 @@
 namespace gui
 {
 
-    class SettingsView : public View
+    class InGameSettingsView : public View
     {
     private:
         //owned and deleted by subclass View -> Element
         Button* _backButton;
         ProgressBar* _soundPB;
-        ChoiseBar *_resolutionBar;
-        ChoiseBar *_shadowBar;
         Checkbox *_soundCheckbox;
-        Checkbox *_fpsCheckbox;
-        Checkbox *_borderlessCheckbox;
-        //passed in ctor
-        EventManager *_eventManager;
 
     public:
-        SettingsView(EventManager *em);
-        virtual ~SettingsView();
+        InGameSettingsView();
+        virtual ~InGameSettingsView();
 
         void onRender(float dt) {}
         void onUpdate(float dt) {}
