@@ -96,7 +96,7 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 Character* ObjectFactory::createCharacter(glm::ivec2 square, float height)
 {
 
-	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, 10, height);
+	Character* player = new Character(_level->getGrid().getCenter(square), _eventManager, 5, height);
 	player->setLevel(&_level->getGrid());
 	player->setScene(_scene);
 	player->init();
