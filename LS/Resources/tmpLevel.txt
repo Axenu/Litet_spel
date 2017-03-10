@@ -6,11 +6,14 @@ model S 50 27 R 0 180 0 M Table.obj
 loot S 50 27 R 0 0 0 V 8 M Chandilier.obj
 
 model S 45 53 M Table.obj
+loot S 45 53 V 24 M Chandilier.obj 
 model S 50 53 M Table.obj
+loot S 50 53 V 24 M Chandilier.obj 
 
 model S 44 35 M Bookcase_Empty.obj R 0 -90 0
+loot S 44 35 V 24 M Chandilier.obj 
 model S 44 32 M Bookcase_Empty.obj R 0 -90 0
-
+loot S 44 32 V 24 M Chandilier.obj 
 model S 35 51 M Bookcase_Empty.obj R 0 270 0
 model S 40 47 M Table.obj R 0 90 0
 loot S 40 47 R 0 90 0 V 4 M Chalice.obj
@@ -20,8 +23,11 @@ loot S 40 43 R 0 90 0 V 4 M Chalice.obj
 
 model S 26 53 R 0 0 0 M oldTable.obj
 model S 27 53 R 0 0 0 M oldTable.obj
+loot S 27 53 V 24 M Chandilier.obj 
 model S 28 53 R 0 0 0 M oldTable.obj
+loot S 28 53 V 24 M Chandilier.obj 
 model S 29 53 R 0 0 0 M oldTable.obj
+loot S 26 53 V 24 M Chandilier.obj 
 loot S 29 53 R 0 0 0 V 4 M Chalice.obj
 
 model S 27 42 M Bookcase_Empty.obj R 0 180 0
@@ -33,12 +39,17 @@ loot S 3 53 R 0 0 0 V 4 M Chalice.obj
 loot S 11 53 R 0 0 0 V 4 M GoldBar.obj
 
 model S 17 35 M Bookcase_Empty.obj R 0 90 0
+loot S 17 35 V 24 M Chandilier.obj 
 model S 17 39 M Bookcase_Empty.obj R 0 90 0
 model S 12 38 M Table.obj R 0 270 0
+loot S 12 38 V 24 M Chandilier.obj 
 
 model S 21 22 M Table.obj R 0 90 0
+loot S 21 22 V 20 M GoldBar.obj 
 model S 21 27 M Table.obj R 0 90 0
+loot S 21 27 V 20 M GoldBar.obj 
 model S 21 25 M drawer.obj R 0 270 0
+loot S 21 25 V 20 M GoldBar.obj 
 
 model S 12 1 M wingChair.obj R 0 180 0
 model S 14 1 M FirePlace.obj R 0 180 0 
@@ -58,38 +69,62 @@ model S 58 37 M Bookcase_Empty.obj
 loot S 58 37 V 4 M Chalice.obj
 
 model S 2 11 M Table.obj
+loot S 2 11 V 20 M GoldBar.obj 
 model S 10 11 M Table.obj
+loot S 10 11 V 20 M GoldBar.obj 
 model S 2 17 M Table.obj
+loot S 3 17 V 20 M GoldBar.obj 
 model S 3 17 M Table.obj
 model S 6 2 M Bookcase_Empty.obj R 0 90 0
+loot S 6 2 V 20 M GoldBar.obj 
 model S 7 2 M Bookcase_Empty.obj R 0 -90 0
+loot S 7 2 V 20 M GoldBar.obj 
 model S 7 26 M drawer.obj
 
 model S 1 36 M Bookcase_Empty.obj
+loot S 1 36 V 20 M GoldBar.obj 
 model S 1 31 M Bookcase_Empty.obj
+loot S 1 31 V 20 M GoldBar.obj 
 model S 1 34 M drawer.obj R 0 90 0
 
 model S 29 39 M table.obj
+loot S 29 39 V 20 M GoldBar.obj 
 model S 16 41 M table.obj
+loot S 16 41 V 20 M GoldBar.obj 
 model S 23 46 M table.obj R 0 90 0
+loot S 23 46 V 20 M GoldBar.obj 
 
 model S 12 17 M drawer.obj R 0 90 0
+loot S 12 17 V 20 M GoldBar.obj 
 model S 9 32 M drawer.obj R 0 90 0
+loot S 9 32 V 20 M GoldBar.obj 
 
 model S 28 15 M table.obj R 0 180 0
+loot S 28 15 V 20 M GoldBar.obj 
 model S 40 14 M table.obj 
+loot S 40 14 V 20 M GoldBar.obj 
 
 model S 38 9 M Bookcase_Empty.obj R 0 180 0
+loot S 38 9 V 20 M GoldBar.obj 
 model S 44 9 M Bookcase_Empty.obj R 0 180 0
-
+loot S 44 9 V 20 M GoldBar.obj 
 model S 23 12 M Table.obj
 model S 21 15 M Bookcase_Empty.obj
 
 model S 53 46 M Table.obj R 0 90 0
+loot S 53 46 V 20 M GoldBar.obj 
+loot S 50 39 V 20 M GoldBar.obj 
+loot S 44 39 V 20 M GoldBar.obj 
 model S 50 39 M drawer.obj R 0 0 0
 model S 44 39 M drawer.obj R 0 0 0
-model S 42 46 M Fireplace.obj R 0 270 0
+model S 42 46 M Fireplace.obj R 0 -90 0
 
+
+loot S 61 52 V 20 M GoldBar.obj 
+loot S 69 44 V 20 M GoldBar.obj 
+loot S 68 42 V 20 M GoldBar.obj 
+loot S 50 39 V 20 M GoldBar.obj 
+loot S 50 39 V 20 M GoldBar.obj 
 model S 61 52 M Table.obj R 0 180 0
 model S 61 40 M drawer.obj R 0 180 0
 model S 68 42 M BookCase_Empty.obj R 0 0 0
@@ -109,6 +144,12 @@ model S 43 1 M Fireplace.obj R 0 180 0
 model S 40 6 M Fireplace.obj R 0 180 0
 model S 45 1 M Fireplace.obj R 0 180 0
 
+
+
+loot S 28 9 R 0 0 0 V 4 M Chalice.obj
+loot S 28 6 R 0 0 0 V 4 M Chalice.obj
+loot S 28 11 R 0 0 0 V 4 M Chalice.obj
+loot S 32 6 R 0 0 0 V 4 M Chalice.obj
 model S 28 9 M Bookcase_Empty.obj 0 0 0
 model S 27 1 M Fireplace.obj R 0 180 0
 model S 28 6 M Bookcase_Empty.obj 0 0 0
@@ -119,9 +160,11 @@ model S 32 11 M Bookcase_Empty.obj 0 0 0
 
 model S 49 9 M OldChair.obj R 0 -90 0
 model S 49 10 M OldTable.obj R 0 90 0
+loot S 49 10 R 0 0 0 V 4 M Chalice.obj
 model S 49 11 M OldChair.obj R 0 90 0
 
 model S 53 2 M OldChair.obj R 0 -90 0
+loot S 53 3 R 0 0 0 V 4 M Chalice.obj
 model S 53 3 M OldTable.obj R 0 90 0
 model S 53 4 M OldChair.obj R 0 90 0 
 
@@ -155,26 +198,31 @@ model S 101 31 M Fireplace.obj R 0 90 0
 model S 95 27 M BookCase_Empty.obj R 0 270 0
 model S 95 32 M BookCase_Empty.obj R 0 270 0
 model S 97 21 M OldChair.obj R 0 0 0
+loot S 99 21 R 0 0 0 V 4 M Chalice.obj
 model S 99 21 M oldTable.obj R 0 180 0
 model S 101 21 M OldChair.obj R 0 180 0
 
 model S 57 15 M drawer.obj
 model S 69 15 M drawer.obj
+loot S 69 15 V 20 M GoldBar.obj 
 model S 54 15 M drawer.obj
 
 model S 81 15 M drawer.obj
 model S 84 11 M drawer.obj R 0 180 0
 model S 88 11 M Bookcase_Empty.obj R 0 180 0
 model S 87 19 M Bookcase_Empty.obj
+loot S 87 19 V 20 M GoldBar.obj 
 model S 82 12 M drawer.obj R 0 90 0
 model S 84 17 M Table.obj R 0 180 0
 model S 84 19 M WingChair.obj
 
 model S 88 28 M OldChair.obj
 model S 89 28 M OldTable.obj
+loot S 89 28 V 20 M GoldBar.obj 
 model S 90 28 M OldChair.obj R 0 180 0 
 
 model S 88 33 M OldChair.obj
+loot S 89 33 R 0 0 0 V 4 M Chalice.obj
 model S 89 33 M OldTable.obj
 model S 90 33 M OldChair.obj R 0 180 0 
 
@@ -186,19 +234,23 @@ model S 100 1 M Bookcase_Empty.obj
 model S 96 11 M OldChair.obj R 0 270 0
 model S 99 12 M oldTable.obj R 0 270 0
 model S 99 11 M OldChair.obj R 0 270 0
+loot S 96 12 R 0 0 0 V 4 M Chalice.obj
 model S 96 12 M oldTable.obj R 0 270 0
 model S 96 13 M oldTable.obj R 0 270 0 
 model S 99 14 M OldChair.obj R 0 90 0
 model S 99 13 M oldTable.obj R 0 270 0
 model S 99 18 M OldChair.obj R 0 90 0
+loot S 98 18 R 0 0 0 V 4 M Chalice.obj
 model S 98 18 M OldTable.obj R 0 90 0
 model S 97 18 M OldChair.obj R 0 0 0
 
 model S 93 5 M drawer.obj R 0 -90 0
+loot S 93 5 V 20 M GoldBar.obj 
 model S 93 10 M drawer.obj R 0 -90 0
 
 model S 93 21 M drawer.obj R 0 -90 0
 model S 93 27 M drawer.obj R 0 -90 0
+loot S 93 27 V 20 M GoldBar.obj 
 model S 92 33 M drawer.obj R 0 90 0 
 
 model S 85 7 M OldChair.obj
@@ -206,26 +258,33 @@ model S 86 7 M OldTable.obj R 0 90 0
 model S 87 7 M OldChair.obj R 0 180 0
 
 model S 87 1 M OldChair.obj
+loot S 88 1 R 0 0 0 V 4 M Chalice.obj
 model S 88 1 M OldTable.obj R 0 90 0
 model S 89 1 M OldChair.obj R 0 180 0
 model S 83 3 M drawer.obj R 0 90 0 
 
 model S 72 10 M Bookcase_Empty.obj R 0 180 0 
 model S 67 10 M Bookcase_Empty.obj R 0 180 0
+loot S 72 10 V 20 M GoldBar.obj 
 model S 75 1 M Bookcase_Empty.obj R 0 190 0
 model S 81 3 M Bookcase_Empty.obj R 0 90 0
+loot S 81 3 V 20 M GoldBar.obj 
 model S 81 6 M Bookcase_Empty.obj R 0 90 0
+loot S 81 6 V 20 M GoldBar.obj 
 model S 81 9 M Bookcase_Empty.obj R 0 90 0
+loot S 81 9 V 20 M GoldBar.obj 
 model S 81 12 M Bookcase_Empty.obj R 0 90 0 
 
 model S 67 5 M OldChair.obj R 0 270 0 
 model S 67 6 M OldTable.obj
 model S 67 7 M OldChair.obj R 0 90 0
+loot S 71 2 R 0 0 0 V 4 M Chalice.obj
 model S 71 2 M OldTable.obj R 0 90 0
 model S 70 2 M OldChair.obj
 model S 72 2 M OldChair.obj
 
 model S 59 3 M Table.obj
+loot S 59 3 V 20 M GoldBar.obj 
 model S 57 3 M WingChair.obj R 0 270 0
 model S 61 3 M WingChair.obj R 0 90 0
 model S 59 1 M WingChair.obj R 0 180 0
@@ -235,7 +294,9 @@ model S 56 13 M WingChair.obj
 model S 58 13 M WingChair.obj
 model S 60 13 M WingChair.obj
 model S 60 11 M Table.obj
+loot S 60 11 R 0 0 0 V 4 M Chalice.obj
 model S 56 11 M Table.obj
+loot S 56 11 R 0 0 0 V 4 M Chalice.obj
 model S 58 11 M Table.obj
 
 
@@ -250,18 +311,22 @@ model S 4 33 11 M WingChair.obj
 
 model S 23 31 11 M WingChair.obj R 0 270 0 
 model S 23 32 11 M Table.obj R 0 270 0 
+loot S 23 32 R 0 0 0 V 4 M Chalice.obj 
 model S 23 33 11 M WingChair.obj R 0 270 0 
 
 model S 23 17 11 M WingChair.obj R 0 270 0 
-model S 23 18 11 M Table.obj R 0 270 0 
+model S 23 18 11 M Table.obj R 0 270 0
+loot S 23 18 V 20 M GoldBar.obj 
 model S 23 19 11 M WingChair.obj R 0 270 0 
 
 model S 72 30 11 M WingChair.obj R 0 270 0 
 model S 72 31 11 M Table.obj R 0 270 0 
+loot S 72 31 V 20 M GoldBar.obj
 model S 72 33 11 M WingChair.obj R 0 270 0
 
 model S 56 27 11 M WingChair.obj R 0 270 0 
 model S 56 28 11 M Table.obj R 0 270 0 
+loot S 56 28 V 20 M GoldBar.obj
 model S 56 29 11 M WingChair.obj R 0 270 0 
 
 
@@ -277,35 +342,50 @@ model S 75 19 M Bookcase_Empty.obj R 0 270 0
 model S 75 21 M Bookcase_Empty.obj R 0 270 0
 model S 75 23 M Bookcase_Empty.obj R 0 270 0 
 model S 75 25 M Bookcase_Empty.obj R 0 270 0 
+loot S 75 25 V 24 M Chalice.obj
+loot S 75 23 V 24 M Chandilier.obj 
 model S 75 27 M Bookcase_Empty.obj R 0 270 0 
 model S 75 29 M Bookcase_Empty.obj R 0 270 0 
 model S 75 31 M Bookcase_Empty.obj R 0 270 0 
+loot S 75 33 V 20 M GoldBar.obj
 model S 75 33 M Bookcase_Empty.obj R 0 270 0 
 model S 75 35 M Bookcase_Empty.obj R 0 270 0  
 model S 75 37 M Bookcase_Empty.obj R 0 270 0 
 
 model S 78 18 M Bookcase_Empty.obj R 0 180 0  
-model S 80 18 M Bookcase_Empty.obj R 0 180 0  
+model S 80 18 M Bookcase_Empty.obj R 0 180 0 
+loot S 78 18 V 24 M Chalice.obj
+loot S 80 18 V 24 M Chandilier.obj 
 model S 81 21 M Bookcase_Empty.obj R 0 90 0
 model S 81 23 M Bookcase_Empty.obj R 0 90 0
 model S 81 25 M Bookcase_Empty.obj R 0 90 0
 model S 81 27 M Bookcase_Empty.obj R 0 90 0
+loot S 81 27 V 20 M GoldBar.obj
 model S 81 29 M Bookcase_Empty.obj R 0 90 0
 model S 81 31 M Bookcase_Empty.obj R 0 90 0
 model S 81 33 M Bookcase_Empty.obj R 0 90 0
 model S 83 36 M Bookcase_Empty.obj R 0 180 0
+loot S 81 33 V 24 M Chalice.obj
+loot S 83 36 V 24 M Chandilier.obj
 model S 85 36 M Bookcase_Empty.obj R 0 180 0
 model S 87 36 M Bookcase_Empty.obj R 0 180 0
 model S 89 36 M Bookcase_Empty.obj R 0 180 0
+loot S 89 36 V 20 M GoldBar.obj
 model S 91 37 M Bookcase_Empty.obj R 0 90 0
 model S 93 40 M Bookcase_Empty.obj R 0 180 0
+loot S 93 40 V 20 M GoldBar.obj
 model S 95 47 M Bookcase_Empty.obj R 0 90 0
+loot S 93 40 V 24 M Chalice.obj
+loot S 95 45 V 24 M Chandilier.obj
 model S 95 45 M Bookcase_Empty.obj R 0 90 0
 model S 95 48 M Bookcase_Empty.obj R 0 0 0
 model S 93 48 M Bookcase_Empty.obj R 0 0 0
+loot S 91 48 V 20 M GoldBar.obj
 model S 91 48 M Bookcase_Empty.obj R 0 0 0
 model S 89 48 M Bookcase_Empty.obj R 0 0 0
 model S 87 48 M Bookcase_Empty.obj R 0 0 0
+loot S 87 48 V 24 M Chalice.obj
+loot S 89 48 V 24 M Chandilier.obj
 model S 83 48 M Bookcase_Empty.obj R 0 0 0
 model S 81 48 M Bookcase_Empty.obj R 0 0 0
 model S 79 48 M Bookcase_Empty.obj R 0 0 0
@@ -313,12 +393,16 @@ model S 77 48 M Bookcase_Empty.obj R 0 0 0
 
 model S 80 39 M Bookcase_Empty.obj R 0 0 0
 model S 82 39 M Bookcase_Empty.obj R 0 0 0
+loot S 80 39 V 24 M Chalice.obj
+loot S 82 39 V 24 M Chandilier.obj
 model S 84 39 M Bookcase_Empty.obj R 0 0 0
 model S 86 40 M Bookcase_Empty.obj R 0 270 0
 model S 86 42 M Bookcase_Empty.obj R 0 270 0
 
 model S 80 40 M Bookcase_Empty.obj R 0 180 0
 model S 82 40 M Bookcase_Empty.obj R 0 180 0
+loot S 80 40 V 24 M Chalice.obj
+loot S 82 40 V 24 M Chandilier.obj
 model S 84 40 M Bookcase_Empty.obj R 0 180 0
 model S 85 41 M Bookcase_Empty.obj R 0 90 0
 model S 85 42 M Bookcase_Empty.obj R 0 90 0
@@ -374,6 +458,7 @@ model S 72 18 M oldTable.obj O 0 0 -0.2
 model S 73 18 M oldTable.obj O 0 0 -0.2
 model S 73 19 M oldTable.obj R 0 90 0 O 0.15 0 -0.2
 model S 73 20 M oldTable.obj R 0 90 0 O 0.15 0 -0.2
+loot S 73 22 V 20 M GoldBar.obj
 model S 73 21 M oldTable.obj R 0 90 0 O 0.15 0 -0.2
 model S 73 22 M oldTable.obj R 0 90 0 O 0.15 0 -0.2
 loot S 72 18 V 20 M GoldBar.obj
@@ -404,10 +489,13 @@ path H 63 32 H 37 21 H 34 33
 
 
 
-
+model S 4 5 M fancyTable.obj
+model S 37 2 M fancyTable.obj
+model S 48 20 M fancyTable.obj
 listSuperLoot S 4 5 S 37 2 S 48 20 M Diamond.obj V 200 R 0 0 0
+exitDoor S 47 54 M Doorway.obj R 0 180 0 O 0.5 0 0
 
-guard S 37 49 V 2 % 2_equal_loop_path
+guard S 13 51 V 2 % 2_equal_loop_path
 path H 26 46 H 37 43 H 37 49
 guard S 47 42 V 0 % 0_equal_stand_still
 path S 0 0 % Guard_faces_this_square_when_in_still_state
