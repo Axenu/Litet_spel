@@ -106,7 +106,7 @@ void setupWindow()
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 		// unlock fps
-		// glfwSwapInterval(0);
+		glfwSwapInterval(0);
 
         /* Poll for and process events */
         glfwPollEvents();
