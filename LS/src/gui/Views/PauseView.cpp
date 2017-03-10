@@ -1,6 +1,7 @@
 #include "gui/Views/PauseView.h"
 #include "gui/Views/MainMenuView.h"
 #include "gui/Views/HUDView.h"
+#include "gui/Views/InGameSettingsView.h"
 #include "gui/Manager.h"
 
 namespace gui
@@ -37,6 +38,16 @@ namespace gui
             _eventManager->execute(event);
         }
     }
+    void PauseView::settingsMenu(int action)
+    {
+        if (action == GLFW_RELEASE)
+        {
+            if (!_parent->setView("InGameSettingsView"))
+            {
+                _parent->setView(new InGameSettingsView());
+            }
+        }
+    }
     PauseView::PauseView(EventManager* manager) : _eventManager(manager), View()
     {
         _name = "PauseView";
@@ -66,9 +77,18 @@ namespace gui
         _mainMenuButton->setScale(0.5,0.5);
         addChild(_mainMenuButton);
 
+        _settingsButton = new gui::Button(1.5f, 0.4f);
+        _settingsButton->addStringComponent(new StringComponentString("Settings"));
+    	_settingsButton->setPosition(-_settingsButton->getSize().x*0.25f, -0.3f);
+        _settingsButton->setPrimaryColor(PALLETPRIMARY);
+        _settingsButton->setSecondaryColor(PALLETHIGHLIGHT);
+        _settingsButton->listen(this, &PauseView::settingsMenu);
+        _settingsButton->setScale(0.5,0.5);
+        addChild(_settingsButton);
+
         _quitButton = new gui::Button(1.5f, 0.4f);
         _quitButton->addStringComponent(new StringComponentString("Quit"));
-    	_quitButton->setPosition(-_quitButton->getSize().x*0.25f, -0.3f);
+    	_quitButton->setPosition(-_quitButton->getSize().x*0.25f, -0.5f);
         _quitButton->setPrimaryColor(PALLETPRIMARY);
         _quitButton->setSecondaryColor(PALLETHIGHLIGHT);
         _quitButton->listen(this, &PauseView::quitGame);

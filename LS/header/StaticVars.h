@@ -19,3 +19,6 @@ namespace sic {
 #define GRENADESOUND "Resources/Sounds/grenadeThump.wav"
 //Lootlevel
 #define MAX_LOOT_LEVEL 1000
+
+//game name
+#define GAMENAME "Robbing Hood"
