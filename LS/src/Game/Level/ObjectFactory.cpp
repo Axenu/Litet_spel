@@ -160,7 +160,7 @@ Door * ObjectFactory::CreateDoor(const std::string & model, glm::ivec2 square, g
 GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 square, glm::vec3 rotation, enum gridType type, glm::vec3 positionOffset)
 {
 	Model tmpModel = _models.GetModel(_modelPath + model, &_meshShader);
-	GameObject* object = new GameObject(tmpModel, type::Doodad);
+	GameObject* object = new StaticGameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()) + positionOffset);
 	object->setRotEuler(rotation);
 	object->init();
