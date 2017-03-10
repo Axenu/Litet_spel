@@ -465,27 +465,48 @@ loot S 72 18 V 20 M GoldBar.obj
 loot S 73 21 V 20 M GoldBar.obj R 0 90 0
 
 
-guard S 10 50 V 2 % 2_equal_loop_path
-path H 5 8 H 13 47 H 18 24
-guard S 18 22 V 2 % 2_equal_loop_path
-path H 6 19 H 15 37 H 16 3
-guard S 31 7 V 2 % 2_equal_loop_path
-path H 52 6 H 62 12 H 77 11
-guard S 85 3 V 2 % 2_equal_loop_path
-path H 86 8 H 86 23 H 99 29 H 99 19
-guard S 99 10 V 2
-path H 85 14 H 86 29 H 99 10 
+//gul bibliotek
 guard S 78 22 V 2
 path H 78 45 H 87 39 H 79 20 
-guard S 62 39 V 2
-path H 23 39 H 62 39
+//rödblock
+guard S 4 3 V 2
+path H 5 21 H 5 34 H 17 36 H 19 27 H 19 12 H 16 3 H 4 3
+
+guard S 18 36 V 2
+path H 5 35 H 6 21 H 5 10 H 15 3 H 18 14 H 19 25 H 18 36
+
+//grön
+guard S 4 51 V 2
+path H 27 45 H 27 52 H 8 46
+guard S 38 43 V 2
+path H 38 52 H 48 46 H 38 43
 
 
-guard S 63 32 V 2
-path H 34 33 H 37 21 H 63 32
 
-guard S 34 33 V 2
-path H 63 32 H 37 21 H 34 33
+//blå
+guard S 29 8 V 2
+path H 40 2 H 41 10 H 50 8 H 41 2 H 29 8
+guard S 78 6 V 2
+path H 69 5 H 59 3 H 57 11 H 51 5 H 78 6
+//mörkblå
+guard S 95 37 V 2
+path H 70 51 H 69 41 H 95 37 
+guard S 58 45 V 2
+path H 58 52 H 47 48 H 58 45 
+//brun
+guard S 99 3 V 2
+path H 87 3 H 86 8 H 97 10 H 87 15 H 99 3
+guard S 85 22 V 2
+path H 99 24 H 87 30 H 85 22 
+
+//lila
+guard S  32 34 V 2
+path H 24 24 H 29 21 H 37 21 H 48 21 H 32 34
+guard S 47 32 V 2
+path H 64 32 H 73 28 H 73 22 H 68 20 H 61 15 H 60 22 H 47 32
+
+
+
 
 
 
@@ -494,8 +515,6 @@ listSuperLoot S 4 5 S 37 2 S 48 20 M Diamond.obj V 200 R 0 0 0
 
 guard S 13 51 V 2 % 2_equal_loop_path
 path H 26 46 H 37 43 H 37 49
-guard S 47 42 V 0 % 0_equal_stand_still
-path S 0 0 % Guard_faces_this_square_when_in_still_state
 guard S 14 3 V 0
 path S 0 0 % Guard_faces_this_square_when_in_still_state
 listDoors V 0 S 30 50 S 34 42 S 41 39 S 67 17 S 71 36 S 74 40 S 93 35 S 91 18 S 91 3 S 94 3
