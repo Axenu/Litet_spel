@@ -30,8 +30,9 @@ struct guardData {
 	std::vector<glm::ivec2> walkingPoints;
 	int walkType;
 	glm::ivec2 spawnPosition, face;
-	guardData(glm::ivec2 spawn, glm::ivec2 face, unsigned int walkType)
-		: walkingPoints(), walkType(walkType), spawnPosition(spawn), face(face)
+	PointLightValue _light;
+	guardData(glm::ivec2 spawn, glm::ivec2 face, unsigned int walkType, PointLightValue light)
+		: walkingPoints(), walkType(walkType), spawnPosition(spawn), face(face), _light(light)
 	{
 	}
 };

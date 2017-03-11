@@ -133,13 +133,12 @@ Guard* ObjectFactory::createGuard(const std::string &model, Character& player, g
 	_scene->add(guard, true);
 
 	//Setup guard's lantern
-	PointLightValue light(glm::vec3(0.f, 0.0f, 0.1f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	if (guard->hasSkeleton())
 	{
 		BoneNode* node = guard->getSkeleton()->getBoneNode("Lantern");
 		if (node)
 		{
-			PointLightObject* lantern = createLight(light, node);
+			PointLightObject* lantern = createLight(data._light, node);
 			lantern->lightFlicker(false);
 		}
 	}
@@ -266,7 +265,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		{
 			light._pos = pos;
 			if (value > 0.f)
-				light._fadeDist = value;
+				light._fadeDist = 4.f;
 			createLight(light);
 		}
 		else if (type == "listDoors")
@@ -291,7 +290,9 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			createObject(modelName, square, rot, gridType::nothing, offSet);
 		else if (type == "guard")
 		{
-			guards.push_back(guardData(square, square, (unsigned int)value));
+			light._pos = pos;
+			light._fadeDist = 4.f;
+			guards.push_back(guardData(square, square, (unsigned int)value, light));
 		}
 		else if (type == "path")
 		{

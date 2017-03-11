@@ -32,6 +32,7 @@ namespace gui
     public:
     	typedef void (T::*MemberFunc)(int);
     	ButtonHandler(T* instance, MemberFunc memFn) : _instance(instance), _function(memFn) {};
+		virtual ~ButtonHandler() { }
 
     	void call(int action)
     	{
