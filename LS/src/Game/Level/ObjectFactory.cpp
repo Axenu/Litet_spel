@@ -136,7 +136,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, Character& player, g
 	PointLightValue light(glm::vec3(0.f, 0.0f, 0.1f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.0f), 3.0f);
 	if (guard->hasSkeleton())
 	{
-		BoneNode* node = guard->getSkeleton()->getBoneNode("Index_R");
+		BoneNode* node = guard->getSkeleton()->getBoneNode("Lantern");
 		if (node)
 			PointLightObject* lantern = createLight(light, node);
 	}
