@@ -124,7 +124,7 @@ Guard* ObjectFactory::createGuard(const std::string &model, Character& player, g
 {
 	//Setup guard
 	Model tmpModel = _models.GetModel(_modelPath + model, &_skinnedShader);
-	glm::vec3 pos = calcPos(data.spawnPosition, tmpModel.getBox());
+	glm::vec3 pos = _level->getGrid().getCenter(data.spawnPosition);
 	WalkPoints points(data.walkingPoints, data.walkType, data.face);
 	Guard* guard = new Guard(pos, &player, _eventManager, tmpModel, _level, points);
 	guard->_id = _guardCount++;
@@ -138,7 +138,10 @@ Guard* ObjectFactory::createGuard(const std::string &model, Character& player, g
 	{
 		BoneNode* node = guard->getSkeleton()->getBoneNode("Lantern");
 		if (node)
+		{
 			PointLightObject* lantern = createLight(light, node);
+			lantern->lightFlicker(false);
+		}
 	}
 
 	return guard;

@@ -1,5 +1,5 @@
 #include "Game/Objects/PointLightObject.h"
-
+#include "math/MathFunctions.h"
 
 
 PointLightObject::PointLightObject()
@@ -9,9 +9,12 @@ PointLightObject::PointLightObject()
 PointLightObject::PointLightObject(const PointLightValue &light, Node *parent)
 	: GameObject(parent, light._pos, type::PointLight), _lightInfo(light) {
 	_prevPositionDestination = glm::vec3(0.0f);
-	_positionOffset = glm::vec3(0.0f);
+	_nextFlicker = true;
 	_positionDestination = glm::vec3(0.0f);
+	_previousSize = 4.f;
+	_targetSize = 4.f;
 	_timeToOffset = 0.0f;
+	_enableFlicker = true;
 }
 
 PointLightObject::~PointLightObject() {}
@@ -19,22 +22,37 @@ PointLightObject::~PointLightObject() {}
 void PointLightObject::update(float dT) {
 	Node::update(dT);
 	_lightInfo._light._pos = _modelMatrix[3];
-	//flickering
-	if (_timeToOffset > 0.0f)
+	if (_enableFlicker)
 	{
-		glm::vec3 diff = _positionDestination - _prevPositionDestination;
-        _positionOffset = _prevPositionDestination + _timeToOffset*diff;
-		_timeToOffset -= dT * 6.0f;
+		//flickering
+		glm::vec3 offset;
+		if (_timeToOffset > 0.0f)
+		{
+			offset = lerp(_positionDestination, _prevPositionDestination, _timeToOffset);
+			_lightInfo._light._fadeDist = lerp(_targetSize, _previousSize, _timeToOffset);
+			_timeToOffset -= dT * 3.f;
+		}
+		else
+		{
+			_timeToOffset = 1.f;
+			_prevPositionDestination = _positionDestination;
+			offset = _positionDestination;
+			_previousSize = _targetSize;
+			_lightInfo._light._fadeDist = _targetSize;
+			if (_nextFlicker)
+			{
+				_positionDestination = glm::vec3(getRand(-0.05f, 0.05f), 0.f, getRand(-0.05f, 0.05f));
+				_targetSize = getRand(3.5f, 4.5f);
+			}
+			else 
+			{
+				_positionDestination = glm::vec3(0.f);
+				_targetSize = 4.f;
+			}
+			_nextFlicker = !_nextFlicker;
+		}
+		_lightInfo._light._pos += offset;
 	}
-	else
-	{
-		_timeToOffset = 1.0f;
-		_prevPositionDestination = _positionDestination;
-		_positionOffset = _positionDestination;
-		_positionDestination = glm::vec3((std::fmod((float)rand(), 1000.0f)-500.0f)/20000.0f, (std::fmod((float)rand(), 1000.0f)-500.0f)/20000.0f, (std::fmod((float)rand(), 1000.0f)-500.0f)/20000.0f);
-	}
-	_lightInfo._light._pos += _positionOffset;
-	// _lightInfo._light._fadeDist = 3.5f + _positionOffset.x * 5.f;
 	GameObject::setModelAABB(_lightInfo.generateAABB());
 	_lightInfo.updateMatrices();
 }
@@ -54,6 +72,10 @@ void PointLightObject::addToFrame(DrawFrame &dF) {
 	dF.add(_lightInfo);
 }
 
+void PointLightObject::lightFlicker(bool enabled)
+{
+	_enableFlicker = enabled;
+}
 /* Get the light information
 */
 const PointLightValue& PointLightObject::getLightInfo() {

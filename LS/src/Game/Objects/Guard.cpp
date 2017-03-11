@@ -195,7 +195,7 @@ void Guard::setStillState()
 	face(_currentLevel->getGrid().getCenter(_walkPoints._faceDir));
 	//Set properate animation
 	if (hasSkeleton())
-		_animatedSkel->setAnimPose("", 0.5f, 0.f);
+		_animatedSkel->setAnimPose("", 0.16f, 0.f);
 
 	_state = GuardState::still;
 }

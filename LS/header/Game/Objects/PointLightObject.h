@@ -11,8 +11,8 @@ private:
 	PointLight _lightInfo;
 	glm::vec3 _prevPositionDestination;
 	glm::vec3 _positionDestination;
-	glm::vec3 _positionOffset;
-	float _timeToOffset;
+	float _timeToOffset, _targetSize, _previousSize;
+	bool _nextFlicker, _enableFlicker;
 public:
 	PointLightObject();
 	PointLightObject(const PointLightValue &light, Node *parent = nullptr);
@@ -25,7 +25,8 @@ public:
 	/* Add the object to the frame
 	*/
 	virtual void addToFrame(DrawFrame &dF);
-
+	/* Enable/disable light flickers */
+	void lightFlicker(bool enabled);
 
 	/* Get the light information
 	*/

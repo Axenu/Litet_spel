@@ -463,6 +463,9 @@ model S 73 22 M oldTable.obj R 0 90 0 O 0.15 0 -0.2
 loot S 72 18 V 20 M GoldBar.obj
 loot S 73 21 V 20 M GoldBar.obj R 0 90 0
 
+// Tmp
+guard S 48 43 V 0
+path S 0 0
 
 //gul bibliotek
 guard S 78 22 V 2
