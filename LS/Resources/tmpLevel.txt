@@ -465,9 +465,6 @@ loot S 73 21 V 20 M GoldBar.obj R 0 90 0
 
 light P 45 1.2 53 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
 light P 50 1.2 53
-// Tmp
-guard S 48 43 V 0
-path S 0 0
 
 //gul bibliotek
 guard S 78 22 V 2
