@@ -35,7 +35,7 @@ private:
 	*/
 	std::vector<glm::mat4> _skinTransform;
 	/* Container for all bone nodes generated for the skeleton and object */
-	mutable std::vector<BoneNode*> _boneNodes;
+	mutable std::vector<std::unique_ptr<BoneNode>> _boneNodes;
 
 	/* Recalculates the end time when animation is looped */
 	void loopRefit();

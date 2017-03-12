@@ -10,7 +10,7 @@ class BoneNode :
 {
 private:
 	/* Reference to the skeleton */
-	const AnimatedSkeleton &_ref;
+	const AnimatedSkeleton *_ref;
 	/* Bone parent */
 	unsigned int _bone;
 public:

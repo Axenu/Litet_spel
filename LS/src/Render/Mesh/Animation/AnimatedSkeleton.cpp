@@ -3,7 +3,7 @@
 
 
 AnimatedSkeleton::AnimatedSkeleton(Skeleton& ref, Node& root)
-	: _ref(ref), _root(root), _channel(ref.getNumBones()), _pose(ref.getNumBones()), _skinTransform(ref.getNumBones())
+	: _ref(ref), _root(root), _channel(ref.getNumBones()), _pose(ref.getNumBones()), _skinTransform(ref.getNumBones()), _boneNodes()
 {
 	//Each channel needs to be initiated so it can generate it's own frames.
 	for (unsigned int i = 0; i < ref.getNumBones(); i++)
@@ -14,8 +14,6 @@ AnimatedSkeleton::AnimatedSkeleton(Skeleton& ref, Node& root)
 
 AnimatedSkeleton::~AnimatedSkeleton()
 {
-	for (unsigned int i = 0; i < _boneNodes.size(); i++)
-		delete _boneNodes[i];
 }
 
 void AnimatedSkeleton::update(float dT) {
@@ -137,9 +135,9 @@ BoneNode* AnimatedSkeleton::getBoneNode(const std::string &bone) const
 	unsigned int id;
 	if (_ref.getBoneIndex(bone, id))
 	{
-		BoneNode *node = new BoneNode(*this, id);
-		_boneNodes.push_back(node);
-		return node;
+		std::unique_ptr<BoneNode> node( new BoneNode(*this, id));
+		_boneNodes.push_back(std::move(node));
+		return _boneNodes.back().get();
 	}
 	return nullptr;
 }

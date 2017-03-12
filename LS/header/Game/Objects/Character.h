@@ -21,6 +21,8 @@
 #define CLIMBINGNOISE 0.6f
 #define WALKINGNOISE 0.4f
 #define SNEAKINGMODIFIER 0.5f
+const float MAXVIEWANGLEY = 0.4f;
+const float MAXVIEWANGLE_SIDE = 0.25f;
 
 class CollectLootEvent : public Event
 {
