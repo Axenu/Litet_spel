@@ -645,19 +645,25 @@ void Character::moveMouse(const MouseMoveEvent& event)
 
 void Character::clickMouse(const MouseClickEvent& event)
 {
-	if (event.getKey() == LOOT)
+	switch (_state)
 	{
-		if (event.getAction() == GLFW_PRESS)
+	case CharState::guardVision:
+		break;
+	default:
+		if (event.getKey() == LOOT)
 		{
-			int points = _currentScene->loot(2);
-			if (points > 0)
+			if (event.getAction() == GLFW_PRESS)
 			{
-				CollectLootEvent event(points);
-				_lootValue += points;
-				_score += points;
-				Sound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
-				tempSound->setPlayPosition(200);
-				_eventManager->execute(event);
+				int points = _currentScene->loot(2);
+				if (points > 0)
+				{
+					CollectLootEvent event(points);
+					_lootValue += points;
+					_score += points;
+					Sound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
+					tempSound->setPlayPosition(200);
+					_eventManager->execute(event);
+				}
 			}
 		}
 	}
@@ -701,6 +707,8 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_lootValue = 0;
 	_score = 0.0f;
 	setPosition(pos);
+	setForward(glm::vec3(0, 0, -1));
+	
 	_velocity = glm::vec3(0, 0, 0);
 	_camTilt = glm::vec2(0.0f);
 	_speed = 2;
@@ -735,8 +743,6 @@ Character::~Character()
     _eventManager->unlisten(this, &Character::moveMouse);
 	_eventManager->unlisten(this, &Character::detected);
 	_eventManager->unlisten(this, &Character::clickMouse);
-	_walkingSound->drop();
-	_climbSound->drop();
 }
 
 #pragma endregion

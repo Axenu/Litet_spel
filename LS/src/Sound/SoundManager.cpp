@@ -11,15 +11,15 @@ SoundManager::SoundManager()
 }
 SoundManager::~SoundManager()
 {
-    if (_engine)
-    {
-        _engine->drop();
-		_engine = nullptr;
-    }
     for (size_t i = 0; i < _sounds.size(); i++)
     {
         _sounds[i]->drop();
         delete _sounds[i];
+    }
+    if (_engine)
+    {
+        _engine->drop();
+		_engine = nullptr;
     }
 }
 

@@ -57,6 +57,7 @@ namespace gui
 
         bool _isAtExit = false;
         float _gameOverCD;
+        float _startMessageCD;
         std::vector<AlertStruct> _alerts;
         Sound *_backgroundSound = nullptr;
 
