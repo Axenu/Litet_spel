@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <map>
 #include <irrklang/irrKlang.h>
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -12,6 +14,8 @@ class SoundManager
 private:
     irrklang::ISoundEngine *_engine;
     bool _hasSound = true;
+    std::vector<Sound *> _sounds;
+    // std::map<std::string, irrklang::ISoundSource*> _sources;
 public:
     static SoundManager& getInstance();
     SoundManager();

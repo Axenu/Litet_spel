@@ -32,7 +32,10 @@ void Sound::setVolume(float vol)
 void Sound::drop()
 {
     if (_sound)
+    {
         _sound->drop();
+        _sound = nullptr;
+    }
 }
 void Sound::setPosition(glm::vec3 pos)
 {

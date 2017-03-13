@@ -76,7 +76,7 @@ void AntiLightGrenade::ThrowTheLightgrenade(glm::vec3 CharacterPositions, glm::v
 	_grenadeValue.fading = 0.01f;
 	_grenadeValue.expanding = 0;
 	_direction = Direction;
-	this->setPosition(CharacterPositions.x, CharacterPositions.y -0.2 , CharacterPositions.z);
+	this->setPosition(CharacterPositions.x, CharacterPositions.y -0.2f , CharacterPositions.z);
 
 	_movement = (_direction * _velocity);
 }

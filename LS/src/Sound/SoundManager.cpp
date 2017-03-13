@@ -16,19 +16,32 @@ SoundManager::~SoundManager()
         _engine->drop();
 		_engine = nullptr;
     }
+    for (size_t i = 0; i < _sounds.size(); i++)
+    {
+        _sounds[i]->drop();
+        delete _sounds[i];
+    }
 }
 
 Sound *SoundManager::play2DSound(std::string path, bool looped, bool play)
 {
+    Sound *s = nullptr;
     if (!_engine || !_hasSound)
-        return new Sound(nullptr);
-    return new Sound(_engine->play2D(path.c_str(), looped, !play, true));
+        s = new Sound(nullptr);
+    else
+        s = new Sound(_engine->play2D(path.c_str(), looped, !play, true));
+    _sounds.push_back(s);
+    return s;
 }
 Sound *SoundManager::play3DSound(std::string path, glm::vec3 pos, bool looped, bool play)
 {
+    Sound *s = nullptr;
     if (!_engine || !_hasSound)
-        return new Sound(nullptr);
-    return new Sound(_engine->play3D(path.c_str(), irrklang::vec3df(pos.x, pos.y, pos.z), looped, !play, true));
+        s = new Sound(nullptr);
+    else
+        s = new Sound(_engine->play3D(path.c_str(), irrklang::vec3df(pos.x, pos.y, pos.z), looped, !play, true));
+    _sounds.push_back(s);
+    return s;
 }
 void SoundManager::setListenerPosition(glm::vec3 pos, glm::vec3 lookDir, glm::vec3 velocity, glm::vec3 up)
 {

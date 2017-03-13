@@ -1,10 +1,11 @@
 #pragma once
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <cmath>
 
 /* Seed the randomizer with a value */
 void seed(unsigned int seed);
-/* Get a random unsigned int less then max param 
+/* Get a random unsigned int less then max param
 */
 unsigned int getRand(unsigned int max);
 /* Get a random int between the params
@@ -13,7 +14,7 @@ int getRand(int min, int max);
 /* Get a random float between the params
 */
 float getRand(float min, float max);
-/* Get a random positive vector with the excluded upper boundary 
+/* Get a random positive vector with the excluded upper boundary
 */
 glm::ivec2 randIVec2(unsigned int maxX, unsigned int maxY);
 
