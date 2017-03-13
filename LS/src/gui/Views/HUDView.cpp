@@ -383,7 +383,7 @@ namespace gui {
             {
                 if (*_game->getCharacter()->getLootValuePointer() >= MAX_LOOT_LEVEL * 0.5f)
                 {
-                    _tipDisplay->updateStringComponent(0, new StringComponentString("Press G to finish."));
+                    _tipDisplay->updateStringComponent(0, new StringComponentString("Press Enter to finish."));
                 }
                 else
                 {
