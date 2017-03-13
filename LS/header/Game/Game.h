@@ -1,5 +1,5 @@
 #pragma once
-#define DEBUG
+//#define DEBUG
 
 #include "Game/Scene/Scene.h"
 #include "Event/EventManager.h"
