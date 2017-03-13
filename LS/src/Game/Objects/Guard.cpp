@@ -106,8 +106,6 @@ Guard::Guard(glm::vec3 position, Character* player, EventManager* event, Model &
 
 Guard::~Guard()
 {
-	if (_walkingSound)
-		_walkingSound->drop();
 }
 
 void Guard::init()

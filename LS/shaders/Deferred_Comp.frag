@@ -70,7 +70,10 @@ void main () {
 	ColorOut.xyz += pointLightCalc(position, normal, color, specular.xyz, specular.w, vec3(0,0,0), 7.f, vec3(0.55, 0.55, 0.55), vec3(0.1f, 0.1f, 0.1f));
 
 	for(uint i = 0; i < pNumLight; i++)
-		ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
+	{
+		if (length(pLightPos[i] - position) < pLightFade[i])
+			ColorOut.xyz += shadowTest(i, position, pointLightCalc(position, normal, color, specular.xyz, specular.w, pLightPos[i], pLightFade[i], pLightDif[i], pLightSpec[i]));
+	}
 
 	for(uint i = 0; i < numGrenade; i++)
 		ColorOut.xyz *= antiLightGrenadeCal(grenadePos[i], position, color, grenadeParams[i]);
