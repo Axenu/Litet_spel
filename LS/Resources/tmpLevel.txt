@@ -280,7 +280,7 @@ model S 67 7 M OldChair.obj R 0 90 0
 loot S 71 2 R 0 0 0 V 4 M Chalice.obj
 model S 71 2 M OldTable.obj R 0 90 0
 model S 70 2 M OldChair.obj
-model S 72 2 M OldChair.obj
+model S 72 2 M OldChair.obj R 0 180 0 
 
 model S 59 3 M Table.obj
 loot S 59 3 V 20 M GoldBar.obj 
@@ -469,9 +469,24 @@ light P 50.5 1.69 53.77
 model S 45 53 M Candle_Wall.obj R 0 180 0 V 1 O 0 0.5 0
 model S 50 53 M Candle_Wall.obj R 0 180 0 V 1 O 0 0.5 0
 
+light P 45 1.2 53 V 3.5 D 0.8 0.5 0.15 s 0.5 0.5 0.5
+light P 50 1.2 53
+light P 75.2 1.2 43.2
+light P 100.8 1.2 40.2 
+light P 11.2 1.2 45.2 
+light P 8.2 1.2 7.2 
+light P 38.2 1.2 1.2 
+light P 48.2 1.2 18.2 
+light P 69.2 1.2 2.2 
+light P 100.8 1.2 12.2
+light P 30.2 1.2 27.2
+light P 67.2 1.2 27.2
+light P 2.2 1.2 27.2
+
 //gul bibliotek
 guard S 78 22 V 2
 path H 78 45 H 87 39 H 79 20 
+
 //rödblock
 guard S 4 3 V 2
 path H 8 18  H 8 26 H 5 34 H 4 39 H 17 36H 15 32 H 19 27 H 17 20 H 19 12 H 12 5 H 16 3 H 5 12 H 4 3
