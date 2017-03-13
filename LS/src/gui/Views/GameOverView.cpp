@@ -21,6 +21,20 @@ namespace gui {
         _victoryLabel->setPosition(-_victoryLabel->getSize().x*0.5f, 0.4f);
         addChild(_victoryLabel);
 
+        //loot
+        _lootLabel = new gui::Label(font);
+        _lootLabel->addStringComponent(new StringComponentString("Loot: "));
+        _lootLabel->addStringComponent(new StringComponentInt(&_loot));
+        _lootLabel->setScale(0.5f);
+        _lootLabel->setPosition(-_lootLabel->getSize().x*0.25f, 0.2f);
+        addChild(_lootLabel);
+        //loss
+        _lossLabel = new gui::Label(font);
+        _lossLabel->addStringComponent(new StringComponentString("Detection: "));
+        _lossLabel->addStringComponent(new StringComponentFloatConst(1, 0.0f));
+        _lossLabel->setScale(0.5f);
+        _lossLabel->setPosition(-_lossLabel->getSize().x*0.25f, 0.1f);
+        addChild(_lossLabel);
         //score
         _scoreLabel = new gui::Label(font);
         _scoreLabel->addStringComponent(new StringComponentString("Score: "));
@@ -28,15 +42,8 @@ namespace gui {
         f->_precision = 1;
         _scoreLabel->addStringComponent(f);
         _scoreLabel->setScale(0.5f);
-        _scoreLabel->setPosition(-_scoreLabel->getSize().x*0.25f, 0.2f);
+        _scoreLabel->setPosition(-_scoreLabel->getSize().x*0.25f, 0.0f);
         addChild(_scoreLabel);
-        //loot
-        _lootLabel = new gui::Label(font);
-        _lootLabel->addStringComponent(new StringComponentString("Loot: "));
-        _lootLabel->addStringComponent(new StringComponentInt(&_loot));
-        _lootLabel->setScale(0.5f);
-        _lootLabel->setPosition(-_lootLabel->getSize().x*0.25f, 0.0f);
-        addChild(_lootLabel);
 
         _playAgainButton = new gui::Button(1.5f, 0.4f);
         _playAgainButton->addStringComponent(new StringComponentString("Play again"));
@@ -98,10 +105,13 @@ namespace gui {
     {
         _score = score;
         _loot = loot;
+        float loss = (float) score - (float) loot;
+        _lossLabel->updateStringComponent(1, new StringComponentFloatConst(loss, 1));
         _scoreLabel->updateText();
         _lootLabel->updateText();
-        _scoreLabel->setPosition(-_scoreLabel->getSize().x*0.25f, 0.2f);
-        _lootLabel->setPosition(-_lootLabel->getSize().x*0.25f, 0.0f);
+        _scoreLabel->setPosition(-_scoreLabel->getSize().x*0.25f, _scoreLabel->getPosition().y);
+        _lootLabel->setPosition(-_lootLabel->getSize().x*0.25f, _lootLabel->getPosition().y);
+        _lossLabel->setPosition(-_lossLabel->getSize().x*0.25f, _lossLabel->getPosition().y);
     }
     void GameOverView::QuitGame(int action)
     {

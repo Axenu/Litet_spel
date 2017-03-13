@@ -735,8 +735,6 @@ Character::~Character()
     _eventManager->unlisten(this, &Character::moveMouse);
 	_eventManager->unlisten(this, &Character::detected);
 	_eventManager->unlisten(this, &Character::clickMouse);
-	_walkingSound->drop();
-	_climbSound->drop();
 }
 
 #pragma endregion

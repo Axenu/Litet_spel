@@ -27,6 +27,7 @@ namespace gui
         Label *_victoryLabel;
         Label *_scoreLabel;
         Label *_lootLabel;
+        Label *_lossLabel;
 
         float _score;
         int _loot;

@@ -20,10 +20,10 @@ namespace gui {
         }
 
         _tipDisplay = new gui::Label(font);
-        _tipDisplay->addStringComponent(new StringComponentString("Temp string"));
-        _tipDisplay->setPosition(-_tipDisplay->getSize().x*0.25f, -0.5);
+        _tipDisplay->addStringComponent(new StringComponentString("Collect 500 loot and escape!"));
+        _tipDisplay->setPosition(-_tipDisplay->getTextWidth()*0.25f, -0.5);
         _tipDisplay->setScale(0.5);
-        _tipDisplay->deactivate();
+        // _tipDisplay->deactivate();
         addChild(_tipDisplay);
 
         //aim
@@ -136,6 +136,7 @@ namespace gui {
         _isActive = true;
 
         _gameOverCD = -1.0f;
+        _startMessageCD = 3.0f;
         //start background sound
         _backgroundSound = SoundManager::getInstance().play2DSound(BACKGROUND_SONG, true, true);
         _backgroundSound->setVolume(0.1f);
@@ -152,7 +153,6 @@ namespace gui {
         {
             delete _game;
         }
-        _backgroundSound->drop();
     }
     void HUDView::onRender(float dt)
     {
@@ -192,6 +192,15 @@ namespace gui {
                 view->updateText(false);
                 return;
             }
+        }
+        if (_startMessageCD > -1.f && _startMessageCD < 0.0f)
+        {
+            _tipDisplay->deactivate();
+            _startMessageCD = -1.0f;
+        }
+        else if (_startMessageCD > 0.0f)
+        {
+            _startMessageCD -= dt;
         }
         _grenadeCountLabel->setPosition(0 - _grenadeCountLabel->getTextWidth()*0.5f, -0.93f);
         _game->update(dt);
@@ -269,6 +278,7 @@ namespace gui {
         _eventManager->execute(event);
         _isActive = true;
         _gameOverCD = -1.0f;
+        _startMessageCD = 10.0f;
         float opacity = 1.0f;
         _scoreLabel->setOpacity(opacity);
         _lootLabel->setOpacity(opacity);
@@ -281,7 +291,8 @@ namespace gui {
         _lightLabel->setOpacity(opacity);
         _soundLabel->setOpacity(opacity);
         _grenadeLabel->setOpacity(opacity);
-        _tipDisplay->deactivate();
+        // _tipDisplay->deactivate();
+        _tipDisplay->updateStringComponent(0, new StringComponentString("Collect 500 loot and escape!"));
     }
     void HUDView::switchToGuardVision(const GuardVisionEvent &event)
     {
