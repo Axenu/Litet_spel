@@ -293,6 +293,7 @@ namespace gui {
         _grenadeLabel->setOpacity(opacity);
         // _tipDisplay->deactivate();
         _tipDisplay->updateStringComponent(0, new StringComponentString("Collect 500 loot and escape!"));
+        _tipDisplay->setPosition(-_tipDisplay->getTextWidth()*0.5f, _tipDisplay->getPosition().y);
     }
     void HUDView::switchToGuardVision(const GuardVisionEvent &event)
     {
