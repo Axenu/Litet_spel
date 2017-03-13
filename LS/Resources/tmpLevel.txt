@@ -108,8 +108,8 @@ model S 38 9 M Bookcase_Empty.obj R 0 180 0
 loot S 38 9 V 20 M GoldBar.obj 
 model S 44 9 M Bookcase_Empty.obj R 0 180 0
 loot S 44 9 V 20 M GoldBar.obj 
-model S 23 12 M Table.obj
-model S 21 15 M Bookcase_Empty.obj
+model S 23 12 M Table.obj R 0 90 0
+model S 21 15 M Bookcase_Empty.obj R 0 90 0
 
 model S 53 46 M Table.obj R 0 90 0
 loot S 53 46 V 20 M GoldBar.obj 
@@ -228,7 +228,7 @@ model S 90 33 M OldChair.obj R 0 180 0
 model S 98 4 M OldChair.obj R 0 90 0
 model S 99 4 M oldTable.obj R 0 270 0
 model S 100 4 M OldChair.obj R 0 180 0
-model S 100 1 M Bookcase_Empty.obj 
+model S 100 1 M Bookcase_Empty.obj R 0 180 0
 
 model S 96 11 M OldChair.obj R 0 270 0
 model S 99 12 M oldTable.obj R 0 270 0

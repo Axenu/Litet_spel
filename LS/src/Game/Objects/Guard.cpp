@@ -335,7 +335,9 @@ void Guard::finalDetection()
 	}
 	if (_lastNoiseVal > 0.0f || _lastVisionVal > 0.0f)
 	{
-		_pointOfInterest = _player->getWorldPos();
+		glm::vec3 tmp = glm::vec3(_player->getWorldPos());
+		tmp.y = 0.0f;
+		_pointOfInterest = tmp;
 	}
 }
 

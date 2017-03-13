@@ -624,7 +624,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
 		{
 		case CharState::guardVision:
 			//Rotate
-			rotate = maxRotation(_camTilt.x, rotate, glm::pi<float>() * 0.25f, -glm::pi<float>() * 0.25f);
+			rotate = maxRotation(_camTilt.x, rotate, glm::pi<float>() * MAXVIEWANGLE_SIDE, -glm::pi<float>() * MAXVIEWANGLE_SIDE);
 			_camTilt.x += rotate;
 			_currentScene->getCamera().rotateY(rotate);
 			break;
@@ -636,7 +636,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
 
 		// Up / Down camera rotation.
 		float tilt = deltaPos.y * RotationSpeed;
-		tilt = maxRotation(_camTilt.y, tilt, glm::pi<float>() * 0.33f, -glm::pi<float>() * 0.33f);
+		tilt = maxRotation(_camTilt.y, tilt, glm::pi<float>() * MAXVIEWANGLEY, -glm::pi<float>() * MAXVIEWANGLEY);
 		//Tilt
 		_camTilt.y += tilt;
 		_currentScene->getCamera().rotateX(tilt);
