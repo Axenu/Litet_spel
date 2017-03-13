@@ -645,19 +645,25 @@ void Character::moveMouse(const MouseMoveEvent& event)
 
 void Character::clickMouse(const MouseClickEvent& event)
 {
-	if (event.getKey() == LOOT)
+	switch (_state)
 	{
-		if (event.getAction() == GLFW_PRESS)
+	case CharState::guardVision:
+		break;
+	default:
+		if (event.getKey() == LOOT)
 		{
-			int points = _currentScene->loot(2);
-			if (points > 0)
+			if (event.getAction() == GLFW_PRESS)
 			{
-				CollectLootEvent event(points);
-				_lootValue += points;
-				_score += points;
-				Sound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
-				tempSound->setPlayPosition(200);
-				_eventManager->execute(event);
+				int points = _currentScene->loot(2);
+				if (points > 0)
+				{
+					CollectLootEvent event(points);
+					_lootValue += points;
+					_score += points;
+					Sound *tempSound = SoundManager::getInstance().play2DSound(LOOTINGSOUND, false, true);
+					tempSound->setPlayPosition(200);
+					_eventManager->execute(event);
+				}
 			}
 		}
 	}
