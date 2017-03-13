@@ -508,6 +508,8 @@ path H 59 30 H 67 29 H 64 32 H 73 28 H 73 22 H 68 20 H 61 15 H 60 22 H 47 32
 
 
 
+guard S 4 10 V 0
+path S 14 10
 
 
 
@@ -517,10 +519,6 @@ model S 48 20 M fancyTable.obj
 listSuperLoot S 4 5 S 37 2 S 48 20 M Diamond.obj V 200 R 0 0 0
 exitDoor S 47 54 M Doorway.obj R 0 180 0 O 0.5 0 0
 
-guard S 13 51 V 2 % 2_equal_loop_path
-path H 26 46 H 37 43 H 37 49
-guard S 14 3 V 0
-path S 0 0 % Guard_faces_this_square_when_in_still_state
 listDoors V 0 S 30 50 S 34 42 S 41 39 S 67 17 S 71 36 S 74 40 S 93 35 S 91 18 S 91 3 S 94 3
 listDoors V 0 S 78 14 S 24 5 S 14 7 S 11 10 S 10 41 S 71 14 S 11 34 S 22 35
 listDoors V 1 S 21 49 S 8 44
