@@ -293,6 +293,7 @@ namespace gui {
         _grenadeLabel->setOpacity(opacity);
         // _tipDisplay->deactivate();
         _tipDisplay->updateStringComponent(0, new StringComponentString("Collect 500 loot and escape!"));
+        _tipDisplay->setPosition(-_tipDisplay->getTextWidth()*0.5f, _tipDisplay->getPosition().y);
     }
     void HUDView::switchToGuardVision(const GuardVisionEvent &event)
     {
@@ -463,7 +464,7 @@ namespace gui {
         if (event._detection > 0.0f)
         {
             //calculate position of the alert
-            glm::vec4 pos = glm::vec4(event._position.x, 1.3f, event._position.z, 1.0f);
+            glm::vec4 pos = glm::vec4(event._position.x, 1.5f, event._position.z, 1.0f);
             pos = _game->getScene().getCamera().VPMatrix * pos;
             glm::vec3 posS = glm::vec3(pos.x/pos.w, pos.y/pos.w, pos.z);
             if (posS.z < -0.2f)
