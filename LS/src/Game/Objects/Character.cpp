@@ -701,6 +701,8 @@ Character::Character(glm::vec3 pos, EventManager *manager, int grenadeCount, flo
 	_lootValue = 0;
 	_score = 0.0f;
 	setPosition(pos);
+	setForward(glm::vec3(0, 0, -1));
+	
 	_velocity = glm::vec3(0, 0, 0);
 	_camTilt = glm::vec2(0.0f);
 	_speed = 2;

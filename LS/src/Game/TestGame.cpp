@@ -3,7 +3,11 @@
 
 
 TestGame::TestGame(Setting &setting, EventManager *events)
-	: Game(setting, events), _bufferRenderer(_resource.getQuad(), events), _cubeMapRenderer(_resource.getQuad(), events), _renderBufferKey(events, GLFW_KEY_R), _cubeMapBufferKey(events, GLFW_KEY_C)
+	: Game(setting, events)
+#ifdef DEBUG_CHECK
+	, _bufferRenderer(_resource.getQuad(), events), _cubeMapRenderer(_resource.getQuad(), events)
+	, _renderBufferKey(events, GLFW_KEY_R), _cubeMapBufferKey(events, GLFW_KEY_C)
+#endif
 {
 }
 TestGame::~TestGame()
@@ -18,7 +22,9 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 	//Initiate camera and renderer vars:
 	Camera& cam = scene->setCamera(_setting);
 	_deferred.setWindowSize((float)_setting.Width(), (float)_setting.Height(), cam);
+#ifdef DEBUG_CHECK
 	_bufferRenderer.setWindowSize((float)_setting.Width(), (float)_setting.Height(), scene->getCamera());
+#endif
 	Character* player = _factory.createCharacter(glm::ivec2(48, 53), 1.3f);
 	_player = player;
 
@@ -49,6 +55,7 @@ std::unique_ptr<Scene> TestGame::spawnScene() {
 
 void TestGame::compose(RenderInfo &rI)
 {
+#ifdef DEBUG_CHECK
 	if (_renderBufferKey._active)
 	{
 		_bufferRenderer.render(rI);
@@ -58,6 +65,7 @@ void TestGame::compose(RenderInfo &rI)
 		_cubeMapRenderer.render(rI);
 	}
 	else
+#endif
 	{
 		Game::compose(rI);
 	}

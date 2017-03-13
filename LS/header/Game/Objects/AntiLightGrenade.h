@@ -8,9 +8,11 @@
 #include "Game/Camera.h"
 #include "Game/Level/Grid.h"
 #include "Event/EventManager.h"
-	const static float expandSize = 3.f;
-	const static float expandDur = 1.f;
-	const static float fadeDur = 5.f;
+
+
+const static float expandSize = 3.f;
+const static float expandDur = 1.5f;
+const static float fadeDur = 8.f;
 
 struct GrenadeValues {
 	float fading;
