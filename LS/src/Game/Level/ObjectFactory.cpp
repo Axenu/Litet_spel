@@ -88,7 +88,7 @@ std::unique_ptr<Scene> ObjectFactory::createLevel(const std::string &level, Leve
 	std::vector<glm::ivec2> windows(_level->getGrid().getWindowData());
 	for (unsigned short int i = 0; i < windows.size(); i++)
 	{
-		createObject("Window_A.obj", windows[i], calcRot(windows[i]), gridType::nothing, glm::vec3(0.f, 0.375f, 0.f));
+		createObject("Window_A.obj", windows[i], calcRot(windows[i]), gridType::window, glm::vec3(0.f, 0.375f, 0.f));
 	}
 	return scene;
 }
@@ -165,6 +165,11 @@ GameObject* ObjectFactory::createObject(const std::string &model, glm::ivec2 squ
 	GameObject* object = new StaticGameObject(tmpModel, type::Doodad);
 	object->setPosition(calcPos(square, tmpModel.getBox()) + positionOffset);
 	object->setRotEuler(rotation);
+	if (type == gridType::nothing)
+	{
+		float height = _level->getGrid().getHeight(square.y, square.x);
+		object->moveY(height);
+	}
 	object->init();
 	_scene->add(object, false);
 	if (type == gridType::object || type == gridType::wall)
@@ -260,7 +265,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 			}
 		}
 		if (type == "model")
-			createObject(modelName, square, rot, gridType::object, offSet);
+			createObject(modelName, square, rot, value == 0.f ? gridType::object : gridType::nothing, offSet);
 		else if (type == "light")
 		{
 			light._pos = pos;
@@ -285,7 +290,7 @@ void ObjectFactory::loadSceneFromFile(std::string path, std::vector<guardData> &
 		else if (type == "loot")
 			loot.push_back(lootData(square, rot, modelName, (int)value));
 		else if (type == "listSuperLoot")
-			createLoot(modelName, squareList[getRand(squareList.size())], rot, value);
+			createLoot(modelName, squareList[getRand(squareList.size())], rot, (int)value);
 		else if (type == "exitDoor")
 			createObject(modelName, square, rot, gridType::nothing, offSet);
 		else if (type == "guard")

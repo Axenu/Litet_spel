@@ -30,7 +30,7 @@ void PointLightObject::update(float dT) {
 		{
 			offset = lerp(_positionDestination, _prevPositionDestination, _timeToOffset);
 			_lightInfo._light._fadeDist = lerp(_targetSize, _previousSize, _timeToOffset);
-			_timeToOffset -= dT * 3.f;
+			_timeToOffset -= dT * 1.f;
 		}
 		else
 		{
@@ -41,7 +41,8 @@ void PointLightObject::update(float dT) {
 			_lightInfo._light._fadeDist = _targetSize;
 			if (_nextFlicker)
 			{
-				_positionDestination = glm::vec3(getRand(-0.05f, 0.05f), 0.f, getRand(-0.05f, 0.05f));
+				const float flickerDist = 0.01f;
+				_positionDestination = glm::vec3(getRand(-flickerDist, flickerDist), 0.f, getRand(-flickerDist, flickerDist));
 				_targetSize = getRand(3.5f, 4.5f);
 			}
 			else 

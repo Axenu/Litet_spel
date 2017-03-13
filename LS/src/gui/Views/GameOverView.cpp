@@ -31,7 +31,7 @@ namespace gui {
         //loss
         _lossLabel = new gui::Label(font);
         _lossLabel->addStringComponent(new StringComponentString("Detection: "));
-        _lossLabel->addStringComponent(new StringComponentFloatConst(1, 0.0f));
+        _lossLabel->addStringComponent(new StringComponentFloatConst(1.f, 0));
         _lossLabel->setScale(0.5f);
         _lossLabel->setPosition(-_lossLabel->getSize().x*0.25f, 0.1f);
         addChild(_lossLabel);

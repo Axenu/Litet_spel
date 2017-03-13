@@ -260,7 +260,7 @@ void Guard::setPath(glm::vec3 start, glm::vec3 point)
 	glm::ivec2 iStart = _currentLevel->getGrid().getSquare(start);
 	glm::ivec2 iPoint = _currentLevel->getGrid().getSquare(point);
 
-	int dist = std::max(std::abs(point.x - start.x), std::abs(point.y - start.y)) + 10;
+	int dist = (int)std::max(std::abs(point.x - start.x), std::abs(point.y - start.y)) + 10;
 
 	_path = _currentLevel->getGrid().generatePath(iStart, iPoint, dist);
 }
