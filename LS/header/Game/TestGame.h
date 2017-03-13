@@ -13,10 +13,12 @@
 class TestGame
 	: public Game {
 protected:
+#ifdef DEBUG_CHECK
 	RenderDefBuffers _bufferRenderer;
 	RenderCubeMap _cubeMapRenderer;
 	InputKeyState _renderBufferKey;
 	InputKeyState _cubeMapBufferKey;
+#endif
 	Character *_player;
 
 public:

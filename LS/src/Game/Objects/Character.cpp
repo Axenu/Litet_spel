@@ -636,7 +636,7 @@ void Character::moveMouse(const MouseMoveEvent& event)
 
 		// Up / Down camera rotation.
 		float tilt = deltaPos.y * RotationSpeed;
-		tilt = maxRotation(_camTilt.y, tilt, glm::pi<float>() * MAXVIEWANGLEY, -glm::pi<float>() * MAXVIEWANGLEY);
+		tilt = maxRotation(_camTilt.y, tilt, glm::pi<float>() * MAXVIEWANGLEDOWNY, -glm::pi<float>() * MAXVIEWANGLEUPY);
 		//Tilt
 		_camTilt.y += tilt;
 		_currentScene->getCamera().rotateX(tilt);
